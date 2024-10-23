@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AuditoriaController } from './auditoria/auditoria.controller';
-import { AuditoriaService } from './auditoria/auditoria.service';
+import { AuditoriaController } from './auditoria.controller';
+import { AuditoriaService } from './auditoria.service';
 
 @Module({
   controllers: [AuditoriaController],

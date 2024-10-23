@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class PlanAuditoriaDTO{
     @ApiProperty()
-    readonly onjetivo: string;
+    readonly objetivo: string;
 
     @ApiProperty()
     readonly alcance: string;

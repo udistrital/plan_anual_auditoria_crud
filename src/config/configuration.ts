@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 export const environment = {
     PLAN_ANUAL_AUDITORIA_USER:
       process.env.PLAN_ANUAL_AUDITORIA_USER,

@@ -4,7 +4,7 @@ import { Document, Types } from 'mongoose';
 @Schema({ collection: 'plan-auditoria' })
 export class PlanAuditoria extends Document {
    @Prop({ required: true })
-     onjetivo: string;
+     objetivo: string;
 
    @Prop({ required: true })
      alcance: string;
