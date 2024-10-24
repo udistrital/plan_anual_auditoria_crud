@@ -47,3 +47,5 @@ export class PlanAuditoria extends Document {
 
 }
 export const PlanAuditoriaSchema = SchemaFactory.createForClass(PlanAuditoria);
+
+PlanAuditoriaSchema.set('versionKey', false);

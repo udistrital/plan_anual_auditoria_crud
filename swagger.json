@@ -30,7 +30,10 @@
           "201": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
       },
       "get": {
         "operationId": "PlanAuditoriaController_getAll",
@@ -103,7 +106,10 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
       }
     },
     "/plan-auditoria/{id}": {
@@ -123,7 +129,10 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
       },
       "put": {
         "operationId": "PlanAuditoriaController_put",
@@ -151,7 +160,10 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
       },
       "delete": {
         "operationId": "PlanAuditoriaController_delete",
@@ -169,7 +181,360 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
+      }
+    },
+    "/auditoria": {
+      "post": {
+        "operationId": "AuditoriaController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auditoria"
+        ]
+      },
+      "get": {
+        "operationId": "AuditoriaController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auditoria"
+        ]
+      }
+    },
+    "/auditoria/{id}": {
+      "get": {
+        "operationId": "AuditoriaController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auditoria"
+        ]
+      },
+      "put": {
+        "operationId": "AuditoriaController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auditoria"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditoriaController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "auditoria"
+        ]
+      }
+    },
+    "/actividad": {
+      "post": {
+        "operationId": "ActividadController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActividadDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "actividad"
+        ]
+      },
+      "get": {
+        "operationId": "ActividadController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "actividad"
+        ]
+      }
+    },
+    "/actividad/{id}": {
+      "get": {
+        "operationId": "ActividadController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "actividad"
+        ]
+      },
+      "put": {
+        "operationId": "ActividadController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActividadDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "actividad"
+        ]
+      },
+      "delete": {
+        "operationId": "ActividadController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "actividad"
+        ]
       }
     }
   },
@@ -243,6 +608,171 @@
           "jefe_dependencia_id",
           "aprobado_secretario_tecnico",
           "secretario_tecnico_id",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "AuditoriaDTO": {
+        "type": "object",
+        "properties": {
+          "plan_uditoria_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "tipo_evaluacion_id": {
+            "type": "number"
+          },
+          "cronograma_actividad": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "no_auditoria": {
+            "type": "number"
+          },
+          "consecutivo_OCI": {
+            "type": "string"
+          },
+          "consecutivo_IE": {
+            "type": "string"
+          },
+          "tipo_id": {
+            "type": "number"
+          },
+          "macroproceso": {
+            "type": "number"
+          },
+          "lider": {
+            "type": "number"
+          },
+          "responsable": {
+            "type": "number"
+          },
+          "fechaInicio": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fechaFin": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "objetivo": {
+            "type": "string"
+          },
+          "alcance": {
+            "type": "string"
+          },
+          "criterio": {
+            "type": "string"
+          },
+          "rec_tecnologico": {
+            "type": "string"
+          },
+          "rec_humano": {
+            "type": "string"
+          },
+          "rec_fisico": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_uditoria_id",
+          "titulo",
+          "tipo_evaluacion_id",
+          "cronograma_actividad",
+          "estado_id",
+          "no_auditoria",
+          "consecutivo_OCI",
+          "consecutivo_IE",
+          "tipo_id",
+          "macroproceso",
+          "lider",
+          "responsable",
+          "fechaInicio",
+          "fechaFin",
+          "objetivo",
+          "alcance",
+          "criterio",
+          "rec_tecnologico",
+          "rec_humano",
+          "rec_fisico",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "ActividadDTO": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "fechaInicio": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fechaFin": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "referencia": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "folio": {
+            "type": "number"
+          },
+          "medio_id": {
+            "type": "number"
+          },
+          "carpeta": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "auditoria_id",
+          "titulo",
+          "fechaInicio",
+          "fechaFin",
+          "referencia",
+          "descripcion",
+          "folio",
+          "medio_id",
+          "carpeta",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

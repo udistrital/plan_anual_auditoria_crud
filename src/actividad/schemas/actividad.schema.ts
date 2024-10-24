@@ -43,3 +43,5 @@ export class Actividad extends Document {
 }
 
 export const ActividadSchema = SchemaFactory.createForClass(Actividad);
+
+ActividadSchema.set('versionKey', false);

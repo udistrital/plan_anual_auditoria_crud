@@ -12,7 +12,10 @@ import {
   } from '@nestjs/common';
   import {PlanAuditoriaService}from './plan-auditoria.service';
   import{PlanAuditoriaDTO} from './dto/plan-auditoria.dto'
-import{FilterDto }from '../filters/filters.dto'
+  import{FilterDto }from '../filters/filters.dto'
+  import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
 export class PlanAuditoriaController {
   constructor(private planAuditoriaService: PlanAuditoriaService) {}

@@ -75,3 +75,5 @@ export class Auditoria extends Document {
    
 }
 export const AuditoriaSchema = SchemaFactory.createForClass(Auditoria);
+
+AuditoriaSchema.set('versionKey', false);

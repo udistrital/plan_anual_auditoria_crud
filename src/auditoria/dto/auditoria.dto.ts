@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-export class Auditoria extends Document {
+
+export class AuditoriaDTO {
     @ApiProperty()
-      readonly plan_uditoria_id: number;
+      readonly plan_uditoria_id: string;
  
     @ApiProperty()
       readonly titulo: string;
