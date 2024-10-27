@@ -12,6 +12,7 @@ import { PlanAuditoria, PlanAuditoriaSchema } from 'src/plan-auditoria/schemas/p
     ]),
   ],
   controllers: [AuditoriaController],
-  providers: [AuditoriaService]
+  providers: [AuditoriaService],
+  exports: [AuditoriaService]
 })
 export class AuditoriaModule {}

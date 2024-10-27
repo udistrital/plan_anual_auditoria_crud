@@ -1,18 +1,277 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuditoriaService } from './auditoria.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { Auditoria } from './schemas/auditoria.schema';
+import { AuditoriaDTO } from './dto/auditoria.dto';
+import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
+import { Model } from 'mongoose';
+import { FilterDto } from '../filters/filters.dto';
+
+const mockAuditoriaDTO: AuditoriaDTO = {
+  titulo: "auditoria 1",
+  tipo_evaluacion_id: 2,
+  plan_uditoria_id: "67197dda3416d2a85e5d6d8f",
+  cronograma_actividad: Array (3),
+  estado_id: 3,
+  no_auditoria: 123420,
+  consecutivo_OCI: "EHS54F",
+  consecutivo_IE: "PASJF4532",
+  tipo_id: 3,
+  macroproceso: 4,
+  lider: 3,
+  responsable: 34,
+  fechaInicio: new Date(),
+  fechaFin: new Date(),
+  objetivo: "objetivo",
+  alcance: "alcance",
+  criterio: "criterio",
+  rec_tecnologico: "rec_T",
+  rec_humano: "rec_H",
+  rec_fisico: "rec_F",
+  activo: true,
+  fecha_creacion: new Date(),
+  fecha_modificacion: new Date(),
+};
+
+
+const mockAuditoria = {
+  ...mockAuditoriaDTO,
+  _id: '671aa963064222e6583d56e4',
+};
+
+const mockPlanAuditoria = {
+  _id: '66aed6a431c4ca1c60085cdd',
+  nombre: 'PlanAuditoria de Prueba',
+};
 
 describe('AuditoriaService', () => {
-  let service: AuditoriaService;
+  let auditoriaService: AuditoriaService;
+  let auditoriaModel: Model<Auditoria>;
+  let planAuditoriaModel: Model<PlanAuditoria>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuditoriaService],
+      providers: [
+        AuditoriaService,
+        {
+          provide: getModelToken(Auditoria.name),
+          useValue: {
+            create: jest.fn(),
+            find: jest.fn(),
+            findById: jest.fn(),
+            findByIdAndUpdate: jest.fn(),
+          },
+        },
+        {
+          provide: getModelToken(PlanAuditoria.name),
+          useValue: {
+            findById: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
-    service = module.get<AuditoriaService>(AuditoriaService);
+    auditoriaService = module.get<AuditoriaService>(AuditoriaService);
+    auditoriaModel = module.get<Model<Auditoria>>(
+      getModelToken(Auditoria.name),
+    );
+    planAuditoriaModel = module.get<Model<PlanAuditoria>>(
+      getModelToken(PlanAuditoria.name),
+    );
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  it('Debería estar definido', () => {
+    expect(AuditoriaService).toBeDefined();
+  });
+
+  describe('post', () => {
+    it('Debería crear y devolver una alerta modal', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+      jest
+        .spyOn(auditoriaModel, 'create')
+        .mockImplementationOnce(() => Promise.resolve(mockAuditoriaDTO as any));
+
+      const result = await auditoriaService.post(mockAuditoriaDTO);
+      expect(result).toEqual(mockAuditoriaDTO);
+    });
+
+    it('Debería lanzar un error si el PlanAuditoria no existe', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
+        `PlanAuditoria with id ${mockAuditoriaDTO.plan_uditoria_id} doesn't exist`,
+      );
+    });
+  });
+
+  describe('getAll', () => {
+    it('Debería retornar todas las alertas modales con filtros aplicados', async () => {
+      const mockAuditorias = [
+        mockAuditoria,
+        {
+          _id: '671aa963064222e6583d56e4',
+          titulo: "auditoria 1",
+          tipo_evaluacion_id: 2,
+          plan_uditoria_id: "67197f9a3416d2a85e5d6d93",
+          cronograma_actividad: Array (3),
+          estado_id: 3,
+          no_auditoria: 123420,
+          consecutivo_OCI: "EHS54F",
+          consecutivo_IE: "PASJF4532",
+          tipo_id: 3,
+          macroproceso: 4,
+          lider: 3,
+          responsable: 34,
+          fechaInicio: new Date(),
+          fechaFin: new Date(),
+          objetivo: "objetivo",
+          alcance: "alcance",
+          criterio: "criterio",
+          rec_tecnologico: "rec_T",
+          rec_humano: "rec_H",
+          rec_fisico: "rec_F",
+          activo: true,
+          fecha_creacion: new Date(),
+          fecha_modificacion: new Date(),
+        },
+      ];
+
+      const mockFilterDto: FilterDto = {
+        query: '',
+        fields: '',
+        sortby: '',
+        order: '',
+        limit: '',
+        offset: '',
+        populate: '',
+      };
+
+      const mockQuery = {
+        sort: jest.fn().mockReturnThis(),
+        populate: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockAuditorias),
+      };
+
+      jest.spyOn(auditoriaModel, 'find').mockReturnValue(mockQuery as any);
+
+      const result = await auditoriaService.getAll(mockFilterDto);
+
+      expect(result).toEqual(mockAuditorias);
+    });
+  });
+
+  describe('getById', () => {
+    it('Debería retornar una alerta modal por su ID', async () => {
+      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockAuditoria as unknown as Auditoria),
+      } as any);
+
+      const result = await auditoriaService.getById(mockAuditoria._id);
+
+      expect(auditoriaModel.findById).toHaveBeenCalledWith(
+        mockAuditoria._id,
+      );
+      expect(result).toEqual(mockAuditoria);
+    });
+
+    it('Debería lanzar un error si la alerta modal no existe', async () => {
+      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.getById(mockAuditoria._id),
+      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+
+      expect(auditoriaModel.findById).toHaveBeenCalledWith(
+        mockAuditoria._id,
+      );
+    });
+  });
+
+  describe('put', () => {
+    it('Debería actualizar una alerta modal', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockAuditoriaDTO as unknown as Auditoria),
+      } as any);
+
+      const result = await auditoriaService.put(
+        mockAuditoria._id,
+        mockAuditoriaDTO,
+      );
+
+      expect(auditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        mockAuditoria._id,
+        mockAuditoriaDTO,
+        { new: true },
+      );
+      expect(result).toEqual(mockAuditoriaDTO);
+    });
+
+    it('Debería lanzar un error si la alerta modal no existe', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
+      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+
+      expect(auditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        mockAuditoria._id,
+        mockAuditoriaDTO,
+        { new: true },
+      );
+    });
+
+    it('Debería lanzar un error si el PlanAuditoria relacionado no existe', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
+      ).rejects.toThrow(
+        `PlanAuditoria with id ${mockAuditoriaDTO.plan_uditoria_id} doesn't exist`,
+      );
+    });
+  });
+
+  describe('delete', () => {
+    it('Debería marcar una alerta modal como inactiva', async () => {
+      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockAuditoriaDTO as unknown as Auditoria),
+      } as any);
+
+      const result = await auditoriaService.delete(mockAuditoria._id);
+
+      expect(result).toEqual(mockAuditoriaDTO);
+    });
+
+    it('Debería lanzar un error si la alerta modal no existe', async () => {
+      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.delete(mockAuditoria._id),
+      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+    });
   });
 });

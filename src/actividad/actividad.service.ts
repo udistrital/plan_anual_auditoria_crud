@@ -5,7 +5,7 @@ import { FilterDto } from '../filters/filters.dto';
 import {FiltersService } from '../filters/filters.service'
 import {Actividad} from './schemas/actividad.schema'
 import {ActividadDTO} from './dto/actividad.dto'
-import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
+import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 @Injectable()
 export class ActividadService {
     constructor(

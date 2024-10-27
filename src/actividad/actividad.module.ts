@@ -13,6 +13,7 @@ import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.sche
     ]),
   ],
   controllers: [ActividadController],
-  providers: [ActividadService]
+  providers: [ActividadService],
+  exports: [ActividadService]
 })
 export class ActividadModule {}

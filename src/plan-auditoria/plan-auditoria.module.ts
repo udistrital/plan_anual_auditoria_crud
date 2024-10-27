@@ -10,6 +10,7 @@ import { PlanAuditoria, PlanAuditoriaSchema } from './schemas/plan-auditoria.sch
     ]),
   ],
   controllers: [PlanAuditoriaController],
-  providers: [PlanAuditoriaService]
+  providers: [PlanAuditoriaService],
+  exports: [PlanAuditoriaService]
 })
 export class PlanAuditoriaModule {}
