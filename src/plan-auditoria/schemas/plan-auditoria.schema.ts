@@ -1,49 +1,49 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 
 @Schema({ collection: 'plan-auditoria' })
 export class PlanAuditoria extends Document {
-   @Prop({ required: true })
+   @Prop({ required: false })
      objetivo: string;
 
-   @Prop({ required: true })
+   @Prop({ required: false })
      alcance: string;
 
-   @Prop({ required: true })
+   @Prop({ required: false })
      criterio: string;
 
-   @Prop({ required: true })
+   @Prop({ required: false })
      recurso: string;
 
-   @Prop({ required: true })
-     creado_por_id: number;
+   @Prop({ required: false })
+     creadoPorId: number;
 
-   @Prop({ required: true })
-     estado_id: number;
+   @Prop({ required: false })
+     estadoId: number;
 
-   @Prop({ required: true })
-     vigencia_id: number;
+   @Prop({ required: false })
+     vigenciaId: number;
 
-   @Prop({ required: true })
-     aprobado_jefe_dependencia: boolean;
+   @Prop({ required: false })
+     aprobadoJefeDependencia: boolean;
 
-   @Prop({ required: true })
-     jefe_dependencia_id: number;
+   @Prop({ required: false })
+     jefeDependencia_id: number;
 
-   @Prop({ required: true })
-     aprobado_secretario_tecnico: boolean;
+   @Prop({ required: false })
+     aprobadoSecretario_tecnico: boolean;
 
-   @Prop({ required: true })
-     secretario_tecnico_id: number;
+   @Prop({ required: false })
+     secretarioTecnico_id: number;
 
-   @Prop({ required: true })
+   @Prop({ required: false })
     activo: boolean;
 
-   @Prop({ required: true })
-    fecha_creacion: Date;
+   @Prop({ required: false })
+    fechaCreacion: Date;
 
-   @Prop({ required: true })
-    fecha_modificacion: Date;
+   @Prop({ required: false })
+    fechaModificacion: Date;
 
 }
 export const PlanAuditoriaSchema = SchemaFactory.createForClass(PlanAuditoria);

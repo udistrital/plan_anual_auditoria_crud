@@ -15,33 +15,33 @@ export class PlanAuditoriaDTO{
     readonly recurso: string;
 
     @ApiProperty()
-    readonly creado_por_id: number;
+    readonly creadoPorId: number;
 
     @ApiProperty()
-    readonly estado_id: number;
+    readonly estadoId: number;
 
     @ApiProperty()
-    readonly vigencia_id: number;
+    readonly vigenciaId: number;
 
     @ApiProperty()
-    readonly aprobado_jefe_dependencia: boolean;
+    readonly aprobadoJefeDependencia: boolean;
 
     @ApiProperty()
-    readonly jefe_dependencia_id: number;
+    readonly jefeDependenciaId: number;
 
     @ApiProperty()
-    readonly aprobado_secretario_tecnico: boolean;
+    readonly aprobadoSecretarioTecnico: boolean;
 
     @ApiProperty()
-    readonly secretario_tecnico_id: number;
+    readonly secretarioTecnicoId: number;
 
     @ApiProperty()
     activo: boolean;
 
     @ApiProperty()
-    fecha_creacion: Date;
+    fechaCreacion: Date;
 
     @ApiProperty()
-    fecha_modificacion: Date;
+    fechaModificacion: Date;
 
 }

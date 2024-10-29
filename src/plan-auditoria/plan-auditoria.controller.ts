@@ -13,7 +13,11 @@ import {
   import {PlanAuditoriaService}from './plan-auditoria.service';
   import{PlanAuditoriaDTO} from './dto/plan-auditoria.dto'
   import{FilterDto }from '../filters/filters.dto'
-  import { ApiTags } from '@nestjs/swagger';
+  import { ApiTags,
+    ApiOperation,
+    ApiResponse,
+    ApiParam,
+    ApiBody, } from '@nestjs/swagger';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -21,6 +25,14 @@ export class PlanAuditoriaController {
   constructor(private planAuditoriaService: PlanAuditoriaService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo plan de auditoria' })
+  @ApiBody({ type: PlanAuditoriaDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'El plan de auditoria ha sido creado exitosamente.',
+    type: PlanAuditoriaDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() PlanAuditoriaDTO: PlanAuditoriaDTO) {
     try {
       const planAuditoria = await this.planAuditoriaService.post(PlanAuditoriaDTO);
@@ -42,6 +54,12 @@ export class PlanAuditoriaController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todos los planes de auditoria' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los planes de auditoria.',
+    type: [PlanAuditoriaDTO],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const planAuditorias = await this.planAuditoriaService.getAll(filterDto);
@@ -63,6 +81,14 @@ export class PlanAuditoriaController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Obtener un plan de auditoria por Id' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el plan de auditoria.',
+    type: PlanAuditoriaDTO,
+  })
+  @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const planAuditorias = await this.planAuditoriaService.getById(id);
@@ -84,6 +110,16 @@ export class PlanAuditoriaController {
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Actualizar un plan de auditoria' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: PlanAuditoriaDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'El plan de auditoria ha sido actualizado exitosamente.',
+    type: PlanAuditoriaDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
   async put(
     @Res() res,
     @Param('id') id: string,
@@ -109,6 +145,13 @@ export class PlanAuditoriaController {
   }
 
   @Delete('/:id')
+  @ApiOperation({ summary: 'Eliminar un plan de auditoria' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'El plan de auditoria ha sido eliminado exitosamente.',
+  })
+  @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
       await this.planAuditoriaService.delete(id);

@@ -2,40 +2,40 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditoriaDTO {
     @ApiProperty()
-      readonly plan_uditoria_id: string;
+      readonly planAuditoriaId: string;
  
     @ApiProperty()
       readonly titulo: string;
  
     @ApiProperty()
-      readonly tipo_evaluacion_id: number;
+      readonly tipoEvaluacionId: number;
  
     @ApiProperty()
-      readonly cronograma_actividad: string[] = [];;
+      readonly cronogramaId: number[] = [];;
  
     @ApiProperty()
-      readonly estado_id: number;
+      readonly estadoId: number;
  
     @ApiProperty()
-      readonly no_auditoria: number;
+      readonly noAuditoria: number;
  
     @ApiProperty()
-      readonly consecutivo_OCI: string;
+      readonly consecutivoOCI: string;
  
     @ApiProperty()
-      readonly consecutivo_IE: string;
+      readonly consecutivoIE: string;
  
     @ApiProperty()
-      readonly tipo_id: number;
+      readonly tipoId: number;
  
     @ApiProperty()
       readonly macroproceso: number;
  
     @ApiProperty()
-      readonly lider: number;
+      readonly liderId: number;
  
     @ApiProperty()
-     readonly responsable: number;
+     readonly responsableId: number;
  
      @ApiProperty()
      readonly fechaInicio:Date;
@@ -53,21 +53,21 @@ export class AuditoriaDTO {
      readonly criterio:string;
  
      @ApiProperty()
-     readonly rec_tecnologico:string;
+     readonly recTecnologico:string;
  
      @ApiProperty()
-     readonly rec_humano:string;
+     readonly recHumano:string;
  
      @ApiProperty()
-     readonly rec_fisico:string;
+     readonly recFisico:string;
      
      @ApiProperty()
      activo: boolean;
  
      @ApiProperty()
-     fecha_creacion: Date;
+     fechaCreacion: Date;
  
      @ApiProperty()
-     fecha_modificacion: Date;
+     fechaModificacion: Date;
     
  }

@@ -12,8 +12,13 @@ import {
   } from '@nestjs/common';
   import {ActividadService}from './actividad.service';
   import{ActividadDTO} from './dto/actividad.dto'
+  import{Actividad, ActividadSchema}from './schemas/actividad.schema'
   import{FilterDto }from '../filters/filters.dto'
-  import { ApiTags } from '@nestjs/swagger';
+  import { ApiTags,
+    ApiOperation,
+    ApiResponse,
+    ApiParam,
+    ApiBody, } from '@nestjs/swagger';
 
 @ApiTags('actividad')
 @Controller('actividad')
@@ -21,6 +26,14 @@ export class ActividadController {
   constructor(private actividadervice: ActividadService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nueva actividad' })
+  @ApiBody({ type: ActividadDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'El actividad ha sido creado exitosamente.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() ActividadDTO: ActividadDTO) {
     try {
       const actividad = await this.actividadervice.post(ActividadDTO);
@@ -42,6 +55,12 @@ export class ActividadController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las actividades' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todas las actividades.',
+    type: [ActividadDTO],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const actividad = await this.actividadervice.getAll(filterDto);
@@ -63,6 +82,14 @@ export class ActividadController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Obtener un actividad por Id' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve la actividad.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const actividad = await this.actividadervice.getById(id);
@@ -84,6 +111,16 @@ export class ActividadController {
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Actualizar una actividad' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: ActividadDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'La actividad ha sido actualizada exitosamente.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrado.' })
   async put(
     @Res() res,
     @Param('id') id: string,
@@ -109,6 +146,13 @@ export class ActividadController {
   }
 
   @Delete('/:id')
+  @ApiOperation({ summary: 'Eliminar una actividad' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'La actividad ha sido eliminada exitosamente.',
+  })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
       await this.actividadervice.delete(id);

@@ -4,41 +4,41 @@ import {Auditoria} from '../../auditoria/schemas/auditoria.schema'
 
 @Schema({ collection: 'actividad' })
 export class Actividad extends Document {
-    @Prop({ required: true , type: Types.ObjectId, ref: Auditoria.name })
-    auditoria_id:Auditoria  | Types.ObjectId;
+    @Prop({ required: false , type: Types.ObjectId, ref: Auditoria.name })
+    auditoriaId:Auditoria  | Types.ObjectId;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     titulo:string;
     
-    @Prop({ required: true })
+    @Prop({ required: false })
     fechaInicio:Date;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     fechaFin:Date;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     referencia:string;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     descripcion:string;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     folio:number;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     medio_id:number;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     carpeta:string;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
     activo: boolean;
 
-   @Prop({ required: true })
-    fecha_creacion: Date;
+   @Prop({ required: false })
+    fechaCreacion: Date;
 
-   @Prop({ required: true })
-    fecha_modificacion: Date;
+   @Prop({ required: false })
+    fechaModificacion: Date;
 
 }
 

@@ -9,28 +9,28 @@ import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditoriaDTO: AuditoriaDTO = {
   titulo: "auditoria 1",
-  tipo_evaluacion_id: 2,
-  plan_uditoria_id: "67197dda3416d2a85e5d6d8f",
-  cronograma_actividad: Array (3),
-  estado_id: 3,
-  no_auditoria: 123420,
-  consecutivo_OCI: "EHS54F",
-  consecutivo_IE: "PASJF4532",
-  tipo_id: 3,
+  tipoEvaluacionId: 2,
+  planAuditoriaId: "67197dda3416d2a85e5d6d8f",
+  cronogramaId: Array (3),
+  estadoId: 3,
+  noAuditoria: 123420,
+  consecutivoOCI: "EHS54F",
+  consecutivoIE: "PASJF4532",
+  tipoId: 3,
   macroproceso: 4,
-  lider: 3,
-  responsable: 34,
+  liderId: 3,
+  responsableId: 34,
   fechaInicio: new Date(),
   fechaFin: new Date(),
   objetivo: "objetivo",
   alcance: "alcance",
   criterio: "criterio",
-  rec_tecnologico: "rec_T",
-  rec_humano: "rec_H",
-  rec_fisico: "rec_F",
+  recTecnologico: "rec_T",
+  recHumano: "rec_H",
+  recFisico: "rec_F",
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 
 
@@ -103,7 +103,7 @@ describe('AuditoriaService', () => {
       } as any);
 
       await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
-        `PlanAuditoria with id ${mockAuditoriaDTO.plan_uditoria_id} doesn't exist`,
+        `PlanAuditoria with id ${mockAuditoriaDTO.planAuditoriaId} doesn't exist`,
       );
     });
   });
@@ -246,7 +246,7 @@ describe('AuditoriaService', () => {
       await expect(
         auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
       ).rejects.toThrow(
-        `PlanAuditoria with id ${mockAuditoriaDTO.plan_uditoria_id} doesn't exist`,
+        `PlanAuditoria with id ${mockAuditoriaDTO.planAuditoriaId} doesn't exist`,
       );
     });
   });

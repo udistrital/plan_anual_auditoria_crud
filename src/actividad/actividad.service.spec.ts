@@ -8,18 +8,18 @@ import {Auditoria} from '../auditoria/schemas/auditoria.schema'
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
-  auditoria_id: "671aa963064222e6583d56e4",
+  auditoriaId: "671aa963064222e6583d56e4",
   titulo: 'string',
   fechaInicio: new Date(),
   fechaFin: new Date(),
   referencia: 'string',
   descripcion: 'string',
   folio: 0,
-  medio_id: 0,
+  medioId: 0,
   carpeta: 'string',
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 const mockActividad = {
   ...mockActividadDto,
@@ -89,7 +89,7 @@ describe('ActividadService', () => {
       } as any);
 
       await expect(actividadService.post(mockActividadDto)).rejects.toThrow(
-        `Auditoria with id ${mockActividadDto.auditoria_id} doesn't exist`,
+        `Auditoria with id ${mockActividadDto.auditoriaId} doesn't exist`,
       );
     });
   });
@@ -100,7 +100,7 @@ describe('ActividadService', () => {
         mockActividad,
         {
           _id: '671aaf35d779a09e092cb732',
-          auditoria_id: "67197dda3416d2a85e5d6d8f",
+          auditoriaId: "67197dda3416d2a85e5d6d8f",
           titulo: 'string',
           fechaInicio: new Date(),
           fechaFin: new Date(),
@@ -221,7 +221,7 @@ describe('ActividadService', () => {
       await expect(
         actividadService.put(mockActividad._id, mockActividadDto),
       ).rejects.toThrow(
-        `Auditoria with id ${mockActividadDto.auditoria_id} doesn't exist`,
+        `Auditoria with id ${mockActividadDto.auditoriaId} doesn't exist`,
       );
     });
   });

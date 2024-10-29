@@ -6,18 +6,18 @@ import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
-  auditoria_id: "671aa963064222e6583d56e4",
+  auditoriaId: "671aa963064222e6583d56e4",
   titulo: 'string',
   fechaInicio: new Date(),
   fechaFin: new Date(),
   referencia: 'string',
   descripcion: 'string',
   folio: 0,
-  medio_id: 0,
+  medioId: 0,
   carpeta: 'string',
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 
 const mockActividad = {

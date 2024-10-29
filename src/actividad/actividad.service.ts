@@ -18,13 +18,13 @@ export class ActividadService {
         return [{ path: 'Actividad_id' }];
       }
       private async checkRelated(ActividadDTO: ActividadDTO) {
-        if (ActividadDTO.auditoria_id) {
+        if (ActividadDTO.auditoriaId) {
           const actividad = await this.PlanAuditoriaModel
-            .findById(ActividadDTO.auditoria_id)
+            .findById(ActividadDTO.auditoriaId)
             .exec();
           if (!actividad) {
             throw new Error(
-              `actividad con id ${ActividadDTO.auditoria_id} no existe`,
+              `actividad con id ${ActividadDTO.auditoriaId} no existe`,
             );
           }
         }
@@ -65,9 +65,9 @@ export class ActividadService {
       }
     
       async put(id: string, ActividadDTO: ActividadDTO): Promise<Actividad> {
-        ActividadDTO.fecha_modificacion = new Date();
-        if (ActividadDTO.fecha_creacion) {
-          delete ActividadDTO.fecha_creacion;
+        ActividadDTO.fechaModificacion = new Date();
+        if (ActividadDTO.fechaCreacion) {
+          delete ActividadDTO.fechaCreacion;
         }
         await this.checkRelated(ActividadDTO);
         const update = await this.ActividadModel

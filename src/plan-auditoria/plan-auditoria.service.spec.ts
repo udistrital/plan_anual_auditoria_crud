@@ -12,22 +12,22 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   alcance: "asdasd",
   criterio: "criterio de los criterios",
   recurso: "los recursos son",
-  creado_por_id: 10,
-  estado_id: 5,
-  vigencia_id: 3,
-  aprobado_jefe_dependencia: true,
-  jefe_dependencia_id: 5541,
-  aprobado_secretario_tecnico: true,
-  secretario_tecnico_id: 278,
+  creadoPorId: 10,
+  estadoId: 5,
+  vigenciaId: 3,
+  aprobadoJefeDependencia: true,
+  jefeDependenciaId: 5541,
+  aprobadoSecretarioTecnico: true,
+  secretarioTecnicoId: 278,
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 
 
 const mockPlanAuditoria = {
   ...mockPlanAuditoriaDTO,
-  _id: '67197dda3416d2a85e5d6d8f',
+  Id: '67197dda3416d2a85e5d6d8f',
 };
 
 
@@ -77,18 +77,18 @@ describe('PlanAuditoriaService', () => {
       const mockPlanAuditorias = [
         mockPlanAuditoria,
         {
-          _id: '67197dda3416d2a85e5d6d8f',
+          Id: '67197dda3416d2a85e5d6d8f',
           objetivo: "el objetivo es",
           alcance: "asdasd",
           criterio: "criterio de los criterios",
           recurso: "los recursos son",
-          creado_por_id: 10,
-          estado_id: 5,
-          vigencia_id: 3,
+          creado_porId: 10,
+          estadoId: 5,
+          vigenciaId: 3,
           aprobado_jefe_dependencia: true,
-          jefe_dependencia_id: 5541,
+          jefe_dependenciaId: 5541,
           aprobado_secretario_tecnico: true,
-          secretario_tecnico_id: 278,
+          secretario_tecnicoId: 278,
           activo: true,
           fecha_creacion: new Date(),
           fecha_modificacion: new Date(),
@@ -127,10 +127,10 @@ describe('PlanAuditoriaService', () => {
           .mockResolvedValue(mockPlanAuditoria as unknown as PlanAuditoria),
       } as any);
 
-      const result = await planAuditoriaService.getById(mockPlanAuditoria._id);
+      const result = await planAuditoriaService.getById(mockPlanAuditoria.Id);
 
       expect(planAuditoriaModel.findById).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
       );
       expect(result).toEqual(mockPlanAuditoria);
     });
@@ -141,11 +141,11 @@ describe('PlanAuditoriaService', () => {
       } as any);
 
       await expect(
-        planAuditoriaService.getById(mockPlanAuditoria._id),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.getById(mockPlanAuditoria.Id),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
 
       expect(planAuditoriaModel.findById).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
       );
     });
   });
@@ -153,15 +153,15 @@ describe('PlanAuditoriaService', () => {
   describe('put', () => {
     it('Debería actualizar una alerta modal', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as PlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO  as unknown  as PlanAuditoria),
       } as any);
 
       const result = await planAuditoriaService.put(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
       );
       expect(planAuditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
         { new: true },
       );
@@ -174,11 +174,11 @@ describe('PlanAuditoriaService', () => {
       } as any);
 
       await expect(
-        planAuditoriaService.put(mockPlanAuditoria._id, mockPlanAuditoriaDTO),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.put(mockPlanAuditoria.Id, mockPlanAuditoriaDTO),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
 
       expect(planAuditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
         { new: true },
       );
@@ -193,7 +193,7 @@ describe('PlanAuditoriaService', () => {
           .mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
 
-      const result = await planAuditoriaService.delete(mockPlanAuditoria._id);
+      const result = await planAuditoriaService.delete(mockPlanAuditoria.Id);
 
       expect(result).toEqual(mockPlanAuditoriaDTO);
     });
@@ -204,8 +204,8 @@ describe('PlanAuditoriaService', () => {
       } as any);
 
       await expect(
-        planAuditoriaService.delete(mockPlanAuditoria._id),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.delete(mockPlanAuditoria.Id),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
     });
   });
 });

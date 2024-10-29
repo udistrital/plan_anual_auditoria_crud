@@ -51,9 +51,9 @@ export class PlanAuditoriaService {
       }
     
       async put(id: string, planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
-        planAuditoriaDto.fecha_modificacion = new Date();
-        if (planAuditoriaDto.fecha_creacion) {
-          delete planAuditoriaDto.fecha_creacion;
+        planAuditoriaDto.fechaModificacion = new Date();
+        if (planAuditoriaDto.fechaCreacion) {
+          delete planAuditoriaDto.fechaCreacion;
         }
         const update = await this.planAuditoriaModel
           .findByIdAndUpdate(id, planAuditoriaDto, { new: true })

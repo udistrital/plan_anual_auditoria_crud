@@ -18,13 +18,13 @@ export class AuditoriaService {
         return [{ path: 'Auditoria_id' }];
       }
       private async checkRelated(AuditoriaDTO: AuditoriaDTO) {
-        if (AuditoriaDTO.plan_uditoria_id) {
+        if (AuditoriaDTO.planAuditoriaId) {
           const formulario = await this.PlanAuditoriaModel
-            .findById(AuditoriaDTO.plan_uditoria_id)
+            .findById(AuditoriaDTO.planAuditoriaId)
             .exec();
           if (!formulario) {
             throw new Error(
-              `auditoria con id ${AuditoriaDTO.plan_uditoria_id} no existe`,
+              `auditoria con id ${AuditoriaDTO.planAuditoriaId} no existe`,
             );
           }
         }
@@ -65,9 +65,9 @@ export class AuditoriaService {
       }
     
       async put(id: string, AuditoriaDto: AuditoriaDTO): Promise<Auditoria> {
-        AuditoriaDto.fecha_modificacion = new Date();
-        if (AuditoriaDto.fecha_creacion) {
-          delete AuditoriaDto.fecha_creacion;
+        AuditoriaDto.fechaModificacion = new Date();
+        if (AuditoriaDto.fechaCreacion) {
+          delete AuditoriaDto.fechaCreacion;
         }
         await this.checkRelated(AuditoriaDto);
         const update = await this.AuditoriaModel

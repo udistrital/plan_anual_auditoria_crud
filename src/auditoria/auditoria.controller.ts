@@ -13,7 +13,11 @@ import {
   import {AuditoriaService}from './auditoria.service';
   import{AuditoriaDTO} from './dto/auditoria.dto'
   import{FilterDto }from '../filters/filters.dto'
-  import { ApiTags } from '@nestjs/swagger';
+  import {  ApiTags,
+    ApiOperation,
+    ApiResponse,
+    ApiParam,
+    ApiBody, } from '@nestjs/swagger';
 
 @ApiTags('auditoria')
 @Controller('auditoria')
@@ -21,6 +25,14 @@ export class AuditoriaController {
   constructor(private AuditoriaService: AuditoriaService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nueva aditoria' })
+  @ApiBody({ type: AuditoriaDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'La aditoria ha sido creada exitosamente.',
+    type: AuditoriaDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() AuditoriaDTO: AuditoriaDTO) {
     try {
       const auditoria = await this.AuditoriaService.post(AuditoriaDTO);
@@ -42,6 +54,12 @@ export class AuditoriaController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las aditorias' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todas las aditorias.',
+    type: [AuditoriaDTO],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const auditorias = await this.AuditoriaService.getAll(filterDto);
@@ -63,6 +81,14 @@ export class AuditoriaController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Obtener una auditoria por Id' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve la auditoria.',
+    type: AuditoriaDTO,
+  })
+  @ApiResponse({ status: 404, description: 'Auditoria no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const auditorias = await this.AuditoriaService.getById(id);
@@ -84,6 +110,16 @@ export class AuditoriaController {
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Actualizar una auditoria' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: AuditoriaDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'La auditoria ha sido actualizada exitosamente.',
+    type: AuditoriaDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Contratista no encontrado.' })
   async put(
     @Res() res,
     @Param('id') id: string,
@@ -109,6 +145,13 @@ export class AuditoriaController {
   }
 
   @Delete('/:id')
+  @ApiOperation({ summary: 'Eliminar una auditoria' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'La auuditoria ha sido eliminada exitosamente.',
+  })
+  @ApiResponse({ status: 404, description: 'Auditoria no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
       await this.AuditoriaService.delete(id);
