@@ -91,7 +91,11 @@ export class ActividadService {
     }
     return deleted;
   }
-  async count(): Promise<number> {
-    return await this.ActividadModel.countDocuments().exec();
-  }
+  async count(filterDto: FilterDto): Promise<number> {
+    const filtersService = new FiltersService(filterDto);
+
+    return await this.ActividadModel
+      .countDocuments(filtersService.getQuery())
+      .exec();
+    }
 }

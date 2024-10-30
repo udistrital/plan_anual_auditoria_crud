@@ -275,13 +275,24 @@ describe('AuditoriaService', () => {
       ).rejects.toThrow(`${mockAuditoria._id} no existe`);
     });
   });
+
   describe('count', () => {
+    const filterDto: FilterDto = { 
+      query: 'tipoEvaluacionId:3',
+      fields: '',
+      sortby: '',
+      order: '',
+      limit: '',
+      offset: '',
+      populate: '',
+    };
     it('Debería retornar la cantidad de documentos', async () => {
+      
       jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
 
-      const result = await auditoriaService.count();
+      const result = await auditoriaService.count(filterDto);
 
       expect(result).toBe(2);
     });
@@ -291,7 +302,7 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
-      await expect(auditoriaService.count()).rejects.toThrow(
+      await expect(auditoriaService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
     });

@@ -252,12 +252,21 @@ describe('ActividadService', () => {
   });
 
   describe('count', () => {
+    const filterDto: FilterDto = { 
+      query: 'activo:true',
+      fields: '',
+      sortby: '',
+      order: '',
+      limit: '',
+      offset: '',
+      populate: '',
+    };
     it('Debería retornar la cantidad de documentos', async () => {
       jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
 
-      const result = await actividadService.count();
+      const result = await actividadService.count(filterDto);
 
       expect(result).toBe(2);
     });
@@ -267,7 +276,7 @@ describe('ActividadService', () => {
         exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
-      await expect(actividadService.count()).rejects.toThrow(
+      await expect(actividadService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
     });

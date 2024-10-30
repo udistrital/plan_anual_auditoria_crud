@@ -65,7 +65,7 @@ export class PlanAuditoriaController {
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const planAuditorias = await this.planAuditoriaService.getAll(filterDto);
-      const counts = await this.planAuditoriaService.count();
+      const counts = await this.planAuditoriaService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,

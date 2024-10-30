@@ -92,7 +92,11 @@ export class AuditoriaService {
     return deleted;
   }
 
-  async count(): Promise<number> {
-    return await this.AuditoriaModel.countDocuments().exec();
-  }
+  async count(filterDto: FilterDto): Promise<number> {
+    const filtersService = new FiltersService(filterDto);
+
+    return await this.AuditoriaModel
+      .countDocuments(filtersService.getQuery())
+      .exec();
+    }
 }

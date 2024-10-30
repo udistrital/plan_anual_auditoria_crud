@@ -66,7 +66,11 @@ export class PlanAuditoriaService {
     }
     return deleted;
   }
-  async count(): Promise<number> {
-    return await this.planAuditoriaModel.countDocuments().exec();
-  }
+  async count(filterDto: FilterDto): Promise<number> {
+    const filtersService = new FiltersService(filterDto);
+
+    return await this.planAuditoriaModel
+      .countDocuments(filtersService.getQuery())
+      .exec();
+    }
 }

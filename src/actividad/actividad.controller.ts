@@ -65,7 +65,7 @@ export class ActividadController {
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const actividad = await this.actividadService.getAll(filterDto);
-      const counts = await this.actividadService.count();
+      const counts = await this.actividadService.count(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,

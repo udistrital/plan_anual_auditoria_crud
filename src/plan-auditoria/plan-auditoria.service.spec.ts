@@ -210,6 +210,15 @@ describe('PlanAuditoriaService', () => {
     });
   });
   describe('count', () => {
+    const filterDto: FilterDto = { 
+      query: 'activo:true',
+      fields: '',
+      sortby: '',
+      order: '',
+      limit: '',
+      offset: '',
+      populate: '',
+    };
     it('Debería retornar la cantidad de documentos', async () => {
       // Mock de countDocuments para devolver un valor específico
       jest.spyOn(planAuditoriaModel, 'countDocuments').mockReturnValue({
@@ -217,7 +226,7 @@ describe('PlanAuditoriaService', () => {
       } as any);
   
       // Llamada al método count de ActividadService
-      const result = await planAuditoriaService.count();
+      const result = await planAuditoriaService.count(filterDto);
   
       // Verificación del resultado esperado
       expect(result).toBe(2);
@@ -230,7 +239,7 @@ describe('PlanAuditoriaService', () => {
       } as any);
   
       // Verificación de que se lanza el error esperado
-      await expect(planAuditoriaService.count()).rejects.toThrow(
+      await expect(planAuditoriaService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
     });
