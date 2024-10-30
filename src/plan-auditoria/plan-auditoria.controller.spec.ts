@@ -43,6 +43,7 @@ describe('PlanAuditoriaController', () => {
             getById: jest.fn(),
             put: jest.fn(),
             delete: jest.fn(),
+            count: jest.fn(),
           },
         },
       ],
@@ -113,7 +114,10 @@ describe('PlanAuditoriaController', () => {
       offset: '',
       populate: '',
     };
-
+    beforeEach(() => {
+      jest.spyOn(service, 'count').mockResolvedValue(2); // Mock count
+    });
+  
     it('Debería retornar OK con datos válidos', async () => {
       const mockPlanAuditorias = [
         {
@@ -138,12 +142,14 @@ describe('PlanAuditoriaController', () => {
       await controller.getAll(res as any, mockFilterDto);
 
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
+      expect(service.count).toHaveBeenCalled(); 
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
         Data: mockPlanAuditorias,
+        MetaData: { Count: 2 },
       });
     });
 

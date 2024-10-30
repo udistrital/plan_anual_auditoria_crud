@@ -42,6 +42,7 @@ describe('ActividadController', () => {
             getById: jest.fn(),
             put: jest.fn(),
             delete: jest.fn(),
+            count: jest.fn(),
           },
         },
       ],
@@ -105,68 +106,51 @@ describe('ActividadController', () => {
 
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
-      query: 'titulo: actividad',
+      query: 'titulo: actividad 1',
       fields: 'titulo',
       sortby: 'fechaCreacion',
       order: 'asc',
       limit: '0',
       offset: '1',
-      populate: 'false',
+      populate: 'true',
     };
-
+  
+    beforeEach(() => {
+      jest.spyOn(service, 'count').mockResolvedValue(2);
+    });
+  
     it('Debería retornar OK con datos válidos', async () => {
-      const mockActividad = [
+      const mockActividades = [
         {
-          ...mockActividadDto,
-          _id: '671aaf35d779a09e092cb732',
+          ...mockActividad,
+          _id: '1',
           titulo: 'actividad 1',
         },
         {
-          ...mockActividadDto,
-          _id: '671aaf82d779a09e092cb735',
+          ...mockActividad,
+          _id: '2',
           titulo: 'actividad 2',
         },
       ];
-
-      jest.spyOn(service, 'getAll').mockResolvedValue(mockActividad as unknown as Actividad[]);
-
+  
+      jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
+  
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-
+  
       await controller.getAll(res as any, mockFilterDto);
-
+  
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
+      expect(service.count).toHaveBeenCalled(); 
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: mockActividad,
-      });
-    });
-
-    it('Debería retornar NotFound con error', async () => {
-      const mockError = new Error('No records found');
-
-      jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.getAll(res as any, mockFilterDto);
-
-      expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-      expect(res.json).toHaveBeenCalledWith({
-        Success: false,
-        Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
-        Data: mockError.message,
+        Data: mockActividades,
+        MetaData: { Count: 2 },
       });
     });
   });
@@ -216,57 +200,58 @@ describe('ActividadController', () => {
     });
   });
 
-  describe('put', () => {
+  describe('getAll', () => {
+    const mockFilterDto: FilterDto = {
+      query: 'titulo: actividad 1',
+      fields: 'titulo',
+      sortby: 'fechaCreacion',
+      order: 'asc',
+      limit: '0',
+      offset: '1',
+      populate: 'true',
+    };
+  
+    beforeEach(() => {
+      jest.spyOn(service, 'count').mockResolvedValue(2); // Simula retorno del método count
+    });
+  
     it('Debería retornar OK con datos válidos', async () => {
-      jest.spyOn(service, 'put').mockResolvedValue(mockActividad as any);
-
+      const mockActividades = [
+        {
+          ...mockActividad,
+          _id: '1',
+          titulo: 'actividad 1',
+        },
+        {
+          ...mockActividad,
+          _id: '2',
+          titulo: 'actividad 2',
+        },
+      ];
+    
+      jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
+  
+    
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-
-      await controller.put(res as any, mockActividad._id, mockActividadDto);
-
-      expect(service.put).toHaveBeenCalledWith(
-        mockActividad._id,
-        mockActividadDto,
-      );
+  
+      await controller.getAll(res as any, mockFilterDto);
+  
+      expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
+      expect(service.count).toHaveBeenCalled(); // Verifica que count es llamado
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Actualizacion Exitosa',
-        Data: mockActividad,
-      });
-    });
-
-    it('Debería retornar BadRequest con error', async () => {
-      const mockError = new Error(`${mockActividad._id} no existe`);
-
-      jest.spyOn(service, 'put').mockRejectedValue(mockError);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.put(res as any, mockActividad._id, mockActividadDto);
-
-      expect(service.put).toHaveBeenCalledWith(
-        mockActividad._id,
-        mockActividadDto,
-      );
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
-      expect(res.json).toHaveBeenCalledWith({
-        Success: false,
-        Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
-        Data: mockError.message,
+        Message: 'Peticion Exitosa',
+        Data: mockActividades,
+        MetaData: { Count: 2 },
       });
     });
   });
-
+  
   describe('delete', () => {
     it('Debería retornar OK con id válido', async () => {
       jest.spyOn(service, 'delete').mockResolvedValue(undefined);

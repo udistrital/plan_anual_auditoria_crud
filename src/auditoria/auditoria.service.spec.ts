@@ -60,6 +60,7 @@ describe('AuditoriaService', () => {
             find: jest.fn(),
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
+            countDocuments: jest.fn(),
           },
         },
         {
@@ -272,6 +273,27 @@ describe('AuditoriaService', () => {
       await expect(
         auditoriaService.delete(mockAuditoria._id),
       ).rejects.toThrow(`${mockAuditoria._id} no existe`);
+    });
+  });
+  describe('count', () => {
+    it('Debería retornar la cantidad de documentos', async () => {
+      jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(2),
+      } as any);
+
+      const result = await auditoriaService.count();
+
+      expect(result).toBe(2);
+    });
+
+    it('Debería lanzar un error si countDocuments falla', async () => {
+      jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+      } as any);
+
+      await expect(auditoriaService.count()).rejects.toThrow(
+        'Error al contar documentos',
+      );
     });
   });
 });

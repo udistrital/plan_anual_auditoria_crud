@@ -52,6 +52,7 @@ describe('AuditoriaController', () => {
             getById: jest.fn(),
             put: jest.fn(),
             delete: jest.fn(),
+            count: jest.fn(),
           },
         },
       ],
@@ -123,6 +124,10 @@ describe('AuditoriaController', () => {
       populate: '',
     };
 
+    beforeEach(() => {
+      jest.spyOn(service, 'count').mockResolvedValue(2); 
+    });
+  
     it('Debería retornar OK con datos válidos', async () => {
       const mockAuditorias = [
         {
@@ -147,12 +152,14 @@ describe('AuditoriaController', () => {
       await controller.getAll(res as any, mockFilterDto);
 
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
+      expect(service.count).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
         Data: mockAuditorias,
+        MetaData: { Count: 2 },
       });
     });
 

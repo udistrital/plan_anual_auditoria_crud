@@ -24,7 +24,7 @@ import {
 @ApiTags('actividad')
 @Controller('actividad')
 export class ActividadController {
-  constructor(private actividadervice: ActividadService) { }
+  constructor(private actividadService: ActividadService) { }
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva actividad' })
@@ -37,7 +37,7 @@ export class ActividadController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() ActividadDTO: ActividadDTO) {
     try {
-      const actividad = await this.actividadervice.post(ActividadDTO);
+      const actividad = await this.actividadService.post(ActividadDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -64,8 +64,8 @@ export class ActividadController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const actividad = await this.actividadervice.getAll(filterDto);
-      const counts = await this.actividadervice.count();
+      const actividad = await this.actividadService.getAll(filterDto);
+      const counts = await this.actividadService.count();
 
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -97,7 +97,7 @@ export class ActividadController {
   @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const actividad = await this.actividadervice.getById(id);
+      const actividad = await this.actividadService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -132,7 +132,7 @@ export class ActividadController {
     @Body() ActividadDTO: ActividadDTO,
   ) {
     try {
-      const actividad = await this.actividadervice.put(id, ActividadDTO);
+      const actividad = await this.actividadService.put(id, ActividadDTO);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -160,7 +160,7 @@ export class ActividadController {
   @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.actividadervice.delete(id);
+      await this.actividadService.delete(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
