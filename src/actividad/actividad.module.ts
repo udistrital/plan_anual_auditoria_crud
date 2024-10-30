@@ -9,11 +9,11 @@ import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.sche
   imports: [
     MongooseModule.forFeature([
       { name: Actividad.name, schema: ActividadSchema },
-      {name: Auditoria.name, schema: AuditoriaSchema },
+      { name: Auditoria.name, schema: AuditoriaSchema },
     ]),
   ],
   controllers: [ActividadController],
   providers: [ActividadService],
   exports: [ActividadService]
 })
-export class ActividadModule {}
+export class ActividadModule { }

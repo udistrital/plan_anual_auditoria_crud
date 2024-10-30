@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 
-export class PlanAuditoriaDTO{
+export class PlanAuditoriaDTO {
     @ApiProperty()
     readonly objetivo: string;
 

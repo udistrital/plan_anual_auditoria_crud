@@ -85,7 +85,7 @@ describe('AuditoriaService', () => {
   });
 
   describe('post', () => {
-    it('Debería crear y devolver una alerta modal', async () => {
+    it('Debería crear y devolver una auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
       } as any);
@@ -103,26 +103,26 @@ describe('AuditoriaService', () => {
       } as any);
 
       await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
-        `PlanAuditoria with id ${mockAuditoriaDTO.planAuditoriaId} doesn't exist`,
+        `Plan auditoria relacionada con id ${mockAuditoriaDTO.planAuditoriaId} no existe`,
       );
     });
   });
 
   describe('getAll', () => {
-    it('Debería retornar todas las alertas modales con filtros aplicados', async () => {
+    it('Debería retornar todas las auditorias con filtros aplicados', async () => {
       const mockAuditorias = [
         mockAuditoria,
         {
           _id: '671aa963064222e6583d56e4',
           titulo: "auditoria 1",
-          tipo_evaluacion_id: 2,
-          plan_uditoria_id: "67197f9a3416d2a85e5d6d93",
-          cronograma_actividad: Array (3),
-          estado_id: 3,
-          no_auditoria: 123420,
-          consecutivo_OCI: "EHS54F",
-          consecutivo_IE: "PASJF4532",
-          tipo_id: 3,
+          tipoEvaluacionId: 2,
+          planAuditoriaId: "67197f9a3416d2a85e5d6d93",
+          cronogramaActividad: Array (3),
+          estadoId: 3,
+          noAuditoria: 123420,
+          consecutivoOCI: "EHS54F",
+          consecutivoIE: "PASJF4532",
+          tipoAd: 3,
           macroproceso: 4,
           lider: 3,
           responsable: 34,
@@ -131,12 +131,12 @@ describe('AuditoriaService', () => {
           objetivo: "objetivo",
           alcance: "alcance",
           criterio: "criterio",
-          rec_tecnologico: "rec_T",
-          rec_humano: "rec_H",
-          rec_fisico: "rec_F",
+          recTecnologico: "rec_T",
+          recHumano: "rec_H",
+          recFisico: "rec_F",
           activo: true,
-          fecha_creacion: new Date(),
-          fecha_modificacion: new Date(),
+          fechaCreacion: new Date(),
+          fechaModificacion: new Date(),
         },
       ];
 
@@ -165,7 +165,7 @@ describe('AuditoriaService', () => {
   });
 
   describe('getById', () => {
-    it('Debería retornar una alerta modal por su ID', async () => {
+    it('Debería retornar una auditoria por su ID', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
@@ -180,14 +180,14 @@ describe('AuditoriaService', () => {
       expect(result).toEqual(mockAuditoria);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la auditoria no existe', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         auditoriaService.getById(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
 
       expect(auditoriaModel.findById).toHaveBeenCalledWith(
         mockAuditoria._id,
@@ -196,7 +196,7 @@ describe('AuditoriaService', () => {
   });
 
   describe('put', () => {
-    it('Debería actualizar una alerta modal', async () => {
+    it('Debería actualizar una auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
       } as any);
@@ -219,7 +219,7 @@ describe('AuditoriaService', () => {
       expect(result).toEqual(mockAuditoriaDTO);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
       } as any);
@@ -229,7 +229,7 @@ describe('AuditoriaService', () => {
 
       await expect(
         auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
-      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
 
       expect(auditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
         mockAuditoria._id,
@@ -246,13 +246,13 @@ describe('AuditoriaService', () => {
       await expect(
         auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
       ).rejects.toThrow(
-        `PlanAuditoria with id ${mockAuditoriaDTO.planAuditoriaId} doesn't exist`,
+        `Plan auditoria relacionada con id ${mockAuditoriaDTO.planAuditoriaId} no existe`,
       );
     });
   });
 
   describe('delete', () => {
-    it('Debería marcar una alerta modal como inactiva', async () => {
+    it('Debería marcar una auditoria como inactiva', async () => {
       jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
@@ -264,14 +264,14 @@ describe('AuditoriaService', () => {
       expect(result).toEqual(mockAuditoriaDTO);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la auditoria no existe', async () => {
       jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         auditoriaService.delete(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} doesn't exist`);
+      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
     });
   });
 });

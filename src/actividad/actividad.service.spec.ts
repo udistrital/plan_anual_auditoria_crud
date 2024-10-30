@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { ActividadService } from './actividad.service';
-import {ActividadDTO} from './dto/actividad.dto'
-import {Actividad} from './schemas/actividad.schema'
+import { ActividadDTO } from './dto/actividad.dto'
+import { Actividad } from './schemas/actividad.schema'
 import { Model } from 'mongoose';
-import {Auditoria} from '../auditoria/schemas/auditoria.schema'
+import { Auditoria } from '../auditoria/schemas/auditoria.schema'
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
@@ -71,7 +71,7 @@ describe('ActividadService', () => {
   });
 
   describe('post', () => {
-    it('Debería crear y devolver una alerta modal', async () => {
+    it('Debería crear y devolver una actividad', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAuditoria),
       } as any);
@@ -89,13 +89,13 @@ describe('ActividadService', () => {
       } as any);
 
       await expect(actividadService.post(mockActividadDto)).rejects.toThrow(
-        `Auditoria with id ${mockActividadDto.auditoriaId} doesn't exist`,
+        `Auditoria relacionada con id ${mockActividadDto.auditoriaId} no existe`,
       );
     });
   });
 
   describe('getAll', () => {
-    it('Debería retornar todas las alertas modales con filtros aplicados', async () => {
+    it('Debería retornar todas las actividades con filtros aplicados', async () => {
       const mockActividads = [
         mockActividad,
         {
@@ -140,7 +140,7 @@ describe('ActividadService', () => {
   });
 
   describe('getById', () => {
-    it('Debería retornar una alerta modal por su ID', async () => {
+    it('Debería retornar una acividad por su ID', async () => {
       jest.spyOn(actividadModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
@@ -155,14 +155,14 @@ describe('ActividadService', () => {
       expect(result).toEqual(mockActividad);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la actividad no existe', async () => {
       jest.spyOn(actividadModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         actividadService.getById(mockActividad._id),
-      ).rejects.toThrow(`${mockActividad._id} doesn't exist`);
+      ).rejects.toThrow(`${mockActividad._id} no existe`);
 
       expect(actividadModel.findById).toHaveBeenCalledWith(
         mockActividad._id,
@@ -171,7 +171,7 @@ describe('ActividadService', () => {
   });
 
   describe('put', () => {
-    it('Debería actualizar una alerta modal', async () => {
+    it('Debería actualizar una actividad', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAuditoria),
       } as any);
@@ -194,7 +194,7 @@ describe('ActividadService', () => {
       expect(result).toEqual(mockActividadDto);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la actividad no existe', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAuditoria),
       } as any);
@@ -204,7 +204,7 @@ describe('ActividadService', () => {
 
       await expect(
         actividadService.put(mockActividad._id, mockActividadDto),
-      ).rejects.toThrow(`${mockActividad._id} doesn't exist`);
+      ).rejects.toThrow(`${mockActividad._id} no existe`);
 
       expect(actividadModel.findByIdAndUpdate).toHaveBeenCalledWith(
         mockActividad._id,
@@ -213,7 +213,7 @@ describe('ActividadService', () => {
       );
     });
 
-    it('Debería lanzar un error si el Auditoria relacionado no existe', async () => {
+    it('Debería lanzar un error si la Auditoria relacionado no existe', async () => {
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
@@ -221,13 +221,13 @@ describe('ActividadService', () => {
       await expect(
         actividadService.put(mockActividad._id, mockActividadDto),
       ).rejects.toThrow(
-        `Auditoria with id ${mockActividadDto.auditoriaId} doesn't exist`,
+        `Auditoria relacionada con id ${mockActividadDto.auditoriaId} no existe`,
       );
     });
   });
 
   describe('delete', () => {
-    it('Debería marcar una alerta modal como inactiva', async () => {
+    it('Debería marcar una actividad como inactiva', async () => {
       jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
@@ -239,14 +239,14 @@ describe('ActividadService', () => {
       expect(result).toEqual(mockActividadDto);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si la actividad no existe', async () => {
       jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         actividadService.delete(mockActividad._id),
-      ).rejects.toThrow(`${mockActividad._id} doesn't exist`);
+      ).rejects.toThrow(`${mockActividad._id} no existe`);
     });
   });
 });

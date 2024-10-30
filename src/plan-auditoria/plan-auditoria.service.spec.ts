@@ -52,8 +52,8 @@ describe('PlanAuditoriaService', () => {
     }).compile();
 
     planAuditoriaService = module.get<PlanAuditoriaService>(PlanAuditoriaService);
-    planAuditoriaModel = module.get<Model<PlanAuditoria>>(PlanAuditoria.name);
-   
+    planAuditoriaModel = module.get<Model<PlanAuditoria>>(getModelToken(PlanAuditoria.name));
+
   });
 
   it('Debería estar definido', () => {
@@ -61,8 +61,8 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('post', () => {
-    it('Debería crear y devolver una alerta modal', async () => {
-    
+    it('Debería crear y devolver un plan de auditoria', async () => {
+
       jest
         .spyOn(planAuditoriaModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(mockPlanAuditoriaDTO as any));
@@ -120,7 +120,7 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('getById', () => {
-    it('Debería retornar una alerta modal por su ID', async () => {
+    it('Debería retornar un plan de auditoria por su ID', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
@@ -135,14 +135,14 @@ describe('PlanAuditoriaService', () => {
       expect(result).toEqual(mockPlanAuditoria);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         planAuditoriaService.getById(mockPlanAuditoria.Id),
-      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
 
       expect(planAuditoriaModel.findById).toHaveBeenCalledWith(
         mockPlanAuditoria.Id,
@@ -151,9 +151,9 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('put', () => {
-    it('Debería actualizar una alerta modal', async () => {
+    it('Debería actualizar un plan de auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO  as unknown  as PlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
 
       const result = await planAuditoriaService.put(
@@ -167,15 +167,15 @@ describe('PlanAuditoriaService', () => {
       );
       expect(result).toEqual(mockPlanAuditoriaDTO);
     });
-      
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         planAuditoriaService.put(mockPlanAuditoria.Id, mockPlanAuditoriaDTO),
-      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
 
       expect(planAuditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
         mockPlanAuditoria.Id,
@@ -186,7 +186,7 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('delete', () => {
-    it('Debería marcar una alerta modal como inactiva', async () => {
+    it('Debería marcar un plan de auditoria como inactiva', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
@@ -198,14 +198,14 @@ describe('PlanAuditoriaService', () => {
       expect(result).toEqual(mockPlanAuditoriaDTO);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
         planAuditoriaService.delete(mockPlanAuditoria.Id),
-      ).rejects.toThrow(`${mockPlanAuditoria.Id} doesn't exist`);
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
     });
   });
 });

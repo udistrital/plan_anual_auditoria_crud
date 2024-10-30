@@ -29,6 +29,18 @@ git pull origin develop && git checkout develop
 # 5. ejecutar el proyecto
 npm run start 
 ```
+### Ejecución Pruebas
+
+Pruebas unitarias
+```shell
+# Test
+npm run test
+
+# Se ejecutará jest, validando los casos de prueba en los archivos .spec.ts
+
+npm run test:cov
+# Validar la cobertura de las pruebas
+```
 ## Estado CI
 
 | Develop | Relese 0.0.1 | Master |

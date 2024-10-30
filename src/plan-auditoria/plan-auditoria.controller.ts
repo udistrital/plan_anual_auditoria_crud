@@ -1,28 +1,30 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpStatus,
-    Param,
-    Post,
-    Put,
-    Query,
-    Res,
-  } from '@nestjs/common';
-  import {PlanAuditoriaService}from './plan-auditoria.service';
-  import{PlanAuditoriaDTO} from './dto/plan-auditoria.dto'
-  import{FilterDto }from '../filters/filters.dto'
-  import { ApiTags,
-    ApiOperation,
-    ApiResponse,
-    ApiParam,
-    ApiBody, } from '@nestjs/swagger';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
+import { PlanAuditoriaService } from './plan-auditoria.service';
+import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto'
+import { FilterDto } from '../filters/filters.dto'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
 export class PlanAuditoriaController {
-  constructor(private planAuditoriaService: PlanAuditoriaService) {}
+  constructor(private planAuditoriaService: PlanAuditoriaService) { }
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo plan de auditoria' })
@@ -39,7 +41,7 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Registration successful',
+        Message: 'Registro Exitoso',
         Data: planAuditoria,
       });
     } catch (error) {
@@ -47,7 +49,7 @@ export class PlanAuditoriaController {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Post: The request contains an incorrect data type or an invalid parameter',
+          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
         Data: error.message,
       });
     }
@@ -63,18 +65,21 @@ export class PlanAuditoriaController {
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const planAuditorias = await this.planAuditoriaService.getAll(filterDto);
+      const counts = await this.planAuditoriaService.count();
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: planAuditorias,
+        MetaData: { Count: counts },
+
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetAll: The request contains an incorrect parameter or no record exist',
+          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: error.message,
       });
     }
@@ -95,7 +100,7 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: planAuditorias,
       });
     } catch (error) {
@@ -103,7 +108,7 @@ export class PlanAuditoriaController {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetOne: The request contains an incorrect parameter or no record exist',
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: error.message,
       });
     }
@@ -130,7 +135,7 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Update successful',
+        Message: 'Actualizacion Exitosa',
         Data: planAuditorias,
       });
     } catch (error) {
@@ -138,7 +143,7 @@ export class PlanAuditoriaController {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Put: The request contains an incorrect data type or an invalid parameter',
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
         Data: error.message,
       });
     }
@@ -158,7 +163,7 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Delete successful',
+        Message: 'Eliminacion Exitosa',
         Data: {
           _id: id,
         },
@@ -167,7 +172,7 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error service Delete: Request contains incorrect parameter',
+        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: error.message,
       });
     }

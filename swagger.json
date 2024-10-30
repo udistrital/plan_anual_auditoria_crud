@@ -15,6 +15,7 @@
     "/plan-auditoria": {
       "post": {
         "operationId": "PlanAuditoriaController_post",
+        "summary": "Crear un nuevo plan de auditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -28,7 +29,17 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "El plan de auditoria ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
           }
         },
         "tags": [
@@ -37,6 +48,7 @@
       },
       "get": {
         "operationId": "PlanAuditoriaController_getAll",
+        "summary": "Obtener todos los planes de auditoria",
         "parameters": [
           {
             "name": "query",
@@ -104,7 +116,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve todos los planes de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -115,6 +137,7 @@
     "/plan-auditoria/{id}": {
       "get": {
         "operationId": "PlanAuditoriaController_getById",
+        "summary": "Obtener un plan de auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -127,7 +150,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve el plan de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -136,6 +169,7 @@
       },
       "put": {
         "operationId": "PlanAuditoriaController_put",
+        "summary": "Actualizar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -158,7 +192,20 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "El plan de auditoria ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -167,6 +214,7 @@
       },
       "delete": {
         "operationId": "PlanAuditoriaController_delete",
+        "summary": "Eliminar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -179,7 +227,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "El plan de auditoria ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -402,7 +453,7 @@
         ],
         "responses": {
           "200": {
-            "description": "La auuditoria ha sido eliminada exitosamente."
+            "description": "La auditoria ha sido eliminada exitosamente."
           },
           "404": {
             "description": "Auditoria no encontrada."
@@ -665,35 +716,35 @@
           "recurso": {
             "type": "string"
           },
-          "creado_por_id": {
+          "creadoPorId": {
             "type": "number"
           },
-          "estado_id": {
+          "estadoId": {
             "type": "number"
           },
-          "vigencia_id": {
+          "vigenciaId": {
             "type": "number"
           },
-          "aprobado_jefe_dependencia": {
+          "aprobadoJefeDependencia": {
             "type": "boolean"
           },
-          "jefe_dependencia_id": {
+          "jefeDependenciaId": {
             "type": "number"
           },
-          "aprobado_secretario_tecnico": {
+          "aprobadoSecretarioTecnico": {
             "type": "boolean"
           },
-          "secretario_tecnico_id": {
+          "secretarioTecnicoId": {
             "type": "number"
           },
           "activo": {
             "type": "boolean"
           },
-          "fecha_creacion": {
+          "fechaCreacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fecha_modificacion": {
+          "fechaModificacion": {
             "format": "date-time",
             "type": "string"
           }
@@ -703,16 +754,16 @@
           "alcance",
           "criterio",
           "recurso",
-          "creado_por_id",
-          "estado_id",
-          "vigencia_id",
-          "aprobado_jefe_dependencia",
-          "jefe_dependencia_id",
-          "aprobado_secretario_tecnico",
-          "secretario_tecnico_id",
+          "creadoPorId",
+          "estadoId",
+          "vigenciaId",
+          "aprobadoJefeDependencia",
+          "jefeDependenciaId",
+          "aprobadoSecretarioTecnico",
+          "secretarioTecnicoId",
           "activo",
-          "fecha_creacion",
-          "fecha_modificacion"
+          "fechaCreacion",
+          "fechaModificacion"
         ]
       },
       "AuditoriaDTO": {
