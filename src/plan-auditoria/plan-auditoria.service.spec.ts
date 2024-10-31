@@ -12,22 +12,22 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   alcance: "asdasd",
   criterio: "criterio de los criterios",
   recurso: "los recursos son",
-  creado_por_id: 10,
-  estado_id: 5,
-  vigencia_id: 3,
-  aprobado_jefe_dependencia: true,
-  jefe_dependencia_id: 5541,
-  aprobado_secretario_tecnico: true,
-  secretario_tecnico_id: 278,
+  creadoPorId: 10,
+  estadoId: 5,
+  vigenciaId: 3,
+  aprobadoJefeDependencia: true,
+  jefeDependenciaId: 5541,
+  aprobadoSecretarioTecnico: true,
+  secretarioTecnicoId: 278,
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 
 
 const mockPlanAuditoria = {
   ...mockPlanAuditoriaDTO,
-  _id: '67197dda3416d2a85e5d6d8f',
+  Id: '67197dda3416d2a85e5d6d8f',
 };
 
 
@@ -46,14 +46,15 @@ describe('PlanAuditoriaService', () => {
             find: jest.fn(),
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
+            countDocuments: jest.fn(),
           },
         },
       ],
     }).compile();
 
     planAuditoriaService = module.get<PlanAuditoriaService>(PlanAuditoriaService);
-    planAuditoriaModel = module.get<Model<PlanAuditoria>>(PlanAuditoria.name);
-   
+    planAuditoriaModel = module.get<Model<PlanAuditoria>>(getModelToken(PlanAuditoria.name));
+
   });
 
   it('Debería estar definido', () => {
@@ -61,8 +62,8 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('post', () => {
-    it('Debería crear y devolver una alerta modal', async () => {
-    
+    it('Debería crear y devolver un plan de auditoria', async () => {
+
       jest
         .spyOn(planAuditoriaModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(mockPlanAuditoriaDTO as any));
@@ -77,18 +78,18 @@ describe('PlanAuditoriaService', () => {
       const mockPlanAuditorias = [
         mockPlanAuditoria,
         {
-          _id: '67197dda3416d2a85e5d6d8f',
+          Id: '67197dda3416d2a85e5d6d8f',
           objetivo: "el objetivo es",
           alcance: "asdasd",
           criterio: "criterio de los criterios",
           recurso: "los recursos son",
-          creado_por_id: 10,
-          estado_id: 5,
-          vigencia_id: 3,
+          creado_porId: 10,
+          estadoId: 5,
+          vigenciaId: 3,
           aprobado_jefe_dependencia: true,
-          jefe_dependencia_id: 5541,
+          jefe_dependenciaId: 5541,
           aprobado_secretario_tecnico: true,
-          secretario_tecnico_id: 278,
+          secretario_tecnicoId: 278,
           activo: true,
           fecha_creacion: new Date(),
           fecha_modificacion: new Date(),
@@ -120,65 +121,65 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('getById', () => {
-    it('Debería retornar una alerta modal por su ID', async () => {
+    it('Debería retornar un plan de auditoria por su ID', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
           .mockResolvedValue(mockPlanAuditoria as unknown as PlanAuditoria),
       } as any);
 
-      const result = await planAuditoriaService.getById(mockPlanAuditoria._id);
+      const result = await planAuditoriaService.getById(mockPlanAuditoria.Id);
 
       expect(planAuditoriaModel.findById).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
       );
       expect(result).toEqual(mockPlanAuditoria);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        planAuditoriaService.getById(mockPlanAuditoria._id),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.getById(mockPlanAuditoria.Id),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
 
       expect(planAuditoriaModel.findById).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
       );
     });
   });
 
   describe('put', () => {
-    it('Debería actualizar una alerta modal', async () => {
+    it('Debería actualizar un plan de auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as PlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
 
       const result = await planAuditoriaService.put(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
       );
       expect(planAuditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
         { new: true },
       );
       expect(result).toEqual(mockPlanAuditoriaDTO);
     });
-      
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        planAuditoriaService.put(mockPlanAuditoria._id, mockPlanAuditoriaDTO),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.put(mockPlanAuditoria.Id, mockPlanAuditoriaDTO),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
 
       expect(planAuditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockPlanAuditoria._id,
+        mockPlanAuditoria.Id,
         mockPlanAuditoriaDTO,
         { new: true },
       );
@@ -186,26 +187,61 @@ describe('PlanAuditoriaService', () => {
   });
 
   describe('delete', () => {
-    it('Debería marcar una alerta modal como inactiva', async () => {
+    it('Debería marcar un plan de auditoria como inactiva', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
           .mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
 
-      const result = await planAuditoriaService.delete(mockPlanAuditoria._id);
+      const result = await planAuditoriaService.delete(mockPlanAuditoria.Id);
 
       expect(result).toEqual(mockPlanAuditoriaDTO);
     });
 
-    it('Debería lanzar un error si la alerta modal no existe', async () => {
+    it('Debería lanzar un error si el plan de auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        planAuditoriaService.delete(mockPlanAuditoria._id),
-      ).rejects.toThrow(`${mockPlanAuditoria._id} doesn't exist`);
+        planAuditoriaService.delete(mockPlanAuditoria.Id),
+      ).rejects.toThrow(`${mockPlanAuditoria.Id} no existe`);
+    });
+  });
+  describe('count', () => {
+    const filterDto: FilterDto = { 
+      query: 'activo:true',
+      fields: '',
+      sortby: '',
+      order: '',
+      limit: '',
+      offset: '',
+      populate: '',
+    };
+    it('Debería retornar la cantidad de documentos', async () => {
+      // Mock de countDocuments para devolver un valor específico
+      jest.spyOn(planAuditoriaModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(2),
+      } as any);
+  
+      // Llamada al método count de ActividadService
+      const result = await planAuditoriaService.count(filterDto);
+  
+      // Verificación del resultado esperado
+      expect(result).toBe(2);
+    });
+  
+    it('Debería lanzar un error si countDocuments falla', async () => {
+      // Mock de countDocuments para simular un error
+      jest.spyOn(planAuditoriaModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+      } as any);
+  
+      // Verificación de que se lanza el error esperado
+      await expect(planAuditoriaService.count(filterDto)).rejects.toThrow(
+        'Error al contar documentos',
+      );
     });
   });
 });

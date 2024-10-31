@@ -1,44 +1,44 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import {Auditoria} from '../../auditoria/schemas/auditoria.schema'
+import { Auditoria } from '../../auditoria/schemas/auditoria.schema'
 
 @Schema({ collection: 'actividad' })
 export class Actividad extends Document {
-    @Prop({ required: true , type: Types.ObjectId, ref: Auditoria.name })
-    auditoria_id:Auditoria  | Types.ObjectId;
+    @Prop({ required: false, type: Types.ObjectId, ref: Auditoria.name })
+    auditoriaId: Auditoria | Types.ObjectId;
 
-    @Prop({ required: true })
-    titulo:string;
-    
-    @Prop({ required: true })
-    fechaInicio:Date;
+    @Prop({ required: false })
+    titulo: string;
 
-    @Prop({ required: true })
-    fechaFin:Date;
+    @Prop({ required: false })
+    fechaInicio: Date;
 
-    @Prop({ required: true })
-    referencia:string;
+    @Prop({ required: false })
+    fechaFin: Date;
 
-    @Prop({ required: true })
-    descripcion:string;
+    @Prop({ required: false })
+    referencia: string;
 
-    @Prop({ required: true })
-    folio:number;
+    @Prop({ required: false })
+    descripcion: string;
 
-    @Prop({ required: true })
-    medio_id:number;
+    @Prop({ required: false })
+    folio: number;
 
-    @Prop({ required: true })
-    carpeta:string;
+    @Prop({ required: false })
+    medio_id: number;
 
-    @Prop({ required: true })
+    @Prop({ required: false })
+    carpeta: string;
+
+    @Prop({ required: false })
     activo: boolean;
 
-   @Prop({ required: true })
-    fecha_creacion: Date;
+    @Prop({ required: false })
+    fechaCreacion: Date;
 
-   @Prop({ required: true })
-    fecha_modificacion: Date;
+    @Prop({ required: false })
+    fechaModificacion: Date;
 
 }
 

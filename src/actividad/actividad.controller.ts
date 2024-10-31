@@ -1,33 +1,47 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpStatus,
-    Param,
-    Post,
-    Put,
-    Query,
-    Res,
-  } from '@nestjs/common';
-  import {ActividadService}from './actividad.service';
-  import{ActividadDTO} from './dto/actividad.dto'
-  import{FilterDto }from '../filters/filters.dto'
-  import { ApiTags } from '@nestjs/swagger';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
+import { ActividadService } from './actividad.service';
+import { ActividadDTO } from './dto/actividad.dto'
+import { FilterDto } from '../filters/filters.dto'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 
 @ApiTags('actividad')
 @Controller('actividad')
 export class ActividadController {
-  constructor(private actividadervice: ActividadService) {}
+  constructor(private actividadService: ActividadService) { }
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nueva actividad' })
+  @ApiBody({ type: ActividadDTO })
+  @ApiResponse({
+    status: 201,
+    description: 'El actividad ha sido creado exitosamente.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() ActividadDTO: ActividadDTO) {
     try {
-      const actividad = await this.actividadervice.post(ActividadDTO);
+      const actividad = await this.actividadService.post(ActividadDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Registration successful',
+        Message: 'Registro Exitoso',
         Data: actividad,
       });
     } catch (error) {
@@ -35,41 +49,59 @@ export class ActividadController {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Post: The request contains an incorrect data type or an invalid parameter',
+          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
         Data: error.message,
       });
     }
   }
 
   @Get()
+  @ApiOperation({ summary: 'Obtener todas las actividades' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todas las actividades.',
+    type: [ActividadDTO],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const actividad = await this.actividadervice.getAll(filterDto);
+      const actividad = await this.actividadService.getAll(filterDto);
+      const counts = await this.actividadService.count(filterDto);
+
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: actividad,
+        MetaData: { Count: counts },
+
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetAll: The request contains an incorrect parameter or no record exist',
+          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: error.message,
       });
     }
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Obtener un actividad por Id' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve la actividad.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const actividad = await this.actividadervice.getById(id);
+      const actividad = await this.actividadService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: actividad,
       });
     } catch (error) {
@@ -77,24 +109,34 @@ export class ActividadController {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetOne: The request contains an incorrect parameter or no record exist',
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: error.message,
       });
     }
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Actualizar una actividad' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: ActividadDTO })
+  @ApiResponse({
+    status: 200,
+    description: 'La actividad ha sido actualizada exitosamente.',
+    type: ActividadDTO,
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrado.' })
   async put(
     @Res() res,
     @Param('id') id: string,
     @Body() ActividadDTO: ActividadDTO,
   ) {
     try {
-      const actividad = await this.actividadervice.put(id, ActividadDTO);
+      const actividad = await this.actividadService.put(id, ActividadDTO);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Update successful',
+        Message: 'Actualizacion Exitosa',
         Data: actividad,
       });
     } catch (error) {
@@ -102,20 +144,27 @@ export class ActividadController {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Put: The request contains an incorrect data type or an invalid parameter',
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
         Data: error.message,
       });
     }
   }
 
   @Delete('/:id')
+  @ApiOperation({ summary: 'Eliminar una actividad' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiResponse({
+    status: 200,
+    description: 'La actividad ha sido eliminada exitosamente.',
+  })
+  @ApiResponse({ status: 404, description: 'Actividad no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.actividadervice.delete(id);
+      await this.actividadService.delete(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Delete successful',
+        Message: 'Eliminacion Exitosa',
         Data: {
           _id: id,
         },
@@ -124,7 +173,7 @@ export class ActividadController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error service Delete: Request contains incorrect parameter',
+        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: error.message,
       });
     }

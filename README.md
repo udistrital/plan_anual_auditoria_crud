@@ -29,6 +29,18 @@ git pull origin develop && git checkout develop
 # 5. ejecutar el proyecto
 npm run start 
 ```
+### Ejecución Pruebas
+
+Pruebas unitarias
+```shell
+# Test
+npm run test
+
+# Se ejecutará jest, validando los casos de prueba en los archivos .spec.ts
+
+npm run test:cov
+# Validar la cobertura de las pruebas
+```
 ## Estado CI
 
 | Develop | Relese 0.0.1 | Master |
@@ -36,7 +48,7 @@ npm run start
 | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg?ref=refs/heads/develop)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg?ref=refs/heads/release/0.0.1)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) |
 
 ## Modelo de Datos
-
+![Modelo de datos Plan Anual Auditoria](/database/plan_anual_de_auditoría_V3.2.png)
 
 ## Licencia
 

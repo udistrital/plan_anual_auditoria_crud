@@ -13,4 +13,4 @@ import { PlanAuditoria, PlanAuditoriaSchema } from './schemas/plan-auditoria.sch
   providers: [PlanAuditoriaService],
   exports: [PlanAuditoriaService]
 })
-export class PlanAuditoriaModule {}
+export class PlanAuditoriaModule { }

@@ -15,6 +15,7 @@
     "/plan-auditoria": {
       "post": {
         "operationId": "PlanAuditoriaController_post",
+        "summary": "Crear un nuevo plan de auditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -28,7 +29,17 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "El plan de auditoria ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
           }
         },
         "tags": [
@@ -37,6 +48,7 @@
       },
       "get": {
         "operationId": "PlanAuditoriaController_getAll",
+        "summary": "Obtener todos los planes de auditoria",
         "parameters": [
           {
             "name": "query",
@@ -104,7 +116,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve todos los planes de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -115,6 +137,7 @@
     "/plan-auditoria/{id}": {
       "get": {
         "operationId": "PlanAuditoriaController_getById",
+        "summary": "Obtener un plan de auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -127,7 +150,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve el plan de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -136,6 +169,7 @@
       },
       "put": {
         "operationId": "PlanAuditoriaController_put",
+        "summary": "Actualizar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -158,7 +192,20 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "El plan de auditoria ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -167,6 +214,7 @@
       },
       "delete": {
         "operationId": "PlanAuditoriaController_delete",
+        "summary": "Eliminar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -179,7 +227,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "El plan de auditoria ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
           }
         },
         "tags": [
@@ -190,6 +241,7 @@
     "/auditoria": {
       "post": {
         "operationId": "AuditoriaController_post",
+        "summary": "Crear un nueva aditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -203,7 +255,17 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "La aditoria ha sido creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
           }
         },
         "tags": [
@@ -212,6 +274,7 @@
       },
       "get": {
         "operationId": "AuditoriaController_getAll",
+        "summary": "Obtener todas las aditorias",
         "parameters": [
           {
             "name": "query",
@@ -279,7 +342,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve todas las aditorias.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaDTO"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -290,6 +363,7 @@
     "/auditoria/{id}": {
       "get": {
         "operationId": "AuditoriaController_getById",
+        "summary": "Obtener una auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -302,7 +376,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve la auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Auditoria no encontrada."
           }
         },
         "tags": [
@@ -311,6 +395,7 @@
       },
       "put": {
         "operationId": "AuditoriaController_put",
+        "summary": "Actualizar una auditoria",
         "parameters": [
           {
             "name": "id",
@@ -333,7 +418,20 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "La auditoria ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Contratista no encontrado."
           }
         },
         "tags": [
@@ -342,6 +440,7 @@
       },
       "delete": {
         "operationId": "AuditoriaController_delete",
+        "summary": "Eliminar una auditoria",
         "parameters": [
           {
             "name": "id",
@@ -354,7 +453,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "La auditoria ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Auditoria no encontrada."
           }
         },
         "tags": [
@@ -365,6 +467,7 @@
     "/actividad": {
       "post": {
         "operationId": "ActividadController_post",
+        "summary": "Crear un nueva actividad",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -378,7 +481,17 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "El actividad ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActividadDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
           }
         },
         "tags": [
@@ -387,6 +500,7 @@
       },
       "get": {
         "operationId": "ActividadController_getAll",
+        "summary": "Obtener todas las actividades",
         "parameters": [
           {
             "name": "query",
@@ -454,7 +568,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve todas las actividades.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActividadDTO"
+                  }
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -465,6 +589,7 @@
     "/actividad/{id}": {
       "get": {
         "operationId": "ActividadController_getById",
+        "summary": "Obtener un actividad por Id",
         "parameters": [
           {
             "name": "id",
@@ -477,7 +602,17 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Devuelve la actividad.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActividadDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Actividad no encontrada."
           }
         },
         "tags": [
@@ -486,6 +621,7 @@
       },
       "put": {
         "operationId": "ActividadController_put",
+        "summary": "Actualizar una actividad",
         "parameters": [
           {
             "name": "id",
@@ -508,7 +644,20 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "La actividad ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActividadDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Actividad no encontrado."
           }
         },
         "tags": [
@@ -517,6 +666,7 @@
       },
       "delete": {
         "operationId": "ActividadController_delete",
+        "summary": "Eliminar una actividad",
         "parameters": [
           {
             "name": "id",
@@ -529,7 +679,10 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "La actividad ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Actividad no encontrada."
           }
         },
         "tags": [
@@ -563,35 +716,35 @@
           "recurso": {
             "type": "string"
           },
-          "creado_por_id": {
+          "creadoPorId": {
             "type": "number"
           },
-          "estado_id": {
+          "estadoId": {
             "type": "number"
           },
-          "vigencia_id": {
+          "vigenciaId": {
             "type": "number"
           },
-          "aprobado_jefe_dependencia": {
+          "aprobadoJefeDependencia": {
             "type": "boolean"
           },
-          "jefe_dependencia_id": {
+          "jefeDependenciaId": {
             "type": "number"
           },
-          "aprobado_secretario_tecnico": {
+          "aprobadoSecretarioTecnico": {
             "type": "boolean"
           },
-          "secretario_tecnico_id": {
+          "secretarioTecnicoId": {
             "type": "number"
           },
           "activo": {
             "type": "boolean"
           },
-          "fecha_creacion": {
+          "fechaCreacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fecha_modificacion": {
+          "fechaModificacion": {
             "format": "date-time",
             "type": "string"
           }
@@ -601,58 +754,58 @@
           "alcance",
           "criterio",
           "recurso",
-          "creado_por_id",
-          "estado_id",
-          "vigencia_id",
-          "aprobado_jefe_dependencia",
-          "jefe_dependencia_id",
-          "aprobado_secretario_tecnico",
-          "secretario_tecnico_id",
+          "creadoPorId",
+          "estadoId",
+          "vigenciaId",
+          "aprobadoJefeDependencia",
+          "jefeDependenciaId",
+          "aprobadoSecretarioTecnico",
+          "secretarioTecnicoId",
           "activo",
-          "fecha_creacion",
-          "fecha_modificacion"
+          "fechaCreacion",
+          "fechaModificacion"
         ]
       },
       "AuditoriaDTO": {
         "type": "object",
         "properties": {
-          "plan_uditoria_id": {
+          "planAuditoriaId": {
             "type": "string"
           },
           "titulo": {
             "type": "string"
           },
-          "tipo_evaluacion_id": {
+          "tipoEvaluacionId": {
             "type": "number"
           },
-          "cronograma_actividad": {
+          "cronogramaId": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "estado_id": {
+          "estadoId": {
             "type": "number"
           },
-          "no_auditoria": {
+          "noAuditoria": {
             "type": "number"
           },
-          "consecutivo_OCI": {
+          "consecutivoOCI": {
             "type": "string"
           },
-          "consecutivo_IE": {
+          "consecutivoIE": {
             "type": "string"
           },
-          "tipo_id": {
+          "tipoId": {
             "type": "number"
           },
           "macroproceso": {
             "type": "number"
           },
-          "lider": {
+          "liderId": {
             "type": "number"
           },
-          "responsable": {
+          "responsableId": {
             "type": "number"
           },
           "fechaInicio": {
@@ -672,57 +825,57 @@
           "criterio": {
             "type": "string"
           },
-          "rec_tecnologico": {
+          "recTecnologico": {
             "type": "string"
           },
-          "rec_humano": {
+          "recHumano": {
             "type": "string"
           },
-          "rec_fisico": {
+          "recFisico": {
             "type": "string"
           },
           "activo": {
             "type": "boolean"
           },
-          "fecha_creacion": {
+          "fechaCreacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fecha_modificacion": {
+          "fechaModificacion": {
             "format": "date-time",
             "type": "string"
           }
         },
         "required": [
-          "plan_uditoria_id",
+          "planAuditoriaId",
           "titulo",
-          "tipo_evaluacion_id",
-          "cronograma_actividad",
-          "estado_id",
-          "no_auditoria",
-          "consecutivo_OCI",
-          "consecutivo_IE",
-          "tipo_id",
+          "tipoEvaluacionId",
+          "cronogramaId",
+          "estadoId",
+          "noAuditoria",
+          "consecutivoOCI",
+          "consecutivoIE",
+          "tipoId",
           "macroproceso",
-          "lider",
-          "responsable",
+          "liderId",
+          "responsableId",
           "fechaInicio",
           "fechaFin",
           "objetivo",
           "alcance",
           "criterio",
-          "rec_tecnologico",
-          "rec_humano",
-          "rec_fisico",
+          "recTecnologico",
+          "recHumano",
+          "recFisico",
           "activo",
-          "fecha_creacion",
-          "fecha_modificacion"
+          "fechaCreacion",
+          "fechaModificacion"
         ]
       },
       "ActividadDTO": {
         "type": "object",
         "properties": {
-          "auditoria_id": {
+          "auditoriaId": {
             "type": "string"
           },
           "titulo": {
@@ -745,7 +898,7 @@
           "folio": {
             "type": "number"
           },
-          "medio_id": {
+          "medioId": {
             "type": "number"
           },
           "carpeta": {
@@ -754,28 +907,28 @@
           "activo": {
             "type": "boolean"
           },
-          "fecha_creacion": {
+          "fechaCreacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fecha_modificacion": {
+          "fechaModificacion": {
             "format": "date-time",
             "type": "string"
           }
         },
         "required": [
-          "auditoria_id",
+          "auditoriaId",
           "titulo",
           "fechaInicio",
           "fechaFin",
           "referencia",
           "descripcion",
           "folio",
-          "medio_id",
+          "medioId",
           "carpeta",
           "activo",
-          "fecha_creacion",
-          "fecha_modificacion"
+          "fechaCreacion",
+          "fechaModificacion"
         ]
       }
     }

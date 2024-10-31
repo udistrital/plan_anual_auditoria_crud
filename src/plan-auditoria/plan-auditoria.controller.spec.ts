@@ -10,16 +10,16 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   alcance: "asdasd",
   criterio: "criterio de los criterios",
   recurso: "los recursos son",
-  creado_por_id: 10,
-  estado_id: 5,
-  vigencia_id: 3,
-  aprobado_jefe_dependencia: true,
-  jefe_dependencia_id: 5541,
-  aprobado_secretario_tecnico: true,
-  secretario_tecnico_id: 278,
+  creadoPorId: 10,
+  estadoId: 5,
+  vigenciaId: 3,
+  aprobadoJefeDependencia: true,
+  jefeDependenciaId: 5541,
+  aprobadoSecretarioTecnico: true,
+  secretarioTecnicoId: 278,
   activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+  fechaCreacion: new Date(),
+  fechaModificacion: new Date(),
 };
 
 const mockPlanAuditoria = {
@@ -43,6 +43,7 @@ describe('PlanAuditoriaController', () => {
             getById: jest.fn(),
             put: jest.fn(),
             delete: jest.fn(),
+            count: jest.fn(),
           },
         },
       ],
@@ -72,14 +73,14 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Registration successful',
+        Message: 'Registro Exitoso',
         Data: mockPlanAuditoria,
       });
     });
 
     it('Debería retornar BadRequest con error', async () => {
       const mockError = new Error(
-        'ModalAlerta validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
+        'Plan Auditoria validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
       );
 
       jest.spyOn(service, 'post').mockRejectedValue(mockError);
@@ -97,7 +98,7 @@ describe('PlanAuditoriaController', () => {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Post: The request contains an incorrect data type or an invalid parameter',
+          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
         Data: mockError.message,
       });
     });
@@ -113,7 +114,10 @@ describe('PlanAuditoriaController', () => {
       offset: '',
       populate: '',
     };
-
+    beforeEach(() => {
+      jest.spyOn(service, 'count').mockResolvedValue(2); // Mock count
+    });
+  
     it('Debería retornar OK con datos válidos', async () => {
       const mockPlanAuditorias = [
         {
@@ -138,12 +142,14 @@ describe('PlanAuditoriaController', () => {
       await controller.getAll(res as any, mockFilterDto);
 
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
+      expect(service.count).toHaveBeenCalled(); 
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: mockPlanAuditorias,
+        MetaData: { Count: 2 },
       });
     });
 
@@ -165,7 +171,7 @@ describe('PlanAuditoriaController', () => {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetAll: The request contains an incorrect parameter or no record exist',
+          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: mockError.message,
       });
     });
@@ -187,7 +193,7 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Request successful',
+        Message: 'Peticion Exitosa',
         Data: mockPlanAuditoria,
       });
     });
@@ -195,7 +201,7 @@ describe('PlanAuditoriaController', () => {
     it('Debería retornar NotFound con id inválido', async () => {
       jest
         .spyOn(service, 'getById')
-        .mockRejectedValue(new Error(`${mockPlanAuditoria._id} doesn't exist`));
+        .mockRejectedValue(new Error(`${mockPlanAuditoria._id} no existe`));
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -210,8 +216,8 @@ describe('PlanAuditoriaController', () => {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error service GetOne: The request contains an incorrect parameter or no record exist',
-        Data: `${mockPlanAuditoria._id} doesn't exist`,
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+        Data: `${mockPlanAuditoria._id} no existe`,
       });
     });
   });
@@ -235,13 +241,13 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Update successful',
+        Message: 'Actualizacion Exitosa',
         Data: mockPlanAuditoria,
       });
     });
 
     it('Debería retornar BadRequest con error', async () => {
-      const mockError = new Error(`${mockPlanAuditoria._id} doesn't exist`);
+      const mockError = new Error(`${mockPlanAuditoria._id} no existe`);
 
       jest.spyOn(service, 'put').mockRejectedValue(mockError);
 
@@ -261,7 +267,7 @@ describe('PlanAuditoriaController', () => {
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
-          'Error service Put: The request contains an incorrect data type or an invalid parameter',
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
         Data: mockError.message,
       });
     });
@@ -283,7 +289,7 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Delete successful',
+        Message: 'Eliminacion Exitosa',
         Data: {
           _id: mockPlanAuditoria._id,
         },
@@ -307,7 +313,7 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error service Delete: Request contains incorrect parameter',
+        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: mockError.message,
       });
     });

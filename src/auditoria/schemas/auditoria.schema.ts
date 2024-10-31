@@ -1,78 +1,78 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import {PlanAuditoria} from '../../plan-auditoria/schemas/plan-auditoria.schema'
+import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schema'
 
 @Schema({ collection: 'auditoria' })
 export class Auditoria extends Document {
-   @Prop({ required: true , type: Types.ObjectId, ref: PlanAuditoria.name })
-     plan_uditoria_id: PlanAuditoria  | Types.ObjectId;
+  @Prop({ required: false, type: Types.ObjectId, ref: PlanAuditoria.name })
+  planAuditoriaId: PlanAuditoria | Types.ObjectId;
 
-   @Prop({ required: true })
-     titulo: string;
+  @Prop({ required: false })
+  titulo: string;
 
-   @Prop({ required: true })
-     tipo_evaluacion_id: number;
+  @Prop({ required: false })
+  tipoEvaluacionId: number;
 
-   @Prop({ required: true })
-     cronograma_actividad: string[] = [];;
+  @Prop({ required: false })
+  cronogramaId: number[] = [];;
 
-   @Prop({ required: true })
-     estado_id: number;
+  @Prop({ required: false })
+  estadoId: number;
 
-   @Prop({ required: true })
-     no_auditoria: number;
+  @Prop({ required: false })
+  noAuditoria: number;
 
-   @Prop({ required: true })
-     consecutivo_OCI: string;
+  @Prop({ required: false })
+  consecutivoOCI: string;
 
-   @Prop({ required: true })
-     consecutivo_IE: string;
+  @Prop({ required: false })
+  consecutivoIE: string;
 
-   @Prop({ required: true })
-     tipo_id: number;
+  @Prop({ required: false })
+  tipoId: number;
 
-   @Prop({ required: true })
-     macroproceso: number;
+  @Prop({ required: false })
+  macroproceso: number;
 
-   @Prop({ required: true })
-     lider: number;
+  @Prop({ required: false })
+  liderId: number;
 
-   @Prop({ required: true })
-    responsable: number;
+  @Prop({ required: false })
+  responsableId: number;
 
-    @Prop({ required: true })
-    fechaInicio:Date;
+  @Prop({ required: false })
+  fechaInicio: Date;
 
-    @Prop({ required: true })
-    fechaFin:Date;
+  @Prop({ required: false })
+  fechaFin: Date;
 
-    @Prop({ required: true })
-    objetivo:string;
+  @Prop({ required: false })
+  objetivo: string;
 
-    @Prop({ required: true })
-    alcance:string;
+  @Prop({ required: false })
+  alcance: string;
 
-    @Prop({ required: true })
-    criterio:string;
+  @Prop({ required: false })
+  criterio: string;
 
-    @Prop({ required: true })
-    rec_tecnologico:string;
+  @Prop({ required: false })
+  recTecnologico: string;
 
-    @Prop({ required: true })
-    rec_humano:string;
+  @Prop({ required: false })
+  recHumano: string;
 
-    @Prop({ required: true })
-    rec_fisico:string;
-    
-    @Prop({ required: true })
-    activo: boolean;
+  @Prop({ required: false })
+  recFisico: string;
 
-    @Prop({ required: true })
-    fecha_creacion: Date;
+  @Prop({ required: false })
+  activo: boolean;
 
-    @Prop({ required: true })
-    fecha_modificacion: Date;
-   
+  @Prop({ required: false })
+  fechaCreacion: Date;
+
+  @Prop({ required: false })
+  fechaModificacion: Date;
+
 }
 export const AuditoriaSchema = SchemaFactory.createForClass(Auditoria);
 
