@@ -2,46 +2,46 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditoriaDTO {
   @ApiProperty()
-  readonly planAuditoriaId: string;
+  readonly plan_auditoria_id: string;
 
   @ApiProperty()
   readonly titulo: string;
 
   @ApiProperty()
-  readonly tipoEvaluacionId: number;
+  readonly tipo_evaluacion_id: number;
 
   @ApiProperty()
-  readonly cronogramaId: number[] = [];;
+  readonly cronograma_id: number[] = [];;
 
   @ApiProperty()
-  readonly estadoId: number;
+  readonly estado_id: number;
 
   @ApiProperty()
-  readonly noAuditoria: number;
+  readonly no_auditoria: number;
 
   @ApiProperty()
-  readonly consecutivoOCI: string;
+  readonly consecutivo_OCI: string;
 
   @ApiProperty()
-  readonly consecutivoIE: string;
+  readonly consecutivo_IE: string;
 
   @ApiProperty()
-  readonly tipoId: number;
+  readonly tipo_id: number;
 
   @ApiProperty()
   readonly macroproceso: number;
 
   @ApiProperty()
-  readonly liderId: number;
+  readonly lider_id: number;
 
   @ApiProperty()
-  readonly responsableId: number;
+  readonly responsable_id: number;
 
   @ApiProperty()
-  readonly fechaInicio: Date;
+  readonly fecha_inicio: Date;
 
   @ApiProperty()
-  readonly fechaFin: Date;
+  readonly fecha_fin: Date;
 
   @ApiProperty()
   readonly objetivo: string;
@@ -53,21 +53,21 @@ export class AuditoriaDTO {
   readonly criterio: string;
 
   @ApiProperty()
-  readonly recTecnologico: string;
+  readonly rec_tecnologico: string;
 
   @ApiProperty()
-  readonly recHumano: string;
+  readonly rec_humano: string;
 
   @ApiProperty()
-  readonly recFisico: string;
+  readonly rec_fisico: string;
 
   @ApiProperty()
   activo: boolean;
 
   @ApiProperty()
-  fechaCreacion: Date;
+  fecha_creacion: Date;
 
   @ApiProperty()
-  fechaModificacion: Date;
+  fecha_modificacion: Date;
 
 }

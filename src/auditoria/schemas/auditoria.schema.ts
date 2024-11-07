@@ -5,46 +5,46 @@ import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schem
 @Schema({ collection: 'auditoria' })
 export class Auditoria extends Document {
   @Prop({ required: false, type: Types.ObjectId, ref: PlanAuditoria.name })
-  planAuditoriaId: PlanAuditoria | Types.ObjectId;
+  plan_auditoria_id: PlanAuditoria | Types.ObjectId;
 
   @Prop({ required: false })
   titulo: string;
 
   @Prop({ required: false })
-  tipoEvaluacionId: number;
+  tipo_evaluacion_id: number;
 
   @Prop({ required: false })
-  cronogramaId: number[] = [];;
+  cronograma_id: number[] = [];;
 
   @Prop({ required: false })
-  estadoId: number;
+  estado_id: number;
 
   @Prop({ required: false })
-  noAuditoria: number;
+  no_auditoria: number;
 
   @Prop({ required: false })
-  consecutivoOCI: string;
+  consecutivo_OCI: string;
 
   @Prop({ required: false })
-  consecutivoIE: string;
+  consecutivo_IE: string;
 
   @Prop({ required: false })
-  tipoId: number;
+  tipo_id: number;
 
   @Prop({ required: false })
   macroproceso: number;
 
   @Prop({ required: false })
-  liderId: number;
+  lider_id: number;
 
   @Prop({ required: false })
-  responsableId: number;
+  responsable_id: number;
 
   @Prop({ required: false })
-  fechaInicio: Date;
+  fecha_inicio: Date;
 
   @Prop({ required: false })
-  fechaFin: Date;
+  fecha_fin: Date;
 
   @Prop({ required: false })
   objetivo: string;
@@ -56,22 +56,22 @@ export class Auditoria extends Document {
   criterio: string;
 
   @Prop({ required: false })
-  recTecnologico: string;
+  rec_tecnologico: string;
 
   @Prop({ required: false })
-  recHumano: string;
+  rec_humano: string;
 
   @Prop({ required: false })
-  recFisico: string;
+  rec_fisico: string;
 
   @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })
-  fechaCreacion: Date;
+  fecha_creacion: Date;
 
   @Prop({ required: false })
-  fechaModificacion: Date;
+  fecha_modificacion: Date;
 
 }
 export const AuditoriaSchema = SchemaFactory.createForClass(Auditoria);

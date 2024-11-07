@@ -18,6 +18,7 @@ import { Body,
       ApiParam,
       ApiBody,
     } from '@nestjs/swagger';
+@ApiTags('estado-plan')
 @Controller('estado')
 export class EstadoController {
     constructor(private estadoService: EstadoService) { }

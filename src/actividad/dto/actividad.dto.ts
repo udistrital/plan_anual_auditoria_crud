@@ -2,16 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ActividadDTO {
     @ApiProperty()
-    readonly auditoriaId: string;
+    readonly auditoria_id: string;
 
     @ApiProperty()
     readonly titulo: string;
 
     @ApiProperty()
-    readonly fechaInicio: Date;
+    readonly fecha_inicio: Date;
 
     @ApiProperty()
-    readonly fechaFin: Date;
+    readonly fecha_fin: Date;
 
     @ApiProperty()
     readonly referencia: string;
@@ -23,7 +23,7 @@ export class ActividadDTO {
     readonly folio: number;
 
     @ApiProperty()
-    readonly medioId: number;
+    readonly medio_id: number;
 
     @ApiProperty()
     readonly carpeta: string;
@@ -32,9 +32,9 @@ export class ActividadDTO {
     activo: boolean;
 
     @ApiProperty()
-    fechaCreacion: Date;
+    fecha_creacion: Date;
 
     @ApiProperty()
-    fechaModificacion: Date;
+    fecha_modificacion: Date;
 
 }

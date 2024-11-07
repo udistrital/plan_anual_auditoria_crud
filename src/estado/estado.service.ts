@@ -16,17 +16,17 @@ export class EstadoService {
       ) { }
     
       private populateFields(): any[] {
-        return [{ path: 'planAuditoriaId' }];
+        return [{ path: 'plan_auditoria_id' }];
       }
     
       private async checkRelated(PlanEstadoDto: PlanEstadoDto) {
-        if (PlanEstadoDto.planAuditoriaId) {
+        if (PlanEstadoDto.plan_auditoria_id) {
           const actividad = await this.PlanAuditoriaModel
-            .findById(PlanEstadoDto.planAuditoriaId)
+            .findById(PlanEstadoDto.plan_auditoria_id)
             .exec();
           if (!actividad) {
             throw new Error(
-              `PlanAuditoria relacionada con id ${PlanEstadoDto.planAuditoriaId} no existe`,
+              `PlanAuditoria relacionada con id ${PlanEstadoDto.plan_auditoria_id} no existe`,
             );
           }
         }

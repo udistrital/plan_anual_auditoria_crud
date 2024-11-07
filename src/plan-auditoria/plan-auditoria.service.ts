@@ -18,8 +18,8 @@ export class PlanAuditoriaService {
     const planAuditoriaData = {
       ...planAuditoriaDto,
       activo: true,
-      fechaCreacion: fecha,
-      fechaModificacion: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
     return await this.planAuditoriaModel.create(planAuditoriaData);
   }
@@ -44,9 +44,9 @@ export class PlanAuditoriaService {
   }
 
   async put(id: string, planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
-    planAuditoriaDto.fechaModificacion = new Date();
-    if (planAuditoriaDto.fechaCreacion) {
-      delete planAuditoriaDto.fechaCreacion;
+    planAuditoriaDto.fecha_modificacion = new Date();
+    if (planAuditoriaDto.fecha_creacion) {
+      delete planAuditoriaDto.fecha_creacion;
     }
     const update = await this.planAuditoriaModel
       .findByIdAndUpdate(id, planAuditoriaDto, { new: true })

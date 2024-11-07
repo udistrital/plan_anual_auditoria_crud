@@ -2,19 +2,19 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class PlanEstadoDto {
     @ApiProperty()
-    readonly planAuditoriaId: string;
+    readonly plan_auditoria_id: string;
 
     @ApiProperty()
-    readonly usuarioId: number;
+    readonly usuario_id: number;
 
     @ApiProperty()
     readonly observacion: string;
 
     @ApiProperty()
-    readonly estadoId: number;
+    readonly estado_id: number;
 
     @ApiProperty()
-    readonly fechaEjecucionEstado: Date;
+    readonly fecha_ejecucion_estado: Date;
 
     @ApiProperty()
     activo: boolean;
