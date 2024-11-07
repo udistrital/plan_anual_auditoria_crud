@@ -26,7 +26,7 @@ export class EstadoService {
             .exec();
           if (!actividad) {
             throw new Error(
-              `PlanAuditoria relacionada con id ${PlanEstadoDto.plan_auditoria_id} no existe`,
+              `Plan auditoria relacionada con id ${PlanEstadoDto.plan_auditoria_id} no existe`,
             );
           }
         }

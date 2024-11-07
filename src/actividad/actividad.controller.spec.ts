@@ -4,7 +4,6 @@ import { ActividadDTO } from './dto/actividad.dto'
 import { ActividadService } from './actividad.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
-import {Actividad} from './schemas/actividad.schema'
 
 const mockActividadDto: ActividadDTO = {
   auditoria_id: "671aaa8a064222e6583d56e7",

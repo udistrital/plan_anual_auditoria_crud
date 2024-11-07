@@ -170,7 +170,7 @@ export class EstadoController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: error.message,
       });
     }
