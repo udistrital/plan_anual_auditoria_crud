@@ -1,6 +1,5 @@
 # plan_anual_auditoria_crud
-El API permite gestionar el histórico de roles de un usuario almacenando el periodo, rol y el id del usuario por sistema de información.
-Puede ser usado como apoyo para el servicio de WSO2 garantizando el almacenamiento de los cambios en roles efectuados.
+El API crud permite gestionar planes anuales de auditoria asi como sus auditorias.
 
 ## Especificaciones Técnicas
 
