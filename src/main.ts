@@ -6,6 +6,8 @@ import * as fs from 'fs';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('plan_anual_auditoria_crud')
     .setDescription(
