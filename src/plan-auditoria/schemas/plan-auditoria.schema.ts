@@ -18,7 +18,7 @@ export class PlanAuditoria extends Document {
   @Prop({ required: false })
   creado_por_id: number;
 
-  @Prop({ required: false })
+  @Prop({ required: true, unique: true })
   vigencia_id: number;
 
   @Prop({ required: false })

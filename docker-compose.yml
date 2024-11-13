@@ -1,0 +1,13 @@
+version: '3.3'
+
+services:
+  mongo:
+    image: mongo:5
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${PLANTILLAS_FORMULARIOS_DINAMICOS_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${PLANTILLAS_FORMULARIOS_DINAMICOS_PASS}
+      MONGO_INITDB_DATABASE: ${PLANTILLAS_FORMULARIOS_DINAMICOS_DB}
+    ports:
+     - 27017:27017
+    volumes:
+     - ./mongo_data:/data/db

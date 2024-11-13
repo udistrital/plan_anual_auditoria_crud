@@ -43,6 +43,7 @@ describe('PlanAuditoriaService', () => {
           useValue: {
             create: jest.fn(),
             find: jest.fn(),
+            findOne: jest.fn(), 
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             countDocuments: jest.fn(),
@@ -62,6 +63,9 @@ describe('PlanAuditoriaService', () => {
 
   describe('post', () => {
     it('Debería crear y devolver un plan de auditoria', async () => {
+      jest
+      .spyOn(planAuditoriaModel, 'findOne')
+      .mockResolvedValueOnce(null);
 
       jest
         .spyOn(planAuditoriaModel, 'create')
@@ -84,7 +88,7 @@ describe('PlanAuditoriaService', () => {
           recurso: "los recursos son",
           creado_porId: 10,
           estadoId: 5,
-          vigenciaId: 3,
+          vigencia_id: 3,
           aprobado_jefe_dependencia: true,
           jefe_dependenciaId: 5541,
           aprobado_secretario_tecnico: true,
@@ -152,6 +156,10 @@ describe('PlanAuditoriaService', () => {
 
   describe('put', () => {
     it('Debería actualizar un plan de auditoria', async () => {
+      jest
+      .spyOn(planAuditoriaModel, 'findOne')
+      .mockResolvedValueOnce(null);
+
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
