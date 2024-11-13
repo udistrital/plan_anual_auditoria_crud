@@ -8,18 +8,18 @@ import { Auditoria } from '../auditoria/schemas/auditoria.schema'
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
-  auditoriaId: "671aa963064222e6583d56e4",
+  auditoria_id: "671aa963064222e6583d56e4",
   titulo: 'string',
-  fechaInicio: new Date(),
-  fechaFin: new Date(),
+  fecha_inicio: new Date(),
+  fecha_fin: new Date(),
   referencia: 'string',
   descripcion: 'string',
   folio: 0,
-  medioId: 0,
+  medio_id: 0,
   carpeta: 'string',
   activo: true,
-  fechaCreacion: new Date(),
-  fechaModificacion: new Date(),
+  fecha_creacion: new Date(),
+  fecha_modificacion: new Date(),
 };
 const mockActividad = {
   ...mockActividadDto,
@@ -90,7 +90,7 @@ describe('ActividadService', () => {
       } as any);
 
       await expect(actividadService.post(mockActividadDto)).rejects.toThrow(
-        `Auditoria relacionada con id ${mockActividadDto.auditoriaId} no existe`,
+        `Auditoria relacionada con id ${mockActividadDto.auditoria_id} no existe`,
       );
     });
   });
@@ -222,7 +222,7 @@ describe('ActividadService', () => {
       await expect(
         actividadService.put(mockActividad._id, mockActividadDto),
       ).rejects.toThrow(
-        `Auditoria relacionada con id ${mockActividadDto.auditoriaId} no existe`,
+        `Auditoria relacionada con id ${mockActividadDto.auditoria_id} no existe`,
       );
     });
   });

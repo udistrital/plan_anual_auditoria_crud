@@ -689,6 +689,232 @@
           "actividad"
         ]
       }
+    },
+    "/estado": {
+      "post": {
+        "operationId": "EstadoController_post",
+        "summary": "Crear un nuevo estado de plan",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El estado de plan ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "estado-plan"
+        ]
+      },
+      "get": {
+        "operationId": "EstadoController_getAll",
+        "summary": "Obtener todos los estados de plan",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los estados de plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "estado-plan"
+        ]
+      }
+    },
+    "/estado/{id}": {
+      "get": {
+        "operationId": "EstadoController_getById",
+        "summary": "Obtener un estado de plan por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado de plan.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Actividad no encontrada."
+          }
+        },
+        "tags": [
+          "estado-plan"
+        ]
+      },
+      "put": {
+        "operationId": "EstadoController_put",
+        "summary": "Actualizar un estado de plan",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El estado de plan ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Actividad no encontrado."
+          }
+        },
+        "tags": [
+          "estado-plan"
+        ]
+      },
+      "delete": {
+        "operationId": "EstadoController_delete",
+        "summary": "Eliminar un estado de plan",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El estado de plan ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Actividad no encontrada."
+          }
+        },
+        "tags": [
+          "estado-plan"
+        ]
+      }
     }
   },
   "info": {
@@ -716,35 +942,32 @@
           "recurso": {
             "type": "string"
           },
-          "creadoPorId": {
+          "creado_por_id": {
             "type": "number"
           },
-          "estadoId": {
+          "vigencia_id": {
             "type": "number"
           },
-          "vigenciaId": {
-            "type": "number"
-          },
-          "aprobadoJefeDependencia": {
+          "aprobado_jefe_dependencia": {
             "type": "boolean"
           },
-          "jefeDependenciaId": {
+          "jefe_dependencia_id": {
             "type": "number"
           },
-          "aprobadoSecretarioTecnico": {
+          "aprobado_secretario_tecnico": {
             "type": "boolean"
           },
-          "secretarioTecnicoId": {
+          "secretario_tecnico_id": {
             "type": "number"
           },
           "activo": {
             "type": "boolean"
           },
-          "fechaCreacion": {
+          "fecha_creacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fechaModificacion": {
+          "fecha_modificacion": {
             "format": "date-time",
             "type": "string"
           }
@@ -754,65 +977,64 @@
           "alcance",
           "criterio",
           "recurso",
-          "creadoPorId",
-          "estadoId",
-          "vigenciaId",
-          "aprobadoJefeDependencia",
-          "jefeDependenciaId",
-          "aprobadoSecretarioTecnico",
-          "secretarioTecnicoId",
+          "creado_por_id",
+          "vigencia_id",
+          "aprobado_jefe_dependencia",
+          "jefe_dependencia_id",
+          "aprobado_secretario_tecnico",
+          "secretario_tecnico_id",
           "activo",
-          "fechaCreacion",
-          "fechaModificacion"
+          "fecha_creacion",
+          "fecha_modificacion"
         ]
       },
       "AuditoriaDTO": {
         "type": "object",
         "properties": {
-          "planAuditoriaId": {
+          "plan_auditoria_id": {
             "type": "string"
           },
           "titulo": {
             "type": "string"
           },
-          "tipoEvaluacionId": {
+          "tipo_evaluacion_id": {
             "type": "number"
           },
-          "cronogramaId": {
+          "cronograma_id": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "estadoId": {
+          "estado_id": {
             "type": "number"
           },
-          "noAuditoria": {
+          "no_auditoria": {
             "type": "number"
           },
-          "consecutivoOCI": {
+          "consecutivo_OCI": {
             "type": "string"
           },
-          "consecutivoIE": {
+          "consecutivo_IE": {
             "type": "string"
           },
-          "tipoId": {
+          "tipo_id": {
             "type": "number"
           },
           "macroproceso": {
             "type": "number"
           },
-          "liderId": {
+          "lider_id": {
             "type": "number"
           },
-          "responsableId": {
+          "responsable_id": {
             "type": "number"
           },
-          "fechaInicio": {
+          "fecha_inicio": {
             "format": "date-time",
             "type": "string"
           },
-          "fechaFin": {
+          "fecha_fin": {
             "format": "date-time",
             "type": "string"
           },
@@ -825,67 +1047,67 @@
           "criterio": {
             "type": "string"
           },
-          "recTecnologico": {
+          "rec_tecnologico": {
             "type": "string"
           },
-          "recHumano": {
+          "rec_humano": {
             "type": "string"
           },
-          "recFisico": {
+          "rec_fisico": {
             "type": "string"
           },
           "activo": {
             "type": "boolean"
           },
-          "fechaCreacion": {
+          "fecha_creacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fechaModificacion": {
+          "fecha_modificacion": {
             "format": "date-time",
             "type": "string"
           }
         },
         "required": [
-          "planAuditoriaId",
+          "plan_auditoria_id",
           "titulo",
-          "tipoEvaluacionId",
-          "cronogramaId",
-          "estadoId",
-          "noAuditoria",
-          "consecutivoOCI",
-          "consecutivoIE",
-          "tipoId",
+          "tipo_evaluacion_id",
+          "cronograma_id",
+          "estado_id",
+          "no_auditoria",
+          "consecutivo_OCI",
+          "consecutivo_IE",
+          "tipo_id",
           "macroproceso",
-          "liderId",
-          "responsableId",
-          "fechaInicio",
-          "fechaFin",
+          "lider_id",
+          "responsable_id",
+          "fecha_inicio",
+          "fecha_fin",
           "objetivo",
           "alcance",
           "criterio",
-          "recTecnologico",
-          "recHumano",
-          "recFisico",
+          "rec_tecnologico",
+          "rec_humano",
+          "rec_fisico",
           "activo",
-          "fechaCreacion",
-          "fechaModificacion"
+          "fecha_creacion",
+          "fecha_modificacion"
         ]
       },
       "ActividadDTO": {
         "type": "object",
         "properties": {
-          "auditoriaId": {
+          "auditoria_id": {
             "type": "string"
           },
           "titulo": {
             "type": "string"
           },
-          "fechaInicio": {
+          "fecha_inicio": {
             "format": "date-time",
             "type": "string"
           },
-          "fechaFin": {
+          "fecha_fin": {
             "format": "date-time",
             "type": "string"
           },
@@ -898,7 +1120,7 @@
           "folio": {
             "type": "number"
           },
-          "medioId": {
+          "medio_id": {
             "type": "number"
           },
           "carpeta": {
@@ -907,28 +1129,60 @@
           "activo": {
             "type": "boolean"
           },
-          "fechaCreacion": {
+          "fecha_creacion": {
             "format": "date-time",
             "type": "string"
           },
-          "fechaModificacion": {
+          "fecha_modificacion": {
             "format": "date-time",
             "type": "string"
           }
         },
         "required": [
-          "auditoriaId",
+          "auditoria_id",
           "titulo",
-          "fechaInicio",
-          "fechaFin",
+          "fecha_inicio",
+          "fecha_fin",
           "referencia",
           "descripcion",
           "folio",
-          "medioId",
+          "medio_id",
           "carpeta",
           "activo",
-          "fechaCreacion",
-          "fechaModificacion"
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "PlanEstadoDto": {
+        "type": "object",
+        "properties": {
+          "plan_auditoria_id": {
+            "type": "string"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "plan_auditoria_id",
+          "usuario_id",
+          "observacion",
+          "estado_id",
+          "fecha_ejecucion_estado",
+          "activo"
         ]
       }
     }

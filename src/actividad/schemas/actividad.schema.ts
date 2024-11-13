@@ -5,16 +5,16 @@ import { Auditoria } from '../../auditoria/schemas/auditoria.schema'
 @Schema({ collection: 'actividad' })
 export class Actividad extends Document {
     @Prop({ required: false, type: Types.ObjectId, ref: Auditoria.name })
-    auditoriaId: Auditoria | Types.ObjectId;
+    auditoria_id: Auditoria | Types.ObjectId;
 
     @Prop({ required: false })
     titulo: string;
 
     @Prop({ required: false })
-    fechaInicio: Date;
+    fecha_inicio: Date;
 
     @Prop({ required: false })
-    fechaFin: Date;
+    fecha_fin: Date;
 
     @Prop({ required: false })
     referencia: string;
@@ -35,10 +35,10 @@ export class Actividad extends Document {
     activo: boolean;
 
     @Prop({ required: false })
-    fechaCreacion: Date;
+    fecha_creacion: Date;
 
     @Prop({ required: false })
-    fechaModificacion: Date;
+    fecha_modificacion: Date;
 
 }
 

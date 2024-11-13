@@ -16,17 +16,17 @@ export class ActividadService {
   ) { }
 
   private populateFields(): any[] {
-    return [{ path: 'auditoriaId' }];
+    return [{ path: 'auditoria_id' }];
   }
 
   private async checkRelated(ActividadDTO: ActividadDTO) {
-    if (ActividadDTO.auditoriaId) {
+    if (ActividadDTO.auditoria_id) {
       const actividad = await this.PlanAuditoriaModel
-        .findById(ActividadDTO.auditoriaId)
+        .findById(ActividadDTO.auditoria_id)
         .exec();
       if (!actividad) {
         throw new Error(
-          `Auditoria relacionada con id ${ActividadDTO.auditoriaId} no existe`,
+          `Auditoria relacionada con id ${ActividadDTO.auditoria_id} no existe`,
         );
       }
     }
@@ -68,9 +68,9 @@ export class ActividadService {
   }
 
   async put(id: string, ActividadDTO: ActividadDTO): Promise<Actividad> {
-    ActividadDTO.fechaModificacion = new Date();
-    if (ActividadDTO.fechaCreacion) {
-      delete ActividadDTO.fechaCreacion;
+    ActividadDTO.fecha_modificacion = new Date();
+    if (ActividadDTO.fecha_creacion) {
+      delete ActividadDTO.fecha_creacion;
     }
     await this.checkRelated(ActividadDTO);
     const update = await this.ActividadModel
