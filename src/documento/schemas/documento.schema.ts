@@ -5,22 +5,22 @@ import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schem
 
 @Schema({ collection: 'documento' })
 export class Documento extends Document {
-    @Prop({ required: false, type: Types.ObjectId, refPath: 'referencia_modelo' })
-    referencia_id: Auditoria | PlanAuditoria | Types.ObjectId;
+    @Prop({ required: true})
+    referencia_id: String;
 
-    @Prop({ required: false, enum: ['Auditoria', 'Plan Auditoria'] })
+    @Prop({ required: true, enum: ['Auditoria', 'Plan Auditoria'] })
     referencia_tipo: string;
 
-    @Prop({ required: false })
+    @Prop({ required: true })
     nuxeo_id: number;
 
-    @Prop({ required: false })
+    @Prop({ required: true })
     tipo_id: number;
 
-    @Prop({ required: false })
+    @Prop({ required: true })
     activo: boolean;
 
-    @Prop({ required: false })
+    @Prop({ required: true })
     fecha_creacion: Date;
 }
 

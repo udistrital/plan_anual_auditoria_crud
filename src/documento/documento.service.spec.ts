@@ -4,13 +4,12 @@ import { getModelToken } from '@nestjs/mongoose';
 import { DocumentoDTO } from './dto/documento.dto'
 import { Documento } from './schemas/documento.schema'
 import { Model } from 'mongoose';
-import { Auditoria } from '../auditoria/schemas/auditoria.schema'
-import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema'
+
 
 import { FilterDto } from '../filters/filters.dto';
 
 const mockDocumentoDto: DocumentoDTO = {
-  referencia_id: "67197dda3416d2a85e5d6d8f",
+  referencia_id: "6735761419eb159ed6ef0da7",
   referencia_tipo: 'Plan Auditoria',
   nuxeo_id: 123,
   tipo_id: 123,
@@ -32,10 +31,8 @@ const mockPlanAuditoria = {
   titulo: ''
 };
 describe('DocumentoService', () => {
-  let actividadService: DocumentoService;
-  let actividadModel: Model<Documento>;
-  let auditoriaModel: Model<Auditoria>;
-  let planAuditoriaModel: Model<PlanAuditoria>;
+  let documentoService: DocumentoService;
+  let documentoModel: Model<Documento>;
 
 
   beforeEach(async () => {
@@ -52,31 +49,15 @@ describe('DocumentoService', () => {
             countDocuments: jest.fn(),
           },
         },
-        {
-          provide: getModelToken(Auditoria.name),
-          useValue: {
-            findById: jest.fn(),
-          },
-        },
-        {
-          provide: getModelToken(PlanAuditoria.name),
-          useValue: {
-            findById: jest.fn(),
-          },
-        },
+
       ],
     }).compile();
 
-    actividadService = module.get<DocumentoService>(DocumentoService);
-    actividadModel = module.get<Model<Documento>>(
+    documentoService = module.get<DocumentoService>(DocumentoService);
+    documentoModel = module.get<Model<Documento>>(
       getModelToken(Documento.name),
     );
-    auditoriaModel = module.get<Model<Auditoria>>(
-      getModelToken(Auditoria.name),
-    );
-    planAuditoriaModel = module.get<Model<PlanAuditoria>>(
-      getModelToken(PlanAuditoria.name),
-    );
+
   });
 
   it('Debería estar definido', () => {
@@ -84,30 +65,24 @@ describe('DocumentoService', () => {
   });
 
   describe('post', () => {
-    it('Debería crear y devolver una actividad', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAuditoria),
-      } as any);
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
+    it('Debería crear y devolver un documento', async () => {
       jest
-        .spyOn(actividadModel, 'create')
+        .spyOn(documentoModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(mockDocumentoDto as any));
 
-      const result = await actividadService.post(mockDocumentoDto);
+      const result = await documentoService.post(mockDocumentoDto);
       expect(result).toEqual(mockDocumentoDto);
     });
 
     it('Debería lanzar un error si el Documento no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
+      // Simula que el método `create` lanza un error
+      jest
+        .spyOn(documentoModel, 'create')
+        .mockImplementationOnce(() => {
+          throw new Error(`Documento relacionada con id ${mockDocumentoDto.referencia_id} no existe en `);
+        });
 
-      await expect(actividadService.post(mockDocumentoDto)).rejects.toThrow(
+      await expect(documentoService.post(mockDocumentoDto)).rejects.toThrow(
         `Documento relacionada con id ${mockDocumentoDto.referencia_id} no existe en `,
       );
     });
@@ -118,19 +93,13 @@ describe('DocumentoService', () => {
       const mockActividads = [
         mockDocumento,
         {
-          _id: '671aaf35d779a09e092cb732',
+          _id: '6735761419eb159ed6ef0da7',
           referencia_id: "67197dda3416d2a85e5d6d8f",
-          titulo: 'string',
-          fechaInicio: new Date(),
-          fechaFin: new Date(),
-          referencia: 'string',
-          descripcion: 'string',
-          folio: 0,
-          medio_id: 0,
-          carpeta: 'string',
+          referencia_tipo: 'Plan Auditoria',
+          nuxeo_id: 123,
+          tipo_id: 123,
           activo: true,
           fecha_creacion: new Date(),
-          fecha_modificacion: new Date(),
         },
       ];
 
@@ -150,9 +119,9 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockResolvedValue(mockActividads),
       };
 
-      jest.spyOn(actividadModel, 'find').mockReturnValue(mockQuery as any);
+      jest.spyOn(documentoModel, 'find').mockReturnValue(mockQuery as any);
 
-      const result = await actividadService.getAll(mockFilterDto);
+      const result = await documentoService.getAll(mockFilterDto);
 
       expect(result).toEqual(mockActividads);
     });
@@ -160,55 +129,50 @@ describe('DocumentoService', () => {
 
   describe('getById', () => {
     it('Debería retornar una acividad por su ID', async () => {
-      jest.spyOn(actividadModel, 'findById').mockReturnValue({
+      jest.spyOn(documentoModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
           .mockResolvedValue(mockDocumento as unknown as Documento),
       } as any);
 
-      const result = await actividadService.getById(mockDocumento._id);
+      const result = await documentoService.getById(mockDocumento._id);
 
-      expect(actividadModel.findById).toHaveBeenCalledWith(
+      expect(documentoModel.findById).toHaveBeenCalledWith(
         mockDocumento._id,
       );
       expect(result).toEqual(mockDocumento);
     });
 
-    it('Debería lanzar un error si la actividad no existe', async () => {
-      jest.spyOn(actividadModel, 'findById').mockReturnValue({
+    it('Debería lanzar un error si la documento no existe', async () => {
+      jest.spyOn(documentoModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        actividadService.getById(mockDocumento._id),
+        documentoService.getById(mockDocumento._id),
       ).rejects.toThrow(`${mockDocumento._id} no existe`);
 
-      expect(actividadModel.findById).toHaveBeenCalledWith(
+      expect(documentoModel.findById).toHaveBeenCalledWith(
         mockDocumento._id,
       );
     });
   });
 
   describe('put', () => {
-    it('Debería actualizar una actividad', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAuditoria),
-      } as any);
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-      jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
+    it('Debería actualizar una documento', async () => {
+
+      jest.spyOn(documentoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
           .mockResolvedValue(mockDocumentoDto as unknown as Documento),
       } as any);
 
-      const result = await actividadService.put(
+      const result = await documentoService.put(
         mockDocumento._id,
         mockDocumentoDto,
       );
 
-      expect(actividadModel.findByIdAndUpdate).toHaveBeenCalledWith(
+      expect(documentoModel.findByIdAndUpdate).toHaveBeenCalledWith(
         mockDocumento._id,
         mockDocumentoDto,
         { new: true },
@@ -216,22 +180,17 @@ describe('DocumentoService', () => {
       expect(result).toEqual(mockDocumentoDto);
     });
 
-    it('Debería lanzar un error si la actividad no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAuditoria),
-      } as any);
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-      jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
+    it('Debería lanzar un error si la documento no existe', async () => {
+
+      jest.spyOn(documentoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        actividadService.put(mockDocumento._id, mockDocumentoDto),
+        documentoService.put(mockDocumento._id, mockDocumentoDto),
       ).rejects.toThrow(`${mockDocumento._id} no existe`);
 
-      expect(actividadModel.findByIdAndUpdate).toHaveBeenCalledWith(
+      expect(documentoModel.findByIdAndUpdate).toHaveBeenCalledWith(
         mockDocumento._id,
         mockDocumentoDto,
         { new: true },
@@ -239,15 +198,12 @@ describe('DocumentoService', () => {
     });
 
     it('Debería lanzar un error si la Documento relacionado no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+      jest.spyOn(documentoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        actividadService.put(mockDocumento._id, mockDocumentoDto),
+        documentoService.put(mockDocumento._id, mockDocumentoDto),
       ).rejects.toThrow(
         `Documento relacionada con id ${mockDocumentoDto.referencia_id} no existe`,
       );
@@ -255,31 +211,31 @@ describe('DocumentoService', () => {
   });
 
   describe('delete', () => {
-    it('Debería marcar una actividad como inactiva', async () => {
-      jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
+    it('Debería marcar una documento como inactiva', async () => {
+      jest.spyOn(documentoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
           .mockResolvedValue(mockDocumentoDto as unknown as Documento),
       } as any);
 
-      const result = await actividadService.delete(mockDocumento._id);
+      const result = await documentoService.delete(mockDocumento._id);
 
       expect(result).toEqual(mockDocumentoDto);
     });
 
-    it('Debería lanzar un error si la actividad no existe', async () => {
-      jest.spyOn(actividadModel, 'findByIdAndUpdate').mockReturnValue({
+    it('Debería lanzar un error si la documento no existe', async () => {
+      jest.spyOn(documentoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        actividadService.delete(mockDocumento._id),
+        documentoService.delete(mockDocumento._id),
       ).rejects.toThrow(`${mockDocumento._id} no existe`);
     });
   });
 
   describe('count', () => {
-    const filterDto: FilterDto = { 
+    const filterDto: FilterDto = {
       query: 'activo:true',
       fields: '',
       sortby: '',
@@ -289,21 +245,21 @@ describe('DocumentoService', () => {
       populate: '',
     };
     it('Debería retornar la cantidad de documentos', async () => {
-      jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
+      jest.spyOn(documentoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
 
-      const result = await actividadService.count(filterDto);
+      const result = await documentoService.count(filterDto);
 
       expect(result).toBe(2);
     });
 
     it('Debería lanzar un error si countDocuments falla', async () => {
-      jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
+      jest.spyOn(documentoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
-      await expect(actividadService.count(filterDto)).rejects.toThrow(
+      await expect(documentoService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
     });

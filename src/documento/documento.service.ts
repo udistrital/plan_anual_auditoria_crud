@@ -18,17 +18,17 @@ export class DocumentoService {
     constructor(
         @InjectModel(Documento.name)
         private readonly DocumentoModel: Model<Documento>,
-        @InjectModel(PlanAuditoria.name)
-        private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
-        @InjectModel(Auditoria.name)
-        private readonly AuditoriaModel: Model<Auditoria>
+       // @InjectModel(PlanAuditoria.name)
+        //private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
+        //@InjectModel(Auditoria.name)
+        //private readonly AuditoriaModel: Model<Auditoria>
     ) { }
     
     private populateFields(): any[] {
         return [{ path: '' }];
     }
 
-    private async checkRelated(DocumentoDTO: DocumentoDTO) {
+    /*private async checkRelated(DocumentoDTO: DocumentoDTO) {
         const referenciaValida = this.referenciaTipo.find(
             (tipo) => tipo.Nombre === DocumentoDTO.referencia_tipo
         );
@@ -54,7 +54,7 @@ export class DocumentoService {
                 );
             }
         }
-    }
+    }*/
 
     async post(DocumentoDTO: DocumentoDTO): Promise<Documento> {
         const fecha = new Date();
@@ -63,7 +63,7 @@ export class DocumentoService {
             activo: true,
             fechaCreacion: fecha,
         };
-        await this.checkRelated(DocumentoDTO);
+       // await this.checkRelated(DocumentoDTO);
         return await this.DocumentoModel.create(actividadData);
     }
 
@@ -96,12 +96,12 @@ export class DocumentoService {
         if (DocumentoDTO.fecha_creacion) {
             delete DocumentoDTO.fecha_creacion;
         }
-        await this.checkRelated(DocumentoDTO);
+       // await this.checkRelated(DocumentoDTO);
         const update = await this.DocumentoModel
             .findByIdAndUpdate(id, DocumentoDTO, { new: true })
             .exec();
         if (!update) {
-            throw new Error(`${id} no existe`);
+            throw new Error(`Documento relacionada con id ${id} no existe`);
         }
         return update;
     }

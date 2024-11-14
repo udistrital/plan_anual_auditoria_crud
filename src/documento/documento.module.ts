@@ -9,8 +9,6 @@ import { PlanAuditoria, PlanAuditoriaSchema } from '../plan-auditoria/schemas/pl
   imports: [
     MongooseModule.forFeature([
       { name: Documento.name, schema: DocumentoSchema },
-      { name: Auditoria.name, schema: AuditoriaSchema },
-      { name: PlanAuditoria.name, schema: PlanAuditoriaSchema },
     ]),
   ],
   controllers: [DocumentoController],
