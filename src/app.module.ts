@@ -7,6 +7,7 @@ import { PlanAuditoriaModule } from './plan-auditoria/plan-auditoria.module';
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ActividadModule } from './actividad/actividad.module';
 import { EstadoModule } from './estado/estado.module';
+import { DocumentoModule } from './documento/documento.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { EstadoModule } from './estado/estado.module';
     AuditoriaModule,
     ActividadModule,
     EstadoModule,
+    DocumentoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

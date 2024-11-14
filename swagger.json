@@ -915,6 +915,232 @@
           "estado-plan"
         ]
       }
+    },
+    "/documento": {
+      "post": {
+        "operationId": "DocumentoController_post",
+        "summary": "Crear un nueva documento",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El documento ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "documento"
+        ]
+      },
+      "get": {
+        "operationId": "DocumentoController_getAll",
+        "summary": "Obtener todas las actividades",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las actividades.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentoDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "documento"
+        ]
+      }
+    },
+    "/documento/{id}": {
+      "get": {
+        "operationId": "DocumentoController_getById",
+        "summary": "Obtener un documento por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la documento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Documento no encontrada."
+          }
+        },
+        "tags": [
+          "documento"
+        ]
+      },
+      "put": {
+        "operationId": "DocumentoController_put",
+        "summary": "Actualizar una documento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La documento ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentoDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Documento no encontrado."
+          }
+        },
+        "tags": [
+          "documento"
+        ]
+      },
+      "delete": {
+        "operationId": "DocumentoController_delete",
+        "summary": "Eliminar una documento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La documento ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Documento no encontrada."
+          }
+        },
+        "tags": [
+          "documento"
+        ]
+      }
     }
   },
   "info": {
@@ -1183,6 +1409,38 @@
           "estado_id",
           "fecha_ejecucion_estado",
           "activo"
+        ]
+      },
+      "DocumentoDTO": {
+        "type": "object",
+        "properties": {
+          "referencia_id": {
+            "type": "string"
+          },
+          "referencia_tipo": {
+            "type": "string"
+          },
+          "nuxeo_id": {
+            "type": "number"
+          },
+          "tipo_id": {
+            "type": "number"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "referencia_id",
+          "referencia_tipo",
+          "nuxeo_id",
+          "tipo_id",
+          "activo",
+          "fecha_creacion"
         ]
       }
     }

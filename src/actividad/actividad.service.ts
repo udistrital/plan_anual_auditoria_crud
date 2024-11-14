@@ -12,7 +12,7 @@ export class ActividadService {
     @InjectModel(Actividad.name)
     private readonly ActividadModel: Model<Actividad>,
     @InjectModel(Auditoria.name)
-    private readonly PlanAuditoriaModel: Model<Auditoria>
+    private readonly AuditoriaModel: Model<Auditoria>
   ) { }
 
   private populateFields(): any[] {
@@ -21,7 +21,7 @@ export class ActividadService {
 
   private async checkRelated(ActividadDTO: ActividadDTO) {
     if (ActividadDTO.auditoria_id) {
-      const actividad = await this.PlanAuditoriaModel
+      const actividad = await this.AuditoriaModel
         .findById(ActividadDTO.auditoria_id)
         .exec();
       if (!actividad) {
