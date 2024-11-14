@@ -16,34 +16,31 @@ export class PlanAuditoria extends Document {
   recurso: string;
 
   @Prop({ required: false })
-  creadoPorId: number;
-
-  @Prop({ required: false })
-  estadoId: number;
+  creado_por_id: number;
 
   @Prop({ required: true, unique: true })
-  vigenciaId: number;
+  vigencia_id: number;
 
   @Prop({ required: false })
-  aprobadoJefeDependencia: boolean;
+  aprobado_jefe_dependencia: boolean;
 
   @Prop({ required: false })
-  jefeDependencia_id: number;
+  jefe_dependencia_id: number;
 
   @Prop({ required: false })
-  aprobadoSecretario_tecnico: boolean;
+  aprobado_secretario_tecnico: boolean;
 
   @Prop({ required: false })
-  secretarioTecnico_id: number;
+  secretario_tecnico_id: number;
 
   @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })
-  fechaCreacion: Date;
+  fecha_creacion: Date;
 
   @Prop({ required: false })
-  fechaModificacion: Date;
+  fecha_modificacion: Date;
 
 }
 export const PlanAuditoriaSchema = SchemaFactory.createForClass(PlanAuditoria);

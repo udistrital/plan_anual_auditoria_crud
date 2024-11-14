@@ -6,6 +6,7 @@ import { environment } from './config/configuration';
 import { PlanAuditoriaModule } from './plan-auditoria/plan-auditoria.module';
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ActividadModule } from './actividad/actividad.module';
+import { EstadoModule } from './estado/estado.module';
 import { DocumentoModule } from './documento/documento.module';
 
 
@@ -19,6 +20,7 @@ import { DocumentoModule } from './documento/documento.module';
     PlanAuditoriaModule,
     AuditoriaModule,
     ActividadModule,
+    EstadoModule,
     DocumentoModule,
   ],
   controllers: [AppController],

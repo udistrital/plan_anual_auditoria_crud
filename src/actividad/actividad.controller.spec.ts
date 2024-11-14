@@ -4,21 +4,20 @@ import { ActividadDTO } from './dto/actividad.dto'
 import { ActividadService } from './actividad.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
-import {Actividad} from './schemas/actividad.schema'
 
 const mockActividadDto: ActividadDTO = {
-  auditoriaId: "671aaa8a064222e6583d56e7",
+  auditoria_id: "671aaa8a064222e6583d56e7",
   titulo: 'string',
-  fechaInicio: new Date(),
-  fechaFin: new Date(),
+  fecha_inicio: new Date(),
+  fecha_fin: new Date(),
   referencia: 'string',
   descripcion: 'string',
   folio: 0,
-  medioId: 0,
+  medio_id: 0,
   carpeta: 'string',
   activo: true,
-  fechaCreacion: new Date(),
-  fechaModificacion: new Date(),
+  fecha_creacion: new Date(),
+  fecha_modificacion: new Date(),
 };
 
 const mockActividad = {

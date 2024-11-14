@@ -1,60 +1,37 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuditoriaService } from './auditoria.service';
+import { EstadoService } from './estado.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Auditoria } from './schemas/auditoria.schema';
-import { AuditoriaDTO } from './dto/auditoria.dto';
+import { PlanEstado } from './schema/estado.schema';
+import { PlanEstadoDto } from './dto/estado.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
-const mockAuditoriaDTO: AuditoriaDTO = {
-  titulo: "auditoria 1",
-  tipo_evaluacion_id: 2,
-  plan_auditoria_id: "67197dda3416d2a85e5d6d8f",
-  cronograma_id: Array (3),
-  estado_id: 3,
-  no_auditoria: 123420,
-  consecutivo_OCI: "EHS54F",
-  consecutivo_IE: "PASJF4532",
-  tipo_id: 3,
-  macroproceso: 4,
-  lider_id: 3,
-  responsable_id: 34,
-  fecha_inicio: new Date(),
-  fecha_fin: new Date(),
-  objetivo: "objetivo",
-  alcance: "alcance",
-  criterio: "criterio",
-  rec_tecnologico: "rec_T",
-  rec_humano: "rec_H",
-  rec_fisico: "rec_F",
-  activo: true,
-  fecha_creacion: new Date(),
-  fecha_modificacion: new Date(),
+
+const mockEstadoPlanDTO: PlanEstadoDto = {
+  plan_auditoria_id: "672d3050f7814a9a0c5261d4",
+  usuario_id: 76767,
+  observacion: "llll",
+  estado_id: 2552,
+  fecha_ejecucion_estado: new Date(),
+  activo: true
+}
+
+const mockEstadoPlan = {
+  ...mockEstadoPlanDTO,
+  _id: '672d36737e962bcac5ce9beb',
 };
-
-
-const mockAuditoria = {
-  ...mockAuditoriaDTO,
-  _id: '671aa963064222e6583d56e4',
-};
-
-const mockPlanAuditoria = {
-  _id: '66aed6a431c4ca1c60085cdd',
-  nombre: 'PlanAuditoria de Prueba',
-};
-
-describe('AuditoriaService', () => {
-  let auditoriaService: AuditoriaService;
-  let auditoriaModel: Model<Auditoria>;
+describe('EstadoService', () => {
+  let estadoPlanService: EstadoService;
+  let PlanEstadoModel: Model<PlanEstado>;
   let planAuditoriaModel: Model<PlanAuditoria>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AuditoriaService,
+        EstadoService,
         {
-          provide: getModelToken(Auditoria.name),
+          provide: getModelToken(PlanEstado.name),
           useValue: {
             create: jest.fn(),
             find: jest.fn(),
@@ -72,9 +49,9 @@ describe('AuditoriaService', () => {
       ],
     }).compile();
 
-    auditoriaService = module.get<AuditoriaService>(AuditoriaService);
-    auditoriaModel = module.get<Model<Auditoria>>(
-      getModelToken(Auditoria.name),
+    estadoPlanService = module.get<EstadoService>(EstadoService);
+    PlanEstadoModel = module.get<Model<PlanEstado>>(
+      getModelToken(PlanEstado.name),
     );
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
@@ -82,29 +59,29 @@ describe('AuditoriaService', () => {
   });
 
   it('Debería estar definido', () => {
-    expect(AuditoriaService).toBeDefined();
+    expect(EstadoService).toBeDefined();
   });
 
   describe('post', () => {
     it('Debería crear y devolver una auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockEstadoPlan),
       } as any);
       jest
-        .spyOn(auditoriaModel, 'create')
-        .mockImplementationOnce(() => Promise.resolve(mockAuditoriaDTO as any));
+        .spyOn(PlanEstadoModel, 'create')
+        .mockImplementationOnce(() => Promise.resolve(mockEstadoPlanDTO as any));
 
-      const result = await auditoriaService.post(mockAuditoriaDTO);
-      expect(result).toEqual(mockAuditoriaDTO);
+      const result = await estadoPlanService.post(mockEstadoPlanDTO);
+      expect(result).toEqual(mockEstadoPlanDTO);
     });
 
-    it('Debería lanzar un error si el PlanAuditoria no existe', async () => {
+    it('Debería lanzar un error si el Plan auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
-        `Plan auditoria relacionada con id ${mockAuditoriaDTO.plan_auditoria_id} no existe`,
+      await expect(estadoPlanService.post(mockEstadoPlanDTO)).rejects.toThrow(
+        `Plan auditoria relacionada con id ${mockEstadoPlanDTO.plan_auditoria_id} no existe`,
       );
     });
   });
@@ -112,7 +89,7 @@ describe('AuditoriaService', () => {
   describe('getAll', () => {
     it('Debería retornar todas las auditorias con filtros aplicados', async () => {
       const mockAuditorias = [
-        mockAuditoria,
+        mockEstadoPlan,
         {
           _id: '671aa963064222e6583d56e4',
           titulo: "auditoria 1",
@@ -157,9 +134,9 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(mockAuditorias),
       };
 
-      jest.spyOn(auditoriaModel, 'find').mockReturnValue(mockQuery as any);
+      jest.spyOn(PlanEstadoModel, 'find').mockReturnValue(mockQuery as any);
 
-      const result = await auditoriaService.getAll(mockFilterDto);
+      const result = await estadoPlanService.getAll(mockFilterDto);
 
       expect(result).toEqual(mockAuditorias);
     });
@@ -167,31 +144,31 @@ describe('AuditoriaService', () => {
 
   describe('getById', () => {
     it('Debería retornar una auditoria por su ID', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findById').mockReturnValue({
         exec: jest
           .fn()
-          .mockResolvedValue(mockAuditoria as unknown as Auditoria),
+          .mockResolvedValue(mockEstadoPlan as unknown as PlanEstado),
       } as any);
 
-      const result = await auditoriaService.getById(mockAuditoria._id);
+      const result = await estadoPlanService.getById(mockEstadoPlan._id);
 
-      expect(auditoriaModel.findById).toHaveBeenCalledWith(
-        mockAuditoria._id,
+      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(
+        mockEstadoPlan._id,
       );
-      expect(result).toEqual(mockAuditoria);
+      expect(result).toEqual(mockEstadoPlan);
     });
 
     it('Debería lanzar un error si la auditoria no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        auditoriaService.getById(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
+        estadoPlanService.getById(mockEstadoPlan._id),
+      ).rejects.toThrow(`${mockEstadoPlan._id} no existe`);
 
-      expect(auditoriaModel.findById).toHaveBeenCalledWith(
-        mockAuditoria._id,
+      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(
+        mockEstadoPlan._id,
       );
     });
   });
@@ -199,80 +176,80 @@ describe('AuditoriaService', () => {
   describe('put', () => {
     it('Debería actualizar una auditoria', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockEstadoPlan),
       } as any);
-      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
-          .mockResolvedValue(mockAuditoriaDTO as unknown as Auditoria),
+          .mockResolvedValue(mockEstadoPlanDTO as unknown as PlanEstado),
       } as any);
 
-      const result = await auditoriaService.put(
-        mockAuditoria._id,
-        mockAuditoriaDTO,
+      const result = await estadoPlanService.put(
+        mockEstadoPlan._id,
+        mockEstadoPlanDTO,
       );
 
-      expect(auditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockAuditoria._id,
-        mockAuditoriaDTO,
+      expect(PlanEstadoModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        mockEstadoPlan._id,
+        mockEstadoPlanDTO,
         { new: true },
       );
-      expect(result).toEqual(mockAuditoriaDTO);
+      expect(result).toEqual(mockEstadoPlanDTO);
     });
 
     it('Debería lanzar un error si la auditoria no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+        exec: jest.fn().mockResolvedValue(mockEstadoPlan),
       } as any);
-      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
-      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
+        estadoPlanService.put(mockEstadoPlan._id, mockEstadoPlanDTO),
+      ).rejects.toThrow(`${mockEstadoPlan._id} no existe`);
 
-      expect(auditoriaModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockAuditoria._id,
-        mockAuditoriaDTO,
+      expect(PlanEstadoModel.findByIdAndUpdate).toHaveBeenCalledWith(
+        mockEstadoPlan._id,
+        mockEstadoPlanDTO,
         { new: true },
       );
     });
 
-    it('Debería lanzar un error si el PlanAuditoria relacionado no existe', async () => {
+    it('Debería lanzar un error si el Plan auditoria relacionado no existe', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        auditoriaService.put(mockAuditoria._id, mockAuditoriaDTO),
+        estadoPlanService.put(mockEstadoPlan._id, mockEstadoPlanDTO),
       ).rejects.toThrow(
-        `Plan auditoria relacionada con id ${mockAuditoriaDTO.plan_auditoria_id} no existe`,
+        `Plan auditoria relacionada con id ${mockEstadoPlanDTO.plan_auditoria_id} no existe`,
       );
     });
   });
 
   describe('delete', () => {
     it('Debería marcar una auditoria como inactiva', async () => {
-      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
-          .mockResolvedValue(mockAuditoriaDTO as unknown as Auditoria),
+          .mockResolvedValue(mockEstadoPlanDTO as unknown as PlanEstado),
       } as any);
 
-      const result = await auditoriaService.delete(mockAuditoria._id);
+      const result = await estadoPlanService.delete(mockEstadoPlan._id);
 
-      expect(result).toEqual(mockAuditoriaDTO);
+      expect(result).toEqual(mockEstadoPlanDTO);
     });
 
     it('Debería lanzar un error si la auditoria no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        auditoriaService.delete(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
+        estadoPlanService.delete(mockEstadoPlan._id),
+      ).rejects.toThrow(`${mockEstadoPlan._id} no existe`);
     });
   });
 
@@ -288,21 +265,21 @@ describe('AuditoriaService', () => {
     };
     it('Debería retornar la cantidad de documentos', async () => {
       
-      jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
 
-      const result = await auditoriaService.count(filterDto);
+      const result = await estadoPlanService.count(filterDto);
 
       expect(result).toBe(2);
     });
 
     it('Debería lanzar un error si countDocuments falla', async () => {
-      jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
+      jest.spyOn(PlanEstadoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
-      await expect(auditoriaService.count(filterDto)).rejects.toThrow(
+      await expect(estadoPlanService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
     });

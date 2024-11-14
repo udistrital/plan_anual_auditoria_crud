@@ -16,21 +16,21 @@ export class PlanAuditoriaService {
   async post(planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
     const fecha = new Date();
 
-    // Validar que no exista un plan con el mismo vigenciaId
-    const existingPlan = await this.planAuditoriaModel.findOne({ vigenciaId: planAuditoriaDto.vigenciaId });
+    // Validar que no exista un plan con el mismo vigencia_id
+    const existingPlan = await this.planAuditoriaModel.findOne({ vigencia_id: planAuditoriaDto.vigencia_id });
     if (existingPlan) {
-      throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigenciaId}`);
+      throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigencia_id}`);
     }
 
     const planAuditoriaData = {
       ...planAuditoriaDto,
       activo: true,
-      fechaCreacion: fecha,
-      fechaModificacion: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
     return await this.planAuditoriaModel.create(planAuditoriaData);
   }
-  
+
   async getAll(filterDto: FilterDto): Promise<PlanAuditoria[]> {
     const filtersService = new FiltersService(filterDto);
     return await this.planAuditoriaModel
@@ -52,17 +52,17 @@ export class PlanAuditoriaService {
   }
 
   async put(id: string, planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
-    planAuditoriaDto.fechaModificacion = new Date();
+    planAuditoriaDto.fecha_modificacion = new Date();
 
-    if (planAuditoriaDto.vigenciaId) {
-      const existingPlan = await this.planAuditoriaModel.findOne({ vigenciaId: planAuditoriaDto.vigenciaId, _id: { $ne: id } });
+    if (planAuditoriaDto.vigencia_id) {
+      const existingPlan = await this.planAuditoriaModel.findOne({ vigencia_id: planAuditoriaDto.vigencia_id, _id: { $ne: id } });
       if (existingPlan) {
-        throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigenciaId}`);
+        throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigencia_id}`);
       }
     }
 
-    if (planAuditoriaDto.fechaCreacion) {
-      delete planAuditoriaDto.fechaCreacion;
+    if (planAuditoriaDto.fecha_creacion) {
+      delete planAuditoriaDto.fecha_creacion;
     }
     const update = await this.planAuditoriaModel
       .findByIdAndUpdate(id, planAuditoriaDto, { new: true })
@@ -71,6 +71,7 @@ export class PlanAuditoriaService {
       throw new Error(`${id} no existe`);
     }
     return update;
+
   }
 
   async delete(id: string): Promise<PlanAuditoria> {
@@ -88,5 +89,5 @@ export class PlanAuditoriaService {
     return await this.planAuditoriaModel
       .countDocuments(filtersService.getQuery())
       .exec();
-    }
+  }
 }
