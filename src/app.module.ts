@@ -24,14 +24,4 @@ import { EstadoModule } from './estado/estado.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  /*constructor() {
-    console.log('Database connection details:');
-    console.log('USER:', environment.PLAN_ANUAL_AUDITORIA_USER);
-    console.log('PASS:', environment.PLAN_ANUAL_AUDITORIA_PASS);
-    console.log('HOST:', environment.PLAN_ANUAL_AUDITORIA_HOST);
-    console.log('PORT:', environment.PLAN_ANUAL_AUDITORIA_PORT);
-    console.log('DB:', environment.PLAN_ANUAL_AUDITORIA_DB);
-    console.log('AUTH_DB:', environment.PLAN_ANUAL_AUDITORIA_AUTH_DB);
-  }*/
-}
+export class AppModule {}
