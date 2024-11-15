@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { environment } from './config/configuration';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlanAuditoriaModule } from './plan-auditoria/plan-auditoria.module';
 import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ActividadModule } from './actividad/actividad.module';
@@ -11,11 +11,17 @@ import { EstadoModule } from './estado/estado.module';
 
 @Module({
   imports: [
-
-    MongooseModule.forRoot(
-      `mongodb://${environment.PLAN_ANUAL_AUDITORIA_USER}:${environment.PLAN_ANUAL_AUDITORIA_PASS}@` +
-      `${environment.PLAN_ANUAL_AUDITORIA_HOST}:${environment.PLAN_ANUAL_AUDITORIA_PORT}/${environment.PLAN_ANUAL_AUDITORIA_DB}?authSource=${environment.PLAN_ANUAL_AUDITORIA_AUTH_DB}`,
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: async (configService : ConfigService) => ({
+        uri: `mongodb://${configService.get('PLAN_ANUAL_AUDITORIA_USER')}:${configService.get('PLAN_ANUAL_AUDITORIA_PASS')}@` +
+      `${configService.get('PLAN_ANUAL_AUDITORIA_HOST')}:${configService.get('PLAN_ANUAL_AUDITORIA_PORT')}/${configService.get('PLAN_ANUAL_AUDITORIA_DB')}` + 
+      `?authSource=${configService.get('PLAN_ANUAL_AUDITORIA_AUTH_DB')}`
+      }),
+      inject: [ConfigService]
+    }),
     PlanAuditoriaModule,
     AuditoriaModule,
     ActividadModule,
