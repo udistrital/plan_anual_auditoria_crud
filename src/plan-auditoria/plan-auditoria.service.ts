@@ -16,10 +16,12 @@ export class PlanAuditoriaService {
   async post(planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
     const fecha = new Date();
 
-    // Validar que no exista un plan con el mismo vigencia_id
-    const existingPlan = await this.planAuditoriaModel.findOne({ vigencia_id: planAuditoriaDto.vigencia_id });
+    const existingPlan = await this.planAuditoriaModel.findOne({
+      vigencia_id: planAuditoriaDto.vigencia_id,
+      activo: true, 
+    });
     if (existingPlan) {
-      throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigencia_id}`);
+      throw new Error(`Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`);
     }
 
     const planAuditoriaData = {
@@ -55,11 +57,15 @@ export class PlanAuditoriaService {
     planAuditoriaDto.fecha_modificacion = new Date();
 
     if (planAuditoriaDto.vigencia_id) {
-      const existingPlan = await this.planAuditoriaModel.findOne({ vigencia_id: planAuditoriaDto.vigencia_id, _id: { $ne: id } });
-      if (existingPlan) {
-        throw new Error(`Ya existe un plan de auditoría para la vigencia ${planAuditoriaDto.vigencia_id}`);
-      }
+    const existingPlan = await this.planAuditoriaModel.findOne({
+      vigencia_id: planAuditoriaDto.vigencia_id,
+      _id: { $ne: id },
+      activo: true, 
+    });
+    if (existingPlan) {
+      throw new Error(`Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`);
     }
+  }
 
     if (planAuditoriaDto.fecha_creacion) {
       delete planAuditoriaDto.fecha_creacion;
