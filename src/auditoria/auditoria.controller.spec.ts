@@ -12,6 +12,7 @@ const mockAuditoriaDTO: AuditoriaDTO = {
   cronograma_id: Array(3),
   estado_id: 3,
   no_auditoria: 123420,
+  vigencia_id: 1234,
   consecutivo_OCI: "EHS54F",
   consecutivo_IE: "PASJF4532",
   tipo_id: 3,

@@ -1238,6 +1238,9 @@
           "no_auditoria": {
             "type": "number"
           },
+          "vigencia_id": {
+            "type": "number"
+          },
           "consecutivo_OCI": {
             "type": "string"
           },
@@ -1301,6 +1304,7 @@
           "cronograma_id",
           "estado_id",
           "no_auditoria",
+          "vigencia_id",
           "consecutivo_OCI",
           "consecutivo_IE",
           "tipo_id",

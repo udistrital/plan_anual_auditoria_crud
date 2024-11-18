@@ -21,6 +21,9 @@ export class Auditoria extends Document {
 
   @Prop({ required: false })
   no_auditoria: number;
+  
+  @Prop({ required: true })
+  vigencia_id: number;
 
   @Prop({ required: false })
   consecutivo_OCI: string;

@@ -18,6 +18,9 @@ export class AuditoriaDTO {
 
   @ApiProperty()
   readonly no_auditoria: number;
+  
+  @ApiProperty()
+  readonly vigencia_id: number;
 
   @ApiProperty()
   readonly consecutivo_OCI: string;
