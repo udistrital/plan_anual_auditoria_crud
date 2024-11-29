@@ -9,6 +9,12 @@ export class AuditorDTO {
 
     @ApiProperty()
     readonly asignado: boolean;
+    
+    @ApiProperty()
+    readonly asignado_por_id: number;
+    @ApiProperty()
+
+    readonly auditor_lider: boolean;
 
     @ApiProperty()
     activo: boolean;

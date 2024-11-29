@@ -1685,6 +1685,12 @@
           "asignado": {
             "type": "boolean"
           },
+          "asignado_por_id": {
+            "type": "number"
+          },
+          "auditori_lider": {
+            "type": "boolean"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -1701,6 +1707,8 @@
           "auditoria_id",
           "documento_id",
           "asignado",
+          "asignado_por_id",
+          "auditori_lider",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

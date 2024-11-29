@@ -13,6 +13,12 @@ export class Auditor extends Document {
     @Prop({ required: true, default: true })
     asignado: boolean;
 
+    @Prop({ required: true })
+    asignado_por_id: number;
+
+    @Prop({ required: true })
+    auditor_lider: boolean;
+
     @Prop({ required: false })
     activo: boolean;
 
