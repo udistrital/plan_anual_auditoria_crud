@@ -1680,7 +1680,7 @@
             "type": "string"
           },
           "documento_id": {
-            "type": "string"
+            "type": "number"
           },
           "asignado": {
             "type": "boolean"

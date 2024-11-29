@@ -8,9 +8,9 @@ export class Auditor extends Document {
     auditoria_id: Auditoria | Types.ObjectId;
 
     @Prop({ required: true })
-    documento_id: string;
+    documento_id: number;
 
-    @Prop({ required: true })
+    @Prop({ required: true, default: true })
     asignado: boolean;
 
     @Prop({ required: false })
