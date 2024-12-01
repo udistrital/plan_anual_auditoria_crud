@@ -1141,6 +1141,232 @@
           "documento"
         ]
       }
+    },
+    "/auditor": {
+      "post": {
+        "operationId": "AuditorController_post",
+        "summary": "Crear un nueva auditor",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditorDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El auditor ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditorDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "auditor"
+        ]
+      },
+      "get": {
+        "operationId": "AuditorController_getAll",
+        "summary": "Obtener todas las actividades",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las actividades.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditorDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auditor"
+        ]
+      }
+    },
+    "/auditor/{id}": {
+      "get": {
+        "operationId": "AuditorController_getById",
+        "summary": "Obtener un auditor por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la auditor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditorDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Auditor no encontrada."
+          }
+        },
+        "tags": [
+          "auditor"
+        ]
+      },
+      "put": {
+        "operationId": "AuditorController_put",
+        "summary": "Actualizar un auditor",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditorDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La auditor ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditorDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Auditor no encontrado."
+          }
+        },
+        "tags": [
+          "auditor"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditorController_delete",
+        "summary": "Eliminar un auditor",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La auditor ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Auditor no encontrada."
+          }
+        },
+        "tags": [
+          "auditor"
+        ]
+      }
     }
   },
   "info": {
@@ -1445,6 +1671,47 @@
           "tipo_id",
           "activo",
           "fecha_creacion"
+        ]
+      },
+      "AuditorDTO": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "type": "string"
+          },
+          "documento_id": {
+            "type": "number"
+          },
+          "asignado": {
+            "type": "boolean"
+          },
+          "asignado_por_id": {
+            "type": "number"
+          },
+          "auditori_lider": {
+            "type": "boolean"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "auditoria_id",
+          "documento_id",
+          "asignado",
+          "asignado_por_id",
+          "auditori_lider",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
         ]
       }
     }
