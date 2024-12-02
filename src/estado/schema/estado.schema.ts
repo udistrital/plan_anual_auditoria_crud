@@ -14,6 +14,9 @@ export class PlanEstado extends Document {
     observacion: string;
 
     @Prop({ required: false })
+    actual: boolean;
+
+    @Prop({ required: false })
     estado_id: number;
 
     @Prop({ required: false })

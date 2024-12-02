@@ -1621,6 +1621,9 @@
           "observacion": {
             "type": "string"
           },
+          "actual": {
+            "type": "boolean"
+          },
           "estado_id": {
             "type": "number"
           },
@@ -1636,6 +1639,7 @@
           "plan_auditoria_id",
           "usuario_id",
           "observacion",
+          "actual",
           "estado_id",
           "fecha_ejecucion_estado",
           "activo"
