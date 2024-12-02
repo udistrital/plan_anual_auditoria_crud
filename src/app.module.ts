@@ -8,7 +8,7 @@ import { AuditoriaModule } from './auditoria/auditoria.module';
 import { ActividadModule } from './actividad/actividad.module';
 import { EstadoModule } from './estado/estado.module';
 import { DocumentoModule } from './documento/documento.module';
-import { AuditorModule } from './auditor/auditor.module';
+import { AuditorModule } from './auditoria-auditor/auditor.module';
 
 
 @Module({
