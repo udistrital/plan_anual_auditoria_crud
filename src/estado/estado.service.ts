@@ -31,16 +31,31 @@ export class EstadoService {
       }
     }
   }
+
   async post(PlanEstadoDto: PlanEstadoDto): Promise<PlanEstado> {
     const fecha = new Date();
     const planEstadoData = {
       ...PlanEstadoDto,
+      actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-    await this.checkRelated(PlanEstadoDto);
+  
+    const estadosRelacionados = await this.PlanEstadoModel.find({
+      plan_auditoria_id: PlanEstadoDto.plan_auditoria_id,
+      actual: true,
+    });
+
+    if (estadosRelacionados.length > 0) {
+      await this.PlanEstadoModel.updateMany(
+        { plan_auditoria_id: PlanEstadoDto.plan_auditoria_id, actual: true },
+        { $set: { actual: false } }
+      );
+    }
+  
     return await this.PlanEstadoModel.create(planEstadoData);
   }
+
   async getAll(filterDto: FilterDto): Promise<PlanEstado[]> {
     const filtersService = new FiltersService(filterDto);
     let populateFields = [];

@@ -11,6 +11,9 @@ export class PlanEstadoDto {
     readonly observacion: string;
 
     @ApiProperty()
+    readonly actual: boolean;
+
+    @ApiProperty()
     readonly estado_id: number;
 
     @ApiProperty()
