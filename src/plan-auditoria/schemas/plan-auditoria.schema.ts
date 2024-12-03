@@ -33,6 +33,9 @@ export class PlanAuditoria extends Document {
   @Prop({ required: false })
   secretario_tecnico_id: number;
 
+  @Prop({ type: [{ type: String }], required: false })
+  auditorias: string[];
+
   @Prop({ required: false })
   activo: boolean;
 
