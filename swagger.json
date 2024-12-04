@@ -1412,6 +1412,12 @@
           "secretario_tecnico_id": {
             "type": "number"
           },
+          "auditorias": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "activo": {
             "type": "boolean"
           },
@@ -1435,6 +1441,7 @@
           "jefe_dependencia_id",
           "aprobado_secretario_tecnico",
           "secretario_tecnico_id",
+          "auditorias",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

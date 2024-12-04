@@ -33,6 +33,9 @@ export class PlanAuditoriaDTO {
     readonly secretario_tecnico_id: number;
 
     @ApiProperty()
+    readonly auditorias: string[];
+
+    @ApiProperty()
     activo: boolean;
 
     @ApiProperty()
