@@ -1683,7 +1683,7 @@
           "auditoria_id": {
             "type": "string"
           },
-          "documento_id": {
+          "auditor_id": {
             "type": "number"
           },
           "asignado": {
@@ -1692,7 +1692,7 @@
           "asignado_por_id": {
             "type": "number"
           },
-          "auditori_lider": {
+          "auditor_lider": {
             "type": "boolean"
           },
           "activo": {
@@ -1709,10 +1709,10 @@
         },
         "required": [
           "auditoria_id",
-          "documento_id",
+          "auditor_id",
           "asignado",
           "asignado_por_id",
-          "auditori_lider",
+          "auditor_lider",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

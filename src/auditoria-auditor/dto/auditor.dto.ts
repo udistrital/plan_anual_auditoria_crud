@@ -5,7 +5,7 @@ export class AuditorDTO {
     readonly auditoria_id: string;
 
     @ApiProperty()
-    readonly documento_id: number;
+    readonly auditor_id: number;
 
     @ApiProperty()
     readonly asignado: boolean;
