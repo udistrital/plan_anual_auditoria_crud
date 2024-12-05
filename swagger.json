@@ -1664,6 +1664,9 @@
           "nuxeo_id": {
             "type": "number"
           },
+          "nuxeo_enlace": {
+            "type": "string"
+          },
           "tipo_id": {
             "type": "number"
           },
@@ -1679,6 +1682,7 @@
           "referencia_id",
           "referencia_tipo",
           "nuxeo_id",
+          "nuxeo_enlace",
           "tipo_id",
           "activo",
           "fecha_creacion"

@@ -1,7 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Auditoria } from '../../auditoria/schemas/auditoria.schema'
-import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schema'
+
 
 @Schema({ collection: 'documento' })
 export class Documento extends Document {
@@ -13,6 +12,9 @@ export class Documento extends Document {
 
     @Prop({ required: true })
     nuxeo_id: number;
+
+    @Prop({ required: true })
+    nuxeo_enlace: string;
 
     @Prop({ required: true })
     tipo_id: number;
