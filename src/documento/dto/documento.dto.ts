@@ -11,6 +11,9 @@ export class DocumentoDTO {
     readonly nuxeo_id: number;
 
     @ApiProperty()
+    readonly nuxeo_enlace: string;
+
+    @ApiProperty()
     readonly tipo_id: number;
 
     @ApiProperty()
