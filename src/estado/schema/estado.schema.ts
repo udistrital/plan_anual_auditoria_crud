@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schema';
 //cuantos estados pueden estar activos por plan de auditorita al tiempo?
-@Schema({ collection: 'plan-estado' })
+@Schema({ collection: 'plan_estado' })
 export class PlanEstado extends Document {
   @Prop({ required: false, type: Types.ObjectId, ref: PlanAuditoria.name })
   plan_auditoria_id: PlanAuditoria | Types.ObjectId;

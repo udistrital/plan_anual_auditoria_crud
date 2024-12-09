@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Auditoria } from '../../auditoria/schemas/auditoria.schema'
 
-@Schema({ collection: 'auditoria-auditor' })
+@Schema({ collection: 'auditoria_auditor' })
 export class Auditor extends Document {
     @Prop({ required: true, type: Types.ObjectId, ref: Auditoria.name })
     auditoria_id: Auditoria | Types.ObjectId;
