@@ -1625,6 +1625,9 @@
           "usuario_id": {
             "type": "number"
           },
+          "usuario_rol": {
+            "type": "string"
+          },
           "observacion": {
             "type": "string"
           },
@@ -1645,6 +1648,7 @@
         "required": [
           "plan_auditoria_id",
           "usuario_id",
+          "usuario_rol",
           "observacion",
           "actual",
           "estado_id",
