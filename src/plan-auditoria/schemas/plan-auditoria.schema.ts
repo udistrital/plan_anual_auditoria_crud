@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ collection: 'plan-auditoria' })
+@Schema({ collection: 'plan_auditoria' })
 export class PlanAuditoria extends Document {
   @Prop({ required: false })
   objetivo: string;
