@@ -42,7 +42,7 @@ export class EstadoAuditoriaService {
     };
 
     const estadosRelacionados = await this.AuditoriaEstadoModel.find({
-      plan_auditoria_id: auditoriaEstadoDto.auditoria_id,
+      auditoria_id: auditoriaEstadoDto.auditoria_id,
       actual: true,
     });
 
