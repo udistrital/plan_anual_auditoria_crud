@@ -20,6 +20,9 @@ export class AuditoriaEstadoDto {
   readonly estado_id: number;
 
   @ApiProperty()
+  readonly estado_interno_id: number;
+
+  @ApiProperty()
   readonly fecha_ejecucion_estado: Date;
 
   @ApiProperty()

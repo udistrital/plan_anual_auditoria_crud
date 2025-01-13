@@ -1903,6 +1903,9 @@
           "estado_id": {
             "type": "number"
           },
+          "estado_interno_id": {
+            "type": "number"
+          },
           "fecha_ejecucion_estado": {
             "format": "date-time",
             "type": "string"
@@ -1918,6 +1921,7 @@
           "observacion",
           "actual",
           "estado_id",
+          "estado_interno_id",
           "fecha_ejecucion_estado",
           "activo"
         ]
