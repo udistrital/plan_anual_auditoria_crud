@@ -24,6 +24,9 @@ export class AuditoriaEstado extends Document {
   estado_id: number;
 
   @Prop({ required: false })
+  estado_interno_id: number;
+
+  @Prop({ required: false })
   fecha_ejecucion_estado: Date;
 
   @Prop({ required: false })
