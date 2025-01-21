@@ -11,8 +11,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuditoriaService } from './auditoria.service';
-import { AuditoriaDTO } from './dto/auditoria.dto'
-import { FilterDto } from '../filters/filters.dto'
+import { AuditoriaDTO } from './dto/auditoria.dto';
+import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -24,7 +24,7 @@ import {
 @ApiTags('auditoria')
 @Controller('auditoria')
 export class AuditoriaController {
-  constructor(private AuditoriaService: AuditoriaService) { }
+  constructor(private AuditoriaService: AuditoriaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva aditoria' })
@@ -73,7 +73,6 @@ export class AuditoriaController {
         Message: 'Peticion Exitosa',
         Data: auditorias,
         MetaData: { Count: counts },
-
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
@@ -173,7 +172,8 @@ export class AuditoriaController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: error.message,
       });
     }

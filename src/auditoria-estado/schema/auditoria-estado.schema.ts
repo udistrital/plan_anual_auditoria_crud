@@ -6,7 +6,7 @@ import { Auditoria } from '../../auditoria/schemas/auditoria.schema';
 @Schema({ collection: 'auditoria_estado' })
 export class AuditoriaEstado extends Document {
   @Prop({ required: false, type: Types.ObjectId, ref: Auditoria.name })
-  auditoria_id: AuditoriaDTO | Types.ObjectId;
+  auditoria_id: Auditoria | Types.ObjectId;
 
   @Prop({ required: false })
   usuario_id: number;
