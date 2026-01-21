@@ -1,0 +1,180 @@
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpStatus,
+    Param,
+    Post,
+    Put,
+    Query,
+    Res,
+} from '@nestjs/common';
+import { InformeService } from './informe.service';
+import { InformeDTO } from './dto/informe.dto';
+import { FilterDto } from '../filters/filters.dto';
+import {
+    ApiTags,
+    ApiOperation,
+    ApiResponse,
+    ApiParam,
+    ApiBody,
+} from '@nestjs/swagger';
+
+@ApiTags('informe')
+@Controller('informe')
+export class InformeController {
+    constructor(private informeService: InformeService) { }
+
+    @Post()
+    @ApiOperation({ summary: 'Crear un nuevo informe' })
+    @ApiBody({ type: InformeDTO })
+    @ApiResponse({
+        status: 201,
+        description: 'El informe ha sido creado exitosamente.',
+        type: InformeDTO,
+    })
+    @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+    async post(@Res() res, @Body() InformeDTO: InformeDTO) {
+        try {
+            const informe = await this.informeService.post(InformeDTO);
+            res.status(HttpStatus.CREATED).json({
+                Success: true,
+                Status: HttpStatus.CREATED,
+                Message: 'Registro Exitoso',
+                Data: informe,
+            });
+        } catch (error) {
+            res.status(HttpStatus.BAD_REQUEST).json({
+                Success: false,
+                Status: HttpStatus.BAD_REQUEST,
+                Message:
+                    'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+                Data: error.message,
+            });
+        }
+    }
+
+    @Get()
+    @ApiOperation({ summary: 'Obtener todos los informes' })
+    @ApiResponse({
+        status: 200,
+        description: 'Devuelve todos los informes.',
+        type: [InformeDTO],
+    })
+    async getAll(@Res() res, @Query() filterDto: FilterDto) {
+        try {
+            const informe = await this.informeService.getAll(filterDto);
+            const counts = await this.informeService.count(filterDto);
+
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Peticion Exitosa',
+                Data: informe,
+                MetaData: { Count: counts },
+            });
+        } catch (error) {
+            res.status(HttpStatus.NOT_FOUND).json({
+                Success: false,
+                Status: HttpStatus.NOT_FOUND,
+                Message:
+                    'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
+                Data: error.message,
+            });
+        }
+    }
+
+    @Get('/:id')
+    @ApiOperation({ summary: 'Obtener un informe por Id' })
+    @ApiParam({ name: 'id', type: 'string' })
+    @ApiResponse({
+        status: 200,
+        description: 'Devuelve el informe.',
+        type: InformeDTO,
+    })
+    @ApiResponse({ status: 404, description: 'Informe no encontrado.' })
+    async getById(@Res() res, @Param('id') id: string) {
+        try {
+            const informe = await this.informeService.getById(id);
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Peticion Exitosa',
+                Data: informe,
+            });
+        } catch (error) {
+            res.status(HttpStatus.NOT_FOUND).json({
+                Success: false,
+                Status: HttpStatus.NOT_FOUND,
+                Message:
+                    'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+                Data: error.message,
+            });
+        }
+    }
+
+    @Put('/:id')
+    @ApiOperation({ summary: 'Actualizar un informe' })
+    @ApiParam({ name: 'id', type: 'string' })
+    @ApiBody({ type: InformeDTO })
+    @ApiResponse({
+        status: 200,
+        description: 'El informe ha sido actualizado exitosamente.',
+        type: InformeDTO,
+    })
+    @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+    @ApiResponse({ status: 404, description: 'Informe no encontrado.' })
+    async put(
+        @Res() res,
+        @Param('id') id: string,
+        @Body() InformeDTO: InformeDTO,
+    ) {
+        try {
+            const informe = await this.informeService.put(id, InformeDTO);
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Actualizacion Exitosa',
+                Data: informe,
+            });
+        } catch (error) {
+            res.status(HttpStatus.BAD_REQUEST).json({
+                Success: false,
+                Status: HttpStatus.BAD_REQUEST,
+                Message:
+                    'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+                Data: error.message,
+            });
+        }
+    }
+
+    @Delete('/:id')
+    @ApiOperation({ summary: 'Eliminar un informe' })
+    @ApiParam({ name: 'id', type: 'string' })
+    @ApiResponse({
+        status: 200,
+        description: 'El informe ha sido eliminado exitosamente.',
+    })
+    @ApiResponse({ status: 404, description: 'Informe no encontrado.' })
+    async delete(@Res() res, @Param('id') id: string) {
+        try {
+            await this.informeService.delete(id);
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Eliminacion Exitosa',
+                Data: {
+                    _id: id,
+                },
+            });
+        } catch (error) {
+            res.status(HttpStatus.NOT_FOUND).json({
+                Success: false,
+                Status: HttpStatus.NOT_FOUND,
+                Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+                Data: error.message,
+            });
+        }
+    }
+}
