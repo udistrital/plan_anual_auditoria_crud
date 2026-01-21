@@ -177,4 +177,35 @@ export class InformeController {
             });
         }
     }
+
+    @Get('/:id/hallazgos')
+    @ApiOperation({ summary: 'Obtener todos los hallazgos de un informe (estructura plana)' })
+    @ApiParam({ name: 'id', type: 'string', description: 'ID del informe' })
+    @ApiResponse({
+        status: 200,
+        description: 'Devuelve todos los hallazgos del informe en estructura plana.',
+    })
+    @ApiResponse({ status: 404, description: 'Informe no encontrado o sin hallazgos.' })
+    async getHallazgos(
+        @Res() res,
+        @Param('id') id: string
+    ) {
+        try {
+            const hallazgos = await this.informeService.getHallazgosByInforme(id);
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Peticion Exitosa',
+                Data: hallazgos,
+                MetaData: { Count: hallazgos.length },
+            });
+        } catch (error) {
+            res.status(HttpStatus.NOT_FOUND).json({
+                Success: false,
+                Status: HttpStatus.NOT_FOUND,
+                Message: 'Error al obtener hallazgos del informe',
+                Data: error.message,
+            });
+        }
+    }
 }

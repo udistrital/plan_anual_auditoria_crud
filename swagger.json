@@ -1820,6 +1820,34 @@
         ]
       }
     },
+    "/informe/{id}/hallazgos": {
+      "get": {
+        "operationId": "InformeController_getHallazgos",
+        "summary": "Obtener todos los hallazgos de un informe (estructura plana)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del informe",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los hallazgos del informe en estructura plana."
+          },
+          "404": {
+            "description": "Informe no encontrado o sin hallazgos."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      }
+    },
     "/tema": {
       "post": {
         "operationId": "TemaController_post",
@@ -2039,34 +2067,6 @@
           },
           "404": {
             "description": "Tema no encontrado."
-          }
-        },
-        "tags": [
-          "tema"
-        ]
-      }
-    },
-    "/tema/hallazgos-por-informe/{informeId}": {
-      "get": {
-        "operationId": "TemaController_getHallazgosByInforme",
-        "summary": "Obtener todos los hallazgos de un informe",
-        "parameters": [
-          {
-            "name": "informeId",
-            "required": true,
-            "in": "path",
-            "description": "ID del informe",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Devuelve todos los hallazgos del informe en estructura plana."
-          },
-          "404": {
-            "description": "Informe no encontrado o sin hallazgos."
           }
         },
         "tags": [

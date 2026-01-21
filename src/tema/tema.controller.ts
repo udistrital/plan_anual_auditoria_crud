@@ -180,37 +180,6 @@ export class TemaController {
         }
     }
 
-    @Get('/hallazgos-por-informe/:informeId')
-    @ApiOperation({ summary: 'Obtener todos los hallazgos de un informe' })
-    @ApiParam({ name: 'informeId', type: 'string', description: 'ID del informe' })
-    @ApiResponse({
-        status: 200,
-        description: 'Devuelve todos los hallazgos del informe en estructura plana.',
-    })
-    @ApiResponse({ status: 404, description: 'Informe no encontrado o sin hallazgos.' })
-    async getHallazgosByInforme(
-        @Res() res,
-        @Param('informeId') informeId: string
-    ) {
-        try {
-            const hallazgos = await this.temaService.getHallazgosByInforme(informeId);
-            res.status(HttpStatus.OK).json({
-                Success: true,
-                Status: HttpStatus.OK,
-                Message: 'Peticion Exitosa',
-                Data: hallazgos,
-                MetaData: { Count: hallazgos.length },
-            });
-        } catch (error) {
-            res.status(HttpStatus.NOT_FOUND).json({
-                Success: false,
-                Status: HttpStatus.NOT_FOUND,
-                Message: 'Error al obtener hallazgos por informe',
-                Data: error.message,
-            });
-        }
-    }
-
     @Post('/:temaId/subtemas')
     @ApiOperation({ summary: 'Agregar un subtema a un tema' })
     @ApiParam({ name: 'temaId', type: 'string' })
