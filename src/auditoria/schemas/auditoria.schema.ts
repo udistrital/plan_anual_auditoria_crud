@@ -68,6 +68,9 @@ export class Auditoria extends Document {
   rec_fisico: string;
 
   @Prop({ required: false })
+  temas: string;
+
+  @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })

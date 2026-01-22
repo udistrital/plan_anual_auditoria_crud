@@ -27,6 +27,7 @@ const mockAuditoriaDTO: AuditoriaDTO = {
   rec_tecnologico: "rec_T",
   rec_humano: "rec_H",
   rec_fisico: "rec_F",
+  temas: "temas varios",
   activo: true,
   fecha_creacion: new Date(),
   fecha_modificacion: new Date(),
