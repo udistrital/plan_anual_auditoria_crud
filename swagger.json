@@ -1593,6 +1593,728 @@
           "auditor"
         ]
       }
+    },
+    "/informe": {
+      "post": {
+        "operationId": "InformeController_post",
+        "summary": "Crear un nuevo informe",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformeDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El informe ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformeDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      },
+      "get": {
+        "operationId": "InformeController_getAll",
+        "summary": "Obtener todos los informes",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los informes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InformeDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      }
+    },
+    "/informe/{id}": {
+      "get": {
+        "operationId": "InformeController_getById",
+        "summary": "Obtener un informe por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el informe.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformeDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Informe no encontrado."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      },
+      "put": {
+        "operationId": "InformeController_put",
+        "summary": "Actualizar un informe",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InformeDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El informe ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InformeDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Informe no encontrado."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      },
+      "delete": {
+        "operationId": "InformeController_delete",
+        "summary": "Eliminar un informe",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El informe ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Informe no encontrado."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      }
+    },
+    "/informe/{id}/hallazgos": {
+      "get": {
+        "operationId": "InformeController_getHallazgos",
+        "summary": "Obtener todos los hallazgos de un informe (estructura plana)",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del informe",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los hallazgos del informe en estructura plana."
+          },
+          "404": {
+            "description": "Informe no encontrado o sin hallazgos."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      }
+    },
+    "/tema": {
+      "post": {
+        "operationId": "TemaController_post",
+        "summary": "Crear un nuevo tema",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El tema ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      },
+      "get": {
+        "operationId": "TemaController_getAll",
+        "summary": "Obtener todos los temas",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los temas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TemaDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
+    },
+    "/tema/{id}": {
+      "get": {
+        "operationId": "TemaController_getById",
+        "summary": "Obtener un tema por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el tema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemaDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tema no encontrado."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      },
+      "put": {
+        "operationId": "TemaController_put",
+        "summary": "Actualizar un tema",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El tema ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemaDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Tema no encontrado."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      },
+      "delete": {
+        "operationId": "TemaController_delete",
+        "summary": "Eliminar un tema",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El tema ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Tema no encontrado."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
+    },
+    "/tema/{temaId}/subtemas": {
+      "post": {
+        "operationId": "TemaController_agregarSubtema",
+        "summary": "Agregar un subtema a un tema",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubtemaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El subtema ha sido agregado exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
+    },
+    "/tema/{temaId}/subtemas/{subtemaId}": {
+      "put": {
+        "operationId": "TemaController_actualizarSubtema",
+        "summary": "Actualizar un subtema",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtemaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubtemaDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El subtema ha sido actualizado exitosamente."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      },
+      "delete": {
+        "operationId": "TemaController_eliminarSubtema",
+        "summary": "Eliminar un subtema",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtemaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El subtema ha sido eliminado exitosamente."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
+    },
+    "/tema/{temaId}/subtemas/{subtemaId}/hallazgos": {
+      "post": {
+        "operationId": "TemaController_agregarHallazgo",
+        "summary": "Agregar un hallazgo a un subtema",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtemaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HallazgoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El hallazgo ha sido agregado exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
+    },
+    "/tema/{temaId}/subtemas/{subtemaId}/hallazgos/{hallazgoId}": {
+      "put": {
+        "operationId": "TemaController_actualizarHallazgo",
+        "summary": "Actualizar un hallazgo",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtemaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hallazgoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HallazgoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El hallazgo ha sido actualizado exitosamente."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      },
+      "delete": {
+        "operationId": "TemaController_eliminarHallazgo",
+        "summary": "Eliminar un hallazgo",
+        "parameters": [
+          {
+            "name": "temaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subtemaId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hallazgoId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El hallazgo ha sido eliminado exitosamente."
+          }
+        },
+        "tags": [
+          "tema"
+        ]
+      }
     }
   },
   "info": {
@@ -2001,6 +2723,143 @@
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
+        ]
+      },
+      "InformeDTO": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "type": "string"
+          },
+          "fecha_emision": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "muestra": {
+            "type": "string"
+          },
+          "aspectos_generales": {
+            "type": "string"
+          },
+          "respuesta_preliminar": {
+            "type": "string"
+          },
+          "informe_final": {
+            "type": "string"
+          },
+          "observaciones_conclusiones": {
+            "type": "string"
+          },
+          "notas": {
+            "type": "string"
+          },
+          "preliminar_auditor_id": {
+            "type": "number"
+          },
+          "final_auditor_id": {
+            "type": "number"
+          },
+          "preliminar_auditado_id": {
+            "type": "number"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "auditoria_id",
+          "fecha_emision",
+          "muestra",
+          "aspectos_generales",
+          "respuesta_preliminar",
+          "informe_final",
+          "observaciones_conclusiones",
+          "notas",
+          "preliminar_auditor_id",
+          "final_auditor_id",
+          "preliminar_auditado_id",
+          "activo",
+          "fecha_creacion"
+        ]
+      },
+      "TemaDTO": {
+        "type": "object",
+        "properties": {
+          "informe_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "subtema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "informe_id",
+          "titulo",
+          "activo",
+          "subtema",
+          "fecha_creacion"
+        ]
+      },
+      "SubtemaDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "hallazgo": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "titulo",
+          "activo",
+          "hallazgo"
+        ]
+      },
+      "HallazgoDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string"
+          },
+          "criterio": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "titulo",
+          "criterio",
+          "descripcion",
+          "activo"
         ]
       }
     }

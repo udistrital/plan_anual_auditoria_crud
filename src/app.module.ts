@@ -10,6 +10,8 @@ import { EstadoModule } from './estado/estado.module';
 import { DocumentoModule } from './documento/documento.module';
 import { AuditorModule } from './auditoria-auditor/auditor.module';
 import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.module';
+import { InformeModule } from './informe/informe.module';
+import { TemaModule } from './tema/tema.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.modul
     EstadoAuditoriaModule,
     DocumentoModule,
     AuditorModule,
+    InformeModule,
+    TemaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
