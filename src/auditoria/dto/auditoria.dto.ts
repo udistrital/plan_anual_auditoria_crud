@@ -65,6 +65,9 @@ export class AuditoriaDTO {
   readonly rec_fisico: string;
 
   @ApiProperty()
+  readonly temas: string;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()

@@ -2466,6 +2466,9 @@
           "rec_fisico": {
             "type": "string"
           },
+          "temas": {
+            "type": "string"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -2500,6 +2503,7 @@
           "rec_tecnologico",
           "rec_humano",
           "rec_fisico",
+          "temas",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
