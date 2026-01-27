@@ -38,12 +38,13 @@ export class TemaService {
         return await this.TemaModel
             .find(
                 filtersService.getQuery(),
-                filtersService.getFields(),
+                filtersService.getFields() as any,
                 filtersService.getLimitAndOffset(),
             )
             .sort(filtersService.getSortBy())
             .populate(populateFields)
-            .exec();
+            .lean()
+            .exec() as unknown as Tema[];
     }
 
     async getById(id: string): Promise<Tema> {

@@ -51,12 +51,13 @@ export class ActividadService {
     return await this.ActividadModel
       .find(
         filtersService.getQuery(),
-        filtersService.getFields(),
+        filtersService.getFields() as any,
         filtersService.getLimitAndOffset(),
       )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
-      .exec();
+      .lean()
+      .exec() as unknown as Actividad[];
   }
 
   async getById(id: string): Promise<Actividad> {

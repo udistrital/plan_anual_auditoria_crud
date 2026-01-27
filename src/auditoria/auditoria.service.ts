@@ -51,12 +51,13 @@ export class AuditoriaService {
     return await this.AuditoriaModel
       .find(
         filtersService.getQuery(),
-        filtersService.getFields(),
+        filtersService.getFields() as any,
         filtersService.getLimitAndOffset(),
       )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
-      .exec();
+      .lean()
+      .exec() as unknown as Auditoria[];
   }
 
   async getById(id: string): Promise<Auditoria> {

@@ -64,12 +64,13 @@ export class EstadoService {
     }
     return await this.PlanEstadoModel.find(
       filtersService.getQuery(),
-      filtersService.getFields(),
+      filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
     )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
-      .exec();
+      .lean()
+      .exec() as unknown as PlanEstado[];
   }
 
   async getById(id: string): Promise<PlanEstado> {
