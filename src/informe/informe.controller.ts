@@ -178,6 +178,37 @@ export class InformeController {
         }
     }
 
+    @Get('/:informeId/tema')
+    @ApiOperation({ summary: 'Obtener temas, subtemas y hallazgos activos de un informe' })
+    @ApiParam({ name: 'informeId', type: 'string', description: 'ID del informe' })
+    @ApiResponse({
+        status: 200,
+        description: 'Devuelve los temas activos con sus subtemas y hallazgos activos.',
+    })
+    @ApiResponse({ status: 404, description: 'Informe no encontrado.' })
+    async getTemasActivos(
+        @Res() res,
+        @Param('informeId') informeId: string
+    ) {
+        try {
+            const temas = await this.informeService.getTemasActivosByInforme(informeId);
+            res.status(HttpStatus.OK).json({
+                Success: true,
+                Status: HttpStatus.OK,
+                Message: 'Peticion Exitosa',
+                Data: temas,
+                MetaData: { Count: temas.length },
+            });
+        } catch (error) {
+            res.status(HttpStatus.NOT_FOUND).json({
+                Success: false,
+                Status: HttpStatus.NOT_FOUND,
+                Message: 'Error al obtener temas activos del informe',
+                Data: error.message,
+            });
+        }
+    }
+
     @Get('/:id/hallazgos')
     @ApiOperation({ summary: 'Obtener todos los hallazgos de un informe (estructura plana)' })
     @ApiParam({ name: 'id', type: 'string', description: 'ID del informe' })
