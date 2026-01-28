@@ -39,12 +39,13 @@ export class InformeService {
         return await this.InformeModel
             .find(
                 filtersService.getQuery(),
-                filtersService.getFields(),
+                filtersService.getFields() as any,
                 filtersService.getLimitAndOffset(),
             )
             .sort(filtersService.getSortBy())
             .populate(populateFields)
-            .exec();
+            .lean()
+            .exec() as unknown as Informe[];
     }
 
     async getById(id: string): Promise<Informe> {

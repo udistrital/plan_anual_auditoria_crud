@@ -67,12 +67,13 @@ export class EstadoAuditoriaService {
     }
     return await this.AuditoriaEstadoModel.find(
       filtersService.getQuery(),
-      filtersService.getFields(),
+      filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
     )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
-      .exec();
+      .lean()
+      .exec() as unknown as AuditoriaEstado[];
   }
 
   async getById(id: string): Promise<AuditoriaEstado> {

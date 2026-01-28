@@ -38,11 +38,12 @@ export class PlanAuditoriaService {
     return await this.planAuditoriaModel
       .find(
         filtersService.getQuery(),
-        filtersService.getFields(),
+        filtersService.getFields() as any,
         filtersService.getLimitAndOffset(),
       )
       .sort(filtersService.getSortBy())
-      .exec();
+      .lean()
+      .exec() as unknown as PlanAuditoria[];
   }
 
   async getById(id: string): Promise<PlanAuditoria> {
