@@ -10,6 +10,7 @@ import { EstadoModule } from './estado/estado.module';
 import { DocumentoModule } from './documento/documento.module';
 import { AuditorModule } from './auditoria-auditor/auditor.module';
 import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.module';
+import { ProgramaEstadoModule } from './programa-estado/programa-estado.module';
 import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
 
@@ -32,6 +33,7 @@ import { TemaModule } from './tema/tema.module';
     ActividadModule,
     EstadoModule,
     EstadoAuditoriaModule,
+    ProgramaEstadoModule,
     DocumentoModule,
     AuditorModule,
     InformeModule,

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AuditoriaEstadoDto {
+
+export class ProgramaEstadoDto {
   @ApiProperty()
   readonly auditoria_id: string;
 
@@ -24,4 +25,10 @@ export class AuditoriaEstadoDto {
 
   @ApiProperty()
   activo: boolean;
+
+  @ApiProperty()
+  fecha_creacion: Date;
+  
+  @ApiProperty()
+  fecha_modificacion: Date;
 }

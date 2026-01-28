@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { AuditoriaDTO } from '../../auditoria/dto/auditoria.dto';
 import { Auditoria } from '../../auditoria/schemas/auditoria.schema';
-//cuantos estados pueden estar activos por plan de auditorita al tiempo?
-@Schema({ collection: 'auditoria_estado' })
-export class AuditoriaEstado extends Document {
+
+
+@Schema({ collection: 'programa_estado' })
+export class ProgramaEstado extends Document {
   @Prop({ required: false, type: Types.ObjectId, ref: Auditoria.name })
   auditoria_id: Auditoria | Types.ObjectId;
 
@@ -28,9 +28,15 @@ export class AuditoriaEstado extends Document {
 
   @Prop({ required: false })
   activo: boolean;
+
+  @Prop({ required: false })
+  fecha_creacion: Date;
+
+  @Prop({ required: false })
+  fecha_modificacion: Date;
 }
 
-export const AuditoriaEstadoSchema =
-  SchemaFactory.createForClass(AuditoriaEstado);
+export const ProgramaEstadoSchema =
+  SchemaFactory.createForClass(ProgramaEstado);
 
-AuditoriaEstadoSchema.set('versionKey', false);
+ProgramaEstadoSchema.set('versionKey', false);
