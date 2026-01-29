@@ -32,19 +32,22 @@ export class ProgramaEstadoService {
       ).exec();
       if (!actividad) {
         throw new Error(
-          `Plan auditoria relacionada con id ${programaEstadoDto.auditoria_id} no existe`,
+          `Auditoría relacionada con id ${programaEstadoDto.auditoria_id} no existe`,
         );
       }
     }
   }
 
   async post(programaEstadoDto: ProgramaEstadoDto): Promise<ProgramaEstado> {
+    await this.checkRelated(programaEstadoDto);
     const fecha = new Date();
-    const planEstadoData = {
+    const programaEstadoData = {
       ...programaEstadoDto,
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
 
     const estadosRelacionados = await this.ProgramaEstadoModel.find({
@@ -62,7 +65,7 @@ export class ProgramaEstadoService {
       );
     }
 
-    return await this.ProgramaEstadoModel.create(planEstadoData);
+    return await this.ProgramaEstadoModel.create(programaEstadoData);
   }
 
   async getAll(filterDto: FilterDto): Promise<ProgramaEstado[]> {
@@ -83,21 +86,22 @@ export class ProgramaEstadoService {
   }
 
   async getById(id: string): Promise<ProgramaEstado> {
-    const planAuditoria = await this.ProgramaEstadoModel.findById(id).exec();
-    if (!planAuditoria) {
+    const programaEstadoAuditoria = await this.ProgramaEstadoModel.findById(id).exec();
+    if (!programaEstadoAuditoria) {
       throw new Error(`${id} no existe`);
     }
-    return planAuditoria;
+    return programaEstadoAuditoria;
   }
 
   async put(
     id: string,
-    PlanEstadoDto: ProgramaEstadoDto,
+    programaEstadoDto: ProgramaEstadoDto,
   ): Promise<ProgramaEstado> {
-    await this.checkRelated(PlanEstadoDto);
+    await this.checkRelated(programaEstadoDto);
+    programaEstadoDto.fecha_modificacion = new Date();
     const update = await this.ProgramaEstadoModel.findByIdAndUpdate(
       id,
-      PlanEstadoDto,
+      programaEstadoDto,
       { new: true },
     ).exec();
     if (!update) {

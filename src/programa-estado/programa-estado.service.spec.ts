@@ -53,6 +53,7 @@ describe('ProgramaEstadoService', () => {
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             countDocuments: jest.fn(),
+            updateMany: jest.fn(),
           },
         },
         {
@@ -79,6 +80,7 @@ describe('ProgramaEstadoService', () => {
 
   describe('post', () => {
     it('Debería crear y devolver un programa-estado', async () => {
+      jest.spyOn(ProgramaEstadoModel, 'find').mockResolvedValue([]);
       jest.spyOn(AuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockProgramaEstado1),
       } as any);
@@ -92,13 +94,13 @@ describe('ProgramaEstadoService', () => {
       expect(result).toEqual(mockProgramaEstadoDTO);
     });
 
-    it('Debería lanzar un error si la Auditoria no existe', async () => {
+    it('Debería lanzar un error si la Auditoría no existe', async () => {
       jest.spyOn(AuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(programaEstadoService.post(mockProgramaEstadoDTO)).rejects.toThrow(
-        `Auditoria relacionada con id ${mockProgramaEstadoDTO.auditoria_id} no existe`,
+        `Auditoría relacionada con id ${mockProgramaEstadoDTO.auditoria_id} no existe`,
       );
     });
   });
@@ -123,6 +125,7 @@ describe('ProgramaEstadoService', () => {
       const mockQuery = {
         sort: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockProgramaEstados),
       };
 
@@ -204,7 +207,7 @@ describe('ProgramaEstadoService', () => {
       );
     });
 
-    it('Debería lanzar un error si la Auditoria relacionada no existe', async () => {
+    it('Debería lanzar un error si la Auditoría relacionada no existe', async () => {
       jest.spyOn(AuditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
@@ -212,7 +215,7 @@ describe('ProgramaEstadoService', () => {
       await expect(
         programaEstadoService.put(mockProgramaEstado1._id, mockProgramaEstadoDTO),
       ).rejects.toThrow(
-        `Auditoria relacionada con id ${mockProgramaEstadoDTO.auditoria_id} no existe`,
+        `Auditoría relacionada con id ${mockProgramaEstadoDTO.auditoria_id} no existe`,
       );
     });
   });

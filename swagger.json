@@ -1142,6 +1142,232 @@
         ]
       }
     },
+    "/programa-estado": {
+      "post": {
+        "operationId": "ProgramaEstadoController_post",
+        "summary": "Crear un nuevo estado de auditoria",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgramaEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El estado de auditoria ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramaEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "programa-estado"
+        ]
+      },
+      "get": {
+        "operationId": "ProgramaEstadoController_getAll",
+        "summary": "Obtener todos los estados de auditoria",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los estados de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProgramaEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "programa-estado"
+        ]
+      }
+    },
+    "/programa-estado/{id}": {
+      "get": {
+        "operationId": "ProgramaEstadoController_getById",
+        "summary": "Obtener un estado de auditoria por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado de auditoria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramaEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "programa-estado"
+        ]
+      },
+      "put": {
+        "operationId": "ProgramaEstadoController_put",
+        "summary": "Actualizar un estado de auditoria",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProgramaEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El estado de auditoria ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProgramaEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Actividad no encontrado."
+          }
+        },
+        "tags": [
+          "programa-estado"
+        ]
+      },
+      "delete": {
+        "operationId": "ProgramaEstadoController_delete",
+        "summary": "Eliminar un estado de auditoria",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El estado de auditoria ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Estado no encontrada."
+          }
+        },
+        "tags": [
+          "programa-estado"
+        ]
+      }
+    },
     "/documento": {
       "post": {
         "operationId": "DocumentoController_post",
@@ -2629,9 +2855,6 @@
           "estado_id": {
             "type": "number"
           },
-          "estado_interno_id": {
-            "type": "number"
-          },
           "fecha_ejecucion_estado": {
             "format": "date-time",
             "type": "string"
@@ -2647,9 +2870,58 @@
           "observacion",
           "actual",
           "estado_id",
-          "estado_interno_id",
           "fecha_ejecucion_estado",
           "activo"
+        ]
+      },
+      "ProgramaEstadoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "type": "string"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "auditoria_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fecha_ejecucion_estado",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
         ]
       },
       "DocumentoDTO": {
