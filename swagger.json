@@ -1820,6 +1820,34 @@
         ]
       }
     },
+    "/informe/{informeId}/tema": {
+      "get": {
+        "operationId": "InformeController_getTemasActivos",
+        "summary": "Obtener temas, subtemas y hallazgos activos de un informe",
+        "parameters": [
+          {
+            "name": "informeId",
+            "required": true,
+            "in": "path",
+            "description": "ID del informe",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve los temas activos con sus subtemas y hallazgos activos."
+          },
+          "404": {
+            "description": "Informe no encontrado."
+          }
+        },
+        "tags": [
+          "informe"
+        ]
+      }
+    },
     "/informe/{id}/hallazgos": {
       "get": {
         "operationId": "InformeController_getHallazgos",
