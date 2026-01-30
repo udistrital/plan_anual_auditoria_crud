@@ -20,11 +20,14 @@ import {
     ApiParam,
     ApiBody,
 } from '@nestjs/swagger';
+import { InformeEstadoService } from '../informe-estado/informe-estado.service';
 
 @ApiTags('informe')
 @Controller('informe')
 export class InformeController {
-    constructor(private informeService: InformeService) { }
+    constructor(private informeService: InformeService,
+        private informeEstadoService: InformeEstadoService
+    ) { }
 
     @Post()
     @ApiOperation({ summary: 'Crear un nuevo informe' })
@@ -208,4 +211,95 @@ export class InformeController {
             });
         }
     }
+
+    @Get('/:id/estados')
+  @ApiOperation({ summary: 'Obtener todos los estados de un informe (historial completo)' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del informe' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los estados del informe.',
+  })
+  @ApiResponse({ status: 404, description: 'Informe no encontrado o sin estados.' })
+  async getEstados(
+    @Res() res,
+    @Param('id') id: string
+  ) {
+    try {
+      await this.informeService.getById(id);
+      
+      const filterDto = {
+        query: `informe_id:${id}`,
+        fields: '',
+        sortby: 'fecha_ejecucion_estado',
+        order: 'desc',
+        limit: '100',
+        offset: '0',
+        populate: 'false',
+      };
+      
+      const estados = await this.informeEstadoService.getAll(filterDto);
+      
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Peticion Exitosa',
+        Data: estados,
+        MetaData: { Count: estados.length },
+      });
+    } catch (error) {
+      res.status(HttpStatus.NOT_FOUND).json({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message: 'Error al obtener estados del informe',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Get('/:id/estado-actual')
+  @ApiOperation({ summary: 'Obtener el estado actual de un informe' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del informe' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el estado actual del informe.',
+  })
+  @ApiResponse({ status: 404, description: 'Informe no encontrado o sin estado actual.' })
+  async getEstadoActual(
+    @Res() res,
+    @Param('id') id: string
+  ) {
+    try {
+      await this.informeService.getById(id);
+      
+      const filterDto = {
+        query: `informe_id:${id},actual:true`,
+        fields: '',
+        sortby: 'fecha_ejecucion_estado',
+        order: 'desc',
+        limit: '1',
+        offset: '0',
+        populate: 'false',
+      };
+      
+      const estados = await this.informeEstadoService.getAll(filterDto);
+      
+      if (estados.length === 0) {
+        throw new Error('El informe no tiene un estado actual');
+      }
+      
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Peticion Exitosa',
+        Data: estados[0],
+      });
+    } catch (error) {
+      res.status(HttpStatus.NOT_FOUND).json({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message: 'Error al obtener estado actual del informe',
+        Data: error.message,
+      });
+    }
+  }
 }

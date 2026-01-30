@@ -4,6 +4,7 @@ import { InformeDTO } from './dto/informe.dto';
 import { InformeService } from './informe.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
+import { InformeEstadoService } from '../informe-estado/informe-estado.service';
 
 const mockInformeDto: InformeDTO = {
   auditoria_id: '507f1f77bcf86cd799439011',
@@ -36,6 +37,13 @@ describe('InformeController', () => {
             delete: jest.fn(),
             count: jest.fn(),
             getHallazgosByInforme: jest.fn(),
+          },
+        },
+        {
+          provide: InformeEstadoService,  
+          useValue: {
+            getAll: jest.fn(),
+            getById: jest.fn(),
           },
         },
       ],
