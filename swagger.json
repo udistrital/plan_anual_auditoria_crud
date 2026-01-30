@@ -2852,6 +2852,9 @@
           "actual": {
             "type": "boolean"
           },
+          "fase_id": {
+            "type": "string"
+          },
           "estado_id": {
             "type": "number"
           },
@@ -2869,6 +2872,7 @@
           "usuario_rol",
           "observacion",
           "actual",
+          "fase_id",
           "estado_id",
           "fecha_ejecucion_estado",
           "activo"
