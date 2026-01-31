@@ -14,6 +14,7 @@ export class Informe extends Document {
   @Prop() observaciones_conclusiones: string;
   @Prop() notas: string;
 
+  @Prop() estado_id: number;
   @Prop() preliminar_auditor_id: number;
   @Prop() final_auditor_id: number;
   @Prop() preliminar_auditado_id: number;

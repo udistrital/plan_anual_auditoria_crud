@@ -12,6 +12,7 @@ import { AuditorModule } from './auditoria-auditor/auditor.module';
 import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.module';
 import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
+import { InformeEstadoModule } from './informe-estado/informe-estado.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TemaModule } from './tema/tema.module';
     AuditorModule,
     InformeModule,
     TemaModule,
+    InformeEstadoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
