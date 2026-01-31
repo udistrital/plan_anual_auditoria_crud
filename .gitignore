@@ -57,3 +57,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 
 mongo_data
+
+# Run files
+.run.sh
+.validate.project.sh
