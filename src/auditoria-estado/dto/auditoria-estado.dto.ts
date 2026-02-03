@@ -17,6 +17,9 @@ export class AuditoriaEstadoDto {
   readonly actual: boolean;
 
   @ApiProperty()
+  readonly fase_id: string;
+
+  @ApiProperty()
   readonly estado_id: number;
 
   @ApiProperty()

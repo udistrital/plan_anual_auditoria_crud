@@ -21,6 +21,9 @@ export class AuditoriaEstado extends Document {
   actual: boolean;
 
   @Prop({ required: false })
+  fase_id: string;
+
+  @Prop({ required: false })
   estado_id: number;
 
   @Prop({ required: false })
