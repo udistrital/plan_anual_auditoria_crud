@@ -2625,6 +2625,89 @@
           "tema"
         ]
       }
+    },
+    "/auditoria-gestion": {
+      "post": {
+        "operationId": "AuditoriaGestionController_post",
+        "summary": "Crear una nueva auditoria junto con su estado inicial",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuditoriaGestionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "La auditoria ha sido creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAuditoriaGestionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "auditoria-gestion"
+        ]
+      }
+    },
+    "/auditoria-gestion/{id}": {
+      "put": {
+        "operationId": "AuditoriaGestionController_put",
+        "summary": "Actualizar los estados de las auditorias existentes en un plan",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del plan de auditorias a actualizar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Los estados de las auditorias han sido actualizados exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de Auditorias no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-gestion"
+        ]
+      }
     }
   },
   "info": {
@@ -3218,6 +3301,149 @@
           "criterio",
           "descripcion",
           "activo"
+        ]
+      },
+      "CreateAuditoriaGestionDto": {
+        "type": "object",
+        "properties": {
+          "plan_auditoria_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "tipo_evaluacion_id": {
+            "type": "number"
+          },
+          "cronograma_id": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "no_auditoria": {
+            "type": "number"
+          },
+          "vigencia_id": {
+            "type": "number"
+          },
+          "consecutivo_OCI": {
+            "type": "string"
+          },
+          "consecutivo_IE": {
+            "type": "string"
+          },
+          "tipo_id": {
+            "type": "number"
+          },
+          "macroproceso": {
+            "type": "number"
+          },
+          "lider_id": {
+            "type": "number"
+          },
+          "responsable_id": {
+            "type": "number"
+          },
+          "fecha_inicio": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_fin": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "objetivo": {
+            "type": "string"
+          },
+          "alcance": {
+            "type": "string"
+          },
+          "criterio": {
+            "type": "string"
+          },
+          "rec_tecnologico": {
+            "type": "string"
+          },
+          "rec_humano": {
+            "type": "string"
+          },
+          "rec_fisico": {
+            "type": "string"
+          },
+          "temas": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "auditoria_id": {
+            "type": "string"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_interno_id": {
+            "type": "number"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_auditoria_id",
+          "titulo",
+          "tipo_evaluacion_id",
+          "cronograma_id",
+          "estado_id",
+          "no_auditoria",
+          "vigencia_id",
+          "consecutivo_OCI",
+          "consecutivo_IE",
+          "tipo_id",
+          "macroproceso",
+          "lider_id",
+          "responsable_id",
+          "fecha_inicio",
+          "fecha_fin",
+          "objetivo",
+          "alcance",
+          "criterio",
+          "rec_tecnologico",
+          "rec_humano",
+          "rec_fisico",
+          "temas",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion",
+          "auditoria_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_interno_id",
+          "fecha_ejecucion_estado"
         ]
       }
     }
