@@ -6,13 +6,16 @@ import { FiltersService } from '../filters/filters.service'
 import { Auditoria } from './schemas/auditoria.schema'
 import { AuditoriaDTO } from './dto/auditoria.dto'
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
+import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
 @Injectable()
 export class AuditoriaService {
   constructor(
     @InjectModel(Auditoria.name)
     private readonly AuditoriaModel: Model<Auditoria>,
     @InjectModel(PlanAuditoria.name)
-    private readonly PlanAuditoriaModel: Model<PlanAuditoria>
+    private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
+    @InjectModel(Auditor.name)
+    private readonly AuditorModel: Model<Auditor>,
   ) { }
 
   private populateFields(): any[] {
@@ -99,5 +102,51 @@ export class AuditoriaService {
     return await this.AuditoriaModel
       .countDocuments(filtersService.getQuery())
       .exec();
+  }
+
+  async getByAuditor(personaId: number, filterDto: FilterDto): Promise<Auditoria[]> {
+    const auditores = await this.AuditorModel
+      .find({ auditor_id: personaId, activo: true })
+      .select('auditoria_id')
+      .lean()
+      .exec();
+
+    const auditoriaIds = auditores.map(a => a.auditoria_id);
+
+    const filtersService = new FiltersService(filterDto);
+    const query = { ...filtersService.getQuery(), _id: { $in: auditoriaIds } };
+
+    let populateFields = [];
+    if (filtersService.isPopulated()) {
+      populateFields = this.populateFields();
     }
+
+    return await this.AuditoriaModel
+      .find(
+        query,
+        filtersService.getFields() as any,
+        filtersService.getLimitAndOffset(),
+      )
+      .sort(filtersService.getSortBy())
+      .populate(populateFields)
+      .lean()
+      .exec() as unknown as Auditoria[];
+  }
+
+  async countByAuditor(personaId: number, filterDto: FilterDto): Promise<number> {
+    const auditores = await this.AuditorModel
+      .find({ auditor_id: personaId, activo: true })
+      .select('auditoria_id')
+      .lean()
+      .exec();
+
+    const auditoriaIds = auditores.map(a => a.auditoria_id);
+
+    const filtersService = new FiltersService(filterDto);
+    const query = { ...filtersService.getQuery(), _id: { $in: auditoriaIds } };
+
+    return await this.AuditoriaModel
+      .countDocuments(query)
+      .exec();
+  }
 }
