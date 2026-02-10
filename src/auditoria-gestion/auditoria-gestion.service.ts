@@ -23,7 +23,7 @@ export class AuditoriaGestionService {
     let estado: AuditoriaEstadoDto;
     ({ ...auditoria } = createAuditoriaGestionDto);
     ({ ...estado } = createAuditoriaGestionDto);
-    const auditoriaData: AuditoriaDTO = {
+    const auditoriaData = {
       ...auditoria,
       activo: true,
       fecha_creacion: fecha,
@@ -31,7 +31,7 @@ export class AuditoriaGestionService {
     };
     const nuevaAuditoria = await this.AuditoriaModel.create(auditoriaData);
 
-    const auditoriaEstadoData: AuditoriaEstadoDto = {
+    const auditoriaEstadoData = {
       ...estado,
       auditoria_id: nuevaAuditoria._id,
       actual: true,
