@@ -22,6 +22,7 @@ import {
     ApiParam,
     ApiBody,
 } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('tema')
 @Controller('tema')
@@ -37,7 +38,7 @@ export class TemaController {
         type: TemaDTO,
     })
     @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-    async post(@Res() res, @Body() TemaDTO: TemaDTO) {
+    async post(@Res() res, @Body(new ParseObjectIdPipe(['informe_id'])) TemaDTO: TemaDTO) {
         try {
             const tema = await this.temaService.post(TemaDTO);
             res.status(HttpStatus.CREATED).json({

@@ -3022,8 +3022,8 @@
           "estado_id": {
             "type": "number"
           },
-          "estado_interno_id": {
-            "type": "number"
+          "fase_id": {
+            "type": "string"
           },
           "fecha_ejecucion_estado": {
             "format": "date-time",
@@ -3040,7 +3040,7 @@
           "observacion",
           "actual",
           "estado_id",
-          "estado_interno_id",
+          "fase_id",
           "fecha_ejecucion_estado",
           "activo"
         ]
@@ -3403,8 +3403,8 @@
           "actual": {
             "type": "boolean"
           },
-          "estado_interno_id": {
-            "type": "number"
+          "fase_id": {
+            "type": "string"
           },
           "fecha_ejecucion_estado": {
             "format": "date-time",
@@ -3442,7 +3442,7 @@
           "usuario_rol",
           "observacion",
           "actual",
-          "estado_interno_id",
+          "fase_id",
           "fecha_ejecucion_estado"
         ]
       }

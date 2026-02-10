@@ -35,6 +35,7 @@ export class AuditoriaGestionService {
       ...estado,
       auditoria_id: nuevaAuditoria._id,
       actual: true,
+      activo: true,
       fecha_ejecucion_estado: fecha,
     };
     return await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
@@ -42,9 +43,9 @@ export class AuditoriaGestionService {
 
   async put(id: string, auditoriaNuevoEstado: AuditoriaEstadoDto) {
     const fecha = new Date();
-    const auditoriasEnPlan: Auditoria[] = await this.AuditoriaModel.find({ plan_auditoria_id: id, activo: true });
+    const auditoriasEnPlan = await this.AuditoriaModel.find({ plan_auditoria_id: id, activo: true });
 
-    const estadosAnteriores: AuditoriaEstado[] = await this.AuditoriaEstadoModel.find({
+    const estadosAnteriores = await this.AuditoriaEstadoModel.find({
       auditoria_id: { $in: auditoriasEnPlan.map(a => a._id) },
       actual: true,
     });
@@ -59,13 +60,13 @@ export class AuditoriaGestionService {
       );
     }
 
-    const nuevosEstados: AuditoriaEstadoDto[] = auditoriasEnPlan.map(auditoria => ({
+    const nuevosEstados = auditoriasEnPlan.map(auditoria => ({
       auditoria_id: auditoria._id,
       usuario_id: auditoriaNuevoEstado.usuario_id,
       usuario_rol: auditoriaNuevoEstado.usuario_rol,
       observacion: auditoriaNuevoEstado.observacion,
       estado_id: auditoriaNuevoEstado.estado_id,
-      estado_interno_id: auditoriaNuevoEstado.estado_interno_id,
+      fase_id: auditoriaNuevoEstado.fase_id,
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
