@@ -7,15 +7,14 @@ import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
-
 const mockEstadoPlanDTO: PlanEstadoDto = {
-  plan_auditoria_id: "672d3050f7814a9a0c5261d4",
+  plan_auditoria_id: '672d3050f7814a9a0c5261d4',
   usuario_id: 76767,
-  observacion: "llll",
+  observacion: 'llll',
   estado_id: 2552,
   fecha_ejecucion_estado: new Date(),
-  activo: true
-}
+  activo: true,
+};
 
 const mockEstadoPlan = {
   ...mockEstadoPlanDTO,
@@ -69,7 +68,9 @@ describe('EstadoService', () => {
       } as any);
       jest
         .spyOn(PlanEstadoModel, 'create')
-        .mockImplementationOnce(() => Promise.resolve(mockEstadoPlanDTO as any));
+        .mockImplementationOnce(() =>
+          Promise.resolve(mockEstadoPlanDTO as any),
+        );
 
       const result = await estadoPlanService.post(mockEstadoPlanDTO);
       expect(result).toEqual(mockEstadoPlanDTO);
@@ -92,26 +93,26 @@ describe('EstadoService', () => {
         mockEstadoPlan,
         {
           _id: '671aa963064222e6583d56e4',
-          titulo: "auditoria 1",
+          titulo: 'auditoria 1',
           tipoEvaluacionId: 2,
-          plan_auditoria_id: "67197f9a3416d2a85e5d6d93",
-          cronogramaActividad: Array (3),
+          plan_auditoria_id: '67197f9a3416d2a85e5d6d93',
+          cronogramaActividad: Array(3),
           estadoId: 3,
           noAuditoria: 123420,
-          consecutivoOCI: "EHS54F",
-          consecutivoIE: "PASJF4532",
+          consecutivoOCI: 'EHS54F',
+          consecutivoIE: 'PASJF4532',
           tipoAd: 3,
           macroproceso: 4,
           lider: 3,
           responsable: 34,
           fechaInicio: new Date(),
           fechaFin: new Date(),
-          objetivo: "objetivo",
-          alcance: "alcance",
-          criterio: "criterio",
-          recTecnologico: "rec_T",
-          recHumano: "rec_H",
-          recFisico: "rec_F",
+          objetivo: 'objetivo',
+          alcance: 'alcance',
+          criterio: 'criterio',
+          recTecnologico: 'rec_T',
+          recHumano: 'rec_H',
+          recFisico: 'rec_F',
           activo: true,
           fechaCreacion: new Date(),
           fechaModificacion: new Date(),
@@ -152,9 +153,7 @@ describe('EstadoService', () => {
 
       const result = await estadoPlanService.getById(mockEstadoPlan._id);
 
-      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(
-        mockEstadoPlan._id,
-      );
+      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(mockEstadoPlan._id);
       expect(result).toEqual(mockEstadoPlan);
     });
 
@@ -167,9 +166,7 @@ describe('EstadoService', () => {
         estadoPlanService.getById(mockEstadoPlan._id),
       ).rejects.toThrow(`${mockEstadoPlan._id} no existe`);
 
-      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(
-        mockEstadoPlan._id,
-      );
+      expect(PlanEstadoModel.findById).toHaveBeenCalledWith(mockEstadoPlan._id);
     });
   });
 
@@ -254,7 +251,7 @@ describe('EstadoService', () => {
   });
 
   describe('count', () => {
-    const filterDto: FilterDto = { 
+    const filterDto: FilterDto = {
       query: 'tipoEvaluacionId:3',
       fields: '',
       sortby: '',
@@ -264,7 +261,6 @@ describe('EstadoService', () => {
       populate: '',
     };
     it('Debería retornar la cantidad de documentos', async () => {
-      
       jest.spyOn(PlanEstadoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
@@ -276,7 +272,9 @@ describe('EstadoService', () => {
 
     it('Debería lanzar un error si countDocuments falla', async () => {
       jest.spyOn(PlanEstadoModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+        exec: jest
+          .fn()
+          .mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
       await expect(estadoPlanService.count(filterDto)).rejects.toThrow(

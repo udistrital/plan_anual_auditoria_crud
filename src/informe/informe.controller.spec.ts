@@ -40,7 +40,7 @@ describe('InformeController', () => {
           },
         },
         {
-          provide: InformeEstadoService,  
+          provide: InformeEstadoService,
           useValue: {
             getAll: jest.fn(),
             getById: jest.fn(),

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
-import { FiltersService } from '../filters/filters.service'
-import { Actividad } from './schemas/actividad.schema'
-import { ActividadDTO } from './dto/actividad.dto'
+import { FiltersService } from '../filters/filters.service';
+import { Actividad } from './schemas/actividad.schema';
+import { ActividadDTO } from './dto/actividad.dto';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 @Injectable()
 export class ActividadService {
@@ -12,8 +12,8 @@ export class ActividadService {
     @InjectModel(Actividad.name)
     private readonly ActividadModel: Model<Actividad>,
     @InjectModel(Auditoria.name)
-    private readonly AuditoriaModel: Model<Auditoria>
-  ) { }
+    private readonly AuditoriaModel: Model<Auditoria>,
+  ) {}
 
   private populateFields(): any[] {
     return [{ path: 'auditoria_id' }];
@@ -21,9 +21,9 @@ export class ActividadService {
 
   private async checkRelated(ActividadDTO: ActividadDTO) {
     if (ActividadDTO.auditoria_id) {
-      const actividad = await this.AuditoriaModel
-        .findById(ActividadDTO.auditoria_id)
-        .exec();
+      const actividad = await this.AuditoriaModel.findById(
+        ActividadDTO.auditoria_id,
+      ).exec();
       if (!actividad) {
         throw new Error(
           `Auditoria relacionada con id ${ActividadDTO.auditoria_id} no existe`,
@@ -48,16 +48,15 @@ export class ActividadService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return await this.ActividadModel
-      .find(
-        filtersService.getQuery(),
-        filtersService.getFields() as any,
-        filtersService.getLimitAndOffset(),
-      )
+    return (await this.ActividadModel.find(
+      filtersService.getQuery(),
+      filtersService.getFields() as any,
+      filtersService.getLimitAndOffset(),
+    )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
       .lean()
-      .exec() as unknown as Actividad[];
+      .exec()) as unknown as Actividad[];
   }
 
   async getById(id: string): Promise<Actividad> {
@@ -74,9 +73,11 @@ export class ActividadService {
       delete ActividadDTO.fecha_creacion;
     }
     await this.checkRelated(ActividadDTO);
-    const update = await this.ActividadModel
-      .findByIdAndUpdate(id, ActividadDTO, { new: true })
-      .exec();
+    const update = await this.ActividadModel.findByIdAndUpdate(
+      id,
+      ActividadDTO,
+      { new: true },
+    ).exec();
     if (!update) {
       throw new Error(`${id} no existe`);
     }
@@ -84,9 +85,11 @@ export class ActividadService {
   }
 
   async delete(id: string): Promise<Actividad> {
-    const deleted = await this.ActividadModel
-      .findByIdAndUpdate(id, { activo: false }, { new: true })
-      .exec();
+    const deleted = await this.ActividadModel.findByIdAndUpdate(
+      id,
+      { activo: false },
+      { new: true },
+    ).exec();
     if (!deleted) {
       throw new Error(`${id} no existe`);
     }
@@ -95,8 +98,8 @@ export class ActividadService {
   async count(filterDto: FilterDto): Promise<number> {
     const filtersService = new FiltersService(filterDto);
 
-    return await this.ActividadModel
-      .countDocuments(filtersService.getQuery())
-      .exec();
-    }
+    return await this.ActividadModel.countDocuments(
+      filtersService.getQuery(),
+    ).exec();
+  }
 }

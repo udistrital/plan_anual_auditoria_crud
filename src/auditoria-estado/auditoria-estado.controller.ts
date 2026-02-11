@@ -36,7 +36,11 @@ export class EstadoAuditoriaController {
     type: AuditoriaEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body(new ParseObjectIdPipe(['auditoria_id'])) auditoriaEstadoDto: AuditoriaEstadoDto) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    auditoriaEstadoDto: AuditoriaEstadoDto,
+  ) {
     try {
       const estadoPlan =
         await this.estadoAuditoriaService.post(auditoriaEstadoDto);

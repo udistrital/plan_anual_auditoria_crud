@@ -34,33 +34,33 @@ export class InformeEstadoService {
   }
 
   async post(informeEstadoDto: InformeEstadoDto): Promise<InformeEstado> {
-  await this.checkRelated(informeEstadoDto);
-  
-  const fecha = new Date();
-  const informeEstadoData = {
-    ...informeEstadoDto,
-    actual: true,
-    activo: true,
-    fecha_ejecucion_estado: fecha,
-  };
+    await this.checkRelated(informeEstadoDto);
 
-  const estadosRelacionados = await this.InformeEstadoModel.find({
-    informe_id: informeEstadoDto.informe_id,
-    actual: true,
-  });
+    const fecha = new Date();
+    const informeEstadoData = {
+      ...informeEstadoDto,
+      actual: true,
+      activo: true,
+      fecha_ejecucion_estado: fecha,
+    };
 
-  if (estadosRelacionados.length > 0) {
-    await this.InformeEstadoModel.updateMany(
-      {
-        informe_id: informeEstadoDto.informe_id,
-        actual: true,
-      },
-      { $set: { actual: false } },
-    );
+    const estadosRelacionados = await this.InformeEstadoModel.find({
+      informe_id: informeEstadoDto.informe_id,
+      actual: true,
+    });
+
+    if (estadosRelacionados.length > 0) {
+      await this.InformeEstadoModel.updateMany(
+        {
+          informe_id: informeEstadoDto.informe_id,
+          actual: true,
+        },
+        { $set: { actual: false } },
+      );
+    }
+
+    return await this.InformeEstadoModel.create(informeEstadoData);
   }
-
-  return await this.InformeEstadoModel.create(informeEstadoData);
-}
 
   async getAll(filterDto: FilterDto): Promise<InformeEstado[]> {
     const filtersService = new FiltersService(filterDto);
@@ -68,7 +68,7 @@ export class InformeEstadoService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return await this.InformeEstadoModel.find(
+    return (await this.InformeEstadoModel.find(
       filtersService.getQuery(),
       filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
@@ -76,7 +76,7 @@ export class InformeEstadoService {
       .sort(filtersService.getSortBy())
       .populate(populateFields)
       .lean()
-      .exec() as unknown as InformeEstado[];
+      .exec()) as unknown as InformeEstado[];
   }
 
   async getById(id: string): Promise<InformeEstado> {

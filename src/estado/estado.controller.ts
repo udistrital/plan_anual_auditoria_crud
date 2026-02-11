@@ -1,28 +1,30 @@
-import { Body,
-    Controller,
-    Delete,
-    Get,
-    HttpStatus,
-    Param,
-    Post,
-    Put,
-    Query,
-    Res, } from '@nestjs/common';
-    import { EstadoService } from './estado.service';
-    import { PlanEstadoDto } from './dto/estado.dto'
-    import { FilterDto } from '../filters/filters.dto'
-    import {
-      ApiTags,
-      ApiOperation,
-      ApiResponse,
-      ApiParam,
-      ApiBody,
-    } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
+import { EstadoService } from './estado.service';
+import { PlanEstadoDto } from './dto/estado.dto';
+import { FilterDto } from '../filters/filters.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 @ApiTags('estado-plan')
 @Controller('estado')
 export class EstadoController {
-    constructor(private estadoService: EstadoService) { }
+  constructor(private estadoService: EstadoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de plan' })
@@ -33,7 +35,11 @@ export class EstadoController {
     type: PlanEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body(new ParseObjectIdPipe(['plan_auditoria_id'])) PlanEstadoDto: PlanEstadoDto) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    PlanEstadoDto: PlanEstadoDto,
+  ) {
     try {
       const estadoPlan = await this.estadoService.post(PlanEstadoDto);
       res.status(HttpStatus.CREATED).json({
@@ -71,7 +77,6 @@ export class EstadoController {
         Message: 'Peticion Exitosa',
         Data: estadoPlan,
         MetaData: { Count: counts },
-
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
@@ -171,7 +176,8 @@ export class EstadoController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: error.message,
       });
     }

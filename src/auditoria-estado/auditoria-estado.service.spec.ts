@@ -51,7 +51,9 @@ describe('EstadoAuditoriaService', () => {
       ],
     }).compile();
 
-    estadoAuditoriaService = module.get<EstadoAuditoriaService>(EstadoAuditoriaService);
+    estadoAuditoriaService = module.get<EstadoAuditoriaService>(
+      EstadoAuditoriaService,
+    );
     AuditoriaEstadoModel = module.get<Model<AuditoriaEstado>>(
       getModelToken(AuditoriaEstado.name),
     );
@@ -84,7 +86,9 @@ describe('EstadoAuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(estadoAuditoriaService.post(mockEstadoAuditoriaDTO)).rejects.toThrow(
+      await expect(
+        estadoAuditoriaService.post(mockEstadoAuditoriaDTO),
+      ).rejects.toThrow(
         `Auditoria relacionada con id ${mockEstadoAuditoriaDTO.auditoria_id} no existe`,
       );
     });
@@ -139,7 +143,9 @@ describe('EstadoAuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(mockAuditorias),
       };
 
-      jest.spyOn(AuditoriaEstadoModel, 'find').mockReturnValue(mockQuery as any);
+      jest
+        .spyOn(AuditoriaEstadoModel, 'find')
+        .mockReturnValue(mockQuery as any);
 
       const result = await estadoAuditoriaService.getAll(mockFilterDto);
 
@@ -155,9 +161,13 @@ describe('EstadoAuditoriaService', () => {
           .mockResolvedValue(mockEstadoAuditoria as unknown as AuditoriaEstado),
       } as any);
 
-      const result = await estadoAuditoriaService.getById(mockEstadoAuditoria._id);
+      const result = await estadoAuditoriaService.getById(
+        mockEstadoAuditoria._id,
+      );
 
-      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(mockEstadoAuditoria._id);
+      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(
+        mockEstadoAuditoria._id,
+      );
       expect(result).toEqual(mockEstadoAuditoria);
     });
 
@@ -170,7 +180,9 @@ describe('EstadoAuditoriaService', () => {
         estadoAuditoriaService.getById(mockEstadoAuditoria._id),
       ).rejects.toThrow(`${mockEstadoAuditoria._id} no existe`);
 
-      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(mockEstadoAuditoria._id);
+      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(
+        mockEstadoAuditoria._id,
+      );
     });
   });
 
@@ -182,7 +194,9 @@ describe('EstadoAuditoriaService', () => {
       jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
-          .mockResolvedValue(mockEstadoAuditoriaDTO as unknown as AuditoriaEstado),
+          .mockResolvedValue(
+            mockEstadoAuditoriaDTO as unknown as AuditoriaEstado,
+          ),
       } as any);
 
       const result = await estadoAuditoriaService.put(
@@ -207,7 +221,10 @@ describe('EstadoAuditoriaService', () => {
       } as any);
 
       await expect(
-        estadoAuditoriaService.put(mockEstadoAuditoria._id, mockEstadoAuditoriaDTO),
+        estadoAuditoriaService.put(
+          mockEstadoAuditoria._id,
+          mockEstadoAuditoriaDTO,
+        ),
       ).rejects.toThrow(`${mockEstadoAuditoria._id} no existe`);
 
       expect(AuditoriaEstadoModel.findByIdAndUpdate).toHaveBeenCalledWith(
@@ -223,7 +240,10 @@ describe('EstadoAuditoriaService', () => {
       } as any);
 
       await expect(
-        estadoAuditoriaService.put(mockEstadoAuditoria._id, mockEstadoAuditoriaDTO),
+        estadoAuditoriaService.put(
+          mockEstadoAuditoria._id,
+          mockEstadoAuditoriaDTO,
+        ),
       ).rejects.toThrow(
         `Auditoria relacionada con id ${mockEstadoAuditoriaDTO.auditoria_id} no existe`,
       );
@@ -235,10 +255,14 @@ describe('EstadoAuditoriaService', () => {
       jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest
           .fn()
-          .mockResolvedValue(mockEstadoAuditoriaDTO as unknown as AuditoriaEstado),
+          .mockResolvedValue(
+            mockEstadoAuditoriaDTO as unknown as AuditoriaEstado,
+          ),
       } as any);
 
-      const result = await estadoAuditoriaService.delete(mockEstadoAuditoria._id);
+      const result = await estadoAuditoriaService.delete(
+        mockEstadoAuditoria._id,
+      );
 
       expect(result).toEqual(mockEstadoAuditoriaDTO);
     });

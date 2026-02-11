@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schema'
+import { PlanAuditoria } from '../../plan-auditoria/schemas/plan-auditoria.schema';
 
 @Schema({ collection: 'auditoria' })
 export class Auditoria extends Document {
@@ -14,14 +14,14 @@ export class Auditoria extends Document {
   tipo_evaluacion_id: number;
 
   @Prop({ required: false })
-  cronograma_id: number[] = [];;
+  cronograma_id: number[] = [];
 
   @Prop({ required: false })
   estado_id: number;
 
   @Prop({ required: false })
   no_auditoria: number;
-  
+
   @Prop({ required: true })
   vigencia_id: number;
 
@@ -78,7 +78,6 @@ export class Auditoria extends Document {
 
   @Prop({ required: false })
   fecha_modificacion: Date;
-
 }
 export const AuditoriaSchema = SchemaFactory.createForClass(Auditoria);
 

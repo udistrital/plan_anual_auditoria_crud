@@ -1,18 +1,18 @@
-import { 
-  Body, 
-  Controller, 
-  HttpStatus, 
-  Post, 
-  Put, 
-  Param, 
-  Res, 
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Put,
+  Param,
+  Res,
 } from '@nestjs/common';
-import { 
-  ApiBody, 
-  ApiOperation, 
-  ApiParam, 
-  ApiResponse, 
-  ApiTags 
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
@@ -21,10 +21,14 @@ import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dt
 @ApiTags('auditoria-gestion')
 @Controller('auditoria-gestion')
 export class AuditoriaGestionController {
-  constructor(private readonly auditoriaGestionService: AuditoriaGestionService) {}
+  constructor(
+    private readonly auditoriaGestionService: AuditoriaGestionService,
+  ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear una nueva auditoria junto con su estado inicial' })
+  @ApiOperation({
+    summary: 'Crear una nueva auditoria junto con su estado inicial',
+  })
   @ApiBody({ type: CreateAuditoriaGestionDto })
   @ApiResponse({
     status: 201,
@@ -32,10 +36,14 @@ export class AuditoriaGestionController {
     type: CreateAuditoriaGestionDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() createAuditoriaGestionDto: CreateAuditoriaGestionDto) {
+  async post(
+    @Res() res,
+    @Body() createAuditoriaGestionDto: CreateAuditoriaGestionDto,
+  ) {
     try {
-      const auditoria = 
-        await this.auditoriaGestionService.post(createAuditoriaGestionDto);
+      const auditoria = await this.auditoriaGestionService.post(
+        createAuditoriaGestionDto,
+      );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -54,17 +62,31 @@ export class AuditoriaGestionController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Actualizar los estados de las auditorias existentes en un plan' })
-  @ApiParam({ name: 'id', type: String, description: 'ID del plan de auditorias a actualizar' })
+  @ApiOperation({
+    summary: 'Actualizar los estados de las auditorias existentes en un plan',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    description: 'ID del plan de auditorias a actualizar',
+  })
   @ApiBody({ type: AuditoriaEstadoDto })
   @ApiResponse({
     status: 200,
-    description: 'Los estados de las auditorias han sido actualizados exitosamente.',
+    description:
+      'Los estados de las auditorias han sido actualizados exitosamente.',
     type: AuditoriaEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Plan de Auditorias no encontrado.' })
-  async put(@Res() res, @Param('id') id: string, @Body() auditoriaEstado: AuditoriaEstadoDto) {
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de Auditorias no encontrado.',
+  })
+  async put(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() auditoriaEstado: AuditoriaEstadoDto,
+  ) {
     try {
       const auditoria = this.auditoriaGestionService.put(id, auditoriaEstado);
       res.status(HttpStatus.OK).json({
@@ -83,5 +105,4 @@ export class AuditoriaGestionController {
       });
     }
   }
-
 }

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
-import { FiltersService } from '../filters/filters.service'
-import { Auditoria } from './schemas/auditoria.schema'
-import { AuditoriaDTO } from './dto/auditoria.dto'
+import { FiltersService } from '../filters/filters.service';
+import { Auditoria } from './schemas/auditoria.schema';
+import { AuditoriaDTO } from './dto/auditoria.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 @Injectable()
 export class AuditoriaService {
@@ -12,8 +12,8 @@ export class AuditoriaService {
     @InjectModel(Auditoria.name)
     private readonly AuditoriaModel: Model<Auditoria>,
     @InjectModel(PlanAuditoria.name)
-    private readonly PlanAuditoriaModel: Model<PlanAuditoria>
-  ) { }
+    private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
+  ) {}
 
   private populateFields(): any[] {
     return [{ path: 'plan_auditoria_id' }];
@@ -21,9 +21,9 @@ export class AuditoriaService {
 
   private async checkRelated(AuditoriaDTO: AuditoriaDTO) {
     if (AuditoriaDTO.plan_auditoria_id) {
-      const planAuditoria = await this.PlanAuditoriaModel
-        .findById(AuditoriaDTO.plan_auditoria_id)
-        .exec();
+      const planAuditoria = await this.PlanAuditoriaModel.findById(
+        AuditoriaDTO.plan_auditoria_id,
+      ).exec();
       if (!planAuditoria) {
         throw new Error(
           `Plan auditoria relacionada con id ${AuditoriaDTO.plan_auditoria_id} no existe`,
@@ -48,16 +48,15 @@ export class AuditoriaService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return await this.AuditoriaModel
-      .find(
-        filtersService.getQuery(),
-        filtersService.getFields() as any,
-        filtersService.getLimitAndOffset(),
-      )
+    return (await this.AuditoriaModel.find(
+      filtersService.getQuery(),
+      filtersService.getFields() as any,
+      filtersService.getLimitAndOffset(),
+    )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
       .lean()
-      .exec() as unknown as Auditoria[];
+      .exec()) as unknown as Auditoria[];
   }
 
   async getById(id: string): Promise<Auditoria> {
@@ -74,9 +73,11 @@ export class AuditoriaService {
       delete AuditoriaDto.fecha_creacion;
     }
     await this.checkRelated(AuditoriaDto);
-    const update = await this.AuditoriaModel
-      .findByIdAndUpdate(id, AuditoriaDto, { new: true })
-      .exec();
+    const update = await this.AuditoriaModel.findByIdAndUpdate(
+      id,
+      AuditoriaDto,
+      { new: true },
+    ).exec();
     if (!update) {
       throw new Error(`${id} no existe`);
     }
@@ -84,9 +85,11 @@ export class AuditoriaService {
   }
 
   async delete(id: string): Promise<Auditoria> {
-    const deleted = await this.AuditoriaModel
-      .findByIdAndUpdate(id, { activo: false }, { new: true })
-      .exec();
+    const deleted = await this.AuditoriaModel.findByIdAndUpdate(
+      id,
+      { activo: false },
+      { new: true },
+    ).exec();
     if (!deleted) {
       throw new Error(`${id} no existe`);
     }
@@ -96,8 +99,8 @@ export class AuditoriaService {
   async count(filterDto: FilterDto): Promise<number> {
     const filtersService = new FiltersService(filterDto);
 
-    return await this.AuditoriaModel
-      .countDocuments(filtersService.getQuery())
-      .exec();
-    }
+    return await this.AuditoriaModel.countDocuments(
+      filtersService.getQuery(),
+    ).exec();
+  }
 }

@@ -27,7 +27,8 @@ export class ParseObjectIdPipe implements PipeTransform {
 
   private _toObjectId(v: any, field: string): Types.ObjectId {
     if (v instanceof Types.ObjectId) return v;
-    if (typeof v === 'string' && Types.ObjectId.isValid(v)) return new Types.ObjectId(v);
+    if (typeof v === 'string' && Types.ObjectId.isValid(v))
+      return new Types.ObjectId(v);
     throw new BadRequestException(`Field "${field}" must be a valid ObjectId`);
   }
 }

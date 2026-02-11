@@ -11,7 +11,9 @@ describe('AuditoriaGestionController', () => {
       providers: [AuditoriaGestionService],
     }).compile();
 
-    controller = module.get<AuditoriaGestionController>(AuditoriaGestionController);
+    controller = module.get<AuditoriaGestionController>(
+      AuditoriaGestionController,
+    );
   });
 
   it('should be defined', () => {

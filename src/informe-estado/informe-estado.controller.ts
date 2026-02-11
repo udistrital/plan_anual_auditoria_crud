@@ -36,7 +36,11 @@ export class InformeEstadoController {
     type: InformeEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body(new ParseObjectIdPipe(['informe_id'])) informeEstadoDto: InformeEstadoDto) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['informe_id']))
+    informeEstadoDto: InformeEstadoDto,
+  ) {
     try {
       const estadoInforme =
         await this.informeEstadoService.post(informeEstadoDto);
@@ -66,8 +70,7 @@ export class InformeEstadoController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const estadoInforme =
-        await this.informeEstadoService.getAll(filterDto);
+      const estadoInforme = await this.informeEstadoService.getAll(filterDto);
       const counts = await this.informeEstadoService.count(filterDto);
 
       res.status(HttpStatus.OK).json({

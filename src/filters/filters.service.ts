@@ -57,7 +57,9 @@ export class FiltersService {
             queryObj[key[0]] = {
               $in: [
                 tup[1],
-                Types.ObjectId.isValid(tup[1]) ? new Types.ObjectId(tup[1]) : null,
+                Types.ObjectId.isValid(tup[1])
+                  ? new Types.ObjectId(tup[1])
+                  : null,
               ].filter(Boolean),
             };
           } else {

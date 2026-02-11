@@ -2,26 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
-import { FiltersService } from '../filters/filters.service'
-import { PlanAuditoria } from './schemas/plan-auditoria.schema'
-import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto'
+import { FiltersService } from '../filters/filters.service';
+import { PlanAuditoria } from './schemas/plan-auditoria.schema';
+import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 
 @Injectable()
 export class PlanAuditoriaService {
   constructor(
     @InjectModel(PlanAuditoria.name)
     private readonly planAuditoriaModel: Model<PlanAuditoria>,
-  ) { }
+  ) {}
 
   async post(planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
     const fecha = new Date();
 
     const existingPlan = await this.planAuditoriaModel.findOne({
       vigencia_id: planAuditoriaDto.vigencia_id,
-      activo: true, 
+      activo: true,
     });
     if (existingPlan) {
-      throw new Error(`Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`);
+      throw new Error(
+        `Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`,
+      );
     }
 
     const planAuditoriaData = {
@@ -35,7 +37,7 @@ export class PlanAuditoriaService {
 
   async getAll(filterDto: FilterDto): Promise<PlanAuditoria[]> {
     const filtersService = new FiltersService(filterDto);
-    return await this.planAuditoriaModel
+    return (await this.planAuditoriaModel
       .find(
         filtersService.getQuery(),
         filtersService.getFields() as any,
@@ -43,7 +45,7 @@ export class PlanAuditoriaService {
       )
       .sort(filtersService.getSortBy())
       .lean()
-      .exec() as unknown as PlanAuditoria[];
+      .exec()) as unknown as PlanAuditoria[];
   }
 
   async getById(id: string): Promise<PlanAuditoria> {
@@ -54,19 +56,24 @@ export class PlanAuditoriaService {
     return planAuditoria;
   }
 
-  async put(id: string, planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
+  async put(
+    id: string,
+    planAuditoriaDto: PlanAuditoriaDTO,
+  ): Promise<PlanAuditoria> {
     planAuditoriaDto.fecha_modificacion = new Date();
 
     if (planAuditoriaDto.vigencia_id) {
-    const existingPlan = await this.planAuditoriaModel.findOne({
-      vigencia_id: planAuditoriaDto.vigencia_id,
-      _id: { $ne: id },
-      activo: true, 
-    });
-    if (existingPlan) {
-      throw new Error(`Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`);
+      const existingPlan = await this.planAuditoriaModel.findOne({
+        vigencia_id: planAuditoriaDto.vigencia_id,
+        _id: { $ne: id },
+        activo: true,
+      });
+      if (existingPlan) {
+        throw new Error(
+          `Ya existe un plan de auditoría activo para la vigencia ${planAuditoriaDto.vigencia_id}`,
+        );
+      }
     }
-  }
 
     if (planAuditoriaDto.fecha_creacion) {
       delete planAuditoriaDto.fecha_creacion;
@@ -78,7 +85,6 @@ export class PlanAuditoriaService {
       throw new Error(`${id} no existe`);
     }
     return update;
-
   }
 
   async delete(id: string): Promise<PlanAuditoria> {
