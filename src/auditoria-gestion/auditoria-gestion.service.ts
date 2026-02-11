@@ -1,78 +1,111 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Connection } from 'mongoose';
+import { InjectConnection } from '@nestjs/mongoose';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
-import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { CreateAuditoriaGestion } from './dto/create-auditoria-gestion.dto';
 
 @Injectable()
 export class AuditoriaGestionService {
-
   constructor(
     @InjectModel(Auditoria.name)
-    private readonly AuditoriaModel: Model<Auditoria>,
+    private readonly auditoriaModel: Model<Auditoria>,
     @InjectModel(AuditoriaEstado.name)
-    private readonly AuditoriaEstadoModel: Model<AuditoriaEstado>,
-  ) { }
+    private readonly auditoriaEstadoModel: Model<AuditoriaEstado>,
+    @InjectConnection() private readonly connection: Connection, // Necesario para transacciones
+  ) {}
 
-  async post(createAuditoriaGestionDto: CreateAuditoriaGestion) {
-    const fecha = new Date();
-    let auditoria: AuditoriaDTO;
-    let estado: AuditoriaEstadoDto;
-    ({ ...auditoria } = createAuditoriaGestionDto);
-    ({ ...estado } = createAuditoriaGestionDto);
-    const auditoriaData = {
-      ...auditoria,
-      activo: true,
-      fecha_creacion: fecha,
-      fecha_modificacion: fecha,
-    };
-    const nuevaAuditoria = await this.AuditoriaModel.create(auditoriaData);
+  async post(dto: CreateAuditoriaGestion) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
 
-    const auditoriaEstadoData = {
-      ...estado,
-      auditoria_id: nuevaAuditoria._id,
-      actual: true,
-      activo: true,
-      fecha_ejecucion_estado: fecha,
-    };
-    return await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
-  }
+    try {
+      const fecha = new Date();
 
-  async put(id: string, auditoriaNuevoEstado: AuditoriaEstadoDto) {
-    const fecha = new Date();
-    const auditoriasEnPlan = await this.AuditoriaModel.find({ plan_auditoria_id: id, activo: true });
-
-    const estadosAnteriores = await this.AuditoriaEstadoModel.find({
-      auditoria_id: { $in: auditoriasEnPlan.map(a => a._id) },
-      actual: true,
-    });
-
-    if (estadosAnteriores.length > 0) {
-      await this.AuditoriaEstadoModel.updateMany(
-        {
-          auditoria_id: { $in: auditoriasEnPlan.map(a => a._id) },
-          actual: true,
-        },
-        { $set: { actual: false } },
+      // Creamos la auditoría principal
+      const [nuevaAuditoria] = await this.auditoriaModel.create(
+        [
+          {
+            ...dto,
+            activo: true,
+            fecha_creacion: fecha,
+            fecha_modificacion: fecha,
+          },
+        ],
+        { session },
       );
+
+      // Creamos el estado inicial vinculado
+      const estadoInicial = await this.auditoriaEstadoModel.create(
+        [
+          {
+            ...dto,
+            auditoria_id: nuevaAuditoria._id,
+            actual: true,
+            activo: true,
+            fecha_ejecucion_estado: fecha,
+          },
+        ],
+        { session },
+      );
+
+      await session.commitTransaction();
+      return estadoInicial[0];
+    } catch (error) {
+      await session.abortTransaction();
+      console.error('Error en AuditoriaGestion:', error);
+      throw new InternalServerErrorException(
+        'Error al crear auditoría y estado',
+      );
+    } finally {
+      session.endSession();
     }
-
-    const nuevosEstados = auditoriasEnPlan.map(auditoria => ({
-      auditoria_id: auditoria._id,
-      usuario_id: auditoriaNuevoEstado.usuario_id,
-      usuario_rol: auditoriaNuevoEstado.usuario_rol,
-      observacion: auditoriaNuevoEstado.observacion,
-      estado_id: auditoriaNuevoEstado.estado_id,
-      fase_id: auditoriaNuevoEstado.fase_id,
-      actual: true,
-      activo: true,
-      fecha_ejecucion_estado: fecha,
-    }));
-
-    return await this.AuditoriaEstadoModel.insertMany(nuevosEstados);
   }
 
+  async put(planId: string, nuevoEstadoDto: AuditoriaEstadoDto) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+
+    try {
+      const fecha = new Date();
+
+      // 1. Buscamos las auditorías relacionadas al plan
+      const auditoriasIds = await this.auditoriaModel
+        .find({ plan_auditoria_id: planId, activo: true })
+        .distinct('_id');
+
+      if (!auditoriasIds.length) return [];
+
+      // 2. Desactivamos todos los estados "actuales" de esas auditorías en un solo paso
+      await this.auditoriaEstadoModel.updateMany(
+        { auditoria_id: { $in: auditoriasIds }, actual: true },
+        { $set: { actual: false } },
+        { session },
+      );
+
+      // 3. Preparamos los nuevos estados (Inmutabilidad)
+      const nuevosEstados = auditoriasIds.map((id) => ({
+        ...nuevoEstadoDto,
+        auditoria_id: id,
+        actual: true,
+        activo: true,
+        fecha_ejecucion_estado: fecha,
+      }));
+
+      const resultados = await this.auditoriaEstadoModel.insertMany(
+        nuevosEstados,
+        { session },
+      );
+
+      await session.commitTransaction();
+      return resultados;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
 }

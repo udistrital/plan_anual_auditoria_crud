@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DocumentoController } from './documento.controller';
-import { DocumentoDTO } from './dto/documento.dto'
+import { DocumentoDTO } from './dto/documento.dto';
 import { DocumentoService } from './documento.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockDocumentoDto: DocumentoDTO = {
-  referencia_id: "67197dda3416d2a85e5d6d8f",
+  referencia_id: '67197dda3416d2a85e5d6d8f',
   referencia_tipo: 'Plan Auditoria',
   nuxeo_id: 123,
   tipo_id: 123,
@@ -95,7 +95,6 @@ describe('DocumentoController', () => {
     });
   });
 
-
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
       query: '',
@@ -106,11 +105,11 @@ describe('DocumentoController', () => {
       offset: '',
       populate: '',
     };
-  
+
     beforeEach(() => {
       jest.spyOn(service, 'count').mockResolvedValue(2);
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockActividades = [
         {
@@ -124,18 +123,18 @@ describe('DocumentoController', () => {
           titulo: 'documento 2',
         },
       ];
-  
+
       jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
-  
+
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-  
+
       await controller.getAll(res as any, mockFilterDto);
-  
+
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(service.count).toHaveBeenCalled(); 
+      expect(service.count).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -202,11 +201,11 @@ describe('DocumentoController', () => {
       offset: '',
       populate: '',
     };
-  
+
     beforeEach(() => {
       jest.spyOn(service, 'count').mockResolvedValue(2); // Simula retorno del método count
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockActividades = [
         {
@@ -220,17 +219,16 @@ describe('DocumentoController', () => {
           nuxeo_id: 123,
         },
       ];
-    
+
       jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
-  
-    
+
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-  
+
       await controller.getAll(res as any, mockFilterDto);
-  
+
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
       expect(service.count).toHaveBeenCalled(); // Verifica que count es llamado
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
@@ -243,7 +241,7 @@ describe('DocumentoController', () => {
       });
     });
   });
-  
+
   describe('delete', () => {
     it('Debería retornar OK con id válido', async () => {
       jest.spyOn(service, 'delete').mockResolvedValue(undefined);
@@ -284,7 +282,8 @@ describe('DocumentoController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: mockError.message,
       });
     });

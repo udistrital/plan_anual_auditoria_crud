@@ -1,18 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EstadoController } from './estado.controller';
-import { PlanEstadoDto } from './dto/estado.dto'
+import { PlanEstadoDto } from './dto/estado.dto';
 import { EstadoService } from './estado.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockEstadoPlanDTO: PlanEstadoDto = {
-  plan_auditoria_id: "672d3050f7814a9a0c5261d4",
+  plan_auditoria_id: '672d3050f7814a9a0c5261d4',
   usuario_id: 76767,
-  observacion: "llll",
+  observacion: 'llll',
   estado_id: 2552,
   fecha_ejecucion_estado: new Date(),
-  activo: true
-}
+  activo: true,
+};
 
 const mockEstadoPlan = {
   ...mockEstadoPlanDTO,
@@ -107,9 +107,9 @@ describe('EstadoController', () => {
     };
 
     beforeEach(() => {
-      jest.spyOn(service, 'count').mockResolvedValue(2); 
+      jest.spyOn(service, 'count').mockResolvedValue(2);
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockAuditorias = [
         {
@@ -305,7 +305,8 @@ describe('EstadoController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: mockError.message,
       });
     });

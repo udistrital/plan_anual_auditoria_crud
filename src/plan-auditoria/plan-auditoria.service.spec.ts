@@ -6,12 +6,11 @@ import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
-
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
-  objetivo: "el objetivo es",
-  alcance: "asdasd",
-  criterio: "criterio de los criterios",
-  recurso: "los recursos son",
+  objetivo: 'el objetivo es',
+  alcance: 'asdasd',
+  criterio: 'criterio de los criterios',
+  recurso: 'los recursos son',
   creado_por_id: 10,
   vigencia_id: 3,
   aprobado_jefe_dependencia: true,
@@ -23,12 +22,10 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   fecha_modificacion: new Date(),
 };
 
-
 const mockPlanAuditoria = {
   ...mockPlanAuditoriaDTO,
   Id: '67197dda3416d2a85e5d6d8f',
 };
-
 
 describe('PlanAuditoriaService', () => {
   let planAuditoriaService: PlanAuditoriaService;
@@ -43,7 +40,7 @@ describe('PlanAuditoriaService', () => {
           useValue: {
             create: jest.fn(),
             find: jest.fn(),
-            findOne: jest.fn(), 
+            findOne: jest.fn(),
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             countDocuments: jest.fn(),
@@ -52,9 +49,11 @@ describe('PlanAuditoriaService', () => {
       ],
     }).compile();
 
-    planAuditoriaService = module.get<PlanAuditoriaService>(PlanAuditoriaService);
-    planAuditoriaModel = module.get<Model<PlanAuditoria>>(getModelToken(PlanAuditoria.name));
-
+    planAuditoriaService =
+      module.get<PlanAuditoriaService>(PlanAuditoriaService);
+    planAuditoriaModel = module.get<Model<PlanAuditoria>>(
+      getModelToken(PlanAuditoria.name),
+    );
   });
 
   it('Debería estar definido', () => {
@@ -63,13 +62,13 @@ describe('PlanAuditoriaService', () => {
 
   describe('post', () => {
     it('Debería crear y devolver un plan de auditoria', async () => {
-      jest
-      .spyOn(planAuditoriaModel, 'findOne')
-      .mockResolvedValueOnce(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValueOnce(null);
 
       jest
         .spyOn(planAuditoriaModel, 'create')
-        .mockImplementationOnce(() => Promise.resolve(mockPlanAuditoriaDTO as any));
+        .mockImplementationOnce(() =>
+          Promise.resolve(mockPlanAuditoriaDTO as any),
+        );
 
       const result = await planAuditoriaService.post(mockPlanAuditoriaDTO);
       expect(result).toEqual(mockPlanAuditoriaDTO);
@@ -82,10 +81,10 @@ describe('PlanAuditoriaService', () => {
         mockPlanAuditoria,
         {
           Id: '67197dda3416d2a85e5d6d8f',
-          objetivo: "el objetivo es",
-          alcance: "asdasd",
-          criterio: "criterio de los criterios",
-          recurso: "los recursos son",
+          objetivo: 'el objetivo es',
+          alcance: 'asdasd',
+          criterio: 'criterio de los criterios',
+          recurso: 'los recursos son',
           creado_porId: 10,
           estadoId: 5,
           vigencia_id: 3,
@@ -156,12 +155,12 @@ describe('PlanAuditoriaService', () => {
 
   describe('put', () => {
     it('Debería actualizar un plan de auditoria', async () => {
-      jest
-      .spyOn(planAuditoriaModel, 'findOne')
-      .mockResolvedValueOnce(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValueOnce(null);
 
       jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockPlanAuditoriaDTO as unknown as PlanAuditoria),
       } as any);
 
       const result = await planAuditoriaService.put(
@@ -217,7 +216,7 @@ describe('PlanAuditoriaService', () => {
     });
   });
   describe('count', () => {
-    const filterDto: FilterDto = { 
+    const filterDto: FilterDto = {
       query: 'activo:true',
       fields: '',
       sortby: '',
@@ -231,20 +230,22 @@ describe('PlanAuditoriaService', () => {
       jest.spyOn(planAuditoriaModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
-  
+
       // Llamada al método count de ActividadService
       const result = await planAuditoriaService.count(filterDto);
-  
+
       // Verificación del resultado esperado
       expect(result).toBe(2);
     });
-  
+
     it('Debería lanzar un error si countDocuments falla', async () => {
       // Mock de countDocuments para simular un error
       jest.spyOn(planAuditoriaModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+        exec: jest
+          .fn()
+          .mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
-  
+
       // Verificación de que se lanza el error esperado
       await expect(planAuditoriaService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',

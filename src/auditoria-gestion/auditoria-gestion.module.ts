@@ -6,7 +6,10 @@ import {
   AuditoriaEstado,
   AuditoriaEstadoSchema,
 } from '../auditoria-estado/schema/auditoria-estado.schema';
-import { Auditoria, AuditoriaSchema } from '../auditoria/schemas/auditoria.schema';
+import {
+  Auditoria,
+  AuditoriaSchema,
+} from '../auditoria/schemas/auditoria.schema';
 
 @Module({
   imports: [

@@ -57,13 +57,12 @@ describe('InformeEstadoService', () => {
       ],
     }).compile();
 
-    informeEstadoService = module.get<InformeEstadoService>(InformeEstadoService);
+    informeEstadoService =
+      module.get<InformeEstadoService>(InformeEstadoService);
     informeEstadoModel = module.get<Model<InformeEstado>>(
       getModelToken(InformeEstado.name),
     );
-    informeModel = module.get<Model<Informe>>(
-      getModelToken(Informe.name),
-    );
+    informeModel = module.get<Model<Informe>>(getModelToken(Informe.name));
   });
 
   it('Debería estar definido', () => {
@@ -75,9 +74,9 @@ describe('InformeEstadoService', () => {
       jest.spyOn(informeModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockInforme),
       } as any);
-      
+
       jest.spyOn(informeEstadoModel, 'find').mockResolvedValue([]);
-      
+
       jest
         .spyOn(informeEstadoModel, 'create')
         .mockImplementationOnce(() =>
@@ -98,11 +97,15 @@ describe('InformeEstadoService', () => {
       jest.spyOn(informeModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockInforme),
       } as any);
-      
-      jest.spyOn(informeEstadoModel, 'find').mockResolvedValue([estadoAnterior] as any);
-      
-      const updateManySpy = jest.spyOn(informeEstadoModel, 'updateMany').mockResolvedValue({} as any);
-      
+
+      jest
+        .spyOn(informeEstadoModel, 'find')
+        .mockResolvedValue([estadoAnterior] as any);
+
+      const updateManySpy = jest
+        .spyOn(informeEstadoModel, 'updateMany')
+        .mockResolvedValue({} as any);
+
       jest
         .spyOn(informeEstadoModel, 'create')
         .mockImplementationOnce(() =>
@@ -110,24 +113,26 @@ describe('InformeEstadoService', () => {
         );
 
       await informeEstadoService.post(mockInformeEstadoDTO);
-      
+
       expect(updateManySpy).toHaveBeenCalledWith(
         {
           informe_id: mockInformeEstadoDTO.informe_id,
           actual: true,
         },
-        { $set: { actual: false } }
+        { $set: { actual: false } },
       );
     });
 
     it('Debería lanzar un error si el Informe no existe', async () => {
       jest.spyOn(informeEstadoModel, 'find').mockResolvedValue([]);
-      
+
       jest.spyOn(informeModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(informeEstadoService.post(mockInformeEstadoDTO)).rejects.toThrow(
+      await expect(
+        informeEstadoService.post(mockInformeEstadoDTO),
+      ).rejects.toThrow(
         `Informe relacionado con id ${mockInformeEstadoDTO.informe_id} no existe`,
       );
     });
@@ -293,7 +298,7 @@ describe('InformeEstadoService', () => {
       offset: '',
       populate: '',
     };
-    
+
     it('Debería retornar la cantidad de documentos', async () => {
       jest.spyOn(informeEstadoModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(5),

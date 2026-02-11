@@ -174,7 +174,9 @@ describe('InformeEstadoController', () => {
 
   describe('getById', () => {
     it('Debería retornar OK con id válido', async () => {
-      jest.spyOn(service, 'getById').mockResolvedValue(mockInformeEstado as any);
+      jest
+        .spyOn(service, 'getById')
+        .mockResolvedValue(mockInformeEstado as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -226,7 +228,11 @@ describe('InformeEstadoController', () => {
         json: jest.fn(),
       };
 
-      await controller.put(res as any, mockInformeEstado._id, mockInformeEstadoDTO);
+      await controller.put(
+        res as any,
+        mockInformeEstado._id,
+        mockInformeEstadoDTO,
+      );
 
       expect(service.put).toHaveBeenCalledWith(
         mockInformeEstado._id,
@@ -251,7 +257,11 @@ describe('InformeEstadoController', () => {
         json: jest.fn(),
       };
 
-      await controller.put(res as any, mockInformeEstado._id, mockInformeEstadoDTO);
+      await controller.put(
+        res as any,
+        mockInformeEstado._id,
+        mockInformeEstadoDTO,
+      );
 
       expect(service.put).toHaveBeenCalledWith(
         mockInformeEstado._id,

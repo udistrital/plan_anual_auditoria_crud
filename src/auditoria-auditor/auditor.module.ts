@@ -3,7 +3,10 @@ import { AuditorController } from './auditor.controller';
 import { AuditorService } from './auditor.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Auditor, AuditorSchema } from './schemas/auditor.schema';
-import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.schema';
+import {
+  Auditoria,
+  AuditoriaSchema,
+} from 'src/auditoria/schemas/auditoria.schema';
 
 @Module({
   imports: [
@@ -14,7 +17,6 @@ import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.sche
   ],
   controllers: [AuditorController],
   providers: [AuditorService],
-  exports: [AuditorService]
-
+  exports: [AuditorService],
 })
 export class AuditorModule {}

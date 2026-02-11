@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActividadController } from './actividad.controller';
-import { ActividadDTO } from './dto/actividad.dto'
+import { ActividadDTO } from './dto/actividad.dto';
 import { ActividadService } from './actividad.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
-  auditoria_id: "671aaa8a064222e6583d56e7",
+  auditoria_id: '671aaa8a064222e6583d56e7',
   titulo: 'string',
   fecha_inicio: new Date(),
   fecha_fin: new Date(),
@@ -102,7 +102,6 @@ describe('ActividadController', () => {
     });
   });
 
-
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
       query: 'titulo: actividad 1',
@@ -113,11 +112,11 @@ describe('ActividadController', () => {
       offset: '1',
       populate: 'true',
     };
-  
+
     beforeEach(() => {
       jest.spyOn(service, 'count').mockResolvedValue(2);
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockActividades = [
         {
@@ -131,18 +130,18 @@ describe('ActividadController', () => {
           titulo: 'actividad 2',
         },
       ];
-  
+
       jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
-  
+
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-  
+
       await controller.getAll(res as any, mockFilterDto);
-  
+
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(service.count).toHaveBeenCalled(); 
+      expect(service.count).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -209,11 +208,11 @@ describe('ActividadController', () => {
       offset: '1',
       populate: 'true',
     };
-  
+
     beforeEach(() => {
       jest.spyOn(service, 'count').mockResolvedValue(2); // Simula retorno del método count
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockActividades = [
         {
@@ -227,17 +226,16 @@ describe('ActividadController', () => {
           titulo: 'actividad 2',
         },
       ];
-    
+
       jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
-  
-    
+
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
-  
+
       await controller.getAll(res as any, mockFilterDto);
-  
+
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
       expect(service.count).toHaveBeenCalled(); // Verifica que count es llamado
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
@@ -250,7 +248,7 @@ describe('ActividadController', () => {
       });
     });
   });
-  
+
   describe('delete', () => {
     it('Debería retornar OK con id válido', async () => {
       jest.spyOn(service, 'delete').mockResolvedValue(undefined);
@@ -291,7 +289,8 @@ describe('ActividadController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: mockError.message,
       });
     });

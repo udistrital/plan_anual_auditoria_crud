@@ -3,8 +3,7 @@ import { DocumentoController } from './documento.controller';
 import { DocumentoService } from './documento.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Documento, DocumentoSchema } from './schemas/documento.schema';
-import { Auditoria, AuditoriaSchema } from '../auditoria/schemas/auditoria.schema'
-import { PlanAuditoria, PlanAuditoriaSchema } from '../plan-auditoria/schemas/plan-auditoria.schema'
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -13,6 +12,6 @@ import { PlanAuditoria, PlanAuditoriaSchema } from '../plan-auditoria/schemas/pl
   ],
   controllers: [DocumentoController],
   providers: [DocumentoService],
-  exports: [DocumentoService]
+  exports: [DocumentoService],
 })
 export class DocumentoModule {}

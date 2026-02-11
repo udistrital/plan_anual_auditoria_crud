@@ -75,11 +75,11 @@ describe('TemaService', () => {
     });
 
     it('Debería lanzar un error si el Tema no existe', async () => {
-      jest
-        .spyOn(temaModel, 'create')
-        .mockImplementationOnce(() => {
-          throw new Error(`Tema relacionado con id ${mockTemaDto.informe_id} no existe`);
-        });
+      jest.spyOn(temaModel, 'create').mockImplementationOnce(() => {
+        throw new Error(
+          `Tema relacionado con id ${mockTemaDto.informe_id} no existe`,
+        );
+      });
 
       await expect(temaService.post(mockTemaDto)).rejects.toThrow(
         `Tema relacionado con id ${mockTemaDto.informe_id} no existe`,
@@ -252,10 +252,7 @@ describe('TemaService', () => {
         exec: jest.fn().mockResolvedValue(temaConSubtema),
       } as any);
 
-      const result = await temaService.agregarSubtema(
-        mockTema._id,
-        mockSubtemaDto,
-      );
+      await temaService.agregarSubtema(mockTema._id, mockSubtemaDto);
 
       expect(temaConSubtema.save).toHaveBeenCalled();
     });
@@ -291,11 +288,7 @@ describe('TemaService', () => {
         exec: jest.fn().mockResolvedValue(temaConSubtema),
       } as any);
 
-      const result = await temaService.agregarHallazgo(
-        mockTema._id,
-        'sub1',
-        mockHallazgoDto,
-      );
+      await temaService.agregarHallazgo(mockTema._id, 'sub1', mockHallazgoDto);
 
       expect(temaConSubtema.save).toHaveBeenCalled();
     });

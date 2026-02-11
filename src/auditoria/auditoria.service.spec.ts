@@ -8,33 +8,32 @@ import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditoriaDTO: AuditoriaDTO = {
-  titulo: "auditoria 1",
+  titulo: 'auditoria 1',
   tipo_evaluacion_id: 2,
-  plan_auditoria_id: "67197dda3416d2a85e5d6d8f",
-  cronograma_id: Array (3),
+  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  cronograma_id: Array(3),
   estado_id: 3,
   no_auditoria: 123420,
   vigencia_id: 1234,
-  consecutivo_OCI: "EHS54F",
-  consecutivo_IE: "PASJF4532",
+  consecutivo_OCI: 'EHS54F',
+  consecutivo_IE: 'PASJF4532',
   tipo_id: 3,
   macroproceso: 4,
   lider_id: 3,
   responsable_id: 34,
   fecha_inicio: new Date(),
   fecha_fin: new Date(),
-  objetivo: "objetivo",
-  alcance: "alcance",
-  criterio: "criterio",
-  rec_tecnologico: "rec_T",
-  rec_humano: "rec_H",
-  rec_fisico: "rec_F",
-  temas: "temas varios",
+  objetivo: 'objetivo',
+  alcance: 'alcance',
+  criterio: 'criterio',
+  rec_tecnologico: 'rec_T',
+  rec_humano: 'rec_H',
+  rec_fisico: 'rec_F',
+  temas: 'temas varios',
   activo: true,
   fecha_creacion: new Date(),
   fecha_modificacion: new Date(),
 };
-
 
 const mockAuditoria = {
   ...mockAuditoriaDTO,
@@ -117,27 +116,27 @@ describe('AuditoriaService', () => {
         mockAuditoria,
         {
           _id: '671aa963064222e6583d56e4',
-          titulo: "auditoria 1",
+          titulo: 'auditoria 1',
           tipoEvaluacionId: 2,
-          plan_auditoria_id: "67197f9a3416d2a85e5d6d93",
-          cronogramaActividad: Array (3),
+          plan_auditoria_id: '67197f9a3416d2a85e5d6d93',
+          cronogramaActividad: Array(3),
           estadoId: 3,
           noAuditoria: 123420,
           vigencia_id: 12345,
-          consecutivoOCI: "EHS54F",
-          consecutivoIE: "PASJF4532",
+          consecutivoOCI: 'EHS54F',
+          consecutivoIE: 'PASJF4532',
           tipoAd: 3,
           macroproceso: 4,
           lider: 3,
           responsable: 34,
           fechaInicio: new Date(),
           fechaFin: new Date(),
-          objetivo: "objetivo",
-          alcance: "alcance",
-          criterio: "criterio",
-          recTecnologico: "rec_T",
-          recHumano: "rec_H",
-          recFisico: "rec_F",
+          objetivo: 'objetivo',
+          alcance: 'alcance',
+          criterio: 'criterio',
+          recTecnologico: 'rec_T',
+          recHumano: 'rec_H',
+          recFisico: 'rec_F',
           activo: true,
           fechaCreacion: new Date(),
           fechaModificacion: new Date(),
@@ -178,9 +177,7 @@ describe('AuditoriaService', () => {
 
       const result = await auditoriaService.getById(mockAuditoria._id);
 
-      expect(auditoriaModel.findById).toHaveBeenCalledWith(
-        mockAuditoria._id,
-      );
+      expect(auditoriaModel.findById).toHaveBeenCalledWith(mockAuditoria._id);
       expect(result).toEqual(mockAuditoria);
     });
 
@@ -189,13 +186,11 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(
-        auditoriaService.getById(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
-
-      expect(auditoriaModel.findById).toHaveBeenCalledWith(
-        mockAuditoria._id,
+      await expect(auditoriaService.getById(mockAuditoria._id)).rejects.toThrow(
+        `${mockAuditoria._id} no existe`,
       );
+
+      expect(auditoriaModel.findById).toHaveBeenCalledWith(mockAuditoria._id);
     });
   });
 
@@ -273,14 +268,14 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(
-        auditoriaService.delete(mockAuditoria._id),
-      ).rejects.toThrow(`${mockAuditoria._id} no existe`);
+      await expect(auditoriaService.delete(mockAuditoria._id)).rejects.toThrow(
+        `${mockAuditoria._id} no existe`,
+      );
     });
   });
 
   describe('count', () => {
-    const filterDto: FilterDto = { 
+    const filterDto: FilterDto = {
       query: 'tipoEvaluacionId:3',
       fields: '',
       sortby: '',
@@ -290,7 +285,6 @@ describe('AuditoriaService', () => {
       populate: '',
     };
     it('Debería retornar la cantidad de documentos', async () => {
-      
       jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
         exec: jest.fn().mockResolvedValue(2),
       } as any);
@@ -302,7 +296,9 @@ describe('AuditoriaService', () => {
 
     it('Debería lanzar un error si countDocuments falla', async () => {
       jest.spyOn(auditoriaModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+        exec: jest
+          .fn()
+          .mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
       await expect(auditoriaService.count(filterDto)).rejects.toThrow(
