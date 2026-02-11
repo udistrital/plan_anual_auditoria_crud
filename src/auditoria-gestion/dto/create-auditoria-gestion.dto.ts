@@ -41,6 +41,15 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly macroproceso: number;
 
   @ApiProperty()
+  readonly macroproceso_id: number;
+
+  @ApiProperty()
+  readonly proceso_id: number;
+
+  @ApiProperty()
+  readonly dependencia_id: number;
+
+  @ApiProperty()
   readonly lider_id: number;
 
   @ApiProperty()

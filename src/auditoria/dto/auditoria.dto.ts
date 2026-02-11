@@ -35,6 +35,15 @@ export class AuditoriaDTO {
   readonly macroproceso: number;
 
   @ApiProperty()
+  readonly macroproceso_id: number;
+
+  @ApiProperty()
+  readonly proceso_id: number;
+
+  @ApiProperty()
+  readonly dependencia_id: number;
+
+  @ApiProperty()
   readonly lider_id: number;
 
   @ApiProperty()

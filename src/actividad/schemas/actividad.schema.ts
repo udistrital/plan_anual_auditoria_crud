@@ -23,6 +23,9 @@ export class Actividad extends Document {
   descripcion: string;
 
   @Prop({ required: false })
+  observacion: string;
+
+  @Prop({ required: false })
   folio: number;
 
   @Prop({ required: false })
