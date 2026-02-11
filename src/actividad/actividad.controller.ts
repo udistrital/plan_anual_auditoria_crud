@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('actividad')
 @Controller('actividad')
@@ -35,7 +36,7 @@ export class ActividadController {
     type: ActividadDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() ActividadDTO: ActividadDTO) {
+  async post(@Res() res, @Body(new ParseObjectIdPipe(['auditoria_id'])) ActividadDTO: ActividadDTO) {
     try {
       const actividad = await this.actividadService.post(ActividadDTO);
       res.status(HttpStatus.CREATED).json({

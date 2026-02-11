@@ -96,7 +96,7 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
     readonly actual: boolean;
 
     @ApiProperty()
-    readonly estado_interno_id: number;
+    readonly fase_id: string;
 
     @ApiProperty()
     readonly fecha_ejecucion_estado: Date;

@@ -1,27 +1,28 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpStatus,
-    Param,
-    Post,
-    Put,
-    Query,
-    Res,
-  } from '@nestjs/common';
-  import { AuditorService } from './auditor.service';
-  import { AuditorDTO } from './dto/auditor.dto'
-  import { FilterDto } from '../filters/filters.dto'
-  import {
-    ApiTags,
-    ApiOperation,
-    ApiResponse,
-    ApiParam,
-    ApiBody,
-  } from '@nestjs/swagger';
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+  Res,
+} from '@nestjs/common';
+import { AuditorService } from './auditor.service';
+import { AuditorDTO } from './dto/auditor.dto'
+import { FilterDto } from '../filters/filters.dto'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
-  @ApiTags('auditor')
+@ApiTags('auditor')
 @Controller('auditor')
 export class AuditorController {
     constructor(private actividadService: AuditorService) { }
@@ -35,7 +36,7 @@ export class AuditorController {
       type: AuditorDTO,
     })
     @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-    async post(@Res() res, @Body() AuditorDTO: AuditorDTO) {
+    async post(@Res() res, @Body(new ParseObjectIdPipe(['auditoria_id'])) AuditorDTO: AuditorDTO) {
       try {
         const auditor = await this.actividadService.post(AuditorDTO);
         res.status(HttpStatus.CREATED).json({
