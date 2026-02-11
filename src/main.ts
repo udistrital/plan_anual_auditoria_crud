@@ -9,11 +9,11 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('plan_anual_auditoria_crud')
+    .setTitle('Plan AnualAuditoria CRUD')
     .setDescription(
-      'API CRUD para la gestion de planes de auditorias, auditorias y actividades',
+      'API CRUD para la gestión de las auditoría y planes de mejoramiento',
     )
-    .setVersion('1.0')
+    .setVersion('0.1.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
