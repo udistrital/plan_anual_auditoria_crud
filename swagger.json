@@ -9,7 +9,10 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "health-check"
+        ]
       }
     },
     "/plan-auditoria": {
@@ -2711,9 +2714,9 @@
     }
   },
   "info": {
-    "title": "plan_anual_auditoria_crud",
-    "description": "API CRUD para la gestion de planes de auditorias, auditorias y actividades",
-    "version": "1.0",
+    "title": "Plan AnualAuditoria CRUD",
+    "description": "API CRUD para la gestión de las auditoría y planes de mejoramiento",
+    "version": "0.1.0",
     "contact": {}
   },
   "tags": [],
