@@ -38,6 +38,15 @@ export class Auditoria extends Document {
   macroproceso: number;
 
   @Prop({ required: false })
+  macroproceso_id: number;
+
+  @Prop({ required: false })
+  proceso_id: number;
+
+  @Prop({ required: false })
+  dependencia_id: number;
+
+  @Prop({ required: false })
   lider_id: number;
 
   @Prop({ required: false })

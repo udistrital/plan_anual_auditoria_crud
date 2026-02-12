@@ -2830,6 +2830,15 @@
           "macroproceso": {
             "type": "number"
           },
+          "macroproceso_id": {
+            "type": "number"
+          },
+          "proceso_id": {
+            "type": "number"
+          },
+          "dependencia_id": {
+            "type": "number"
+          },
           "lider_id": {
             "type": "number"
           },
@@ -2889,6 +2898,9 @@
           "consecutivo_IE",
           "tipo_id",
           "macroproceso",
+          "macroproceso_id",
+          "proceso_id",
+          "dependencia_id",
           "lider_id",
           "responsable_id",
           "fecha_inicio",
@@ -2928,6 +2940,9 @@
           "descripcion": {
             "type": "string"
           },
+          "observacion": {
+            "type": "string"
+          },
           "folio": {
             "type": "number"
           },
@@ -2956,6 +2971,7 @@
           "fecha_fin",
           "referencia",
           "descripcion",
+          "observacion",
           "folio",
           "medio_id",
           "carpeta",
@@ -3345,6 +3361,15 @@
           "macroproceso": {
             "type": "number"
           },
+          "macroproceso_id": {
+            "type": "number"
+          },
+          "proceso_id": {
+            "type": "number"
+          },
+          "dependencia_id": {
+            "type": "number"
+          },
           "lider_id": {
             "type": "number"
           },
@@ -3426,6 +3451,9 @@
           "consecutivo_IE",
           "tipo_id",
           "macroproceso",
+          "macroproceso_id",
+          "proceso_id",
+          "dependencia_id",
           "lider_id",
           "responsable_id",
           "fecha_inicio",

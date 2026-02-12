@@ -20,6 +20,9 @@ export class ActividadDTO {
   readonly descripcion: string;
 
   @ApiProperty()
+  readonly observacion: string;
+
+  @ApiProperty()
   readonly folio: number;
 
   @ApiProperty()
