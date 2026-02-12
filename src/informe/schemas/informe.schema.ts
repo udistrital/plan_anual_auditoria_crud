@@ -3,12 +3,8 @@ import mongoose, { Document } from 'mongoose';
 
 @Schema({ collection: 'informe', versionKey: false, timestamps: true })
 export class Informe extends Document {
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Auditoria',
-    required: true,
-  })
-  auditoria_id: mongoose.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Auditoria', required: true })
+  auditoria_id: mongoose.Types.ObjectId; 
 
   @Prop({ required: true }) fecha_emision: Date;
   @Prop() muestra: string;
@@ -18,7 +14,6 @@ export class Informe extends Document {
   @Prop() observaciones_conclusiones: string;
   @Prop() notas: string;
 
-  @Prop() estado_id: number;
   @Prop() preliminar_auditor_id: number;
   @Prop() final_auditor_id: number;
   @Prop() preliminar_auditado_id: number;
