@@ -2824,12 +2824,6 @@
           "consecutivo_IE": {
             "type": "string"
           },
-          "tipo_id": {
-            "type": "number"
-          },
-          "macroproceso": {
-            "type": "number"
-          },
           "macroproceso_id": {
             "type": "number"
           },
@@ -2874,6 +2868,9 @@
           "temas": {
             "type": "string"
           },
+          "correo_complementario": {
+            "type": "string"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -2896,8 +2893,6 @@
           "vigencia_id",
           "consecutivo_OCI",
           "consecutivo_IE",
-          "tipo_id",
-          "macroproceso",
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
@@ -2912,6 +2907,7 @@
           "rec_humano",
           "rec_fisico",
           "temas",
+          "correo_complementario",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
@@ -3355,12 +3351,6 @@
           "consecutivo_IE": {
             "type": "string"
           },
-          "tipo_id": {
-            "type": "number"
-          },
-          "macroproceso": {
-            "type": "number"
-          },
           "macroproceso_id": {
             "type": "number"
           },
@@ -3403,6 +3393,9 @@
             "type": "string"
           },
           "temas": {
+            "type": "string"
+          },
+          "correo_complementario": {
             "type": "string"
           },
           "activo": {
@@ -3449,8 +3442,6 @@
           "vigencia_id",
           "consecutivo_OCI",
           "consecutivo_IE",
-          "tipo_id",
-          "macroproceso",
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
@@ -3465,6 +3456,7 @@
           "rec_humano",
           "rec_fisico",
           "temas",
+          "correo_complementario",
           "activo",
           "fecha_creacion",
           "fecha_modificacion",
