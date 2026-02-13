@@ -6,12 +6,10 @@ import { Tema, TemaSchema } from './schemas/tema.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: Tema.name, schema: TemaSchema },
-    ]),
+    MongooseModule.forFeature([{ name: Tema.name, schema: TemaSchema }]),
   ],
   controllers: [TemaController],
   providers: [TemaService],
-  exports: [TemaService]
+  exports: [TemaService],
 })
 export class TemaModule {}

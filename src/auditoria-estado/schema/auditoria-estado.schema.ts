@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { AuditoriaDTO } from '../../auditoria/dto/auditoria.dto';
 import { Auditoria } from '../../auditoria/schemas/auditoria.schema';
 //cuantos estados pueden estar activos por plan de auditorita al tiempo?
 @Schema({ collection: 'auditoria_estado' })
@@ -24,7 +23,7 @@ export class AuditoriaEstado extends Document {
   estado_id: number;
 
   @Prop({ required: false })
-  estado_interno_id: number;
+  fase_id: string;
 
   @Prop({ required: false })
   fecha_ejecucion_estado: Date;

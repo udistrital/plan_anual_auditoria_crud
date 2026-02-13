@@ -11,8 +11,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { PlanAuditoriaService } from './plan-auditoria.service';
-import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto'
-import { FilterDto } from '../filters/filters.dto'
+import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
+import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -24,7 +24,7 @@ import {
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
 export class PlanAuditoriaController {
-  constructor(private planAuditoriaService: PlanAuditoriaService) { }
+  constructor(private planAuditoriaService: PlanAuditoriaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo plan de auditoria' })
@@ -37,7 +37,8 @@ export class PlanAuditoriaController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(@Res() res, @Body() PlanAuditoriaDTO: PlanAuditoriaDTO) {
     try {
-      const planAuditoria = await this.planAuditoriaService.post(PlanAuditoriaDTO);
+      const planAuditoria =
+        await this.planAuditoriaService.post(PlanAuditoriaDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -72,7 +73,6 @@ export class PlanAuditoriaController {
         Message: 'Peticion Exitosa',
         Data: planAuditorias,
         MetaData: { Count: counts },
-
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
@@ -131,7 +131,10 @@ export class PlanAuditoriaController {
     @Body() PlanAuditoriaDTO: PlanAuditoriaDTO,
   ) {
     try {
-      const planAuditorias = await this.planAuditoriaService.put(id, PlanAuditoriaDTO);
+      const planAuditorias = await this.planAuditoriaService.put(
+        id,
+        PlanAuditoriaDTO,
+      );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -172,7 +175,8 @@ export class PlanAuditoriaController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: error.message,
       });
     }

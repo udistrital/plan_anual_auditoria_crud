@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { InformeEstadoService } from './informe-estado.service';
 import { InformeEstadoDto } from './dto/informe-estado.dto';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('informe-estado')
 @Controller('informe-estado')
@@ -35,7 +36,11 @@ export class InformeEstadoController {
     type: InformeEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() informeEstadoDto: InformeEstadoDto) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['informe_id']))
+    informeEstadoDto: InformeEstadoDto,
+  ) {
     try {
       const estadoInforme =
         await this.informeEstadoService.post(informeEstadoDto);
@@ -65,8 +70,7 @@ export class InformeEstadoController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const estadoInforme =
-        await this.informeEstadoService.getAll(filterDto);
+      const estadoInforme = await this.informeEstadoService.getAll(filterDto);
       const counts = await this.informeEstadoService.count(filterDto);
 
       res.status(HttpStatus.OK).json({

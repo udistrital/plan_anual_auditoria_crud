@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { ActividadService } from './actividad.service';
-import { ActividadDTO } from './dto/actividad.dto'
-import { Actividad } from './schemas/actividad.schema'
+import { ActividadDTO } from './dto/actividad.dto';
+import { Actividad } from './schemas/actividad.schema';
 import { Model } from 'mongoose';
-import { Auditoria } from '../auditoria/schemas/auditoria.schema'
+import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockActividadDto: ActividadDTO = {
-  auditoria_id: "671aa963064222e6583d56e4",
+  auditoria_id: '671aa963064222e6583d56e4',
   titulo: 'string',
   fecha_inicio: new Date(),
   fecha_fin: new Date(),
@@ -28,7 +28,7 @@ const mockActividad = {
 
 const mockAuditoria = {
   _id: '671aa963064222e6583d56e4',
-  titulo: ''
+  titulo: '',
 };
 describe('ActividadService', () => {
   let actividadService: ActividadService;
@@ -101,7 +101,7 @@ describe('ActividadService', () => {
         mockActividad,
         {
           _id: '671aaf35d779a09e092cb732',
-          auditoriaId: "67197dda3416d2a85e5d6d8f",
+          auditoriaId: '67197dda3416d2a85e5d6d8f',
           titulo: 'string',
           fechaInicio: new Date(),
           fechaFin: new Date(),
@@ -150,9 +150,7 @@ describe('ActividadService', () => {
 
       const result = await actividadService.getById(mockActividad._id);
 
-      expect(actividadModel.findById).toHaveBeenCalledWith(
-        mockActividad._id,
-      );
+      expect(actividadModel.findById).toHaveBeenCalledWith(mockActividad._id);
       expect(result).toEqual(mockActividad);
     });
 
@@ -161,13 +159,11 @@ describe('ActividadService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(
-        actividadService.getById(mockActividad._id),
-      ).rejects.toThrow(`${mockActividad._id} no existe`);
-
-      expect(actividadModel.findById).toHaveBeenCalledWith(
-        mockActividad._id,
+      await expect(actividadService.getById(mockActividad._id)).rejects.toThrow(
+        `${mockActividad._id} no existe`,
       );
+
+      expect(actividadModel.findById).toHaveBeenCalledWith(mockActividad._id);
     });
   });
 
@@ -245,14 +241,14 @@ describe('ActividadService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(
-        actividadService.delete(mockActividad._id),
-      ).rejects.toThrow(`${mockActividad._id} no existe`);
+      await expect(actividadService.delete(mockActividad._id)).rejects.toThrow(
+        `${mockActividad._id} no existe`,
+      );
     });
   });
 
   describe('count', () => {
-    const filterDto: FilterDto = { 
+    const filterDto: FilterDto = {
       query: 'activo:true',
       fields: '',
       sortby: '',
@@ -273,7 +269,9 @@ describe('ActividadService', () => {
 
     it('Debería lanzar un error si countDocuments falla', async () => {
       jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockRejectedValue(new Error('Error al contar documentos')),
+        exec: jest
+          .fn()
+          .mockRejectedValue(new Error('Error al contar documentos')),
       } as any);
 
       await expect(actividadService.count(filterDto)).rejects.toThrow(

@@ -16,6 +16,6 @@ import { InformeEstadoModule } from '../informe-estado/informe-estado.module';
   ],
   controllers: [InformeController],
   providers: [InformeService],
-  exports: [InformeService]
+  exports: [InformeService],
 })
 export class InformeModule {}

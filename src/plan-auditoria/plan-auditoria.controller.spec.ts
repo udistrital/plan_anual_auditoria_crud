@@ -6,10 +6,10 @@ import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
-  objetivo: "el objetivo es",
-  alcance: "asdasd",
-  criterio: "criterio de los criterios",
-  recurso: "los recursos son",
+  objetivo: 'el objetivo es',
+  alcance: 'asdasd',
+  criterio: 'criterio de los criterios',
+  recurso: 'los recursos son',
   creado_por_id: 10,
   vigencia_id: 3,
   aprobado_jefe_dependencia: true,
@@ -116,7 +116,7 @@ describe('PlanAuditoriaController', () => {
     beforeEach(() => {
       jest.spyOn(service, 'count').mockResolvedValue(2); // Mock count
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockPlanAuditorias = [
         {
@@ -131,7 +131,9 @@ describe('PlanAuditoriaController', () => {
         },
       ];
 
-      jest.spyOn(service, 'getAll').mockResolvedValue(mockPlanAuditorias as any);
+      jest
+        .spyOn(service, 'getAll')
+        .mockResolvedValue(mockPlanAuditorias as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -141,7 +143,7 @@ describe('PlanAuditoriaController', () => {
       await controller.getAll(res as any, mockFilterDto);
 
       expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(service.count).toHaveBeenCalled(); 
+      expect(service.count).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -178,7 +180,9 @@ describe('PlanAuditoriaController', () => {
 
   describe('getById', () => {
     it('Debería retornar OK con id válido', async () => {
-      jest.spyOn(service, 'getById').mockResolvedValue(mockPlanAuditoria as any);
+      jest
+        .spyOn(service, 'getById')
+        .mockResolvedValue(mockPlanAuditoria as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -230,7 +234,11 @@ describe('PlanAuditoriaController', () => {
         json: jest.fn(),
       };
 
-      await controller.put(res as any, mockPlanAuditoria._id, mockPlanAuditoriaDTO);
+      await controller.put(
+        res as any,
+        mockPlanAuditoria._id,
+        mockPlanAuditoriaDTO,
+      );
 
       expect(service.put).toHaveBeenCalledWith(
         mockPlanAuditoria._id,
@@ -255,7 +263,11 @@ describe('PlanAuditoriaController', () => {
         json: jest.fn(),
       };
 
-      await controller.put(res as any, mockPlanAuditoria._id, mockPlanAuditoriaDTO);
+      await controller.put(
+        res as any,
+        mockPlanAuditoria._id,
+        mockPlanAuditoriaDTO,
+      );
 
       expect(service.put).toHaveBeenCalledWith(
         mockPlanAuditoria._id,
@@ -312,7 +324,8 @@ describe('PlanAuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: mockError.message,
       });
     });

@@ -3,7 +3,10 @@ import { ActividadController } from './actividad.controller';
 import { ActividadService } from './actividad.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Actividad, ActividadSchema } from './schemas/actividad.schema';
-import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.schema';
+import {
+  Auditoria,
+  AuditoriaSchema,
+} from 'src/auditoria/schemas/auditoria.schema';
 
 @Module({
   imports: [
@@ -14,6 +17,6 @@ import { Auditoria, AuditoriaSchema } from 'src/auditoria/schemas/auditoria.sche
   ],
   controllers: [ActividadController],
   providers: [ActividadService],
-  exports: [ActividadService]
+  exports: [ActividadService],
 })
-export class ActividadModule { }
+export class ActividadModule {}

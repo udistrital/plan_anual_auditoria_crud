@@ -1,29 +1,28 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-
+import { Document } from 'mongoose';
 
 @Schema({ collection: 'documento' })
 export class Documento extends Document {
-    @Prop({ required: true})
-    referencia_id: String;
+  @Prop({ required: true })
+  referencia_id: string;
 
-    @Prop({ required: true, enum: ['Auditoria', 'Plan Auditoria'] })
-    referencia_tipo: string;
+  @Prop({ required: true, enum: ['Auditoria', 'Plan Auditoria'] })
+  referencia_tipo: string;
 
-    @Prop({ required: true })
-    nuxeo_id: number;
+  @Prop({ required: true })
+  nuxeo_id: number;
 
-    @Prop({ required: true })
-    nuxeo_enlace: string;
+  @Prop({ required: true })
+  nuxeo_enlace: string;
 
-    @Prop({ required: true })
-    tipo_id: number;
+  @Prop({ required: true })
+  tipo_id: number;
 
-    @Prop({ required: true })
-    activo: boolean;
+  @Prop({ required: true })
+  activo: boolean;
 
-    @Prop({ required: true })
-    fecha_creacion: Date;
+  @Prop({ required: true })
+  fecha_creacion: Date;
 }
 
 export const DocumentoSchema = SchemaFactory.createForClass(Documento);

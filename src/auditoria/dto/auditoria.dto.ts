@@ -11,14 +11,14 @@ export class AuditoriaDTO {
   readonly tipo_evaluacion_id: number;
 
   @ApiProperty()
-  readonly cronograma_id: number[] = [];;
+  readonly cronograma_id: number[] = [];
 
   @ApiProperty()
   readonly estado_id: number;
 
   @ApiProperty()
   readonly no_auditoria: number;
-  
+
   @ApiProperty()
   readonly vigencia_id: number;
 
@@ -33,6 +33,15 @@ export class AuditoriaDTO {
 
   @ApiProperty()
   readonly macroproceso: number;
+
+  @ApiProperty()
+  readonly macroproceso_id: number;
+
+  @ApiProperty()
+  readonly proceso_id: number;
+
+  @ApiProperty()
+  readonly dependencia_id: number;
 
   @ApiProperty()
   readonly lider_id: number;
@@ -75,5 +84,4 @@ export class AuditoriaDTO {
 
   @ApiProperty()
   fecha_modificacion: Date;
-
 }

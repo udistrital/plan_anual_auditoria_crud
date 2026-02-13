@@ -65,7 +65,7 @@ export class EstadoAuditoriaService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return await this.AuditoriaEstadoModel.find(
+    return (await this.AuditoriaEstadoModel.find(
       filtersService.getQuery(),
       filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
@@ -73,7 +73,7 @@ export class EstadoAuditoriaService {
       .sort(filtersService.getSortBy())
       .populate(populateFields)
       .lean()
-      .exec() as unknown as AuditoriaEstado[];
+      .exec()) as unknown as AuditoriaEstado[];
   }
 
   async getById(id: string): Promise<AuditoriaEstado> {

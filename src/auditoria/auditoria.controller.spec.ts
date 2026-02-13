@@ -6,28 +6,28 @@ import { AuditoriaDTO } from './dto/auditoria.dto';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditoriaDTO: AuditoriaDTO = {
-  titulo: "auditoria 1",
+  titulo: 'auditoria 1',
   tipo_evaluacion_id: 2,
-  plan_auditoria_id: "67197dda3416d2a85e5d6d8f",
+  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
   cronograma_id: Array(3),
   estado_id: 3,
   no_auditoria: 123420,
   vigencia_id: 1234,
-  consecutivo_OCI: "EHS54F",
-  consecutivo_IE: "PASJF4532",
+  consecutivo_OCI: 'EHS54F',
+  consecutivo_IE: 'PASJF4532',
   tipo_id: 3,
   macroproceso: 4,
   lider_id: 3,
   responsable_id: 34,
   fecha_inicio: new Date(),
   fecha_fin: new Date(),
-  objetivo: "objetivo",
-  alcance: "alcance",
-  criterio: "criterio",
-  rec_tecnologico: "rec_T",
-  rec_humano: "rec_H",
-  rec_fisico: "rec_F",
-  temas: "temas varios",
+  objetivo: 'objetivo',
+  alcance: 'alcance',
+  criterio: 'criterio',
+  rec_tecnologico: 'rec_T',
+  rec_humano: 'rec_H',
+  rec_fisico: 'rec_F',
+  temas: 'temas varios',
   activo: true,
   fecha_creacion: new Date(),
   fecha_modificacion: new Date(),
@@ -127,9 +127,9 @@ describe('AuditoriaController', () => {
     };
 
     beforeEach(() => {
-      jest.spyOn(service, 'count').mockResolvedValue(2); 
+      jest.spyOn(service, 'count').mockResolvedValue(2);
     });
-  
+
     it('Debería retornar OK con datos válidos', async () => {
       const mockAuditorias = [
         {
@@ -325,7 +325,8 @@ describe('AuditoriaController', () => {
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: mockError.message,
       });
     });

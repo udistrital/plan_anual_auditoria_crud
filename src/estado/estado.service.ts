@@ -40,7 +40,7 @@ export class EstadoService {
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-  
+
     const estadosRelacionados = await this.PlanEstadoModel.find({
       plan_auditoria_id: PlanEstadoDto.plan_auditoria_id,
       actual: true,
@@ -49,10 +49,10 @@ export class EstadoService {
     if (estadosRelacionados.length > 0) {
       await this.PlanEstadoModel.updateMany(
         { plan_auditoria_id: PlanEstadoDto.plan_auditoria_id, actual: true },
-        { $set: { actual: false } }
+        { $set: { actual: false } },
       );
     }
-  
+
     return await this.PlanEstadoModel.create(planEstadoData);
   }
 
@@ -62,7 +62,7 @@ export class EstadoService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return await this.PlanEstadoModel.find(
+    return (await this.PlanEstadoModel.find(
       filtersService.getQuery(),
       filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
@@ -70,7 +70,7 @@ export class EstadoService {
       .sort(filtersService.getSortBy())
       .populate(populateFields)
       .lean()
-      .exec() as unknown as PlanEstado[];
+      .exec()) as unknown as PlanEstado[];
   }
 
   async getById(id: string): Promise<PlanEstado> {

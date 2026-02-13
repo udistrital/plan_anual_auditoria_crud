@@ -11,8 +11,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { ActividadService } from './actividad.service';
-import { ActividadDTO } from './dto/actividad.dto'
-import { FilterDto } from '../filters/filters.dto'
+import { ActividadDTO } from './dto/actividad.dto';
+import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -20,11 +20,12 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('actividad')
 @Controller('actividad')
 export class ActividadController {
-  constructor(private actividadService: ActividadService) { }
+  constructor(private actividadService: ActividadService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva actividad' })
@@ -35,7 +36,10 @@ export class ActividadController {
     type: ActividadDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() ActividadDTO: ActividadDTO) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['auditoria_id'])) ActividadDTO: ActividadDTO,
+  ) {
     try {
       const actividad = await this.actividadService.post(ActividadDTO);
       res.status(HttpStatus.CREATED).json({
@@ -73,7 +77,6 @@ export class ActividadController {
         Message: 'Peticion Exitosa',
         Data: actividad,
         MetaData: { Count: counts },
-
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
@@ -173,7 +176,8 @@ export class ActividadController {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
         Data: error.message,
       });
     }

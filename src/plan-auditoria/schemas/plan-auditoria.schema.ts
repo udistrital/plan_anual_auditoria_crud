@@ -44,7 +44,6 @@ export class PlanAuditoria extends Document {
 
   @Prop({ required: false })
   fecha_modificacion: Date;
-
 }
 export const PlanAuditoriaSchema = SchemaFactory.createForClass(PlanAuditoria);
 
