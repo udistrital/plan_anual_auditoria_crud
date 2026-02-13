@@ -114,6 +114,10 @@ export class AuditoriaService {
       .lean()
       .exec();
 
+    if (!auditores || auditores.length === 0) {
+      return [];
+    }
+
     const auditoriaIds = auditores.map(a => a.auditoria_id);
 
     const filtersService = new FiltersService(filterDto);
@@ -142,6 +146,10 @@ export class AuditoriaService {
       .select('auditoria_id')
       .lean()
       .exec();
+
+    if (!auditores || auditores.length === 0) {
+      return 0;
+    }
 
     const auditoriaIds = auditores.map(a => a.auditoria_id);
 

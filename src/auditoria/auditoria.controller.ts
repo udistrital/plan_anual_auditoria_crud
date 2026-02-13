@@ -74,6 +74,10 @@ export class AuditoriaController {
     @Query() filterDto: FilterDto,
   ) {
     try {
+      if (!personaId || isNaN(+personaId)) {
+        throw new Error('personaId debe ser un número válido');
+      }
+
       const auditorias = await this.AuditoriaService.getByAuditor(
         +personaId,
         filterDto,
@@ -95,7 +99,7 @@ export class AuditoriaController {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error en servicio GetByAuditor: la peticion contiene un parametro incorrecto o no existe un registro',
+          'Error en servicio GetByAuditor: sin datos o parámetro inválido.',
         Data: error.message,
       });
     }
