@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
+import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
 
 @ApiTags('auditoria-gestion')
 @Controller('auditoria-gestion')

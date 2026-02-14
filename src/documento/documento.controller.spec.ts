@@ -1,26 +1,40 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DocumentoController } from './documento.controller';
-import { DocumentoDTO } from './dto/documento.dto';
-import { DocumentoService } from './documento.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
+import { DocumentoDTO } from './dto/documento.dto';
+import { DocumentoService } from './documento.service';
+
+// Mock del ParseObjectIdPipe usando ruta relativa
+jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
+
+// Importar el controlador después del mock
+import { DocumentoController } from './documento.controller';
 
 const mockDocumentoDto: DocumentoDTO = {
   referencia_id: '67197dda3416d2a85e5d6d8f',
   referencia_tipo: 'Plan Auditoria',
-  nuxeo_id: 123,
-  tipo_id: 123,
+  nuxeo_id: 123456,
+  nuxeo_enlace: 'https://nuxeo.example.com/doc/123456',
+  tipo_id: 789,
   activo: true,
-  fecha_creacion: new Date(),
+  fecha_creacion: new Date('2024-01-15'),
 };
 
 const mockDocumento = {
   ...mockDocumentoDto,
   _id: '6735761419eb159ed6ef0da7',
 };
+
 describe('DocumentoController', () => {
   let controller: DocumentoController;
   let service: DocumentoService;
+
+  const mockResponse = () => {
+    const res: any = {};
+    res.status = jest.fn().mockReturnValue(res);
+    res.json = jest.fn().mockReturnValue(res);
+    return res;
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,46 +58,63 @@ describe('DocumentoController', () => {
     service = module.get<DocumentoService>(DocumentoService);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 
   describe('post', () => {
-    it('Debería retornar Created con datos válidos', async () => {
-      jest.spyOn(service, 'post').mockResolvedValue(mockDocumentoDto as any);
+    it('Debería crear un documento y retornar CREATED (201) con datos válidos', async () => {
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockResolvedValue(mockDocumento as any);
+      const res = mockResponse();
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      await controller.post(res, mockDocumentoDto);
 
-      await controller.post(res as any, mockDocumentoDto);
-
-      expect(service.post).toHaveBeenCalledWith(mockDocumentoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockDocumentoDto);
+      expect(serviceSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Registro Exitoso',
-        Data: mockDocumentoDto,
+        Data: mockDocumento,
       });
     });
 
-    it('Debería retornar BadRequest con error', async () => {
+    it('Debería retornar BAD_REQUEST (400) cuando la validación falla', async () => {
       const mockError = new Error(
-        'Actividad validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
+        'Documento validation failed: nuxeo_id is required',
       );
+      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const res = mockResponse();
 
-      jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      await controller.post(res, mockDocumentoDto);
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      expect(serviceSpy).toHaveBeenCalledWith(mockDocumentoDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: mockError.message,
+      });
+    });
 
-      await controller.post(res as any, mockDocumentoDto);
+    it('Debería manejar errores de tipo de referencia inválido', async () => {
+      const mockError = new Error('Tipo de referencia no válido');
+      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const res = mockResponse();
 
-      expect(service.post).toHaveBeenCalledWith(mockDocumentoDto);
+      await controller.post(res, mockDocumentoDto);
+
+      expect(serviceSpy).toHaveBeenCalledWith(mockDocumentoDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -97,67 +128,100 @@ describe('DocumentoController', () => {
 
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
-      query: '',
-      fields: '',
-      sortby: '',
-      order: '',
-      limit: '',
-      offset: '',
-      populate: '',
+      query: 'activo:true',
+      fields: 'referencia_id,nuxeo_id',
+      sortby: 'fecha_creacion',
+      order: 'desc',
+      limit: '10',
+      offset: '0',
+      populate: 'false',
     };
 
-    beforeEach(() => {
-      jest.spyOn(service, 'count').mockResolvedValue(2);
-    });
+    const mockDocumentos = [
+      {
+        ...mockDocumento,
+        _id: '1',
+        nuxeo_id: 123456,
+      },
+      {
+        ...mockDocumento,
+        _id: '2',
+        nuxeo_id: 789012,
+      },
+    ];
 
-    it('Debería retornar OK con datos válidos', async () => {
-      const mockActividades = [
-        {
-          ...mockDocumento,
-          _id: '1',
-          titulo: 'documento 1',
-        },
-        {
-          ...mockDocumento,
-          _id: '2',
-          titulo: 'documento 2',
-        },
-      ];
+    it('Debería retornar OK (200) con todos los documentos y metadata', async () => {
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockResolvedValue(mockDocumentos as any);
+      const countSpy = jest.spyOn(service, 'count').mockResolvedValue(2);
+      const res = mockResponse();
 
-      jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
+      await controller.getAll(res, mockFilterDto);
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.getAll(res as any, mockFilterDto);
-
-      expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(service.count).toHaveBeenCalled();
+      expect(getAllSpy).toHaveBeenCalledWith(mockFilterDto);
+      expect(getAllSpy).toHaveBeenCalledTimes(1);
+      expect(countSpy).toHaveBeenCalledWith(mockFilterDto);
+      expect(countSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: mockActividades,
+        Data: mockDocumentos,
         MetaData: { Count: 2 },
+      });
+    });
+
+    it('Debería retornar OK (200) con array vacío cuando no hay resultados', async () => {
+      const getAllSpy = jest.spyOn(service, 'getAll').mockResolvedValue([]);
+      const countSpy = jest.spyOn(service, 'count').mockResolvedValue(0);
+      const res = mockResponse();
+
+      await controller.getAll(res, mockFilterDto);
+
+      expect(getAllSpy).toHaveBeenCalledWith(mockFilterDto);
+      expect(countSpy).toHaveBeenCalledWith(mockFilterDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Peticion Exitosa',
+        Data: [],
+        MetaData: { Count: 0 },
+      });
+    });
+
+    it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
+      const mockError = new Error('Error en el filtro de búsqueda');
+      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.getAll(res, mockFilterDto);
+
+      expect(getAllSpy).toHaveBeenCalledWith(mockFilterDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message:
+          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
+        Data: mockError.message,
       });
     });
   });
 
   describe('getById', () => {
-    it('Debería retornar OK con id válido', async () => {
-      jest.spyOn(service, 'getById').mockResolvedValue(mockDocumento as any);
+    it('Debería retornar OK (200) con el documento cuando el ID es válido', async () => {
+      const getByIdSpy = jest
+        .spyOn(service, 'getById')
+        .mockResolvedValue(mockDocumento as any);
+      const res = mockResponse();
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      await controller.getById(res, mockDocumento._id);
 
-      await controller.getById(res as any, mockDocumento._id);
-
-      expect(service.getById).toHaveBeenCalledWith(mockDocumento._id);
+      expect(getByIdSpy).toHaveBeenCalledWith(mockDocumento._id);
+      expect(getByIdSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -167,93 +231,125 @@ describe('DocumentoController', () => {
       });
     });
 
-    it('Debería retornar NotFound con id inválido', async () => {
-      jest
+    it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+      const mockError = new Error(`${nonExistentId} no existe`);
+      const getByIdSpy = jest
         .spyOn(service, 'getById')
-        .mockRejectedValue(new Error(`${mockDocumento._id} no existe`));
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      await controller.getById(res, nonExistentId);
 
-      await controller.getById(res as any, mockDocumento._id);
-
-      expect(service.getById).toHaveBeenCalledWith(mockDocumento._id);
+      expect(getByIdSpy).toHaveBeenCalledWith(nonExistentId);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
-        Data: `${mockDocumento._id} no existe`,
+        Data: mockError.message,
+      });
+    });
+
+    it('Debería manejar errores de formato de ID inválido', async () => {
+      const invalidId = 'invalid-id-format';
+      const mockError = new Error('Cast to ObjectId failed');
+      const getByIdSpy = jest
+        .spyOn(service, 'getById')
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.getById(res, invalidId);
+
+      expect(getByIdSpy).toHaveBeenCalledWith(invalidId);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message:
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+        Data: mockError.message,
       });
     });
   });
 
-  describe('getAll', () => {
-    const mockFilterDto: FilterDto = {
-      query: '',
-      fields: '',
-      sortby: '',
-      order: '',
-      limit: '',
-      offset: '',
-      populate: '',
+  describe('put', () => {
+    const updateDto: DocumentoDTO = {
+      ...mockDocumentoDto,
+      nuxeo_id: 999999,
+      nuxeo_enlace: 'https://nuxeo.example.com/doc/999999',
     };
 
-    beforeEach(() => {
-      jest.spyOn(service, 'count').mockResolvedValue(2); // Simula retorno del método count
-    });
+    it('Debería actualizar y retornar OK (200) con datos válidos', async () => {
+      const updatedDocumento = { ...mockDocumento, ...updateDto };
+      const putSpy = jest
+        .spyOn(service, 'put')
+        .mockResolvedValue(updatedDocumento as any);
+      const res = mockResponse();
 
-    it('Debería retornar OK con datos válidos', async () => {
-      const mockActividades = [
-        {
-          ...mockDocumento,
-          _id: '1',
-          nuxeo_id: 234,
-        },
-        {
-          ...mockDocumento,
-          _id: '2',
-          nuxeo_id: 123,
-        },
-      ];
+      await controller.put(res, mockDocumento._id, updateDto);
 
-      jest.spyOn(service, 'getAll').mockResolvedValue(mockActividades as any);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.getAll(res as any, mockFilterDto);
-
-      expect(service.getAll).toHaveBeenCalledWith(mockFilterDto);
-      expect(service.count).toHaveBeenCalled(); // Verifica que count es llamado
+      expect(putSpy).toHaveBeenCalledWith(mockDocumento._id, updateDto);
+      expect(putSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Peticion Exitosa',
-        Data: mockActividades,
-        MetaData: { Count: 2 },
+        Message: 'Actualizacion Exitosa',
+        Data: updatedDocumento,
+      });
+    });
+
+    it('Debería retornar BAD_REQUEST (400) cuando los datos son inválidos', async () => {
+      const mockError = new Error('Validation failed');
+      const putSpy = jest.spyOn(service, 'put').mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.put(res, mockDocumento._id, updateDto);
+
+      expect(putSpy).toHaveBeenCalledWith(mockDocumento._id, updateDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: mockError.message,
+      });
+    });
+
+    it('Debería retornar BAD_REQUEST (400) cuando el ID no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+      const mockError = new Error(
+        `Documento relacionada con id ${nonExistentId} no existe`,
+      );
+      const putSpy = jest.spyOn(service, 'put').mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.put(res, nonExistentId, updateDto);
+
+      expect(putSpy).toHaveBeenCalledWith(nonExistentId, updateDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: mockError.message,
       });
     });
   });
 
   describe('delete', () => {
-    it('Debería retornar OK con id válido', async () => {
-      jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+    it('Debería eliminar (desactivar) y retornar OK (200) con ID válido', async () => {
+      const deleteSpy = jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+      const res = mockResponse();
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      await controller.delete(res, mockDocumento._id);
 
-      await controller.delete(res as any, mockDocumento._id);
-
-      expect(service.delete).toHaveBeenCalledWith(mockDocumento._id);
+      expect(deleteSpy).toHaveBeenCalledWith(mockDocumento._id);
+      expect(deleteSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -265,19 +361,33 @@ describe('DocumentoController', () => {
       });
     });
 
-    it('Debería retornar NotFound con error', async () => {
-      const mockError = new Error('Record not found');
+    it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+      const mockError = new Error(`${nonExistentId} no existe`);
+      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const res = mockResponse();
 
-      jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      await controller.delete(res, nonExistentId);
 
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      expect(deleteSpy).toHaveBeenCalledWith(nonExistentId);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message:
+          'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Data: mockError.message,
+      });
+    });
 
-      await controller.delete(res as any, mockDocumento._id);
+    it('Debería manejar errores generales del servicio', async () => {
+      const mockError = new Error('Database connection error');
+      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const res = mockResponse();
 
-      expect(service.delete).toHaveBeenCalledWith(mockDocumento._id);
+      await controller.delete(res, mockDocumento._id);
+
+      expect(deleteSpy).toHaveBeenCalledWith(mockDocumento._id);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
