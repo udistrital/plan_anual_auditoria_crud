@@ -2334,7 +2334,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TemaDTO"
+                "$ref": "#/components/schemas/UpdateTemaDTO"
               }
             }
           }
@@ -2387,60 +2387,148 @@
         ]
       }
     },
-    "/tema/{temaId}/subtemas": {
+    "/subtema": {
       "post": {
-        "operationId": "TemaController_agregarSubtema",
-        "summary": "Agregar un subtema a un tema",
-        "parameters": [
-          {
-            "name": "temaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "SubtemaController_create",
+        "summary": "Crear un nuevo subtema",
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SubtemaDTO"
+                "$ref": "#/components/schemas/CreateSubtemaDTO"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "El subtema ha sido agregado exitosamente."
+            "description": "El subtema ha sido creado exitosamente."
           },
           "400": {
             "description": "Solicitud incorrecta."
           }
         },
         "tags": [
-          "tema"
+          "subtema"
         ]
-      }
-    },
-    "/tema/{temaId}/subtemas/{subtemaId}": {
-      "put": {
-        "operationId": "TemaController_actualizarSubtema",
-        "summary": "Actualizar un subtema",
+      },
+      "get": {
+        "operationId": "SubtemaController_getAll",
+        "summary": "Obtener todos los subtemas",
         "parameters": [
           {
-            "name": "temaId",
-            "required": true,
-            "in": "path",
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": "Filtros en formato query. Ejemplo: tema_id:507f1f77bcf86cd799439011",
+            "schema": {
+              "example": "tema_id:507f1f77bcf86cd799439011",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "subtemaId",
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los subtemas filtrados."
+          }
+        },
+        "tags": [
+          "subtema"
+        ]
+      }
+    },
+    "/subtema/{id}": {
+      "get": {
+        "operationId": "SubtemaController_getById",
+        "summary": "Obtener un subtema por su ID",
+        "parameters": [
+          {
+            "name": "id",
             "required": true,
             "in": "path",
+            "description": "ID del subtema",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el subtema con información del tema padre."
+          },
+          "404": {
+            "description": "Subtema no encontrado."
+          }
+        },
+        "tags": [
+          "subtema"
+        ]
+      },
+      "put": {
+        "operationId": "SubtemaController_update",
+        "summary": "Actualizar un subtema por su ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID del subtema",
             "schema": {
               "type": "string"
             }
@@ -2451,7 +2539,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SubtemaDTO"
+                "$ref": "#/components/schemas/UpdateSubtemaDTO"
               }
             }
           }
@@ -2459,28 +2547,27 @@
         "responses": {
           "200": {
             "description": "El subtema ha sido actualizado exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Subtema no encontrado."
           }
         },
         "tags": [
-          "tema"
+          "subtema"
         ]
       },
       "delete": {
-        "operationId": "TemaController_eliminarSubtema",
-        "summary": "Eliminar un subtema",
+        "operationId": "SubtemaController_delete",
+        "summary": "Eliminar un subtema por su ID",
         "parameters": [
           {
-            "name": "temaId",
+            "name": "id",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "subtemaId",
-            "required": true,
-            "in": "path",
+            "description": "ID del subtema",
             "schema": {
               "type": "string"
             }
@@ -2489,83 +2576,158 @@
         "responses": {
           "200": {
             "description": "El subtema ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Subtema no encontrado."
           }
         },
         "tags": [
-          "tema"
+          "subtema"
         ]
       }
     },
-    "/tema/{temaId}/subtemas/{subtemaId}/hallazgos": {
+    "/hallazgo": {
       "post": {
-        "operationId": "TemaController_agregarHallazgo",
-        "summary": "Agregar un hallazgo a un subtema",
-        "parameters": [
-          {
-            "name": "temaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "subtemaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "HallazgoController_create",
+        "summary": "Crear un nuevo hallazgo",
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/HallazgoDTO"
+                "$ref": "#/components/schemas/CreateHallazgoDTO"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "El hallazgo ha sido agregado exitosamente."
+            "description": "El hallazgo ha sido creado exitosamente."
           },
           "400": {
             "description": "Solicitud incorrecta."
           }
         },
         "tags": [
-          "tema"
+          "hallazgo"
+        ]
+      },
+      "get": {
+        "operationId": "HallazgoController_getAll",
+        "summary": "Obtener todos los hallazgos",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": "Filtros en formato query. Ejemplo: subtema_id:507f1f77bcf86cd799439011",
+            "schema": {
+              "example": "subtema_id:507f1f77bcf86cd799439011",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los hallazgos filtrados."
+          }
+        },
+        "tags": [
+          "hallazgo"
         ]
       }
     },
-    "/tema/{temaId}/subtemas/{subtemaId}/hallazgos/{hallazgoId}": {
-      "put": {
-        "operationId": "TemaController_actualizarHallazgo",
-        "summary": "Actualizar un hallazgo",
+    "/hallazgo/{id}": {
+      "get": {
+        "operationId": "HallazgoController_getById",
+        "summary": "Obtener un hallazgo por su ID",
         "parameters": [
           {
-            "name": "temaId",
+            "name": "id",
             "required": true,
             "in": "path",
+            "description": "ID del hallazgo",
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el hallazgo con información del subtema y tema padre."
           },
+          "404": {
+            "description": "Hallazgo no encontrado."
+          }
+        },
+        "tags": [
+          "hallazgo"
+        ]
+      },
+      "put": {
+        "operationId": "HallazgoController_update",
+        "summary": "Actualizar un hallazgo por su ID",
+        "parameters": [
           {
-            "name": "subtemaId",
+            "name": "id",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "hallazgoId",
-            "required": true,
-            "in": "path",
+            "description": "ID del hallazgo",
             "schema": {
               "type": "string"
             }
@@ -2576,7 +2738,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/HallazgoDTO"
+                "$ref": "#/components/schemas/UpdateHallazgoDTO"
               }
             }
           }
@@ -2584,36 +2746,27 @@
         "responses": {
           "200": {
             "description": "El hallazgo ha sido actualizado exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Hallazgo no encontrado."
           }
         },
         "tags": [
-          "tema"
+          "hallazgo"
         ]
       },
       "delete": {
-        "operationId": "TemaController_eliminarHallazgo",
-        "summary": "Eliminar un hallazgo",
+        "operationId": "HallazgoController_delete",
+        "summary": "Eliminar un hallazgo por su ID",
         "parameters": [
           {
-            "name": "temaId",
+            "name": "id",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "subtemaId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "hallazgoId",
-            "required": true,
-            "in": "path",
+            "description": "ID del hallazgo",
             "schema": {
               "type": "string"
             }
@@ -2622,10 +2775,13 @@
         "responses": {
           "200": {
             "description": "El hallazgo ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Hallazgo no encontrado."
           }
         },
         "tags": [
-          "tema"
+          "hallazgo"
         ]
       }
     },
@@ -3250,13 +3406,16 @@
         "type": "object",
         "properties": {
           "informe_id": {
-            "type": "string"
+            "type": "string",
+            "description": "ID del informe padre"
           },
           "titulo": {
-            "type": "string"
+            "type": "string",
+            "description": "Título del tema"
           },
           "activo": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": true
           },
           "subtema": {
             "type": "array",
@@ -3271,56 +3430,97 @@
         },
         "required": [
           "informe_id",
-          "titulo",
-          "activo",
-          "subtema",
-          "fecha_creacion"
+          "titulo"
         ]
       },
-      "SubtemaDTO": {
+      "UpdateTemaDTO": {
         "type": "object",
         "properties": {
           "titulo": {
-            "type": "string"
+            "type": "string",
+            "description": "Título del tema"
+          }
+        }
+      },
+      "CreateSubtemaDTO": {
+        "type": "object",
+        "properties": {
+          "tema_id": {
+            "type": "string",
+            "description": "ID del tema padre"
+          },
+          "titulo": {
+            "type": "string",
+            "description": "Título del subtema"
           },
           "activo": {
-            "type": "boolean"
-          },
-          "hallazgo": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "boolean",
+            "default": true,
+            "description": "Estado activo del subtema"
           }
         },
         "required": [
-          "titulo",
-          "activo",
-          "hallazgo"
+          "tema_id",
+          "titulo"
         ]
       },
-      "HallazgoDTO": {
+      "UpdateSubtemaDTO": {
         "type": "object",
         "properties": {
           "titulo": {
-            "type": "string"
+            "type": "string",
+            "description": "Título del subtema"
+          }
+        }
+      },
+      "CreateHallazgoDTO": {
+        "type": "object",
+        "properties": {
+          "subtema_id": {
+            "type": "string",
+            "description": "ID del subtema padre"
+          },
+          "titulo": {
+            "type": "string",
+            "description": "Título del hallazgo"
           },
           "criterio": {
-            "type": "string"
+            "type": "string",
+            "description": "Criterio del hallazgo"
           },
           "descripcion": {
-            "type": "string"
+            "type": "string",
+            "description": "Descripción del hallazgo"
           },
           "activo": {
-            "type": "boolean"
+            "type": "boolean",
+            "default": true,
+            "description": "Estado activo del hallazgo"
           }
         },
         "required": [
+          "subtema_id",
           "titulo",
           "criterio",
-          "descripcion",
-          "activo"
+          "descripcion"
         ]
+      },
+      "UpdateHallazgoDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "description": "Título del hallazgo"
+          },
+          "criterio": {
+            "type": "string",
+            "description": "Criterio del hallazgo"
+          },
+          "descripcion": {
+            "type": "string",
+            "description": "Descripción del hallazgo"
+          }
+        }
       },
       "CreateAuditoriaGestionDto": {
         "type": "object",

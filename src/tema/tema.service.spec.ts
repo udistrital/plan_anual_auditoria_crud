@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TemaService } from './tema.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { TemaDTO } from './dto/tema.dto';
-import { SubtemaDTO } from './dto/subtema.dto';
-import { HallazgoDTO } from './dto/hallazgo.dto';
+import { CreateSubtemaDTO, UpdateSubtemaDTO } from './dto/subtema.dto';
+import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 import { Tema } from './schemas/tema.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
@@ -22,17 +22,28 @@ const mockTema = {
   subtema: [],
 };
 
-const mockSubtemaDto: SubtemaDTO = {
+const mockCreateSubtemaDto: CreateSubtemaDTO = {
+  tema_id: '507f1f77bcf86cd799439011',
   titulo: 'Archivo General',
   activo: true,
-  hallazgo: [],
 };
 
-const mockHallazgoDto: HallazgoDTO = {
+const mockUpdateSubtemaDto: UpdateSubtemaDTO = {
+  titulo: 'Archivo General Actualizado'
+};
+
+const mockCreateHallazgoDto: CreateHallazgoDTO = {
+  subtema_id: '507f1f77bcf86cd799439013',
   titulo: 'Falta de documentación',
   criterio: 'Norma ISO 9001',
   descripcion: 'No se encontró evidencia',
   activo: true,
+};
+
+const mockUpdateHallazgoDto: UpdateHallazgoDTO = {
+  titulo: 'Falta de documentación actualizada',
+  criterio: 'Norma ISO 9001',
+  descripcion: 'Descripción actualizada'
 };
 
 describe('TemaService', () => {
@@ -49,6 +60,7 @@ describe('TemaService', () => {
             create: jest.fn(),
             find: jest.fn(),
             findById: jest.fn(),
+            findOne: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             countDocuments: jest.fn(),
           },
@@ -61,7 +73,7 @@ describe('TemaService', () => {
   });
 
   it('Debería estar definido', () => {
-    expect(TemaService).toBeDefined();
+    expect(temaService).toBeDefined();
   });
 
   describe('post', () => {
@@ -74,15 +86,13 @@ describe('TemaService', () => {
       expect(result).toEqual(mockTemaDto);
     });
 
-    it('Debería lanzar un error si el Tema no existe', async () => {
+    it('Debería lanzar un error si el Tema no puede ser creado', async () => {
       jest.spyOn(temaModel, 'create').mockImplementationOnce(() => {
-        throw new Error(
-          `Tema relacionado con id ${mockTemaDto.informe_id} no existe`,
-        );
+        throw new Error('Error al crear tema');
       });
 
       await expect(temaService.post(mockTemaDto)).rejects.toThrow(
-        `Tema relacionado con id ${mockTemaDto.informe_id} no existe`,
+        'Error al crear tema',
       );
     });
   });
@@ -114,6 +124,7 @@ describe('TemaService', () => {
       const mockQuery = {
         sort: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockTemas),
       };
 
@@ -143,7 +154,7 @@ describe('TemaService', () => {
       } as any);
 
       await expect(temaService.getById(mockTema._id)).rejects.toThrow(
-        `${mockTema._id} no existe`,
+        `Tema ${mockTema._id} no existe`,
       );
 
       expect(temaModel.findById).toHaveBeenCalledWith(mockTema._id);
@@ -172,7 +183,7 @@ describe('TemaService', () => {
       } as any);
 
       await expect(temaService.put(mockTema._id, mockTemaDto)).rejects.toThrow(
-        `${mockTema._id} no existe`,
+        `Tema ${mockTema._id} no existe`,
       );
 
       expect(temaModel.findByIdAndUpdate).toHaveBeenCalledWith(
@@ -200,7 +211,7 @@ describe('TemaService', () => {
       } as any);
 
       await expect(temaService.delete(mockTema._id)).rejects.toThrow(
-        `${mockTema._id} no existe`,
+        `Tema ${mockTema._id} no existe`,
       );
     });
   });
@@ -241,10 +252,10 @@ describe('TemaService', () => {
     it('Debería agregar un subtema al tema', async () => {
       const temaConSubtema = {
         ...mockTema,
-        subtema: [{ ...mockSubtemaDto, _id: 'sub1' }],
+        subtema: [{ ...mockCreateSubtemaDto, _id: 'sub1' }],
         save: jest.fn().mockResolvedValue({
           ...mockTema,
-          subtema: [{ ...mockSubtemaDto, _id: 'sub1' }],
+          subtema: [{ ...mockCreateSubtemaDto, _id: 'sub1' }],
         }),
       };
 
@@ -252,7 +263,7 @@ describe('TemaService', () => {
         exec: jest.fn().mockResolvedValue(temaConSubtema),
       } as any);
 
-      await temaService.agregarSubtema(mockTema._id, mockSubtemaDto);
+      await temaService.agregarSubtema(mockTema._id, mockCreateSubtemaDto);
 
       expect(temaConSubtema.save).toHaveBeenCalled();
     });
@@ -263,16 +274,17 @@ describe('TemaService', () => {
       } as any);
 
       await expect(
-        temaService.agregarSubtema(mockTema._id, mockSubtemaDto),
-      ).rejects.toThrow(`${mockTema._id} no existe`);
+        temaService.agregarSubtema(mockTema._id, mockCreateSubtemaDto),
+      ).rejects.toThrow(`Tema ${mockTema._id} no existe`);
     });
   });
 
-  describe('agregarHallazgo', () => {
-    it('Debería agregar un hallazgo al subtema', async () => {
+  describe('updateSubtema', () => {
+    it('Debería actualizar un subtema', async () => {
       const mockSubtemaConId = {
         _id: 'sub1',
-        ...mockSubtemaDto,
+        titulo: 'Archivo General',
+        activo: true,
         hallazgo: [],
       };
 
@@ -284,23 +296,167 @@ describe('TemaService', () => {
         save: jest.fn().mockResolvedValue(mockTema),
       };
 
-      jest.spyOn(temaModel, 'findById').mockReturnValue({
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
         exec: jest.fn().mockResolvedValue(temaConSubtema),
       } as any);
 
-      await temaService.agregarHallazgo(mockTema._id, 'sub1', mockHallazgoDto);
+      await temaService.updateSubtema('sub1', mockUpdateSubtemaDto);
 
       expect(temaConSubtema.save).toHaveBeenCalled();
     });
 
-    it('Debería lanzar error si el tema no existe', async () => {
-      jest.spyOn(temaModel, 'findById').mockReturnValue({
+    it('Debería lanzar error si el subtema no existe', async () => {
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        temaService.agregarHallazgo(mockTema._id, 'sub1', mockHallazgoDto),
-      ).rejects.toThrow(`${mockTema._id} no existe`);
+        temaService.updateSubtema('sub1', mockUpdateSubtemaDto),
+      ).rejects.toThrow('Subtema sub1 no existe');
+    });
+  });
+
+  describe('deleteSubtema', () => {
+    it('Debería eliminar un subtema', async () => {
+      const mockSubtemaConId = {
+        _id: 'sub1',
+        titulo: 'Archivo General',
+        activo: true,
+        hallazgo: [],
+      };
+
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: {
+          id: jest.fn().mockReturnValue(mockSubtemaConId),
+        },
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.deleteSubtema('sub1');
+
+      expect(temaConSubtema.save).toHaveBeenCalled();
+    });
+  });
+
+  describe('agregarHallazgo', () => {
+    it('Debería agregar un hallazgo al subtema', async () => {
+      const mockSubtemaConId = {
+        _id: 'sub1',
+        titulo: 'Archivo General',
+        activo: true,
+        hallazgo: [],
+      };
+
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: {
+          id: jest.fn().mockReturnValue(mockSubtemaConId),
+        },
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.agregarHallazgo('sub1', mockCreateHallazgoDto);
+
+      expect(temaConSubtema.save).toHaveBeenCalled();
+    });
+
+    it('Debería lanzar error si el subtema no existe', async () => {
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        temaService.agregarHallazgo('sub1', mockCreateHallazgoDto),
+      ).rejects.toThrow('Subtema sub1 no existe');
+    });
+  });
+
+  describe('updateHallazgo', () => {
+    it('Debería actualizar un hallazgo', async () => {
+      const mockHallazgoConId = {
+        _id: 'hall1',
+        titulo: 'Falta de documentación',
+        criterio: 'Norma ISO 9001',
+        descripcion: 'No se encontró evidencia',
+        activo: true,
+      };
+
+      const mockSubtemaConId = {
+        _id: 'sub1',
+        titulo: 'Archivo General',
+        activo: true,
+        hallazgo: {
+          id: jest.fn().mockReturnValue(mockHallazgoConId),
+        },
+      };
+
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: [mockSubtemaConId],
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.updateHallazgo('hall1', mockUpdateHallazgoDto);
+
+      expect(temaConSubtema.save).toHaveBeenCalled();
+    });
+
+    it('Debería lanzar error si el hallazgo no existe', async () => {
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        temaService.updateHallazgo('hall1', mockUpdateHallazgoDto),
+      ).rejects.toThrow('Hallazgo hall1 no existe');
+    });
+  });
+
+  describe('deleteHallazgo', () => {
+    it('Debería eliminar un hallazgo', async () => {
+      const mockHallazgoConId = {
+        _id: 'hall1',
+        titulo: 'Falta de documentación',
+        criterio: 'Norma ISO 9001',
+        descripcion: 'No se encontró evidencia',
+        activo: true,
+      };
+
+      const mockSubtemaConId = {
+        _id: 'sub1',
+        titulo: 'Archivo General',
+        activo: true,
+        hallazgo: {
+          id: jest.fn().mockReturnValue(mockHallazgoConId),
+        },
+      };
+
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: [mockSubtemaConId],
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.deleteHallazgo('hall1');
+
+      expect(temaConSubtema.save).toHaveBeenCalled();
     });
   });
 });
