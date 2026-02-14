@@ -11,7 +11,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { TemaService } from './tema.service';
-import { TemaDTO, UpdateTemaDTO } from './dto/tema.dto';
+import { CreateSubtemaDTO, UpdateSubtemaDTO } from './dto/subtema.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
@@ -19,161 +19,164 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
-@ApiTags('tema')
-@Controller('tema')
-export class TemaController {
+@ApiTags('subtema')
+@Controller('subtema')
+export class SubtemaController {
   constructor(private temaService: TemaService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nuevo tema' })
-  @ApiBody({ type: TemaDTO })
+  @ApiOperation({ summary: 'Crear un nuevo subtema' })
+  @ApiBody({ type: CreateSubtemaDTO })
   @ApiResponse({
     status: 201,
-    description: 'El tema ha sido creado exitosamente.',
-    type: TemaDTO,
+    description: 'El subtema ha sido creado exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(
+  async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['informe_id'])) TemaDTO: TemaDTO,
+    @Body(new ParseObjectIdPipe(['tema_id'])) createSubtemaDTO: CreateSubtemaDTO,
   ) {
     try {
-      const tema = await this.temaService.post(TemaDTO);
+      const tema = await this.temaService.agregarSubtema(
+        createSubtemaDTO.tema_id,
+        createSubtemaDTO,
+      );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Registro Exitoso',
+        Message: 'Subtema creado exitosamente',
         Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Message: 'Error al crear subtema',
         Data: error.message,
       });
     }
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los temas' })
+  @ApiOperation({ summary: 'Obtener todos los subtemas' })
+  @ApiQuery({
+    name: 'query',
+    required: false,
+    description: 'Filtros en formato query. Ejemplo: tema_id:507f1f77bcf86cd799439011',
+    example: 'tema_id:507f1f77bcf86cd799439011',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve todos los temas.',
-    type: [TemaDTO],
+    description: 'Devuelve todos los subtemas filtrados.',
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const tema = await this.temaService.getAll(filterDto);
-      const counts = await this.temaService.count(filterDto);
+      const subtemas = await this.temaService.getAllSubtemas(filterDto);
+      const counts = await this.temaService.countSubtemas(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: tema,
+        Data: subtemas,
         MetaData: { Count: counts },
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
+        Message: 'Error al obtener subtemas',
         Data: error.message,
       });
     }
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obtener un tema por Id' })
-  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Obtener un subtema por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del subtema' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve el tema.',
-    type: TemaDTO,
+    description: 'Devuelve el subtema con información del tema padre.',
   })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Subtema no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const tema = await this.temaService.getById(id);
+      const subtema = await this.temaService.getSubtemaById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: tema,
+        Data: subtema,
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+        Message: 'Subtema no encontrado',
         Data: error.message,
       });
     }
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Actualizar un tema' })
-  @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: UpdateTemaDTO })
+  @ApiOperation({ summary: 'Actualizar un subtema por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del subtema' })
+  @ApiBody({ type: UpdateSubtemaDTO })
   @ApiResponse({
     status: 200,
-    description: 'El tema ha sido actualizado exitosamente.',
-    type: TemaDTO,
+    description: 'El subtema ha sido actualizado exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
-  async put(@Res() res, @Param('id') id: string, @Body() updateTemaDTO: UpdateTemaDTO) {
+  @ApiResponse({ status: 404, description: 'Subtema no encontrado.' })
+  async update(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() updateSubtemaDTO: UpdateSubtemaDTO,
+  ) {
     try {
-      const tema = await this.temaService.put(id, updateTemaDTO);
+      const tema = await this.temaService.updateSubtema(id, updateSubtemaDTO);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Actualizacion Exitosa',
+        Message: 'Subtema actualizado exitosamente',
         Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+        Message: 'Error al actualizar subtema',
         Data: error.message,
       });
     }
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Eliminar un tema' })
-  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Eliminar un subtema por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del subtema' })
   @ApiResponse({
     status: 200,
-    description: 'El tema ha sido eliminado exitosamente.',
+    description: 'El subtema ha sido eliminado exitosamente.',
   })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Subtema no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.temaService.delete(id);
+      const tema = await this.temaService.deleteSubtema(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Eliminacion Exitosa',
-        Data: {
-          _id: id,
-        },
+        Message: 'Subtema eliminado exitosamente',
+        Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message: 'Error al eliminar subtema',
         Data: error.message,
       });
     }
