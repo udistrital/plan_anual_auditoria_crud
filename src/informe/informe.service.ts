@@ -9,156 +9,119 @@ import { Tema } from '../tema/schemas/tema.schema';
 
 @Injectable()
 export class InformeService {
-  constructor(
-    @InjectModel(Informe.name)
-    private readonly InformeModel: Model<Informe>,
-    @InjectModel(Tema.name)
-    private readonly TemaModel: Model<Tema>,
-  ) {}
-
-  private populateFields(): any[] {
-    return [{ path: '' }];
-  }
-
-  async post(InformeDTO: InformeDTO): Promise<Informe> {
-    const fecha = new Date();
-    const informeData = {
-      ...InformeDTO,
-      activo: true,
-      fecha_creacion: fecha,
-    };
-    return await this.InformeModel.create(informeData);
-  }
-
-  async getAll(filterDto: FilterDto): Promise<Informe[]> {
-    const filtersService = new FiltersService(filterDto);
-    let populateFields = [];
-    if (filtersService.isPopulated()) {
-      populateFields = this.populateFields();
-    }
-    return (await this.InformeModel.find(
-      filtersService.getQuery(),
-      filtersService.getFields() as any,
-      filtersService.getLimitAndOffset(),
-    )
-      .sort(filtersService.getSortBy())
-      .populate(populateFields)
-      .lean()
-      .exec()) as unknown as Informe[];
-  }
-
-  async getById(id: string): Promise<Informe> {
-    const informe = await this.InformeModel.findById(id).exec();
-    if (!informe) {
-      throw new Error(`${id} no existe`);
-    }
-    return informe;
-  }
-
-  async put(id: string, InformeDTO: InformeDTO): Promise<Informe> {
-    if (InformeDTO.fecha_creacion) {
-      delete InformeDTO.fecha_creacion;
-    }
-    const update = await this.InformeModel.findByIdAndUpdate(id, InformeDTO, {
-      new: true,
-    }).exec();
-    if (!update) {
-      throw new Error(`${id} no existe`);
-    }
-    return update;
-  }
-
-  async delete(id: string): Promise<Informe> {
-    const deleted = await this.InformeModel.findByIdAndUpdate(
-      id,
-      { activo: false },
-      { new: true },
-    ).exec();
-    if (!deleted) {
-      throw new Error(`${id} no existe`);
-    }
-    return deleted;
-  }
-
-  async count(filterDto: FilterDto): Promise<number> {
-    const filtersService = new FiltersService(filterDto);
-    return await this.InformeModel.countDocuments(
-      filtersService.getQuery(),
-    ).exec();
-  }
-
-  async getHallazgosByInforme(informeId: string): Promise<any[]> {
-    const informe = await this.InformeModel.findById(informeId).exec();
-    if (!informe) {
-      throw new Error(`Informe ${informeId} no existe`);
+    constructor(
+        @InjectModel(Informe.name)
+        private readonly InformeModel: Model<Informe>,
+        @InjectModel(Tema.name)
+        private readonly TemaModel: Model<Tema>,
+    ) { }
+    
+    private populateFields(): any[] {
+        return [{ path: '' }];
     }
 
-    const temas = await this.TemaModel.find({
-      informe_id: informeId,
-      activo: true,
-    }).exec();
+    async post(InformeDTO: InformeDTO): Promise<Informe> {
+        const fecha = new Date();
+        const informeData = {
+            ...InformeDTO,
+            activo: true,
+            fecha_creacion: fecha,
+        };
+        return await this.InformeModel.create(informeData);
+    }
 
-    const hallazgos = [];
-
-    temas.forEach((tema) => {
-      tema.subtema.forEach((subtema) => {
-        if (subtema.activo) {
-          subtema.hallazgo.forEach((hallazgo) => {
-            if (hallazgo.activo) {
-              hallazgos.push({
-                _id: hallazgo._id,
-                titulo: hallazgo.titulo,
-                criterio: hallazgo.criterio,
-                descripcion: hallazgo.descripcion,
-                activo: hallazgo.activo,
-                tema_id: tema._id,
-                tema_titulo: tema.titulo,
-                subtema_id: subtema._id,
-                subtema_titulo: subtema.titulo,
-                informe_id: informeId,
-                createdAt: hallazgo.createdAt,
-                updatedAt: hallazgo.updatedAt,
-              });
-            }
-          });
+    async getAll(filterDto: FilterDto): Promise<Informe[]> {
+        const filtersService = new FiltersService(filterDto);
+        let populateFields = [];
+        if (filtersService.isPopulated()) {
+            populateFields = this.populateFields();
         }
-      });
-    });
-
-    return hallazgos;
-  }
-
-  async getTemasActivosByInforme(informeId: string): Promise<any[]> {
-    const informe = await this.InformeModel.findById(informeId).exec();
-    if (!informe) {
-      throw new Error(`Informe ${informeId} no existe`);
+        return await this.InformeModel
+            .find(
+                filtersService.getQuery(),
+                filtersService.getFields(),
+                filtersService.getLimitAndOffset(),
+            )
+            .sort(filtersService.getSortBy())
+            .populate(populateFields)
+            .exec();
     }
 
-    const temas = await this.TemaModel.find({
-      informe_id: informeId,
-      activo: true,
-    }).exec();
+    async getById(id: string): Promise<Informe> {
+        const informe = await this.InformeModel.findById(id).exec();
+        if (!informe) {
+            throw new Error(`${id} no existe`);
+        }
+        return informe;
+    }
 
-    return temas.map((tema) => {
-      const subtemasFiltrados = tema.subtema
-        .filter((subtema) => subtema.activo)
-        .map((subtema) => ({
-          _id: subtema._id,
-          titulo: subtema.titulo,
-          activo: subtema.activo,
-          hallazgo: subtema.hallazgo.filter((h) => h.activo),
-          createdAt: subtema.createdAt,
-          updatedAt: subtema.updatedAt,
-        }));
-      return {
-        _id: tema._id,
-        informe_id: tema.informe_id,
-        titulo: tema.titulo,
-        activo: tema.activo,
-        subtema: subtemasFiltrados,
-        createdAt: tema.createdAt,
-        updatedAt: tema.updatedAt,
-      };
-    });
-  }
+    async put(id: string, InformeDTO: InformeDTO): Promise<Informe> {
+        if (InformeDTO.fecha_creacion) {
+            delete InformeDTO.fecha_creacion;
+        }
+        const update = await this.InformeModel
+            .findByIdAndUpdate(id, InformeDTO, { new: true })
+            .exec();
+        if (!update) {
+            throw new Error(`${id} no existe`);
+        }
+        return update;
+    }
+
+    async delete(id: string): Promise<Informe> {
+        const deleted = await this.InformeModel
+            .findByIdAndUpdate(id, { activo: false }, { new: true })
+            .exec();
+        if (!deleted) {
+            throw new Error(`${id} no existe`);
+        }
+        return deleted;
+    }
+
+    async count(filterDto: FilterDto): Promise<number> {
+        const filtersService = new FiltersService(filterDto);
+        return await this.InformeModel
+            .countDocuments(filtersService.getQuery())
+            .exec();
+    }
+
+    async getHallazgosByInforme(informeId: string): Promise<any[]> {
+        const informe = await this.InformeModel.findById(informeId).exec();
+        if (!informe) {
+            throw new Error(`Informe ${informeId} no existe`);
+        }
+
+        const temas = await this.TemaModel
+            .find({ informe_id: informeId, activo: true })
+            .exec();
+
+        const hallazgos = [];
+
+        temas.forEach(tema => {
+            tema.subtema.forEach(subtema => {
+                if (subtema.activo) {
+                    subtema.hallazgo.forEach(hallazgo => {
+                        if (hallazgo.activo) {
+                            hallazgos.push({
+                                _id: hallazgo._id,
+                                titulo: hallazgo.titulo,
+                                criterio: hallazgo.criterio,
+                                descripcion: hallazgo.descripcion,
+                                activo: hallazgo.activo,
+                                tema_id: tema._id,
+                                tema_titulo: tema.titulo,
+                                subtema_id: subtema._id,
+                                subtema_titulo: subtema.titulo,
+                                informe_id: informeId,
+                                createdAt: hallazgo.createdAt,
+                                updatedAt: hallazgo.updatedAt
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        return hallazgos;
+    }
 }

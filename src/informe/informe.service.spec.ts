@@ -69,11 +69,11 @@ describe('InformeService', () => {
     });
 
     it('Debería lanzar un error si el Informe no existe', async () => {
-      jest.spyOn(informeModel, 'create').mockImplementationOnce(() => {
-        throw new Error(
-          `Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`,
-        );
-      });
+      jest
+        .spyOn(informeModel, 'create')
+        .mockImplementationOnce(() => {
+          throw new Error(`Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`);
+        });
 
       await expect(informeService.post(mockInformeDto)).rejects.toThrow(
         `Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`,
@@ -85,8 +85,15 @@ describe('InformeService', () => {
     it('Debería retornar todos los informes con filtros aplicados', async () => {
       const mockInformes = [
         mockInforme,
-        { ...mockInforme, _id: '507f1f77bcf86cd799439013' },
+        {
+          _id: '507f1f77bcf86cd799439013',
+          auditoria_id: '507f1f77bcf86cd799439011',
+          fecha_emision: new Date('2024-01-21'),
+          activo: true,
+          fecha_creacion: new Date(),
+        },
       ];
+
       const mockFilterDto: FilterDto = {
         query: '',
         fields: '',
@@ -100,13 +107,13 @@ describe('InformeService', () => {
       const mockQuery = {
         sort: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        lean: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockInformes),
       };
 
       jest.spyOn(informeModel, 'find').mockReturnValue(mockQuery as any);
 
       const result = await informeService.getAll(mockFilterDto);
+
       expect(result).toEqual(mockInformes);
     });
   });
@@ -114,7 +121,9 @@ describe('InformeService', () => {
   describe('getById', () => {
     it('Debería retornar un informe por su ID', async () => {
       jest.spyOn(informeModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockInforme as unknown as Informe),
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockInforme as unknown as Informe),
       } as any);
 
       const result = await informeService.getById(mockInforme._id);
@@ -139,7 +148,9 @@ describe('InformeService', () => {
   describe('put', () => {
     it('Debería actualizar un informe', async () => {
       jest.spyOn(informeModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockInformeDto as unknown as Informe),
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockInformeDto as unknown as Informe),
       } as any);
 
       const result = await informeService.put(mockInforme._id, mockInformeDto);
@@ -172,7 +183,9 @@ describe('InformeService', () => {
   describe('delete', () => {
     it('Debería marcar un informe como inactivo', async () => {
       jest.spyOn(informeModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockInformeDto as unknown as Informe),
+        exec: jest
+          .fn()
+          .mockResolvedValue(mockInformeDto as unknown as Informe),
       } as any);
 
       const result = await informeService.delete(mockInforme._id);
