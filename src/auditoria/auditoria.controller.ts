@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
+import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('auditoria')
 @Controller('auditoria')
