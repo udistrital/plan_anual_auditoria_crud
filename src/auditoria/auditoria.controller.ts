@@ -60,6 +60,51 @@ export class AuditoriaController {
     }
   }
 
+  @Get('/auditor/:personaId')
+  @ApiOperation({ summary: 'Obtener auditorías por auditor' })
+  @ApiParam({ name: 'personaId', type: 'number' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve las auditorías del auditor.',
+    type: [AuditoriaDTO],
+  })
+  async getByAuditor(
+    @Res() res,
+    @Param('personaId') personaId: string,
+    @Query() filterDto: FilterDto,
+  ) {
+    try {
+      if (!personaId || isNaN(+personaId)) {
+        throw new Error('personaId debe ser un número válido');
+      }
+
+      const auditorias = await this.AuditoriaService.getByAuditor(
+        +personaId,
+        filterDto,
+      );
+      const counts = await this.AuditoriaService.countByAuditor(
+        +personaId,
+        filterDto,
+      );
+
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Peticion Exitosa',
+        Data: auditorias,
+        MetaData: { Count: counts },
+      });
+    } catch (error) {
+      res.status(HttpStatus.NOT_FOUND).json({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message:
+          'Error en servicio GetByAuditor: sin datos o parámetro inválido.',
+        Data: error.message,
+      });
+    }
+  }
+
   @Get()
   @ApiOperation({ summary: 'Obtener todas las aditorias' })
   @ApiResponse({
