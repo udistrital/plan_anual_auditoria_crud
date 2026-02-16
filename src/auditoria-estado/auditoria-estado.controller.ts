@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { EstadoAuditoriaService } from './auditoria-estado.service';
 import { AuditoriaEstadoDto } from './dto/auditoria-estado.dto';
-import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
+import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('auditoria-estado')
 @Controller('auditoria-estado')
