@@ -85,8 +85,15 @@ describe('InformeService', () => {
     it('Debería retornar todos los informes con filtros aplicados', async () => {
       const mockInformes = [
         mockInforme,
-        { ...mockInforme, _id: '507f1f77bcf86cd799439013' },
+        {
+          _id: '507f1f77bcf86cd799439013',
+          auditoria_id: '507f1f77bcf86cd799439011',
+          fecha_emision: new Date('2024-01-21'),
+          activo: true,
+          fecha_creacion: new Date(),
+        },
       ];
+
       const mockFilterDto: FilterDto = {
         query: '',
         fields: '',
@@ -100,13 +107,13 @@ describe('InformeService', () => {
       const mockQuery = {
         sort: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        lean: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockInformes),
       };
 
       jest.spyOn(informeModel, 'find').mockReturnValue(mockQuery as any);
 
       const result = await informeService.getAll(mockFilterDto);
+
       expect(result).toEqual(mockInformes);
     });
   });

@@ -11,7 +11,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { TemaService } from './tema.service';
-import { TemaDTO, UpdateTemaDTO } from './dto/tema.dto';
+import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
@@ -19,165 +19,167 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
-@ApiTags('tema')
-@Controller('tema')
-export class TemaController {
+@ApiTags('hallazgo')
+@Controller('hallazgo')
+export class HallazgoController {
   constructor(private temaService: TemaService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nuevo tema' })
-  @ApiBody({ type: TemaDTO })
+  @ApiOperation({ summary: 'Crear un nuevo hallazgo' })
+  @ApiBody({ type: CreateHallazgoDTO })
   @ApiResponse({
     status: 201,
-    description: 'El tema ha sido creado exitosamente.',
-    type: TemaDTO,
+    description: 'El hallazgo ha sido creado exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(
+  async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['informe_id'])) TemaDTO: TemaDTO,
+    @Body(new ParseObjectIdPipe(['subtema_id']))
+    createHallazgoDTO: CreateHallazgoDTO,
   ) {
     try {
-      const tema = await this.temaService.post(TemaDTO);
+      const tema = await this.temaService.agregarHallazgo(
+        createHallazgoDTO.subtema_id,
+        createHallazgoDTO,
+      );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Registro Exitoso',
+        Message: 'Hallazgo creado exitosamente',
         Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Message: 'Error al crear hallazgo',
         Data: error.message,
       });
     }
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los temas' })
+  @ApiOperation({ summary: 'Obtener todos los hallazgos' })
+  @ApiQuery({
+    name: 'query',
+    required: false,
+    description:
+      'Filtros en formato query. Ejemplo: subtema_id:507f1f77bcf86cd799439011',
+    example: 'subtema_id:507f1f77bcf86cd799439011',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve todos los temas.',
-    type: [TemaDTO],
+    description: 'Devuelve todos los hallazgos filtrados.',
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const tema = await this.temaService.getAll(filterDto);
-      const counts = await this.temaService.count(filterDto);
+      const hallazgos = await this.temaService.getAllHallazgos(filterDto);
+      const counts = await this.temaService.countHallazgos(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: tema,
+        Data: hallazgos,
         MetaData: { Count: counts },
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
+        Message: 'Error al obtener hallazgos',
         Data: error.message,
       });
     }
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obtener un tema por Id' })
-  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Obtener un hallazgo por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve el tema.',
-    type: TemaDTO,
+    description:
+      'Devuelve el hallazgo con información del subtema y tema padre.',
   })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const tema = await this.temaService.getById(id);
+      const hallazgo = await this.temaService.getHallazgoById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: tema,
+        Data: hallazgo,
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+        Message: 'Hallazgo no encontrado',
         Data: error.message,
       });
     }
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Actualizar un tema' })
-  @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: UpdateTemaDTO })
+  @ApiOperation({ summary: 'Actualizar un hallazgo por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
+  @ApiBody({ type: UpdateHallazgoDTO })
   @ApiResponse({
     status: 200,
-    description: 'El tema ha sido actualizado exitosamente.',
-    type: TemaDTO,
+    description: 'El hallazgo ha sido actualizado exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
-  async put(
+  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
+  async update(
     @Res() res,
     @Param('id') id: string,
-    @Body() updateTemaDTO: UpdateTemaDTO,
+    @Body() updateHallazgoDTO: UpdateHallazgoDTO,
   ) {
     try {
-      const tema = await this.temaService.put(id, updateTemaDTO);
+      const tema = await this.temaService.updateHallazgo(id, updateHallazgoDTO);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Actualizacion Exitosa',
+        Message: 'Hallazgo actualizado exitosamente',
         Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+        Message: 'Error al actualizar hallazgo',
         Data: error.message,
       });
     }
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Eliminar un tema' })
-  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOperation({ summary: 'Eliminar un hallazgo por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
   @ApiResponse({
     status: 200,
-    description: 'El tema ha sido eliminado exitosamente.',
+    description: 'El hallazgo ha sido eliminado exitosamente.',
   })
-  @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.temaService.delete(id);
+      const tema = await this.temaService.deleteHallazgo(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Eliminacion Exitosa',
-        Data: {
-          _id: id,
-        },
+        Message: 'Hallazgo eliminado exitosamente',
+        Data: tema,
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Message: 'Error al eliminar hallazgo',
         Data: error.message,
       });
     }

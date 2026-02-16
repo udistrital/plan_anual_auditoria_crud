@@ -26,9 +26,6 @@ export class InformeDTO {
   readonly notas?: string;
 
   @ApiProperty()
-  readonly estado_id?: number;
-
-  @ApiProperty()
   readonly preliminar_auditor_id?: number;
 
   @ApiProperty()

@@ -36,15 +36,14 @@ export class InformeService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return (await this.InformeModel.find(
+    return await this.InformeModel.find(
       filtersService.getQuery(),
-      filtersService.getFields() as any,
+      filtersService.getFields(),
       filtersService.getLimitAndOffset(),
     )
       .sort(filtersService.getSortBy())
       .populate(populateFields)
-      .lean()
-      .exec()) as unknown as Informe[];
+      .exec();
   }
 
   async getById(id: string): Promise<Informe> {
@@ -126,39 +125,5 @@ export class InformeService {
     });
 
     return hallazgos;
-  }
-
-  async getTemasActivosByInforme(informeId: string): Promise<any[]> {
-    const informe = await this.InformeModel.findById(informeId).exec();
-    if (!informe) {
-      throw new Error(`Informe ${informeId} no existe`);
-    }
-
-    const temas = await this.TemaModel.find({
-      informe_id: informeId,
-      activo: true,
-    }).exec();
-
-    return temas.map((tema) => {
-      const subtemasFiltrados = tema.subtema
-        .filter((subtema) => subtema.activo)
-        .map((subtema) => ({
-          _id: subtema._id,
-          titulo: subtema.titulo,
-          activo: subtema.activo,
-          hallazgo: subtema.hallazgo.filter((h) => h.activo),
-          createdAt: subtema.createdAt,
-          updatedAt: subtema.updatedAt,
-        }));
-      return {
-        _id: tema._id,
-        informe_id: tema.informe_id,
-        titulo: tema.titulo,
-        activo: tema.activo,
-        subtema: subtemasFiltrados,
-        createdAt: tema.createdAt,
-        updatedAt: tema.updatedAt,
-      };
-    });
   }
 }

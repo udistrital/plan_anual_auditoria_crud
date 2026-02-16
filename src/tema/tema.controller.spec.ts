@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TemaController } from './tema.controller';
 import { TemaDTO } from './dto/tema.dto';
-import { SubtemaDTO } from './dto/subtema.dto';
-import { HallazgoDTO } from './dto/hallazgo.dto';
 import { TemaService } from './tema.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
@@ -18,19 +16,6 @@ const mockTemaDto: TemaDTO = {
 const mockTema = {
   ...mockTemaDto,
   _id: '507f1f77bcf86cd799439012',
-};
-
-const mockSubtemaDto: SubtemaDTO = {
-  titulo: 'Archivo General',
-  activo: true,
-  hallazgo: [],
-};
-
-const mockHallazgoDto: HallazgoDTO = {
-  titulo: 'Falta de documentación',
-  criterio: 'Norma ISO 9001',
-  descripcion: 'No se encontró evidencia',
-  activo: true,
 };
 
 describe('TemaController', () => {
@@ -50,12 +35,6 @@ describe('TemaController', () => {
             put: jest.fn(),
             delete: jest.fn(),
             count: jest.fn(),
-            agregarSubtema: jest.fn(),
-            actualizarSubtema: jest.fn(),
-            eliminarSubtema: jest.fn(),
-            agregarHallazgo: jest.fn(),
-            actualizarHallazgo: jest.fn(),
-            eliminarHallazgo: jest.fn(),
           },
         },
       ],
@@ -189,7 +168,7 @@ describe('TemaController', () => {
     it('Debería retornar NotFound con id inválido', async () => {
       jest
         .spyOn(service, 'getById')
-        .mockRejectedValue(new Error(`${mockTema._id} no existe`));
+        .mockRejectedValue(new Error(`Tema ${mockTema._id} no existe`));
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -205,7 +184,51 @@ describe('TemaController', () => {
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
-        Data: `${mockTema._id} no existe`,
+        Data: `Tema ${mockTema._id} no existe`,
+      });
+    });
+  });
+
+  describe('put', () => {
+    it('Debería actualizar un tema correctamente', async () => {
+      jest.spyOn(service, 'put').mockResolvedValue(mockTemaDto as any);
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await controller.put(res as any, mockTema._id, mockTemaDto);
+
+      expect(service.put).toHaveBeenCalledWith(mockTema._id, mockTemaDto);
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Actualizacion Exitosa',
+        Data: mockTemaDto,
+      });
+    });
+
+    it('Debería retornar BadRequest con error', async () => {
+      const mockError = new Error('Validation failed');
+
+      jest.spyOn(service, 'put').mockRejectedValue(mockError);
+
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      };
+
+      await controller.put(res as any, mockTema._id, mockTemaDto);
+
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: mockError.message,
       });
     });
   });
@@ -254,50 +277,6 @@ describe('TemaController', () => {
           'Error en el servicio Delete: la peticion contiene parametros incorrectos',
         Data: mockError.message,
       });
-    });
-  });
-
-  describe('agregarSubtema', () => {
-    it('Debería agregar un subtema correctamente', async () => {
-      jest.spyOn(service, 'agregarSubtema').mockResolvedValue(mockTema as any);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.agregarSubtema(res as any, mockTema._id, mockSubtemaDto);
-
-      expect(service.agregarSubtema).toHaveBeenCalledWith(
-        mockTema._id,
-        mockSubtemaDto,
-      );
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
-    });
-  });
-
-  describe('agregarHallazgo', () => {
-    it('Debería agregar un hallazgo correctamente', async () => {
-      jest.spyOn(service, 'agregarHallazgo').mockResolvedValue(mockTema as any);
-
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
-
-      await controller.agregarHallazgo(
-        res as any,
-        mockTema._id,
-        'sub1',
-        mockHallazgoDto,
-      );
-
-      expect(service.agregarHallazgo).toHaveBeenCalledWith(
-        mockTema._id,
-        'sub1',
-        mockHallazgoDto,
-      );
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
     });
   });
 });

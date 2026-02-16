@@ -7,25 +7,32 @@ import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
-const mockEstadoAuditoriaDTO: AuditoriaEstadoDto = {
+const mockAuditoriaEstadoDto: AuditoriaEstadoDto = {
   auditoria_id: '672d3050f7814a9a0c5261d4',
   usuario_id: 76767,
-  observacion: 'llll',
-  estado_id: 2552,
-  fecha_ejecucion_estado: new Date(),
-  activo: true,
-  actual: true,
   usuario_rol: 'AUDITOR',
+  observacion: 'Estado inicial de la auditoría',
+  actual: true,
+  estado_id: 2552,
   fase_id: 'PROGRAMACION',
+  fecha_ejecucion_estado: new Date('2024-01-15'),
+  activo: true,
 };
 
 const mockEstadoAuditoria = {
-  ...mockEstadoAuditoriaDTO,
+  ...mockAuditoriaEstadoDto,
   _id: '672d36737e962bcac5ce9beb',
 };
+
+const mockAuditoria = {
+  _id: '672d3050f7814a9a0c5261d4',
+  titulo: 'Auditoría de prueba',
+  descripcion: 'Descripción de auditoría',
+};
+
 describe('EstadoAuditoriaService', () => {
   let estadoAuditoriaService: EstadoAuditoriaService;
-  let AuditoriaEstadoModel: Model<AuditoriaEstado>;
+  let auditoriaEstadoModel: Model<AuditoriaEstado>;
   let auditoriaModel: Model<Auditoria>;
 
   beforeEach(async () => {
@@ -40,6 +47,7 @@ describe('EstadoAuditoriaService', () => {
             findById: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             countDocuments: jest.fn(),
+            updateMany: jest.fn(),
           },
         },
         {
@@ -54,7 +62,7 @@ describe('EstadoAuditoriaService', () => {
     estadoAuditoriaService = module.get<EstadoAuditoriaService>(
       EstadoAuditoriaService,
     );
-    AuditoriaEstadoModel = module.get<Model<AuditoriaEstado>>(
+    auditoriaEstadoModel = module.get<Model<AuditoriaEstado>>(
       getModelToken(AuditoriaEstado.name),
     );
     auditoriaModel = module.get<Model<Auditoria>>(
@@ -62,225 +70,427 @@ describe('EstadoAuditoriaService', () => {
     );
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('Debería estar definido', () => {
-    expect(EstadoAuditoriaService).toBeDefined();
+    expect(estadoAuditoriaService).toBeDefined();
+    expect(auditoriaEstadoModel).toBeDefined();
+    expect(auditoriaModel).toBeDefined();
   });
 
   describe('post', () => {
-    it('Debería crear y devolver el estado de una auditoria', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockEstadoAuditoria),
-      } as any);
-      jest
-        .spyOn(AuditoriaEstadoModel, 'create')
-        .mockImplementationOnce(() =>
-          Promise.resolve(mockEstadoAuditoriaDTO as any),
-        );
+    it('Debería crear y devolver un estado de auditoría cuando los datos son válidos', async () => {
+      const findSpy = jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockResolvedValue([] as any);
 
-      const result = await estadoAuditoriaService.post(mockEstadoAuditoriaDTO);
-      expect(result).toEqual(mockEstadoAuditoriaDTO);
+      const createSpy = jest
+        .spyOn(auditoriaEstadoModel, 'create')
+        .mockResolvedValue(mockEstadoAuditoria as any);
+
+      const result = await estadoAuditoriaService.post(mockAuditoriaEstadoDto);
+
+      expect(findSpy).toHaveBeenCalledWith({
+        auditoria_id: mockAuditoriaEstadoDto.auditoria_id,
+        actual: true,
+      });
+      expect(createSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...mockAuditoriaEstadoDto,
+          actual: true,
+          activo: true,
+          fecha_ejecucion_estado: expect.any(Date),
+        }),
+      );
+      expect(result).toEqual(mockEstadoAuditoria);
     });
 
-    it('Debería lanzar un error si la auditoria no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
+    it('Debería desactivar estados anteriores cuando ya existe un estado actual', async () => {
+      const estadosAnteriores = [
+        { ...mockEstadoAuditoria, _id: 'estado1', actual: true },
+        { ...mockEstadoAuditoria, _id: 'estado2', actual: true },
+      ];
+
+      const findSpy = jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockResolvedValue(estadosAnteriores as any);
+
+      const updateManySpy = jest
+        .spyOn(auditoriaEstadoModel, 'updateMany')
+        .mockResolvedValue({ modifiedCount: 2 } as any);
+
+      const createSpy = jest
+        .spyOn(auditoriaEstadoModel, 'create')
+        .mockResolvedValue(mockEstadoAuditoria as any);
+
+      await estadoAuditoriaService.post(mockAuditoriaEstadoDto);
+
+      expect(findSpy).toHaveBeenCalledWith({
+        auditoria_id: mockAuditoriaEstadoDto.auditoria_id,
+        actual: true,
+      });
+      expect(updateManySpy).toHaveBeenCalledWith(
+        {
+          auditoria_id: mockAuditoriaEstadoDto.auditoria_id,
+          actual: true,
+        },
+        { $set: { actual: false } },
+      );
+      expect(createSpy).toHaveBeenCalled();
+    });
+
+    it('Debería establecer actual en true, activo en true y fecha automáticamente', async () => {
+      jest.spyOn(auditoriaEstadoModel, 'find').mockReturnValue({
+        exec: jest.fn().mockResolvedValue([]),
       } as any);
 
-      await expect(
-        estadoAuditoriaService.post(mockEstadoAuditoriaDTO),
-      ).rejects.toThrow(
-        `Auditoria relacionada con id ${mockEstadoAuditoriaDTO.auditoria_id} no existe`,
+      const createSpy = jest
+        .spyOn(auditoriaEstadoModel, 'create')
+        .mockResolvedValue(mockEstadoAuditoria as any);
+
+      await estadoAuditoriaService.post(mockAuditoriaEstadoDto);
+
+      expect(createSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          actual: true,
+          activo: true,
+          fecha_ejecucion_estado: expect.any(Date),
+        }),
       );
+    });
+
+    it('Debería manejar errores durante la creación', async () => {
+      const mockError = new Error('Database error');
+
+      jest.spyOn(auditoriaEstadoModel, 'find').mockReturnValue({
+        exec: jest.fn().mockResolvedValue([]),
+      } as any);
+
+      jest.spyOn(auditoriaEstadoModel, 'create').mockRejectedValue(mockError);
+
+      await expect(
+        estadoAuditoriaService.post(mockAuditoriaEstadoDto),
+      ).rejects.toThrow('Database error');
     });
   });
 
   describe('getAll', () => {
+    const mockFilterDto: FilterDto = {
+      query: 'activo:true',
+      fields: 'estado_id,fase_id,observacion',
+      sortby: 'fecha_ejecucion_estado',
+      order: 'desc',
+      limit: '10',
+      offset: '0',
+      populate: 'false',
+    };
+
+    const mockEstados = [
+      {
+        ...mockEstadoAuditoria,
+        _id: '1',
+        estado_id: 2552,
+      },
+      {
+        ...mockEstadoAuditoria,
+        _id: '2',
+        estado_id: 2553,
+      },
+    ];
+
     it('Debería retornar todos los estados con filtros aplicados', async () => {
-      const mockAuditorias = [
-        mockEstadoAuditoria,
-        {
-          _id: '671aa963064222e6583d56e4',
-          titulo: 'auditoria 1',
-          tipoEvaluacionId: 2,
-          plan_auditoria_id: '67197f9a3416d2a85e5d6d93',
-          cronogramaActividad: Array(3),
-          estadoId: 3,
-          noAuditoria: 123420,
-          consecutivoOCI: 'EHS54F',
-          consecutivoIE: 'PASJF4532',
-          tipoAd: 3,
-          macroproceso: 4,
-          lider: 3,
-          responsable: 34,
-          fechaInicio: new Date(),
-          fechaFin: new Date(),
-          objetivo: 'objetivo',
-          alcance: 'alcance',
-          criterio: 'criterio',
-          recTecnologico: 'rec_T',
-          recHumano: 'rec_H',
-          recFisico: 'rec_F',
-          temas: 'temas',
-          activo: true,
-          fechaCreacion: new Date(),
-          fechaModificacion: new Date(),
-        },
-      ];
-
-      const mockFilterDto: FilterDto = {
-        query: '',
-        fields: '',
-        sortby: '',
-        order: '',
-        limit: '',
-        offset: '',
-        populate: '',
-      };
-
       const mockQuery = {
         sort: jest.fn().mockReturnThis(),
         populate: jest.fn().mockReturnThis(),
-        exec: jest.fn().mockResolvedValue(mockAuditorias),
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockEstados),
       };
 
-      jest
-        .spyOn(AuditoriaEstadoModel, 'find')
+      const findSpy = jest
+        .spyOn(auditoriaEstadoModel, 'find')
         .mockReturnValue(mockQuery as any);
 
       const result = await estadoAuditoriaService.getAll(mockFilterDto);
 
-      expect(result).toEqual(mockAuditorias);
+      expect(findSpy).toHaveBeenCalled();
+      expect(mockQuery.sort).toHaveBeenCalled();
+      expect(mockQuery.lean).toHaveBeenCalled();
+      expect(mockQuery.exec).toHaveBeenCalled();
+      expect(result).toEqual(mockEstados);
+    });
+
+    it('Debería aplicar populate cuando populate es "true"', async () => {
+      const filterWithPopulate = { ...mockFilterDto, populate: 'true' };
+      const mockQuery = {
+        sort: jest.fn().mockReturnThis(),
+        populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockEstados),
+      };
+
+      jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockReturnValue(mockQuery as any);
+
+      await estadoAuditoriaService.getAll(filterWithPopulate);
+
+      expect(mockQuery.populate).toHaveBeenCalledWith([
+        { path: 'auditoria_id' },
+      ]);
+    });
+
+    it('Debería NO aplicar populate cuando populate es "false"', async () => {
+      const mockQuery = {
+        sort: jest.fn().mockReturnThis(),
+        populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockEstados),
+      };
+
+      jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockReturnValue(mockQuery as any);
+
+      await estadoAuditoriaService.getAll(mockFilterDto);
+
+      expect(mockQuery.populate).toHaveBeenCalledWith([]);
+    });
+
+    it('Debería retornar un array vacío cuando no hay resultados', async () => {
+      const mockQuery = {
+        sort: jest.fn().mockReturnThis(),
+        populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue([]),
+      };
+
+      jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockReturnValue(mockQuery as any);
+
+      const result = await estadoAuditoriaService.getAll(mockFilterDto);
+
+      expect(result).toEqual([]);
+      expect(result).toHaveLength(0);
+    });
+
+    it('Debería manejar errores de la base de datos', async () => {
+      const mockError = new Error('Database error');
+      const mockQuery = {
+        sort: jest.fn().mockReturnThis(),
+        populate: jest.fn().mockReturnThis(),
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockRejectedValue(mockError),
+      };
+
+      jest
+        .spyOn(auditoriaEstadoModel, 'find')
+        .mockReturnValue(mockQuery as any);
+
+      await expect(
+        estadoAuditoriaService.getAll(mockFilterDto),
+      ).rejects.toThrow('Database error');
     });
   });
 
   describe('getById', () => {
-    it('Debería retornar el estado de una auditoria por su ID', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'findById').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(mockEstadoAuditoria as unknown as AuditoriaEstado),
-      } as any);
+    it('Debería retornar un estado de auditoría por su ID cuando existe', async () => {
+      const findByIdSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockEstadoAuditoria),
+        } as any);
 
       const result = await estadoAuditoriaService.getById(
         mockEstadoAuditoria._id,
       );
 
-      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(
-        mockEstadoAuditoria._id,
-      );
+      expect(findByIdSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id);
+      expect(findByIdSpy).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockEstadoAuditoria);
     });
 
-    it('Debería lanzar un error si el estado de la auditoria no existe', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
+    it('Debería lanzar un error si el estado no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+      const findByIdSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        } as any);
+
+      await expect(
+        estadoAuditoriaService.getById(nonExistentId),
+      ).rejects.toThrow(`${nonExistentId} no existe`);
+
+      expect(findByIdSpy).toHaveBeenCalledWith(nonExistentId);
+    });
+
+    it('Debería propagar errores de la base de datos', async () => {
+      const mockError = new Error('Database connection failed');
+      jest.spyOn(auditoriaEstadoModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
       await expect(
         estadoAuditoriaService.getById(mockEstadoAuditoria._id),
-      ).rejects.toThrow(`${mockEstadoAuditoria._id} no existe`);
-
-      expect(AuditoriaEstadoModel.findById).toHaveBeenCalledWith(
-        mockEstadoAuditoria._id,
-      );
+      ).rejects.toThrow('Database connection failed');
     });
   });
 
   describe('put', () => {
-    it('Debería actualizar el estado de una auditoria', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockEstadoAuditoria),
-      } as any);
-      jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(
-            mockEstadoAuditoriaDTO as unknown as AuditoriaEstado,
-          ),
-      } as any);
+    const updateDto: AuditoriaEstadoDto = {
+      ...mockAuditoriaEstadoDto,
+      observacion: 'Observación actualizada',
+      estado_id: 2553,
+      actual: false,
+    };
+
+    it('Debería actualizar un estado de auditoría existente', async () => {
+      const updatedEstado = { ...mockEstadoAuditoria, ...updateDto };
+
+      const auditoriaFindSpy = jest
+        .spyOn(auditoriaModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockAuditoria),
+        } as any);
+
+      const updateSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(updatedEstado),
+        } as any);
 
       const result = await estadoAuditoriaService.put(
         mockEstadoAuditoria._id,
-        mockEstadoAuditoriaDTO,
+        updateDto,
       );
 
-      expect(AuditoriaEstadoModel.findByIdAndUpdate).toHaveBeenCalledWith(
+      expect(auditoriaFindSpy).toHaveBeenCalledWith(updateDto.auditoria_id);
+      expect(updateSpy).toHaveBeenCalledWith(
         mockEstadoAuditoria._id,
-        mockEstadoAuditoriaDTO,
+        updateDto,
         { new: true },
       );
-      expect(result).toEqual(mockEstadoAuditoriaDTO);
+      expect(result).toEqual(updatedEstado);
     });
 
-    it('Debería lanzar un error si el estado de la auditoria no existe', async () => {
+    it('Debería lanzar un error si el estado no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+
       jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockEstadoAuditoria),
+        exec: jest.fn().mockResolvedValue(mockAuditoria),
       } as any);
-      jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
+
+      const updateSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        } as any);
+
+      await expect(
+        estadoAuditoriaService.put(nonExistentId, updateDto),
+      ).rejects.toThrow(`${nonExistentId} no existe`);
+
+      expect(updateSpy).toHaveBeenCalledWith(nonExistentId, updateDto, {
+        new: true,
+      });
+    });
+
+    it('Debería lanzar un error si la Auditoria relacionada no existe', async () => {
+      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
       await expect(
-        estadoAuditoriaService.put(
-          mockEstadoAuditoria._id,
-          mockEstadoAuditoriaDTO,
-        ),
-      ).rejects.toThrow(`${mockEstadoAuditoria._id} no existe`);
-
-      expect(AuditoriaEstadoModel.findByIdAndUpdate).toHaveBeenCalledWith(
-        mockEstadoAuditoria._id,
-        mockEstadoAuditoriaDTO,
-        { new: true },
-      );
-    });
-
-    it('Debería lanzar un error si la auditoria relacionado no existe', async () => {
-      jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
-
-      await expect(
-        estadoAuditoriaService.put(
-          mockEstadoAuditoria._id,
-          mockEstadoAuditoriaDTO,
-        ),
+        estadoAuditoriaService.put(mockEstadoAuditoria._id, updateDto),
       ).rejects.toThrow(
-        `Auditoria relacionada con id ${mockEstadoAuditoriaDTO.auditoria_id} no existe`,
+        `Plan auditoria relacionada con id ${updateDto.auditoria_id} no existe`,
       );
+
+      expect(auditoriaEstadoModel.findByIdAndUpdate).not.toHaveBeenCalled();
+    });
+
+    it('Debería actualizar sin verificar Auditoria si no se proporciona auditoria_id', async () => {
+      const dtoSinAuditoria = { ...updateDto, auditoria_id: undefined };
+
+      const updateSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockEstadoAuditoria),
+        } as any);
+
+      await estadoAuditoriaService.put(
+        mockEstadoAuditoria._id,
+        dtoSinAuditoria,
+      );
+
+      expect(auditoriaModel.findById).not.toHaveBeenCalled();
+      expect(updateSpy).toHaveBeenCalled();
     });
   });
 
   describe('delete', () => {
-    it('Debería marcar el estado de una auditoria como inactivo', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(
-            mockEstadoAuditoriaDTO as unknown as AuditoriaEstado,
-          ),
-      } as any);
+    it('Debería marcar un estado como inactivo (soft delete)', async () => {
+      const deletedEstado = { ...mockEstadoAuditoria, activo: false };
+
+      const deleteSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(deletedEstado),
+        } as any);
 
       const result = await estadoAuditoriaService.delete(
         mockEstadoAuditoria._id,
       );
 
-      expect(result).toEqual(mockEstadoAuditoriaDTO);
+      expect(deleteSpy).toHaveBeenCalledWith(
+        mockEstadoAuditoria._id,
+        { activo: false },
+        { new: true },
+      );
+      expect(deleteSpy).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(deletedEstado);
+      expect(result.activo).toBe(false);
     });
 
-    it('Debería lanzar un error si el estado de la auditoria no existe', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
+    it('Debería lanzar un error si el estado no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+
+      const deleteSpy = jest
+        .spyOn(auditoriaEstadoModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        } as any);
+
+      await expect(
+        estadoAuditoriaService.delete(nonExistentId),
+      ).rejects.toThrow(`${nonExistentId} no existe`);
+
+      expect(deleteSpy).toHaveBeenCalledWith(
+        nonExistentId,
+        { activo: false },
+        { new: true },
+      );
+    });
+
+    it('Debería propagar errores de la base de datos', async () => {
+      const mockError = new Error('Database error during delete');
+
+      jest.spyOn(auditoriaEstadoModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
       await expect(
         estadoAuditoriaService.delete(mockEstadoAuditoria._id),
-      ).rejects.toThrow(`${mockEstadoAuditoria._id} no existe`);
+      ).rejects.toThrow('Database error during delete');
     });
   });
 
   describe('count', () => {
     const filterDto: FilterDto = {
-      query: 'tipoEvaluacionId:3',
+      query: 'activo:true',
       fields: '',
       sortby: '',
       order: '',
@@ -288,26 +498,69 @@ describe('EstadoAuditoriaService', () => {
       offset: '',
       populate: '',
     };
-    it('Debería retornar la cantidad de documentos', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(2),
-      } as any);
+
+    it('Debería retornar la cantidad de documentos que coinciden con el filtro', async () => {
+      const expectedCount = 5;
+
+      const countSpy = jest
+        .spyOn(auditoriaEstadoModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(expectedCount),
+        } as any);
 
       const result = await estadoAuditoriaService.count(filterDto);
 
-      expect(result).toBe(2);
+      expect(countSpy).toHaveBeenCalled();
+      expect(countSpy).toHaveBeenCalledTimes(1);
+      expect(result).toBe(expectedCount);
+    });
+
+    it('Debería retornar 0 cuando no hay documentos que coincidan', async () => {
+      const countSpy = jest
+        .spyOn(auditoriaEstadoModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(0),
+        } as any);
+
+      const result = await estadoAuditoriaService.count(filterDto);
+
+      expect(countSpy).toHaveBeenCalled();
+      expect(result).toBe(0);
     });
 
     it('Debería lanzar un error si countDocuments falla', async () => {
-      jest.spyOn(AuditoriaEstadoModel, 'countDocuments').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockRejectedValue(new Error('Error al contar documentos')),
+      const mockError = new Error('Error al contar documentos');
+
+      jest.spyOn(auditoriaEstadoModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
       await expect(estadoAuditoriaService.count(filterDto)).rejects.toThrow(
         'Error al contar documentos',
       );
+    });
+
+    it('Debería aplicar correctamente los filtros del FilterDto', async () => {
+      const complexFilterDto: FilterDto = {
+        query: 'activo:true,actual:true',
+        fields: 'estado_id,fase_id',
+        sortby: 'fecha_ejecucion_estado',
+        order: 'desc',
+        limit: '10',
+        offset: '0',
+        populate: 'false',
+      };
+
+      const countSpy = jest
+        .spyOn(auditoriaEstadoModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(3),
+        } as any);
+
+      const result = await estadoAuditoriaService.count(complexFilterDto);
+
+      expect(countSpy).toHaveBeenCalled();
+      expect(result).toBe(3);
     });
   });
 });

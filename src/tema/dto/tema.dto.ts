@@ -1,18 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TemaDTO {
-  @ApiProperty()
+  @ApiProperty({ description: 'ID del informe padre' })
   readonly informe_id: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Título del tema' })
   readonly titulo: string;
 
-  @ApiProperty()
-  activo: boolean;
+  @ApiProperty({ required: false, default: true })
+  activo?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   readonly subtema?: any[];
 
-  @ApiProperty()
-  fecha_creacion: Date;
+  @ApiProperty({ required: false })
+  fecha_creacion?: Date;
+}
+
+export class UpdateTemaDTO {
+  @ApiProperty({
+    required: false,
+    description: 'Título del tema',
+  })
+  readonly titulo?: string;
 }
