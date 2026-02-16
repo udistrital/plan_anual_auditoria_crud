@@ -325,9 +325,9 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
-      await expect(
-        auditoriaService.getById(mockAuditoria._id),
-      ).rejects.toThrow('Database connection failed');
+      await expect(auditoriaService.getById(mockAuditoria._id)).rejects.toThrow(
+        'Database connection failed',
+      );
     });
   });
 
@@ -524,9 +524,9 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
-      await expect(
-        auditoriaService.delete(mockAuditoria._id),
-      ).rejects.toThrow('Database error during delete');
+      await expect(auditoriaService.delete(mockAuditoria._id)).rejects.toThrow(
+        'Database error during delete',
+      );
     });
   });
 

@@ -168,9 +168,7 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockResolvedValue(mockDocumentos),
       };
 
-      jest
-        .spyOn(documentoModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(documentoModel, 'find').mockReturnValue(mockQuery as any);
 
       await documentoService.getAll(filterWithPopulate);
 
@@ -185,9 +183,7 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockResolvedValue(mockDocumentos),
       };
 
-      jest
-        .spyOn(documentoModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(documentoModel, 'find').mockReturnValue(mockQuery as any);
 
       await documentoService.getAll(mockFilterDto);
 
@@ -202,9 +198,7 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockResolvedValue([]),
       };
 
-      jest
-        .spyOn(documentoModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(documentoModel, 'find').mockReturnValue(mockQuery as any);
 
       const result = await documentoService.getAll(mockFilterDto);
 
@@ -221,13 +215,11 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       };
 
-      jest
-        .spyOn(documentoModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(documentoModel, 'find').mockReturnValue(mockQuery as any);
 
-      await expect(
-        documentoService.getAll(mockFilterDto),
-      ).rejects.toThrow('Database error');
+      await expect(documentoService.getAll(mockFilterDto)).rejects.toThrow(
+        'Database error',
+      );
     });
   });
 
@@ -254,9 +246,9 @@ describe('DocumentoService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        documentoService.getById(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(documentoService.getById(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(findByIdSpy).toHaveBeenCalledWith(nonExistentId);
     });
@@ -267,9 +259,9 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
-      await expect(
-        documentoService.getById(mockDocumento._id),
-      ).rejects.toThrow('Database connection failed');
+      await expect(documentoService.getById(mockDocumento._id)).rejects.toThrow(
+        'Database connection failed',
+      );
     });
   });
 
@@ -291,11 +283,9 @@ describe('DocumentoService', () => {
 
       const result = await documentoService.put(mockDocumento._id, updateDto);
 
-      expect(updateSpy).toHaveBeenCalledWith(
-        mockDocumento._id,
-        updateDto,
-        { new: true },
-      );
+      expect(updateSpy).toHaveBeenCalledWith(mockDocumento._id, updateDto, {
+        new: true,
+      });
       expect(result).toEqual(updatedDocumento);
     });
 
@@ -328,13 +318,13 @@ describe('DocumentoService', () => {
 
       await expect(
         documentoService.put(nonExistentId, updateDto),
-      ).rejects.toThrow(`Documento relacionada con id ${nonExistentId} no existe`);
-
-      expect(updateSpy).toHaveBeenCalledWith(
-        nonExistentId,
-        updateDto,
-        { new: true },
+      ).rejects.toThrow(
+        `Documento relacionada con id ${nonExistentId} no existe`,
       );
+
+      expect(updateSpy).toHaveBeenCalledWith(nonExistentId, updateDto, {
+        new: true,
+      });
     });
 
     it('Debería propagar errores de la base de datos', async () => {
@@ -380,9 +370,9 @@ describe('DocumentoService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        documentoService.delete(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(documentoService.delete(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(deleteSpy).toHaveBeenCalledWith(
         nonExistentId,
@@ -398,9 +388,9 @@ describe('DocumentoService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
-      await expect(
-        documentoService.delete(mockDocumento._id),
-      ).rejects.toThrow('Database error during delete');
+      await expect(documentoService.delete(mockDocumento._id)).rejects.toThrow(
+        'Database error during delete',
+      );
     });
   });
 

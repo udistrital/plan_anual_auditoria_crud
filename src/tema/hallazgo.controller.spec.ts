@@ -16,7 +16,7 @@ const mockCreateHallazgoDto: CreateHallazgoDTO = {
 const mockUpdateHallazgoDto: UpdateHallazgoDTO = {
   titulo: 'Falta de documentación actualizada',
   criterio: 'Norma ISO 9001',
-  descripcion: 'Descripción actualizada'
+  descripcion: 'Descripción actualizada',
 };
 
 const mockHallazgo = {
@@ -67,7 +67,9 @@ describe('HallazgoController', () => {
 
   describe('create', () => {
     it('Debería crear un hallazgo correctamente', async () => {
-      jest.spyOn(service, 'agregarHallazgo').mockResolvedValue(mockHallazgo as any);
+      jest
+        .spyOn(service, 'agregarHallazgo')
+        .mockResolvedValue(mockHallazgo as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -193,14 +195,20 @@ describe('HallazgoController', () => {
 
   describe('update', () => {
     it('Debería actualizar un hallazgo correctamente', async () => {
-      jest.spyOn(service, 'updateHallazgo').mockResolvedValue(mockHallazgo as any);
+      jest
+        .spyOn(service, 'updateHallazgo')
+        .mockResolvedValue(mockHallazgo as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
 
-      await controller.update(res as any, mockHallazgo._id, mockUpdateHallazgoDto);
+      await controller.update(
+        res as any,
+        mockHallazgo._id,
+        mockUpdateHallazgoDto,
+      );
 
       expect(service.updateHallazgo).toHaveBeenCalledWith(
         mockHallazgo._id,
@@ -212,7 +220,9 @@ describe('HallazgoController', () => {
 
   describe('delete', () => {
     it('Debería eliminar un hallazgo correctamente', async () => {
-      jest.spyOn(service, 'deleteHallazgo').mockResolvedValue(mockHallazgo as any);
+      jest
+        .spyOn(service, 'deleteHallazgo')
+        .mockResolvedValue(mockHallazgo as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),

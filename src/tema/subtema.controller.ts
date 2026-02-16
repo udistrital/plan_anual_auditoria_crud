@@ -38,7 +38,8 @@ export class SubtemaController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['tema_id'])) createSubtemaDTO: CreateSubtemaDTO,
+    @Body(new ParseObjectIdPipe(['tema_id']))
+    createSubtemaDTO: CreateSubtemaDTO,
   ) {
     try {
       const tema = await this.temaService.agregarSubtema(
@@ -66,7 +67,8 @@ export class SubtemaController {
   @ApiQuery({
     name: 'query',
     required: false,
-    description: 'Filtros en formato query. Ejemplo: tema_id:507f1f77bcf86cd799439011',
+    description:
+      'Filtros en formato query. Ejemplo: tema_id:507f1f77bcf86cd799439011',
     example: 'tema_id:507f1f77bcf86cd799439011',
   })
   @ApiResponse({

@@ -14,31 +14,31 @@ export class CreateHallazgoDTO {
   @ApiProperty({ description: 'Descripción del hallazgo' })
   readonly descripcion: string;
 
-  @ApiProperty({ 
-    required: false, 
+  @ApiProperty({
+    required: false,
     default: true,
-    description: 'Estado activo del hallazgo' 
+    description: 'Estado activo del hallazgo',
   })
   activo?: boolean;
 }
 
 // DTO para actualizar un hallazgo existente
 export class UpdateHallazgoDTO {
-  @ApiProperty({ 
+  @ApiProperty({
     required: false,
-    description: 'Título del hallazgo' 
+    description: 'Título del hallazgo',
   })
   readonly titulo?: string;
 
-  @ApiProperty({ 
+  @ApiProperty({
     required: false,
-    description: 'Criterio del hallazgo' 
+    description: 'Criterio del hallazgo',
   })
   readonly criterio?: string;
 
-  @ApiProperty({ 
+  @ApiProperty({
     required: false,
-    description: 'Descripción del hallazgo' 
+    description: 'Descripción del hallazgo',
   })
   readonly descripcion?: string;
 }

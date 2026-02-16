@@ -7,7 +7,10 @@ import {
   PlanAuditoria,
   PlanAuditoriaSchema,
 } from 'src/plan-auditoria/schemas/plan-auditoria.schema';
-import { Auditor, AuditorSchema } from '../auditoria-auditor/schemas/auditor.schema';
+import {
+  Auditor,
+  AuditorSchema,
+} from '../auditoria-auditor/schemas/auditor.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([

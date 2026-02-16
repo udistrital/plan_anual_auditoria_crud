@@ -14,6 +14,6 @@ import { Tema, TemaSchema } from '../tema/schemas/tema.schema';
   ],
   controllers: [InformeController],
   providers: [InformeService],
-  exports: [InformeService]
+  exports: [InformeService],
 })
 export class InformeModule {}

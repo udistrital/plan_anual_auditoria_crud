@@ -93,7 +93,9 @@ describe('PlanAuditoriaController', () => {
       const mockError = new Error(
         'PlanAuditoria validation failed: vigencia_id is required',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockPlanAuditoriaDTO);
@@ -113,7 +115,9 @@ describe('PlanAuditoriaController', () => {
       const mockError = new Error(
         `Ya existe un plan de auditoría activo para la vigencia ${mockPlanAuditoriaDTO.vigencia_id}`,
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockPlanAuditoriaDTO);
@@ -131,7 +135,9 @@ describe('PlanAuditoriaController', () => {
 
     it('Debería manejar errores de base de datos', async () => {
       const mockError = new Error('Database connection failed');
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockPlanAuditoriaDTO);
@@ -220,7 +226,9 @@ describe('PlanAuditoriaController', () => {
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
       const mockError = new Error('Error en el filtro de búsqueda');
-      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.getAll(res, mockFilterDto);
@@ -238,7 +246,9 @@ describe('PlanAuditoriaController', () => {
 
     it('Debería manejar errores de base de datos', async () => {
       const mockError = new Error('Database connection failed');
-      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.getAll(res, mockFilterDto);
@@ -405,7 +415,9 @@ describe('PlanAuditoriaController', () => {
 
   describe('delete', () => {
     it('Debería eliminar (desactivar) y retornar OK (200) con ID válido', async () => {
-      const deleteSpy = jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(undefined);
       const res = mockResponse();
 
       await controller.delete(res, mockPlanAuditoria._id);
@@ -426,7 +438,9 @@ describe('PlanAuditoriaController', () => {
     it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
       const mockError = new Error(`${nonExistentId} no existe`);
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, nonExistentId);
@@ -444,7 +458,9 @@ describe('PlanAuditoriaController', () => {
 
     it('Debería manejar errores generales del servicio', async () => {
       const mockError = new Error('Database connection error');
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, mockPlanAuditoria._id);

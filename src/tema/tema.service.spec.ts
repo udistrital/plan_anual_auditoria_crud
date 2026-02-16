@@ -29,7 +29,7 @@ const mockCreateSubtemaDto: CreateSubtemaDTO = {
 };
 
 const mockUpdateSubtemaDto: UpdateSubtemaDTO = {
-  titulo: 'Archivo General Actualizado'
+  titulo: 'Archivo General Actualizado',
 };
 
 const mockCreateHallazgoDto: CreateHallazgoDTO = {
@@ -43,7 +43,7 @@ const mockCreateHallazgoDto: CreateHallazgoDTO = {
 const mockUpdateHallazgoDto: UpdateHallazgoDTO = {
   titulo: 'Falta de documentación actualizada',
   criterio: 'Norma ISO 9001',
-  descripcion: 'Descripción actualizada'
+  descripcion: 'Descripción actualizada',
 };
 
 describe('TemaService', () => {

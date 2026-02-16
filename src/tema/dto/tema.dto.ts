@@ -18,9 +18,9 @@ export class TemaDTO {
 }
 
 export class UpdateTemaDTO {
-  @ApiProperty({ 
+  @ApiProperty({
     required: false,
-    description: 'Título del tema' 
+    description: 'Título del tema',
   })
   readonly titulo?: string;
 }

@@ -50,7 +50,8 @@ describe('PlanAuditoriaService', () => {
       ],
     }).compile();
 
-    planAuditoriaService = module.get<PlanAuditoriaService>(PlanAuditoriaService);
+    planAuditoriaService =
+      module.get<PlanAuditoriaService>(PlanAuditoriaService);
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
     );
@@ -94,9 +95,7 @@ describe('PlanAuditoriaService', () => {
     });
 
     it('Debería establecer activo en true automáticamente', async () => {
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const createSpy = jest
         .spyOn(planAuditoriaModel, 'create')
@@ -112,9 +111,7 @@ describe('PlanAuditoriaService', () => {
     });
 
     it('Debería establecer fecha_creacion automáticamente', async () => {
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const createSpy = jest
         .spyOn(planAuditoriaModel, 'create')
@@ -130,9 +127,7 @@ describe('PlanAuditoriaService', () => {
     });
 
     it('Debería establecer fecha_modificacion automáticamente', async () => {
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const createSpy = jest
         .spyOn(planAuditoriaModel, 'create')
@@ -189,9 +184,7 @@ describe('PlanAuditoriaService', () => {
 
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockRejectedValue(mockError);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockRejectedValue(mockError);
 
       await expect(
         planAuditoriaService.post(mockPlanAuditoriaDTO),
@@ -250,9 +243,7 @@ describe('PlanAuditoriaService', () => {
         exec: jest.fn().mockResolvedValue([]),
       };
 
-      jest
-        .spyOn(planAuditoriaModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(planAuditoriaModel, 'find').mockReturnValue(mockQuery as any);
 
       const result = await planAuditoriaService.getAll(mockFilterDto);
 
@@ -268,13 +259,11 @@ describe('PlanAuditoriaService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       };
 
-      jest
-        .spyOn(planAuditoriaModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(planAuditoriaModel, 'find').mockReturnValue(mockQuery as any);
 
-      await expect(
-        planAuditoriaService.getAll(mockFilterDto),
-      ).rejects.toThrow('Database error');
+      await expect(planAuditoriaService.getAll(mockFilterDto)).rejects.toThrow(
+        'Database error',
+      );
     });
   });
 
@@ -301,9 +290,9 @@ describe('PlanAuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        planAuditoriaService.getById(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(planAuditoriaService.getById(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(findByIdSpy).toHaveBeenCalledWith(nonExistentId);
     });
@@ -363,9 +352,7 @@ describe('PlanAuditoriaService', () => {
     });
 
     it('Debería actualizar fecha_modificacion automáticamente', async () => {
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const updateSpy = jest
         .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
@@ -385,9 +372,7 @@ describe('PlanAuditoriaService', () => {
         fecha_creacion: new Date('2024-01-01'),
       };
 
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const updateSpy = jest
         .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
@@ -395,7 +380,10 @@ describe('PlanAuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
         } as any);
 
-      await planAuditoriaService.put(mockPlanAuditoria._id, dtoWithFechaCreacion);
+      await planAuditoriaService.put(
+        mockPlanAuditoria._id,
+        dtoWithFechaCreacion,
+      );
 
       const calledDto = updateSpy.mock.calls[0][1];
       expect(calledDto).not.toHaveProperty('fecha_creacion');
@@ -404,9 +392,7 @@ describe('PlanAuditoriaService', () => {
     it('Debería lanzar un error si el plan de auditoría no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
 
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockResolvedValue(null);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockResolvedValue(null);
 
       const updateSpy = jest
         .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
@@ -454,11 +440,9 @@ describe('PlanAuditoriaService', () => {
         .spyOn(planAuditoriaModel, 'findOne')
         .mockResolvedValue(null);
 
-      jest
-        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-        } as any);
+      jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
 
       await planAuditoriaService.put(mockPlanAuditoria._id, updateDto);
 
@@ -477,11 +461,9 @@ describe('PlanAuditoriaService', () => {
         .spyOn(planAuditoriaModel, 'findOne')
         .mockResolvedValue(null);
 
-      jest
-        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-        } as any);
+      jest.spyOn(planAuditoriaModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
 
       await planAuditoriaService.put(mockPlanAuditoria._id, dtoSinVigencia);
 
@@ -490,9 +472,7 @@ describe('PlanAuditoriaService', () => {
 
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
-      jest
-        .spyOn(planAuditoriaModel, 'findOne')
-        .mockRejectedValue(mockError);
+      jest.spyOn(planAuditoriaModel, 'findOne').mockRejectedValue(mockError);
 
       await expect(
         planAuditoriaService.put(mockPlanAuditoria._id, updateDto),
@@ -531,9 +511,9 @@ describe('PlanAuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        planAuditoriaService.delete(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(planAuditoriaService.delete(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(deleteSpy).toHaveBeenCalledWith(
         nonExistentId,

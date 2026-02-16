@@ -140,7 +140,9 @@ describe('AuditoriaGestionController', () => {
       const mockError = new Error(
         'Auditoria validation failed: titulo is required',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockCreateAuditoriaGestionDto);
@@ -158,7 +160,9 @@ describe('AuditoriaGestionController', () => {
 
     it('Debería manejar errores de base de datos durante la creación', async () => {
       const mockError = new Error('Database connection error');
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockCreateAuditoriaGestionDto);
@@ -176,7 +180,9 @@ describe('AuditoriaGestionController', () => {
 
     it('Debería manejar errores de validación de datos', async () => {
       const mockError = new Error('Invalid date format');
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockCreateAuditoriaGestionDto);

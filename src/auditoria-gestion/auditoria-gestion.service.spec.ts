@@ -5,7 +5,7 @@ import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
-import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';;
+import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   // Datos de Auditoría
@@ -454,9 +454,7 @@ describe('AuditoriaGestionService', () => {
         .spyOn(auditoriaModel, 'find')
         .mockResolvedValue([mockAuditorias[0]] as any);
 
-      jest
-        .spyOn(auditoriaEstadoModel, 'find')
-        .mockResolvedValue([] as any);
+      jest.spyOn(auditoriaEstadoModel, 'find').mockResolvedValue([] as any);
 
       const insertManySpy = jest
         .spyOn(auditoriaEstadoModel, 'insertMany')

@@ -129,7 +129,11 @@ export class TemaController {
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Tema no encontrado.' })
-  async put(@Res() res, @Param('id') id: string, @Body() updateTemaDTO: UpdateTemaDTO) {
+  async put(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() updateTemaDTO: UpdateTemaDTO,
+  ) {
     try {
       const tema = await this.temaService.put(id, updateTemaDTO);
       res.status(HttpStatus.OK).json({
