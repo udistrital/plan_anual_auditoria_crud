@@ -8,19 +8,19 @@ export class CreateSubtemaDTO {
   @ApiProperty({ description: 'Título del subtema' })
   readonly titulo: string;
 
-  @ApiProperty({ 
-    required: false, 
+  @ApiProperty({
+    required: false,
     default: true,
-    description: 'Estado activo del subtema' 
+    description: 'Estado activo del subtema',
   })
   activo?: boolean;
 }
 
 // DTO para actualizar un subtema existente
 export class UpdateSubtemaDTO {
-  @ApiProperty({ 
+  @ApiProperty({
     required: false,
-    description: 'Título del subtema' 
+    description: 'Título del subtema',
   })
   readonly titulo?: string;
 }

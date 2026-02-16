@@ -10,11 +10,7 @@ import { Tema, TemaSchema } from './schemas/tema.schema';
   imports: [
     MongooseModule.forFeature([{ name: Tema.name, schema: TemaSchema }]),
   ],
-  controllers: [
-    TemaController,
-    SubtemaController,
-    HallazgoController,
-  ],
+  controllers: [TemaController, SubtemaController, HallazgoController],
   providers: [TemaService],
   exports: [TemaService],
 })

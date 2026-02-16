@@ -91,7 +91,9 @@ describe('DocumentoController', () => {
       const mockError = new Error(
         'Documento validation failed: nuxeo_id is required',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockDocumentoDto);
@@ -109,7 +111,9 @@ describe('DocumentoController', () => {
 
     it('Debería manejar errores de tipo de referencia inválido', async () => {
       const mockError = new Error('Tipo de referencia no válido');
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockDocumentoDto);
@@ -194,7 +198,9 @@ describe('DocumentoController', () => {
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
       const mockError = new Error('Error en el filtro de búsqueda');
-      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.getAll(res, mockFilterDto);
@@ -343,7 +349,9 @@ describe('DocumentoController', () => {
 
   describe('delete', () => {
     it('Debería eliminar (desactivar) y retornar OK (200) con ID válido', async () => {
-      const deleteSpy = jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(undefined);
       const res = mockResponse();
 
       await controller.delete(res, mockDocumento._id);
@@ -364,7 +372,9 @@ describe('DocumentoController', () => {
     it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
       const mockError = new Error(`${nonExistentId} no existe`);
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, nonExistentId);
@@ -382,7 +392,9 @@ describe('DocumentoController', () => {
 
     it('Debería manejar errores generales del servicio', async () => {
       const mockError = new Error('Database connection error');
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, mockDocumento._id);

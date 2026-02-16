@@ -38,7 +38,8 @@ export class HallazgoController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['subtema_id'])) createHallazgoDTO: CreateHallazgoDTO,
+    @Body(new ParseObjectIdPipe(['subtema_id']))
+    createHallazgoDTO: CreateHallazgoDTO,
   ) {
     try {
       const tema = await this.temaService.agregarHallazgo(
@@ -66,7 +67,8 @@ export class HallazgoController {
   @ApiQuery({
     name: 'query',
     required: false,
-    description: 'Filtros en formato query. Ejemplo: subtema_id:507f1f77bcf86cd799439011',
+    description:
+      'Filtros en formato query. Ejemplo: subtema_id:507f1f77bcf86cd799439011',
     example: 'subtema_id:507f1f77bcf86cd799439011',
   })
   @ApiResponse({
@@ -100,7 +102,8 @@ export class HallazgoController {
   @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve el hallazgo con información del subtema y tema padre.',
+    description:
+      'Devuelve el hallazgo con información del subtema y tema padre.',
   })
   @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {

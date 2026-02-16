@@ -91,7 +91,10 @@ export class TemaService {
   // MÉTODOS PARA SUBTEMA
   // ============================================
 
-  async agregarSubtema(temaId: string, createSubtemaDTO: CreateSubtemaDTO): Promise<Tema> {
+  async agregarSubtema(
+    temaId: string,
+    createSubtemaDTO: CreateSubtemaDTO,
+  ): Promise<Tema> {
     const tema = await this.TemaModel.findById(temaId).exec();
     if (!tema) {
       throw new Error(`Tema ${temaId} no existe`);
@@ -108,7 +111,7 @@ export class TemaService {
   async getAllSubtemas(filterDto: FilterDto): Promise<any[]> {
     const filtersService = new FiltersService(filterDto);
     const query = filtersService.getQuery();
-    
+
     // Extraer tema_id de la query si existe
     let temaIdFilter = null;
     if (query && query['tema_id']) {
@@ -154,10 +157,10 @@ export class TemaService {
   async getSubtemaById(subtemaId: string): Promise<any> {
     const tema = await this.TemaModel.findOne(
       { 'subtema._id': subtemaId },
-      { 
-        'subtema.$': 1, 
+      {
+        'subtema.$': 1,
         titulo: 1,
-        _id: 1
+        _id: 1,
       },
     ).exec();
 
@@ -215,10 +218,10 @@ export class TemaService {
     }
 
     subtema.activo = false;
-    
+
     // También marcar como inactivos todos los hallazgos del subtema
-    subtema.hallazgo.forEach(h => h.activo = false);
-    
+    subtema.hallazgo.forEach((h) => (h.activo = false));
+
     return await tema.save();
   }
 
@@ -249,14 +252,14 @@ export class TemaService {
       descripcion: createHallazgoDTO.descripcion,
       activo: createHallazgoDTO.activo ?? true,
     });
-    
+
     return await tema.save();
   }
 
   async getAllHallazgos(filterDto: FilterDto): Promise<any[]> {
     const filtersService = new FiltersService(filterDto);
     const query = filtersService.getQuery();
-    
+
     // Extraer subtema_id de la query si existe
     let subtemaIdFilter = null;
     if (query && query['subtema_id']) {
@@ -279,7 +282,10 @@ export class TemaService {
       if (tema.subtema && tema.subtema.length > 0) {
         for (const subtema of tema.subtema) {
           // Si hay filtro de subtema_id, solo procesar ese subtema
-          if (subtemaIdFilter && subtema._id.toString() !== subtemaIdFilter.toString()) {
+          if (
+            subtemaIdFilter &&
+            subtema._id.toString() !== subtemaIdFilter.toString()
+          ) {
             continue;
           }
 

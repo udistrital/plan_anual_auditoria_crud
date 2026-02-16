@@ -163,14 +163,12 @@ describe('EstadoAuditoriaService', () => {
 
     it('Debería manejar errores durante la creación', async () => {
       const mockError = new Error('Database error');
-      
+
       jest.spyOn(auditoriaEstadoModel, 'find').mockReturnValue({
         exec: jest.fn().mockResolvedValue([]),
       } as any);
 
-      jest
-        .spyOn(auditoriaEstadoModel, 'create')
-        .mockRejectedValue(mockError);
+      jest.spyOn(auditoriaEstadoModel, 'create').mockRejectedValue(mockError);
 
       await expect(
         estadoAuditoriaService.post(mockAuditoriaEstadoDto),
@@ -395,11 +393,9 @@ describe('EstadoAuditoriaService', () => {
         estadoAuditoriaService.put(nonExistentId, updateDto),
       ).rejects.toThrow(`${nonExistentId} no existe`);
 
-      expect(updateSpy).toHaveBeenCalledWith(
-        nonExistentId,
-        updateDto,
-        { new: true },
-      );
+      expect(updateSpy).toHaveBeenCalledWith(nonExistentId, updateDto, {
+        new: true,
+      });
     });
 
     it('Debería lanzar un error si la Auditoria relacionada no existe', async () => {

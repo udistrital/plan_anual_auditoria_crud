@@ -9,16 +9,16 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Plan AnualAuditoria CRUD')
+    .setTitle('Plan Anual Auditoria CRUD')
     .setDescription(
-      'API CRUD para la gestión de las auditoría y planes de mejoramiento',
+      'API CRUD para la gestión de las auditoría y planes de mejoramiento de Sísifo v2',
     )
     .setVersion('0.1.0')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   fs.writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('swagger', app, document);
 
   await app.listen(8080);
 }

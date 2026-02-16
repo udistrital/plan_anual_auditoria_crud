@@ -69,11 +69,11 @@ describe('InformeService', () => {
     });
 
     it('Debería lanzar un error si el Informe no existe', async () => {
-      jest
-        .spyOn(informeModel, 'create')
-        .mockImplementationOnce(() => {
-          throw new Error(`Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`);
-        });
+      jest.spyOn(informeModel, 'create').mockImplementationOnce(() => {
+        throw new Error(
+          `Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`,
+        );
+      });
 
       await expect(informeService.post(mockInformeDto)).rejects.toThrow(
         `Informe relacionado con id ${mockInformeDto.auditoria_id} no existe`,
@@ -121,9 +121,7 @@ describe('InformeService', () => {
   describe('getById', () => {
     it('Debería retornar un informe por su ID', async () => {
       jest.spyOn(informeModel, 'findById').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(mockInforme as unknown as Informe),
+        exec: jest.fn().mockResolvedValue(mockInforme as unknown as Informe),
       } as any);
 
       const result = await informeService.getById(mockInforme._id);
@@ -148,9 +146,7 @@ describe('InformeService', () => {
   describe('put', () => {
     it('Debería actualizar un informe', async () => {
       jest.spyOn(informeModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(mockInformeDto as unknown as Informe),
+        exec: jest.fn().mockResolvedValue(mockInformeDto as unknown as Informe),
       } as any);
 
       const result = await informeService.put(mockInforme._id, mockInformeDto);
@@ -183,9 +179,7 @@ describe('InformeService', () => {
   describe('delete', () => {
     it('Debería marcar un informe como inactivo', async () => {
       jest.spyOn(informeModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest
-          .fn()
-          .mockResolvedValue(mockInformeDto as unknown as Informe),
+        exec: jest.fn().mockResolvedValue(mockInformeDto as unknown as Informe),
       } as any);
 
       const result = await informeService.delete(mockInforme._id);

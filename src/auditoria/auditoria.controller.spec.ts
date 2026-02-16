@@ -112,7 +112,9 @@ describe('AuditoriaController', () => {
       const mockError = new Error(
         'Auditoria validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockAuditoriaDTO);
@@ -132,7 +134,9 @@ describe('AuditoriaController', () => {
       const mockError = new Error(
         'Plan auditoria relacionada con id 67197dda3416d2a85e5d6d8f no existe',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockAuditoriaDTO);
@@ -217,7 +221,9 @@ describe('AuditoriaController', () => {
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
       const mockError = new Error('No records found');
-      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.getAll(res, mockFilterDto);
@@ -365,7 +371,9 @@ describe('AuditoriaController', () => {
 
   describe('delete', () => {
     it('Debería eliminar (desactivar) y retornar OK (200) con ID válido', async () => {
-      const deleteSpy = jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(undefined);
       const res = mockResponse();
 
       await controller.delete(res, mockAuditoria._id);
@@ -386,7 +394,9 @@ describe('AuditoriaController', () => {
     it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
       const mockError = new Error(`${nonExistentId} no existe`);
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, nonExistentId);
@@ -404,7 +414,9 @@ describe('AuditoriaController', () => {
 
     it('Debería manejar errores generales del servicio', async () => {
       const mockError = new Error('Database connection error');
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, mockAuditoria._id);

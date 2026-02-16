@@ -83,9 +83,11 @@ describe('ActividadService', () => {
 
   describe('post', () => {
     it('Debería crear y devolver una actividad cuando los datos son válidos', async () => {
-      const auditoriaFindSpy = jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAuditoria),
-      } as any);
+      const auditoriaFindSpy = jest
+        .spyOn(auditoriaModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockAuditoria),
+        } as any);
 
       const createSpy = jest
         .spyOn(actividadModel, 'create')
@@ -93,7 +95,9 @@ describe('ActividadService', () => {
 
       const result = await actividadService.post(mockActividadDto);
 
-      expect(auditoriaFindSpy).toHaveBeenCalledWith(mockActividadDto.auditoria_id);
+      expect(auditoriaFindSpy).toHaveBeenCalledWith(
+        mockActividadDto.auditoria_id,
+      );
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           ...mockActividadDto,
@@ -106,15 +110,19 @@ describe('ActividadService', () => {
     });
 
     it('Debería lanzar un error si la Auditoria no existe', async () => {
-      const auditoriaFindSpy = jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
+      const auditoriaFindSpy = jest
+        .spyOn(auditoriaModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        } as any);
 
       await expect(actividadService.post(mockActividadDto)).rejects.toThrow(
         `Auditoria relacionada con id ${mockActividadDto.auditoria_id} no existe`,
       );
 
-      expect(auditoriaFindSpy).toHaveBeenCalledWith(mockActividadDto.auditoria_id);
+      expect(auditoriaFindSpy).toHaveBeenCalledWith(
+        mockActividadDto.auditoria_id,
+      );
       expect(actividadModel.create).not.toHaveBeenCalled();
     });
 
@@ -184,7 +192,9 @@ describe('ActividadService', () => {
         exec: jest.fn().mockResolvedValue(mockActividades),
       };
 
-      const findSpy = jest.spyOn(actividadModel, 'find').mockReturnValue(mockQuery as any);
+      const findSpy = jest
+        .spyOn(actividadModel, 'find')
+        .mockReturnValue(mockQuery as any);
 
       const result = await actividadService.getAll(mockFilterDto);
 
@@ -208,7 +218,9 @@ describe('ActividadService', () => {
 
       await actividadService.getAll(filterWithPopulate);
 
-      expect(mockQuery.populate).toHaveBeenCalledWith([{ path: 'auditoria_id' }]);
+      expect(mockQuery.populate).toHaveBeenCalledWith([
+        { path: 'auditoria_id' },
+      ]);
     });
 
     it('Debería NO aplicar populate cuando populate es "false"', async () => {
@@ -261,9 +273,11 @@ describe('ActividadService', () => {
 
   describe('getById', () => {
     it('Debería retornar una actividad por su ID cuando existe', async () => {
-      const findByIdSpy = jest.spyOn(actividadModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockActividad),
-      } as any);
+      const findByIdSpy = jest
+        .spyOn(actividadModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockActividad),
+        } as any);
 
       const result = await actividadService.getById(mockActividad._id);
 
@@ -274,9 +288,11 @@ describe('ActividadService', () => {
 
     it('Debería lanzar un error si la actividad no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
-      const findByIdSpy = jest.spyOn(actividadModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      } as any);
+      const findByIdSpy = jest
+        .spyOn(actividadModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(null),
+        } as any);
 
       await expect(actividadService.getById(nonExistentId)).rejects.toThrow(
         `${nonExistentId} no existe`,
@@ -307,9 +323,11 @@ describe('ActividadService', () => {
     it('Debería actualizar una actividad existente', async () => {
       const updatedActividad = { ...mockActividad, ...updateDto };
 
-      const auditoriaFindSpy = jest.spyOn(auditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAuditoria),
-      } as any);
+      const auditoriaFindSpy = jest
+        .spyOn(auditoriaModel, 'findById')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockAuditoria),
+        } as any);
 
       const updateSpy = jest
         .spyOn(actividadModel, 'findByIdAndUpdate')
@@ -502,9 +520,11 @@ describe('ActividadService', () => {
     it('Debería retornar la cantidad de documentos que coinciden con el filtro', async () => {
       const expectedCount = 5;
 
-      const countSpy = jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(expectedCount),
-      } as any);
+      const countSpy = jest
+        .spyOn(actividadModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(expectedCount),
+        } as any);
 
       const result = await actividadService.count(filterDto);
 
@@ -514,9 +534,11 @@ describe('ActividadService', () => {
     });
 
     it('Debería retornar 0 cuando no hay documentos que coincidan', async () => {
-      const countSpy = jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(0),
-      } as any);
+      const countSpy = jest
+        .spyOn(actividadModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(0),
+        } as any);
 
       const result = await actividadService.count(filterDto);
 
@@ -547,9 +569,11 @@ describe('ActividadService', () => {
         populate: 'false',
       };
 
-      const countSpy = jest.spyOn(actividadModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(3),
-      } as any);
+      const countSpy = jest
+        .spyOn(actividadModel, 'countDocuments')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(3),
+        } as any);
 
       const result = await actividadService.count(complexFilterDto);
 

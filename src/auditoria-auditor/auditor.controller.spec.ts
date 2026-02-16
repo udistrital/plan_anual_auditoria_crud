@@ -4,9 +4,6 @@ import { AuditorService } from './auditor.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
-// Mock del ParseObjectIdPipe usando ruta relativa
-import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
-
 // Importar el controlador después del mock
 import { AuditorController } from './auditor.controller';
 
@@ -92,7 +89,9 @@ describe('AuditorController', () => {
       const mockError = new Error(
         'Auditor validation failed: auditor_id is required',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockAuditorDto);
@@ -112,7 +111,9 @@ describe('AuditorController', () => {
       const mockError = new Error(
         'Auditoria relacionada con id 671aaa8a064222e6583d56e7 no existe',
       );
-      const serviceSpy = jest.spyOn(service, 'post').mockRejectedValue(mockError);
+      const serviceSpy = jest
+        .spyOn(service, 'post')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.post(res, mockAuditorDto);
@@ -197,7 +198,9 @@ describe('AuditorController', () => {
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
       const mockError = new Error('Error en el filtro de búsqueda');
-      const getAllSpy = jest.spyOn(service, 'getAll').mockRejectedValue(mockError);
+      const getAllSpy = jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.getAll(res, mockFilterDto);
@@ -344,7 +347,9 @@ describe('AuditorController', () => {
 
   describe('delete', () => {
     it('Debería eliminar (desactivar) y retornar OK (200) con ID válido', async () => {
-      const deleteSpy = jest.spyOn(service, 'delete').mockResolvedValue(undefined);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(undefined);
       const res = mockResponse();
 
       await controller.delete(res, mockAuditor._id);
@@ -365,7 +370,9 @@ describe('AuditorController', () => {
     it('Debería retornar NOT_FOUND (404) cuando el ID no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
       const mockError = new Error(`${nonExistentId} no existe`);
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, nonExistentId);
@@ -383,7 +390,9 @@ describe('AuditorController', () => {
 
     it('Debería manejar errores generales del servicio', async () => {
       const mockError = new Error('Database connection error');
-      const deleteSpy = jest.spyOn(service, 'delete').mockRejectedValue(mockError);
+      const deleteSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(mockError);
       const res = mockResponse();
 
       await controller.delete(res, mockAuditor._id);

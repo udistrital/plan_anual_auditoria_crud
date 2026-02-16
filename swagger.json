@@ -2657,8 +2657,8 @@
     }
   },
   "info": {
-    "title": "Plan AnualAuditoria CRUD",
-    "description": "API CRUD para la gestión de las auditoría y planes de mejoramiento",
+    "title": "Plan Anual Auditoria CRUD",
+    "description": "API CRUD para la gestión de las auditoría y planes de mejoramiento de Sísifo v2",
     "version": "0.1.0",
     "contact": {}
   },

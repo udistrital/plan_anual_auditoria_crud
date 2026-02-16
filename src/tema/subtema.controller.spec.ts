@@ -12,7 +12,7 @@ const mockCreateSubtemaDto: CreateSubtemaDTO = {
 };
 
 const mockUpdateSubtemaDto: UpdateSubtemaDTO = {
-  titulo: 'Archivo General Actualizado'
+  titulo: 'Archivo General Actualizado',
 };
 
 const mockSubtema = {
@@ -58,7 +58,9 @@ describe('SubtemaController', () => {
 
   describe('create', () => {
     it('Debería crear un subtema correctamente', async () => {
-      jest.spyOn(service, 'agregarSubtema').mockResolvedValue(mockSubtema as any);
+      jest
+        .spyOn(service, 'agregarSubtema')
+        .mockResolvedValue(mockSubtema as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
@@ -184,14 +186,20 @@ describe('SubtemaController', () => {
 
   describe('update', () => {
     it('Debería actualizar un subtema correctamente', async () => {
-      jest.spyOn(service, 'updateSubtema').mockResolvedValue(mockSubtema as any);
+      jest
+        .spyOn(service, 'updateSubtema')
+        .mockResolvedValue(mockSubtema as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
 
-      await controller.update(res as any, mockSubtema._id, mockUpdateSubtemaDto);
+      await controller.update(
+        res as any,
+        mockSubtema._id,
+        mockUpdateSubtemaDto,
+      );
 
       expect(service.updateSubtema).toHaveBeenCalledWith(
         mockSubtema._id,
@@ -203,7 +211,9 @@ describe('SubtemaController', () => {
 
   describe('delete', () => {
     it('Debería eliminar un subtema correctamente', async () => {
-      jest.spyOn(service, 'deleteSubtema').mockResolvedValue(mockSubtema as any);
+      jest
+        .spyOn(service, 'deleteSubtema')
+        .mockResolvedValue(mockSubtema as any);
 
       const res = {
         status: jest.fn().mockReturnThis(),
