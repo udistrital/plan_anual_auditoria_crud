@@ -29,12 +29,6 @@ export class AuditoriaDTO {
   readonly consecutivo_IE: string;
 
   @ApiProperty()
-  readonly tipo_id: number;
-
-  @ApiProperty()
-  readonly macroproceso: number;
-
-  @ApiProperty()
   readonly macroproceso_id: number;
 
   @ApiProperty()
@@ -75,6 +69,9 @@ export class AuditoriaDTO {
 
   @ApiProperty()
   readonly temas: string;
+
+  @ApiProperty()
+  readonly correo_complementario: string;
 
   @ApiProperty()
   activo: boolean;

@@ -18,10 +18,8 @@ export class AuditoriaGestionService {
 
   async post(createAuditoriaGestionDto: CreateAuditoriaGestion) {
     const fecha = new Date();
-    let auditoria: AuditoriaDTO;
-    let estado: AuditoriaEstadoDto;
-    ({ ...auditoria } = createAuditoriaGestionDto);
-    ({ ...estado } = createAuditoriaGestionDto);
+    const auditoria = { ...createAuditoriaGestionDto } as AuditoriaDTO;
+    const estado = { ...createAuditoriaGestionDto } as AuditoriaEstadoDto;
     const auditoriaData = {
       ...auditoria,
       activo: true,

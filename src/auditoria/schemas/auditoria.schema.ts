@@ -32,12 +32,6 @@ export class Auditoria extends Document {
   consecutivo_IE: string;
 
   @Prop({ required: false })
-  tipo_id: number;
-
-  @Prop({ required: false })
-  macroproceso: number;
-
-  @Prop({ required: false })
   macroproceso_id: number;
 
   @Prop({ required: false })
@@ -78,6 +72,9 @@ export class Auditoria extends Document {
 
   @Prop({ required: false })
   temas: string;
+
+  @Prop({ required: false })
+  correo_complementario: string;
 
   @Prop({ required: false })
   activo: boolean;

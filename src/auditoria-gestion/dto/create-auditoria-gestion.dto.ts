@@ -35,12 +35,6 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly consecutivo_IE: string;
 
   @ApiProperty()
-  readonly tipo_id: number;
-
-  @ApiProperty()
-  readonly macroproceso: number;
-
-  @ApiProperty()
   readonly macroproceso_id: number;
 
   @ApiProperty()
@@ -81,6 +75,9 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
 
   @ApiProperty()
   readonly temas: string;
+
+  @ApiProperty()
+  readonly correo_complementario: string;
 
   @ApiProperty()
   readonly activo: boolean;
