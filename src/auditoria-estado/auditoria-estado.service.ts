@@ -56,7 +56,12 @@ export class EstadoAuditoriaService {
       );
     }
 
-    return await this.AuditoriaEstadoModel.create(planEstadoData);
+    const estadoAuditoriaCreado = await this.AuditoriaEstadoModel.create(planEstadoData);
+    const AuditoriaDatosActualizarEstado = {
+      estado_id: estadoAuditoriaCreado.estado_id,
+    }
+    await this.AuditoriaModel.findByIdAndUpdate(estadoAuditoriaCreado.auditoria_id, AuditoriaDatosActualizarEstado, { new: true }).exec();
+    return estadoAuditoriaCreado;
   }
 
   async getAll(filterDto: FilterDto): Promise<AuditoriaEstado[]> {
