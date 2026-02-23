@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema({ collection: 'notificacion_registro' })
-export class NotificacionRegistro extends Document {
+export class Notificacion extends Document {
   @Prop({ required: false })
   destinatario: string;
 
@@ -25,8 +25,7 @@ export class NotificacionRegistro extends Document {
   fecha_modificacion: Date;
 }
 
-export const NotificacionRegistroSchema = SchemaFactory.createForClass(
-  NotificacionRegistro,
-);
+export const NotificacionSchema =
+  SchemaFactory.createForClass(Notificacion);
 
-NotificacionRegistroSchema.set('versionKey', false);
+NotificacionSchema.set('versionKey', false);

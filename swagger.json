@@ -2655,9 +2655,9 @@
         ]
       }
     },
-    "/notificacion-registro": {
+    "/notificacion": {
       "post": {
-        "operationId": "NotificacionRegistroController_post",
+        "operationId": "NotificacionController_post",
         "summary": "Crear un nuevo registro de notificación",
         "parameters": [],
         "requestBody": {
@@ -2665,7 +2665,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                "$ref": "#/components/schemas/NotificacionDTO"
               }
             }
           }
@@ -2676,7 +2676,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                  "$ref": "#/components/schemas/NotificacionDTO"
                 }
               }
             }
@@ -2686,11 +2686,11 @@
           }
         },
         "tags": [
-          "notificacion-registro"
+          "notificacion"
         ]
       },
       "get": {
-        "operationId": "NotificacionRegistroController_getAll",
+        "operationId": "NotificacionController_getAll",
         "summary": "Obtener todos los registros de notificación",
         "parameters": [
           {
@@ -2765,7 +2765,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                    "$ref": "#/components/schemas/NotificacionDTO"
                   }
                 }
               }
@@ -2773,13 +2773,13 @@
           }
         },
         "tags": [
-          "notificacion-registro"
+          "notificacion"
         ]
       }
     },
-    "/notificacion-registro/{id}": {
+    "/notificacion/{id}": {
       "get": {
-        "operationId": "NotificacionRegistroController_getById",
+        "operationId": "NotificacionController_getById",
         "summary": "Obtener un registro de notificación por Id",
         "parameters": [
           {
@@ -2797,7 +2797,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                  "$ref": "#/components/schemas/NotificacionDTO"
                 }
               }
             }
@@ -2807,11 +2807,11 @@
           }
         },
         "tags": [
-          "notificacion-registro"
+          "notificacion"
         ]
       },
       "put": {
-        "operationId": "NotificacionRegistroController_put",
+        "operationId": "NotificacionController_put",
         "summary": "Actualizar un registro de notificación",
         "parameters": [
           {
@@ -2828,7 +2828,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                "$ref": "#/components/schemas/NotificacionDTO"
               }
             }
           }
@@ -2839,7 +2839,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificacionRegistroDTO"
+                  "$ref": "#/components/schemas/NotificacionDTO"
                 }
               }
             }
@@ -2852,11 +2852,11 @@
           }
         },
         "tags": [
-          "notificacion-registro"
+          "notificacion"
         ]
       },
       "delete": {
-        "operationId": "NotificacionRegistroController_delete",
+        "operationId": "NotificacionController_delete",
         "summary": "Eliminar un registro de notificación",
         "parameters": [
           {
@@ -2877,7 +2877,7 @@
           }
         },
         "tags": [
-          "notificacion-registro"
+          "notificacion"
         ]
       }
     }
@@ -3646,7 +3646,7 @@
           "fecha_ejecucion_estado"
         ]
       },
-      "NotificacionRegistroDTO": {
+      "NotificacionDTO": {
         "type": "object",
         "properties": {
           "destinatario": {

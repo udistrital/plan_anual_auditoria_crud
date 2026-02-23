@@ -1,33 +1,33 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { NotificacionRegistroService } from './notificacion-registro.service';
-import { NotificacionRegistroDTO } from './dto/notificacion-registro.dto';
-import { NotificacionRegistro } from './schema/notificacion-registro.schema';
+import { NotificacionService } from './notificacion.service';
+import { NotificacionDTO } from './dto/notificacion.dto';
+import { Notificacion } from './schema/notificacion.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
-const mockNotificacionRegistroDto: NotificacionRegistroDTO = {
+const mockNotificacionDto: NotificacionDTO = {
   destinatario: 'usuario@correo.gov.co',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
   metadatos: { tipo: 'aprobacion_paa' },
   referencia_id: '671aaa8a064222e6583d56e7',
 };
 
-const mockNotificacionRegistro = {
-  ...mockNotificacionRegistroDto,
+const mockNotificacion = {
+  ...mockNotificacionDto,
   _id: '671aaf35d779a09e092cb800',
 };
 
-describe('NotificacionRegistroService', () => {
-  let notificacionRegistroService: NotificacionRegistroService;
-  let notificacionRegistroModel: Model<NotificacionRegistro>;
+describe('NotificacionService', () => {
+  let notificacionService: NotificacionService;
+  let notificacionModel: Model<Notificacion>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        NotificacionRegistroService,
+        NotificacionService,
         {
-          provide: getModelToken(NotificacionRegistro.name),
+          provide: getModelToken(Notificacion.name),
           useValue: {
             create: jest.fn(),
             find: jest.fn(),
@@ -39,11 +39,11 @@ describe('NotificacionRegistroService', () => {
       ],
     }).compile();
 
-    notificacionRegistroService = module.get<NotificacionRegistroService>(
-      NotificacionRegistroService,
+    notificacionService = module.get<NotificacionService>(
+      NotificacionService,
     );
-    notificacionRegistroModel = module.get<Model<NotificacionRegistro>>(
-      getModelToken(NotificacionRegistro.name),
+    notificacionModel = module.get<Model<Notificacion>>(
+      getModelToken(Notificacion.name),
     );
   });
 
@@ -52,37 +52,37 @@ describe('NotificacionRegistroService', () => {
   });
 
   it('Debería estar definido', () => {
-    expect(notificacionRegistroService).toBeDefined();
-    expect(notificacionRegistroModel).toBeDefined();
+    expect(notificacionService).toBeDefined();
+    expect(notificacionModel).toBeDefined();
   });
 
   describe('post', () => {
     it('Debería crear y devolver un registro de notificación cuando los datos son válidos', async () => {
       const createSpy = jest
-        .spyOn(notificacionRegistroModel, 'create')
-        .mockResolvedValue(mockNotificacionRegistro as any);
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
 
-      const result = await notificacionRegistroService.post(
-        mockNotificacionRegistroDto,
+      const result = await notificacionService.post(
+        mockNotificacionDto,
       );
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...mockNotificacionRegistroDto,
+          ...mockNotificacionDto,
           activo: true,
           fecha_creacion: expect.any(Date),
           fecha_modificacion: expect.any(Date),
         }),
       );
-      expect(result).toEqual(mockNotificacionRegistro);
+      expect(result).toEqual(mockNotificacion);
     });
 
     it('Debería establecer activo en true automáticamente', async () => {
       const createSpy = jest
-        .spyOn(notificacionRegistroModel, 'create')
-        .mockResolvedValue(mockNotificacionRegistro as any);
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
 
-      await notificacionRegistroService.post(mockNotificacionRegistroDto);
+      await notificacionService.post(mockNotificacionDto);
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({ activo: true }),
@@ -91,11 +91,11 @@ describe('NotificacionRegistroService', () => {
 
     it('Debería establecer fecha_creacion y fecha_modificacion automáticamente', async () => {
       const createSpy = jest
-        .spyOn(notificacionRegistroModel, 'create')
-        .mockResolvedValue(mockNotificacionRegistro as any);
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
 
       const dateBefore = new Date();
-      await notificacionRegistroService.post(mockNotificacionRegistroDto);
+      await notificacionService.post(mockNotificacionDto);
       const dateAfter = new Date();
 
       const calledWith = createSpy.mock.calls[0][0] as any;
@@ -112,11 +112,11 @@ describe('NotificacionRegistroService', () => {
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
       jest
-        .spyOn(notificacionRegistroModel, 'create')
+        .spyOn(notificacionModel, 'create')
         .mockRejectedValue(mockError);
 
       await expect(
-        notificacionRegistroService.post(mockNotificacionRegistroDto),
+        notificacionService.post(mockNotificacionDto),
       ).rejects.toThrow('Database error');
     });
   });
@@ -133,8 +133,16 @@ describe('NotificacionRegistroService', () => {
     };
 
     const mockNotificaciones = [
-      { ...mockNotificacionRegistro, _id: '1', destinatario: 'user1@correo.gov.co' },
-      { ...mockNotificacionRegistro, _id: '2', destinatario: 'user2@correo.gov.co' },
+      {
+        ...mockNotificacion,
+        _id: '1',
+        destinatario: 'user1@correo.gov.co',
+      },
+      {
+        ...mockNotificacion,
+        _id: '2',
+        destinatario: 'user2@correo.gov.co',
+      },
     ];
 
     it('Debería retornar todos los registros con filtros aplicados', async () => {
@@ -145,10 +153,10 @@ describe('NotificacionRegistroService', () => {
       };
 
       const findSpy = jest
-        .spyOn(notificacionRegistroModel, 'find')
+        .spyOn(notificacionModel, 'find')
         .mockReturnValue(mockQuery as any);
 
-      const result = await notificacionRegistroService.getAll(mockFilterDto);
+      const result = await notificacionService.getAll(mockFilterDto);
 
       expect(findSpy).toHaveBeenCalled();
       expect(mockQuery.sort).toHaveBeenCalled();
@@ -165,10 +173,10 @@ describe('NotificacionRegistroService', () => {
       };
 
       jest
-        .spyOn(notificacionRegistroModel, 'find')
+        .spyOn(notificacionModel, 'find')
         .mockReturnValue(mockQuery as any);
 
-      const result = await notificacionRegistroService.getAll(mockFilterDto);
+      const result = await notificacionService.getAll(mockFilterDto);
 
       expect(result).toEqual([]);
       expect(result).toHaveLength(0);
@@ -183,11 +191,11 @@ describe('NotificacionRegistroService', () => {
       };
 
       jest
-        .spyOn(notificacionRegistroModel, 'find')
+        .spyOn(notificacionModel, 'find')
         .mockReturnValue(mockQuery as any);
 
       await expect(
-        notificacionRegistroService.getAll(mockFilterDto),
+        notificacionService.getAll(mockFilterDto),
       ).rejects.toThrow('Database error');
     });
   });
@@ -195,30 +203,30 @@ describe('NotificacionRegistroService', () => {
   describe('getById', () => {
     it('Debería retornar un registro por su ID cuando existe', async () => {
       const findByIdSpy = jest
-        .spyOn(notificacionRegistroModel, 'findById')
+        .spyOn(notificacionModel, 'findById')
         .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockNotificacionRegistro),
+          exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      const result = await notificacionRegistroService.getById(
-        mockNotificacionRegistro._id,
+      const result = await notificacionService.getById(
+        mockNotificacion._id,
       );
 
-      expect(findByIdSpy).toHaveBeenCalledWith(mockNotificacionRegistro._id);
+      expect(findByIdSpy).toHaveBeenCalledWith(mockNotificacion._id);
       expect(findByIdSpy).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(mockNotificacionRegistro);
+      expect(result).toEqual(mockNotificacion);
     });
 
     it('Debería lanzar un error si el registro no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
       const findByIdSpy = jest
-        .spyOn(notificacionRegistroModel, 'findById')
+        .spyOn(notificacionModel, 'findById')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
       await expect(
-        notificacionRegistroService.getById(nonExistentId),
+        notificacionService.getById(nonExistentId),
       ).rejects.toThrow(`${nonExistentId} no existe`);
 
       expect(findByIdSpy).toHaveBeenCalledWith(nonExistentId);
@@ -226,21 +234,19 @@ describe('NotificacionRegistroService', () => {
 
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database connection failed');
-      jest
-        .spyOn(notificacionRegistroModel, 'findById')
-        .mockReturnValue({
-          exec: jest.fn().mockRejectedValue(mockError),
-        } as any);
+      jest.spyOn(notificacionModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
+      } as any);
 
       await expect(
-        notificacionRegistroService.getById(mockNotificacionRegistro._id),
+        notificacionService.getById(mockNotificacion._id),
       ).rejects.toThrow('Database connection failed');
     });
   });
 
   describe('put', () => {
-    const updateDto: NotificacionRegistroDTO = {
-      ...mockNotificacionRegistroDto,
+    const updateDto: NotificacionDTO = {
+      ...mockNotificacionDto,
       destinatario: 'nuevo@correo.gov.co',
       metadatos: { tipo: 'aprobacion_programa' },
       referencia_id: '671aaa8a064222e6583d56e8',
@@ -248,23 +254,23 @@ describe('NotificacionRegistroService', () => {
 
     it('Debería actualizar un registro existente', async () => {
       const updatedNotificacion = {
-        ...mockNotificacionRegistro,
+        ...mockNotificacion,
         ...updateDto,
       };
 
       const updateSpy = jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(updatedNotificacion),
         } as any);
 
-      const result = await notificacionRegistroService.put(
-        mockNotificacionRegistro._id,
+      const result = await notificacionService.put(
+        mockNotificacion._id,
         updateDto,
       );
 
       expect(updateSpy).toHaveBeenCalledWith(
-        mockNotificacionRegistro._id,
+        mockNotificacion._id,
         expect.objectContaining({
           ...updateDto,
           fecha_modificacion: expect.any(Date),
@@ -276,13 +282,13 @@ describe('NotificacionRegistroService', () => {
 
     it('No debería incluir activo, fecha_creacion en la actualización', async () => {
       const updateSpy = jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockNotificacionRegistro),
+          exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      await notificacionRegistroService.put(
-        mockNotificacionRegistro._id,
+      await notificacionService.put(
+        mockNotificacion._id,
         updateDto,
       );
 
@@ -294,14 +300,14 @@ describe('NotificacionRegistroService', () => {
 
     it('Debería actualizar fecha_modificacion automáticamente', async () => {
       const updateSpy = jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockNotificacionRegistro),
+          exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
       const dateBefore = new Date();
-      await notificacionRegistroService.put(
-        mockNotificacionRegistro._id,
+      await notificacionService.put(
+        mockNotificacion._id,
         updateDto,
       );
       const dateAfter = new Date();
@@ -320,27 +326,27 @@ describe('NotificacionRegistroService', () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
 
       jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
       await expect(
-        notificacionRegistroService.put(nonExistentId, updateDto),
+        notificacionService.put(nonExistentId, updateDto),
       ).rejects.toThrow(`${nonExistentId} no existe`);
     });
 
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
       jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockRejectedValue(mockError),
         } as any);
 
       await expect(
-        notificacionRegistroService.put(
-          mockNotificacionRegistro._id,
+        notificacionService.put(
+          mockNotificacion._id,
           updateDto,
         ),
       ).rejects.toThrow('Database error');
@@ -350,22 +356,22 @@ describe('NotificacionRegistroService', () => {
   describe('delete', () => {
     it('Debería marcar un registro como inactivo (soft delete)', async () => {
       const deletedNotificacion = {
-        ...mockNotificacionRegistro,
+        ...mockNotificacion,
         activo: false,
       };
 
       const deleteSpy = jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(deletedNotificacion),
         } as any);
 
-      const result = await notificacionRegistroService.delete(
-        mockNotificacionRegistro._id,
+      const result = await notificacionService.delete(
+        mockNotificacion._id,
       );
 
       expect(deleteSpy).toHaveBeenCalledWith(
-        mockNotificacionRegistro._id,
+        mockNotificacion._id,
         { activo: false },
         { new: true },
       );
@@ -378,13 +384,13 @@ describe('NotificacionRegistroService', () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
 
       const deleteSpy = jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
       await expect(
-        notificacionRegistroService.delete(nonExistentId),
+        notificacionService.delete(nonExistentId),
       ).rejects.toThrow(`${nonExistentId} no existe`);
 
       expect(deleteSpy).toHaveBeenCalledWith(
@@ -398,13 +404,13 @@ describe('NotificacionRegistroService', () => {
       const mockError = new Error('Database error during delete');
 
       jest
-        .spyOn(notificacionRegistroModel, 'findByIdAndUpdate')
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockRejectedValue(mockError),
         } as any);
 
       await expect(
-        notificacionRegistroService.delete(mockNotificacionRegistro._id),
+        notificacionService.delete(mockNotificacion._id),
       ).rejects.toThrow('Database error during delete');
     });
   });
@@ -424,12 +430,12 @@ describe('NotificacionRegistroService', () => {
       const expectedCount = 5;
 
       const countSpy = jest
-        .spyOn(notificacionRegistroModel, 'countDocuments')
+        .spyOn(notificacionModel, 'countDocuments')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(expectedCount),
         } as any);
 
-      const result = await notificacionRegistroService.count(filterDto);
+      const result = await notificacionService.count(filterDto);
 
       expect(countSpy).toHaveBeenCalled();
       expect(countSpy).toHaveBeenCalledTimes(1);
@@ -438,12 +444,12 @@ describe('NotificacionRegistroService', () => {
 
     it('Debería retornar 0 cuando no hay documentos que coincidan', async () => {
       const countSpy = jest
-        .spyOn(notificacionRegistroModel, 'countDocuments')
+        .spyOn(notificacionModel, 'countDocuments')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(0),
         } as any);
 
-      const result = await notificacionRegistroService.count(filterDto);
+      const result = await notificacionService.count(filterDto);
 
       expect(countSpy).toHaveBeenCalled();
       expect(result).toBe(0);
@@ -452,14 +458,12 @@ describe('NotificacionRegistroService', () => {
     it('Debería lanzar un error si countDocuments falla', async () => {
       const mockError = new Error('Error al contar documentos');
 
-      jest
-        .spyOn(notificacionRegistroModel, 'countDocuments')
-        .mockReturnValue({
-          exec: jest.fn().mockRejectedValue(mockError),
-        } as any);
+      jest.spyOn(notificacionModel, 'countDocuments').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
+      } as any);
 
       await expect(
-        notificacionRegistroService.count(filterDto),
+        notificacionService.count(filterDto),
       ).rejects.toThrow('Error al contar documentos');
     });
 
@@ -475,12 +479,12 @@ describe('NotificacionRegistroService', () => {
       };
 
       const countSpy = jest
-        .spyOn(notificacionRegistroModel, 'countDocuments')
+        .spyOn(notificacionModel, 'countDocuments')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(3),
         } as any);
 
-      const result = await notificacionRegistroService.count(complexFilterDto);
+      const result = await notificacionService.count(complexFilterDto);
 
       expect(countSpy).toHaveBeenCalled();
       expect(result).toBe(3);

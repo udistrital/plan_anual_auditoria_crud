@@ -10,8 +10,8 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { NotificacionRegistroService } from './notificacion-registro.service';
-import { NotificacionRegistroDTO } from './dto/notificacion-registro.dto';
+import { NotificacionService } from './notificacion.service';
+import { NotificacionDTO } from './dto/notificacion.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
@@ -21,26 +21,30 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
-@ApiTags('notificacion-registro')
-@Controller('notificacion-registro')
-export class NotificacionRegistroController {
+@ApiTags('notificacion')
+@Controller('notificacion')
+export class NotificacionController {
   constructor(
-    private notificacionRegistroService: NotificacionRegistroService,
+    private notificacionService: NotificacionService,
   ) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo registro de notificación' })
-  @ApiBody({ type: NotificacionRegistroDTO })
+  @ApiBody({ type: NotificacionDTO })
   @ApiResponse({
     status: 201,
     description: 'El registro de notificación ha sido creado exitosamente.',
-    type: NotificacionRegistroDTO,
+    type: NotificacionDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() notificacionRegistroDTO: NotificacionRegistroDTO) {
+  async post(
+    @Res() res,
+    @Body() notificacionDTO: NotificacionDTO,
+  ) {
     try {
-      const notificacion =
-        await this.notificacionRegistroService.post(notificacionRegistroDTO);
+      const notificacion = await this.notificacionService.post(
+        notificacionDTO,
+      );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -63,14 +67,13 @@ export class NotificacionRegistroController {
   @ApiResponse({
     status: 200,
     description: 'Devuelve todos los registros de notificación.',
-    type: [NotificacionRegistroDTO],
+    type: [NotificacionDTO],
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const notificaciones =
-        await this.notificacionRegistroService.getAll(filterDto);
-      const counts =
-        await this.notificacionRegistroService.count(filterDto);
+        await this.notificacionService.getAll(filterDto);
+      const counts = await this.notificacionService.count(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -96,7 +99,7 @@ export class NotificacionRegistroController {
   @ApiResponse({
     status: 200,
     description: 'Devuelve el registro de notificación.',
-    type: NotificacionRegistroDTO,
+    type: NotificacionDTO,
   })
   @ApiResponse({
     status: 404,
@@ -104,8 +107,7 @@ export class NotificacionRegistroController {
   })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const notificacion =
-        await this.notificacionRegistroService.getById(id);
+      const notificacion = await this.notificacionService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -126,12 +128,12 @@ export class NotificacionRegistroController {
   @Put('/:id')
   @ApiOperation({ summary: 'Actualizar un registro de notificación' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: NotificacionRegistroDTO })
+  @ApiBody({ type: NotificacionDTO })
   @ApiResponse({
     status: 200,
     description:
       'El registro de notificación ha sido actualizado exitosamente.',
-    type: NotificacionRegistroDTO,
+    type: NotificacionDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({
@@ -141,12 +143,12 @@ export class NotificacionRegistroController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() notificacionRegistroDTO: NotificacionRegistroDTO,
+    @Body() notificacionDTO: NotificacionDTO,
   ) {
     try {
-      const notificacion = await this.notificacionRegistroService.put(
+      const notificacion = await this.notificacionService.put(
         id,
-        notificacionRegistroDTO,
+        notificacionDTO,
       );
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -178,7 +180,7 @@ export class NotificacionRegistroController {
   })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.notificacionRegistroService.delete(id);
+      await this.notificacionService.delete(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,

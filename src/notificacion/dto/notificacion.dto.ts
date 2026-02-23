@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class NotificacionRegistroDTO {
+export class NotificacionDTO {
   @ApiProperty()
   readonly destinatario: string;
 

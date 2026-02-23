@@ -13,7 +13,7 @@ import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.modul
 import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
 import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.module';
-import { NotificacionRegistroModule } from './notificacion-registro/notificacion-registro.module';
+import { NotificacionModule } from './notificacion/notificacion.module';
 
 @Module({
   imports: [
@@ -39,7 +39,7 @@ import { NotificacionRegistroModule } from './notificacion-registro/notificacion
     InformeModule,
     TemaModule,
     AuditoriaGestionModule,
-    NotificacionRegistroModule,
+    NotificacionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

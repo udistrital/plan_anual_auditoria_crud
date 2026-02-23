@@ -3,32 +3,32 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
-import { NotificacionRegistro } from './schema/notificacion-registro.schema';
-import { NotificacionRegistroDTO } from './dto/notificacion-registro.dto';
+import { Notificacion } from './schema/notificacion.schema';
+import { NotificacionDTO } from './dto/notificacion.dto';
 
 @Injectable()
-export class NotificacionRegistroService {
+export class NotificacionService {
   constructor(
-    @InjectModel(NotificacionRegistro.name)
-    private readonly notificacionRegistroModel: Model<NotificacionRegistro>,
+    @InjectModel(Notificacion.name)
+    private readonly notificacionModel: Model<Notificacion>,
   ) {}
 
   async post(
-    notificacionRegistroDTO: NotificacionRegistroDTO,
-  ): Promise<NotificacionRegistro> {
+    notificacionDTO: NotificacionDTO,
+  ): Promise<Notificacion> {
     const fecha = new Date();
     const notificacionData = {
-      ...notificacionRegistroDTO,
+      ...notificacionDTO,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
     };
-    return await this.notificacionRegistroModel.create(notificacionData);
+    return await this.notificacionModel.create(notificacionData);
   }
 
-  async getAll(filterDto: FilterDto): Promise<NotificacionRegistro[]> {
+  async getAll(filterDto: FilterDto): Promise<Notificacion[]> {
     const filtersService = new FiltersService(filterDto);
-    return (await this.notificacionRegistroModel
+    return (await this.notificacionModel
       .find(
         filtersService.getQuery(),
         filtersService.getFields() as any,
@@ -36,11 +36,11 @@ export class NotificacionRegistroService {
       )
       .sort(filtersService.getSortBy())
       .lean()
-      .exec()) as unknown as NotificacionRegistro[];
+      .exec()) as unknown as Notificacion[];
   }
 
-  async getById(id: string): Promise<NotificacionRegistro> {
-    const notificacion = await this.notificacionRegistroModel
+  async getById(id: string): Promise<Notificacion> {
+    const notificacion = await this.notificacionModel
       .findById(id)
       .exec();
     if (!notificacion) {
@@ -51,13 +51,13 @@ export class NotificacionRegistroService {
 
   async put(
     id: string,
-    notificacionRegistroDTO: NotificacionRegistroDTO,
-  ): Promise<NotificacionRegistro> {
+    notificacionDTO: NotificacionDTO,
+  ): Promise<Notificacion> {
     const updateData = {
-      ...notificacionRegistroDTO,
+      ...notificacionDTO,
       fecha_modificacion: new Date(),
     };
-    const update = await this.notificacionRegistroModel
+    const update = await this.notificacionModel
       .findByIdAndUpdate(id, updateData, { new: true })
       .exec();
     if (!update) {
@@ -66,8 +66,8 @@ export class NotificacionRegistroService {
     return update;
   }
 
-  async delete(id: string): Promise<NotificacionRegistro> {
-    const deleted = await this.notificacionRegistroModel
+  async delete(id: string): Promise<Notificacion> {
+    const deleted = await this.notificacionModel
       .findByIdAndUpdate(id, { activo: false }, { new: true })
       .exec();
     if (!deleted) {
@@ -78,7 +78,7 @@ export class NotificacionRegistroService {
 
   async count(filterDto: FilterDto): Promise<number> {
     const filtersService = new FiltersService(filterDto);
-    return await this.notificacionRegistroModel
+    return await this.notificacionModel
       .countDocuments(filtersService.getQuery())
       .exec();
   }

@@ -1,25 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificacionRegistroController } from './notificacion-registro.controller';
-import { NotificacionRegistroDTO } from './dto/notificacion-registro.dto';
-import { NotificacionRegistroService } from './notificacion-registro.service';
+import { NotificacionController } from './notificacion.controller';
+import { NotificacionDTO } from './dto/notificacion.dto';
+import { NotificacionService } from './notificacion.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
-const mockNotificacionRegistroDto: NotificacionRegistroDTO = {
+const mockNotificacionDto: NotificacionDTO = {
   destinatario: 'usuario@correo.gov.co',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
   metadatos: { tipo: 'aprobacion_paa' },
   referencia_id: '671aaa8a064222e6583d56e7',
 };
 
-const mockNotificacionRegistro = {
-  ...mockNotificacionRegistroDto,
+const mockNotificacion = {
+  ...mockNotificacionDto,
   _id: '671aaf35d779a09e092cb800',
 };
 
-describe('NotificacionRegistroController', () => {
-  let controller: NotificacionRegistroController;
-  let service: NotificacionRegistroService;
+describe('NotificacionController', () => {
+  let controller: NotificacionController;
+  let service: NotificacionService;
 
   const mockResponse = () => {
     const res: any = {};
@@ -30,10 +30,10 @@ describe('NotificacionRegistroController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [NotificacionRegistroController],
+      controllers: [NotificacionController],
       providers: [
         {
-          provide: NotificacionRegistroService,
+          provide: NotificacionService,
           useValue: {
             post: jest.fn(),
             getAll: jest.fn(),
@@ -46,11 +46,11 @@ describe('NotificacionRegistroController', () => {
       ],
     }).compile();
 
-    controller = module.get<NotificacionRegistroController>(
-      NotificacionRegistroController,
+    controller = module.get<NotificacionController>(
+      NotificacionController,
     );
-    service = module.get<NotificacionRegistroService>(
-      NotificacionRegistroService,
+    service = module.get<NotificacionService>(
+      NotificacionService,
     );
   });
 
@@ -64,37 +64,37 @@ describe('NotificacionRegistroController', () => {
   });
 
   describe('post', () => {
-    it('Debería crear un registro de notificación y retornar CREATED (201) con datos válidos', async () => {
+    it('Debería crear un  de notificación y retornar CREATED (201) con datos válidos', async () => {
       const serviceSpy = jest
         .spyOn(service, 'post')
-        .mockResolvedValue(mockNotificacionRegistro as any);
+        .mockResolvedValue(mockNotificacion as any);
       const res = mockResponse();
 
-      await controller.post(res, mockNotificacionRegistroDto);
+      await controller.post(res, mockNotificacionDto);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionRegistroDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionDto);
       expect(serviceSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Registro Exitoso',
-        Data: mockNotificacionRegistro,
+        Data: mockNotificacion,
       });
     });
 
     it('Debería retornar BAD_REQUEST (400) cuando el servicio lanza un error de validación', async () => {
       const mockError = new Error(
-        'NotificacionRegistro validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
+        'Notificacion validation failed: activo: Cast to Boolean failed for value "2" (type number) at path "activo"',
       );
       const serviceSpy = jest
         .spyOn(service, 'post')
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.post(res, mockNotificacionRegistroDto);
+      await controller.post(res, mockNotificacionDto);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionRegistroDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -112,9 +112,9 @@ describe('NotificacionRegistroController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.post(res, mockNotificacionRegistroDto);
+      await controller.post(res, mockNotificacionDto);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionRegistroDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockNotificacionDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -138,8 +138,16 @@ describe('NotificacionRegistroController', () => {
     };
 
     const mockNotificaciones = [
-      { ...mockNotificacionRegistro, _id: '1', destinatario: 'user1@correo.gov.co' },
-      { ...mockNotificacionRegistro, _id: '2', destinatario: 'user2@correo.gov.co' },
+      {
+        ...mockNotificacion,
+        _id: '1',
+        destinatario: 'user1@correo.gov.co',
+      },
+      {
+        ...mockNotificacion,
+        _id: '2',
+        destinatario: 'user2@correo.gov.co',
+      },
     ];
 
     it('Debería retornar OK (200) con todos los registros y metadata', async () => {
@@ -209,19 +217,19 @@ describe('NotificacionRegistroController', () => {
     it('Debería retornar OK (200) con el registro cuando el ID es válido', async () => {
       const getByIdSpy = jest
         .spyOn(service, 'getById')
-        .mockResolvedValue(mockNotificacionRegistro as any);
+        .mockResolvedValue(mockNotificacion as any);
       const res = mockResponse();
 
-      await controller.getById(res, mockNotificacionRegistro._id);
+      await controller.getById(res, mockNotificacion._id);
 
-      expect(getByIdSpy).toHaveBeenCalledWith(mockNotificacionRegistro._id);
+      expect(getByIdSpy).toHaveBeenCalledWith(mockNotificacion._id);
       expect(getByIdSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: mockNotificacionRegistro,
+        Data: mockNotificacion,
       });
     });
 
@@ -262,31 +270,31 @@ describe('NotificacionRegistroController', () => {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un ',
         Data: mockError.message,
       });
     });
   });
 
   describe('put', () => {
-    const updateDto: NotificacionRegistroDTO = {
-      ...mockNotificacionRegistroDto,
+    const updateDto: NotificacionDTO = {
+      ...mockNotificacionDto,
       destinatario: 'nuevo@correo.gov.co',
       metadatos: { tipo: 'aprobacion_programa' },
       referencia_id: '671aaa8a064222e6583d56e8',
     };
 
     it('Debería actualizar y retornar OK (200) con datos válidos', async () => {
-      const updatedNotificacion = { ...mockNotificacionRegistro, ...updateDto };
+      const updatedNotificacion = { ...mockNotificacion, ...updateDto };
       const putSpy = jest
         .spyOn(service, 'put')
         .mockResolvedValue(updatedNotificacion as any);
       const res = mockResponse();
 
-      await controller.put(res, mockNotificacionRegistro._id, updateDto);
+      await controller.put(res, mockNotificacion._id, updateDto);
 
       expect(putSpy).toHaveBeenCalledWith(
-        mockNotificacionRegistro._id,
+        mockNotificacion._id,
         updateDto,
       );
       expect(putSpy).toHaveBeenCalledTimes(1);
@@ -304,10 +312,10 @@ describe('NotificacionRegistroController', () => {
       const putSpy = jest.spyOn(service, 'put').mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.put(res, mockNotificacionRegistro._id, updateDto);
+      await controller.put(res, mockNotificacion._id, updateDto);
 
       expect(putSpy).toHaveBeenCalledWith(
-        mockNotificacionRegistro._id,
+        mockNotificacion._id,
         updateDto,
       );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
@@ -347,9 +355,9 @@ describe('NotificacionRegistroController', () => {
         .mockResolvedValue(undefined);
       const res = mockResponse();
 
-      await controller.delete(res, mockNotificacionRegistro._id);
+      await controller.delete(res, mockNotificacion._id);
 
-      expect(deleteSpy).toHaveBeenCalledWith(mockNotificacionRegistro._id);
+      expect(deleteSpy).toHaveBeenCalledWith(mockNotificacion._id);
       expect(deleteSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
@@ -357,7 +365,7 @@ describe('NotificacionRegistroController', () => {
         Status: HttpStatus.OK,
         Message: 'Eliminacion Exitosa',
         Data: {
-          _id: mockNotificacionRegistro._id,
+          _id: mockNotificacion._id,
         },
       });
     });
@@ -390,9 +398,9 @@ describe('NotificacionRegistroController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.delete(res, mockNotificacionRegistro._id);
+      await controller.delete(res, mockNotificacion._id);
 
-      expect(deleteSpy).toHaveBeenCalledWith(mockNotificacionRegistro._id);
+      expect(deleteSpy).toHaveBeenCalledWith(mockNotificacion._id);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
