@@ -2654,6 +2654,232 @@
           "auditoria-gestion"
         ]
       }
+    },
+    "/notificacion": {
+      "post": {
+        "operationId": "NotificacionController_post",
+        "summary": "Crear un nuevo registro de notificación",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El registro de notificación ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificacionDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "notificacion"
+        ]
+      },
+      "get": {
+        "operationId": "NotificacionController_getAll",
+        "summary": "Obtener todos los registros de notificación",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los registros de notificación.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificacionDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "notificacion"
+        ]
+      }
+    },
+    "/notificacion/{id}": {
+      "get": {
+        "operationId": "NotificacionController_getById",
+        "summary": "Obtener un registro de notificación por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el registro de notificación.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificacionDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Registro de notificación no encontrado."
+          }
+        },
+        "tags": [
+          "notificacion"
+        ]
+      },
+      "put": {
+        "operationId": "NotificacionController_put",
+        "summary": "Actualizar un registro de notificación",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificacionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El registro de notificación ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificacionDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Registro de notificación no encontrado."
+          }
+        },
+        "tags": [
+          "notificacion"
+        ]
+      },
+      "delete": {
+        "operationId": "NotificacionController_delete",
+        "summary": "Eliminar un registro de notificación",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El registro de notificación ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Registro de notificación no encontrado."
+          }
+        },
+        "tags": [
+          "notificacion"
+        ]
+      }
     }
   },
   "info": {
@@ -3410,6 +3636,32 @@
           "actual",
           "fase_id",
           "fecha_ejecucion_estado"
+        ]
+      },
+      "NotificacionDTO": {
+        "type": "object",
+        "properties": {
+          "destinatario": {
+            "type": "string"
+          },
+          "fecha_envio": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "metadatos": {
+            "type": "object"
+          },
+          "referencia_id": {
+            "type": "string",
+            "description": "ObjectId del documento referenciado",
+            "example": "671aaa8a064222e6583d56e7"
+          }
+        },
+        "required": [
+          "destinatario",
+          "fecha_envio",
+          "metadatos",
+          "referencia_id"
         ]
       }
     }
