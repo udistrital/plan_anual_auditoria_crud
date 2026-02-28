@@ -38,12 +38,6 @@ export class AuditoriaDTO {
   readonly dependencia_id: number;
 
   @ApiProperty()
-  readonly lider_id: number;
-
-  @ApiProperty()
-  readonly responsable_id: number;
-
-  @ApiProperty()
   readonly fecha_inicio: Date;
 
   @ApiProperty()

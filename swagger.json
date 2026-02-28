@@ -3002,12 +3002,6 @@
           "dependencia_id": {
             "type": "number"
           },
-          "lider_id": {
-            "type": "number"
-          },
-          "responsable_id": {
-            "type": "number"
-          },
           "fecha_inicio": {
             "format": "date-time",
             "type": "string"
@@ -3065,8 +3059,6 @@
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
-          "lider_id",
-          "responsable_id",
           "fecha_inicio",
           "fecha_fin",
           "objetivo",
@@ -3529,12 +3521,6 @@
           "dependencia_id": {
             "type": "number"
           },
-          "lider_id": {
-            "type": "number"
-          },
-          "responsable_id": {
-            "type": "number"
-          },
           "fecha_inicio": {
             "format": "date-time",
             "type": "string"
@@ -3614,8 +3600,6 @@
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
-          "lider_id",
-          "responsable_id",
           "fecha_inicio",
           "fecha_fin",
           "objetivo",

@@ -41,12 +41,6 @@ export class Auditoria extends Document {
   dependencia_id: number;
 
   @Prop({ required: false })
-  lider_id: number;
-
-  @Prop({ required: false })
-  responsable_id: number;
-
-  @Prop({ required: false })
   fecha_inicio: Date;
 
   @Prop({ required: false })
