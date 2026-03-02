@@ -23,8 +23,6 @@ const mockAuditoriaDTO: AuditoriaDTO = {
   macroproceso_id: 10,
   proceso_id: 20,
   dependencia_id: 30,
-  lider_id: 3,
-  responsable_id: 34,
   fecha_inicio: new Date('2024-01-01'),
   fecha_fin: new Date('2024-12-31'),
   objetivo: 'Evaluar el cumplimiento de procesos',
