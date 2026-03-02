@@ -7,9 +7,15 @@ import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
-  destinatario: 'usuario@correo.gov.co',
+  template: 'SISIFO_PLANTILLA_SOLICITUD',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
-  metadatos: { tipo: 'aprobacion_paa' },
+  metadatos: {
+    tipo_notificacion: 'solicitud_aprobacion_paa',
+    vigencia: '2025',
+    destinatarios_to: ['jefe@correo.gov.co'],
+    destinatarios_cc: [],
+    destinatarios_bcc: [],
+  },
   referencia_id: '671aaa8a064222e6583d56e7',
 };
 
@@ -39,9 +45,7 @@ describe('NotificacionService', () => {
       ],
     }).compile();
 
-    notificacionService = module.get<NotificacionService>(
-      NotificacionService,
-    );
+    notificacionService = module.get<NotificacionService>(NotificacionService);
     notificacionModel = module.get<Model<Notificacion>>(
       getModelToken(Notificacion.name),
     );
@@ -62,9 +66,7 @@ describe('NotificacionService', () => {
         .spyOn(notificacionModel, 'create')
         .mockResolvedValue(mockNotificacion as any);
 
-      const result = await notificacionService.post(
-        mockNotificacionDto,
-      );
+      const result = await notificacionService.post(mockNotificacionDto);
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -109,11 +111,37 @@ describe('NotificacionService', () => {
       expect(calledWith.fecha_modificacion).toBeInstanceOf(Date);
     });
 
+    it('Debería almacenar el campo template correctamente', async () => {
+      const createSpy = jest
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
+
+      await notificacionService.post(mockNotificacionDto);
+
+      const calledWith = createSpy.mock.calls[0][0] as any;
+      expect(calledWith.template).toBe('SISIFO_PLANTILLA_SOLICITUD');
+      expect(calledWith).not.toHaveProperty('destinatario');
+    });
+
+    it('Debería almacenar los destinatarios como listas dentro de metadatos', async () => {
+      const createSpy = jest
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
+
+      await notificacionService.post(mockNotificacionDto);
+
+      const calledWith = createSpy.mock.calls[0][0] as any;
+      expect(calledWith.metadatos).toHaveProperty('destinatarios_to');
+      expect(calledWith.metadatos).toHaveProperty('destinatarios_cc');
+      expect(calledWith.metadatos).toHaveProperty('destinatarios_bcc');
+      expect(Array.isArray(calledWith.metadatos.destinatarios_to)).toBe(true);
+      expect(Array.isArray(calledWith.metadatos.destinatarios_cc)).toBe(true);
+      expect(Array.isArray(calledWith.metadatos.destinatarios_bcc)).toBe(true);
+    });
+
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
-      jest
-        .spyOn(notificacionModel, 'create')
-        .mockRejectedValue(mockError);
+      jest.spyOn(notificacionModel, 'create').mockRejectedValue(mockError);
 
       await expect(
         notificacionService.post(mockNotificacionDto),
@@ -124,7 +152,7 @@ describe('NotificacionService', () => {
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
       query: 'activo:true',
-      fields: 'destinatario,fecha_envio',
+      fields: 'template,fecha_envio',
       sortby: 'fecha_creacion',
       order: 'desc',
       limit: '10',
@@ -133,16 +161,8 @@ describe('NotificacionService', () => {
     };
 
     const mockNotificaciones = [
-      {
-        ...mockNotificacion,
-        _id: '1',
-        destinatario: 'user1@correo.gov.co',
-      },
-      {
-        ...mockNotificacion,
-        _id: '2',
-        destinatario: 'user2@correo.gov.co',
-      },
+      { ...mockNotificacion, _id: '1', template: 'SISIFO_PLANTILLA_SOLICITUD' },
+      { ...mockNotificacion, _id: '2', template: 'SISIFO_PLANTILLA_RECHAZO' },
     ];
 
     it('Debería retornar todos los registros con filtros aplicados', async () => {
@@ -172,9 +192,7 @@ describe('NotificacionService', () => {
         exec: jest.fn().mockResolvedValue([]),
       };
 
-      jest
-        .spyOn(notificacionModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(notificacionModel, 'find').mockReturnValue(mockQuery as any);
 
       const result = await notificacionService.getAll(mockFilterDto);
 
@@ -190,9 +208,7 @@ describe('NotificacionService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       };
 
-      jest
-        .spyOn(notificacionModel, 'find')
-        .mockReturnValue(mockQuery as any);
+      jest.spyOn(notificacionModel, 'find').mockReturnValue(mockQuery as any);
 
       await expect(
         notificacionService.getAll(mockFilterDto),
@@ -208,9 +224,7 @@ describe('NotificacionService', () => {
           exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      const result = await notificacionService.getById(
-        mockNotificacion._id,
-      );
+      const result = await notificacionService.getById(mockNotificacion._id);
 
       expect(findByIdSpy).toHaveBeenCalledWith(mockNotificacion._id);
       expect(findByIdSpy).toHaveBeenCalledTimes(1);
@@ -247,16 +261,19 @@ describe('NotificacionService', () => {
   describe('put', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
-      destinatario: 'nuevo@correo.gov.co',
-      metadatos: { tipo: 'aprobacion_programa' },
+      template: 'SISIFO_PLANTILLA_RECHAZO',
+      metadatos: {
+        tipo_notificacion: 'rechazo_paa',
+        vigencia: '2025',
+        destinatarios_to: ['auditor@correo.gov.co'],
+        destinatarios_cc: [],
+        destinatarios_bcc: [],
+      },
       referencia_id: '671aaa8a064222e6583d56e8',
     };
 
     it('Debería actualizar un registro existente', async () => {
-      const updatedNotificacion = {
-        ...mockNotificacion,
-        ...updateDto,
-      };
+      const updatedNotificacion = { ...mockNotificacion, ...updateDto };
 
       const updateSpy = jest
         .spyOn(notificacionModel, 'findByIdAndUpdate')
@@ -287,10 +304,7 @@ describe('NotificacionService', () => {
           exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      await notificacionService.put(
-        mockNotificacion._id,
-        updateDto,
-      );
+      await notificacionService.put(mockNotificacion._id, updateDto);
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith).not.toHaveProperty('activo');
@@ -306,10 +320,7 @@ describe('NotificacionService', () => {
         } as any);
 
       const dateBefore = new Date();
-      await notificacionService.put(
-        mockNotificacion._id,
-        updateDto,
-      );
+      await notificacionService.put(mockNotificacion._id, updateDto);
       const dateAfter = new Date();
 
       const calledWith = updateSpy.mock.calls[0][1];
@@ -325,11 +336,9 @@ describe('NotificacionService', () => {
     it('Debería lanzar un error si el registro no existe', async () => {
       const nonExistentId = '671aaf35d779a09e092cb999';
 
-      jest
-        .spyOn(notificacionModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(null),
-        } as any);
+      jest.spyOn(notificacionModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
 
       await expect(
         notificacionService.put(nonExistentId, updateDto),
@@ -338,27 +347,19 @@ describe('NotificacionService', () => {
 
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error');
-      jest
-        .spyOn(notificacionModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockRejectedValue(mockError),
-        } as any);
+      jest.spyOn(notificacionModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
+      } as any);
 
       await expect(
-        notificacionService.put(
-          mockNotificacion._id,
-          updateDto,
-        ),
+        notificacionService.put(mockNotificacion._id, updateDto),
       ).rejects.toThrow('Database error');
     });
   });
 
   describe('delete', () => {
     it('Debería marcar un registro como inactivo (soft delete)', async () => {
-      const deletedNotificacion = {
-        ...mockNotificacion,
-        activo: false,
-      };
+      const deletedNotificacion = { ...mockNotificacion, activo: false };
 
       const deleteSpy = jest
         .spyOn(notificacionModel, 'findByIdAndUpdate')
@@ -366,9 +367,7 @@ describe('NotificacionService', () => {
           exec: jest.fn().mockResolvedValue(deletedNotificacion),
         } as any);
 
-      const result = await notificacionService.delete(
-        mockNotificacion._id,
-      );
+      const result = await notificacionService.delete(mockNotificacion._id);
 
       expect(deleteSpy).toHaveBeenCalledWith(
         mockNotificacion._id,
@@ -403,11 +402,9 @@ describe('NotificacionService', () => {
     it('Debería propagar errores de la base de datos', async () => {
       const mockError = new Error('Database error during delete');
 
-      jest
-        .spyOn(notificacionModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockRejectedValue(mockError),
-        } as any);
+      jest.spyOn(notificacionModel, 'findByIdAndUpdate').mockReturnValue({
+        exec: jest.fn().mockRejectedValue(mockError),
+      } as any);
 
       await expect(
         notificacionService.delete(mockNotificacion._id),
@@ -462,15 +459,15 @@ describe('NotificacionService', () => {
         exec: jest.fn().mockRejectedValue(mockError),
       } as any);
 
-      await expect(
-        notificacionService.count(filterDto),
-      ).rejects.toThrow('Error al contar documentos');
+      await expect(notificacionService.count(filterDto)).rejects.toThrow(
+        'Error al contar documentos',
+      );
     });
 
     it('Debería aplicar correctamente los filtros del FilterDto', async () => {
       const complexFilterDto: FilterDto = {
-        query: 'activo:true,destinatario:usuario@correo.gov.co',
-        fields: 'destinatario,fecha_envio',
+        query: 'activo:true,template:SISIFO_PLANTILLA_SOLICITUD',
+        fields: 'template,fecha_envio',
         sortby: 'fecha_creacion',
         order: 'desc',
         limit: '10',

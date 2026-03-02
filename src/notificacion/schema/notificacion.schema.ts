@@ -4,7 +4,7 @@ import { Document, Types } from 'mongoose';
 @Schema({ collection: 'notificacion_registro' })
 export class Notificacion extends Document {
   @Prop({ required: false })
-  destinatario: string;
+  template: string;
 
   @Prop({ required: false })
   fecha_envio: Date;

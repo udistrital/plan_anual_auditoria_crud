@@ -6,9 +6,15 @@ import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
-  destinatario: 'usuario@correo.gov.co',
+  template: 'SISIFO_PLANTILLA_SOLICITUD',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
-  metadatos: { tipo: 'aprobacion_paa' },
+  metadatos: {
+    tipo_notificacion: 'solicitud_aprobacion_paa',
+    vigencia: '2025',
+    destinatarios_to: ['jefe@correo.gov.co'],
+    destinatarios_cc: [],
+    destinatarios_bcc: [],
+  },
   referencia_id: '671aaa8a064222e6583d56e7',
 };
 
@@ -46,12 +52,8 @@ describe('NotificacionController', () => {
       ],
     }).compile();
 
-    controller = module.get<NotificacionController>(
-      NotificacionController,
-    );
-    service = module.get<NotificacionService>(
-      NotificacionService,
-    );
+    controller = module.get<NotificacionController>(NotificacionController);
+    service = module.get<NotificacionService>(NotificacionService);
   });
 
   afterEach(() => {
@@ -64,7 +66,7 @@ describe('NotificacionController', () => {
   });
 
   describe('post', () => {
-    it('Debería crear un  de notificación y retornar CREATED (201) con datos válidos', async () => {
+    it('Debería crear un registro de notificación y retornar CREATED (201) con datos válidos', async () => {
       const serviceSpy = jest
         .spyOn(service, 'post')
         .mockResolvedValue(mockNotificacion as any);
@@ -129,7 +131,7 @@ describe('NotificacionController', () => {
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
       query: 'activo:true',
-      fields: 'destinatario,fecha_envio',
+      fields: 'template,fecha_envio',
       sortby: 'fecha_creacion',
       order: 'desc',
       limit: '10',
@@ -138,16 +140,8 @@ describe('NotificacionController', () => {
     };
 
     const mockNotificaciones = [
-      {
-        ...mockNotificacion,
-        _id: '1',
-        destinatario: 'user1@correo.gov.co',
-      },
-      {
-        ...mockNotificacion,
-        _id: '2',
-        destinatario: 'user2@correo.gov.co',
-      },
+      { ...mockNotificacion, _id: '1', template: 'SISIFO_PLANTILLA_SOLICITUD' },
+      { ...mockNotificacion, _id: '2', template: 'SISIFO_PLANTILLA_RECHAZO' },
     ];
 
     it('Debería retornar OK (200) con todos los registros y metadata', async () => {
@@ -270,7 +264,7 @@ describe('NotificacionController', () => {
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
-          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un ',
+          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
         Data: mockError.message,
       });
     });
@@ -279,8 +273,14 @@ describe('NotificacionController', () => {
   describe('put', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
-      destinatario: 'nuevo@correo.gov.co',
-      metadatos: { tipo: 'aprobacion_programa' },
+      template: 'SISIFO_PLANTILLA_RECHAZO',
+      metadatos: {
+        tipo_notificacion: 'rechazo_paa',
+        vigencia: '2025',
+        destinatarios_to: ['auditor@correo.gov.co'],
+        destinatarios_cc: [],
+        destinatarios_bcc: [],
+      },
       referencia_id: '671aaa8a064222e6583d56e8',
     };
 
@@ -293,10 +293,7 @@ describe('NotificacionController', () => {
 
       await controller.put(res, mockNotificacion._id, updateDto);
 
-      expect(putSpy).toHaveBeenCalledWith(
-        mockNotificacion._id,
-        updateDto,
-      );
+      expect(putSpy).toHaveBeenCalledWith(mockNotificacion._id, updateDto);
       expect(putSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
@@ -314,10 +311,7 @@ describe('NotificacionController', () => {
 
       await controller.put(res, mockNotificacion._id, updateDto);
 
-      expect(putSpy).toHaveBeenCalledWith(
-        mockNotificacion._id,
-        updateDto,
-      );
+      expect(putSpy).toHaveBeenCalledWith(mockNotificacion._id, updateDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -364,9 +358,7 @@ describe('NotificacionController', () => {
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Eliminacion Exitosa',
-        Data: {
-          _id: mockNotificacion._id,
-        },
+        Data: { _id: mockNotificacion._id },
       });
     });
 
