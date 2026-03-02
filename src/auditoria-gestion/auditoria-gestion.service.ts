@@ -6,6 +6,7 @@ import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { CreateAuditoriaGestion } from './dto/create-auditoria-gestion.dto';
+import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 @Injectable()
 export class AuditoriaGestionService {
@@ -14,6 +15,8 @@ export class AuditoriaGestionService {
     private readonly AuditoriaModel: Model<Auditoria>,
     @InjectModel(AuditoriaEstado.name)
     private readonly AuditoriaEstadoModel: Model<AuditoriaEstado>,
+    @InjectModel(PlanAuditoria.name)
+    private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
   ) {}
 
   async post(createAuditoriaGestionDto: CreateAuditoriaGestion) {
@@ -35,7 +38,19 @@ export class AuditoriaGestionService {
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-    return await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
+    const nuevoEstado = await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
+
+    const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
+      createAuditoriaGestionDto.plan_auditoria_id,
+      { $push: { auditorias: nuevaAuditoria._id.toString() } },
+      { new: true },
+    );
+
+    if (!planActualizado) {
+      throw new Error(`Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`);
+    }
+
+    return nuevoEstado;
   }
 
   async put(id: string, auditoriaNuevoEstado: AuditoriaEstadoDto) {

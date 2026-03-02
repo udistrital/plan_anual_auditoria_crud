@@ -10,12 +10,17 @@ import {
   Auditoria,
   AuditoriaSchema,
 } from '../auditoria/schemas/auditoria.schema';
+import {
+  PlanAuditoria,
+  PlanAuditoriaSchema,
+} from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: AuditoriaEstado.name, schema: AuditoriaEstadoSchema },
       { name: Auditoria.name, schema: AuditoriaSchema },
+      { name: PlanAuditoria.name, schema: PlanAuditoriaSchema },
     ]),
   ],
   controllers: [AuditoriaGestionController],
