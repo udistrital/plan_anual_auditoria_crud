@@ -3625,15 +3625,27 @@
       "NotificacionDTO": {
         "type": "object",
         "properties": {
-          "destinatario": {
-            "type": "string"
+          "template": {
+            "type": "string",
+            "description": "Nombre de la plantilla de correo utilizada para el envío",
+            "example": "SISIFO_PLANTILLA_SOLICITUD"
           },
           "fecha_envio": {
             "format": "date-time",
             "type": "string"
           },
           "metadatos": {
-            "type": "object"
+            "type": "object",
+            "description": "Metadatos del evento de notificación, incluye destinatarios_to, destinatarios_cc y destinatarios_bcc como listas",
+            "example": {
+              "tipo_notificacion": "solicitud_aprobacion_paa",
+              "vigencia": "2025",
+              "destinatarios_to": [
+                "jefe@udistrital.edu.co"
+              ],
+              "destinatarios_cc": [],
+              "destinatarios_bcc": []
+            }
           },
           "referencia_id": {
             "type": "string",
@@ -3642,7 +3654,7 @@
           }
         },
         "required": [
-          "destinatario",
+          "template",
           "fecha_envio",
           "metadatos",
           "referencia_id"

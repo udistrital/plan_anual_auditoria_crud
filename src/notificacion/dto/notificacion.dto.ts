@@ -1,13 +1,26 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class NotificacionDTO {
-  @ApiProperty()
-  readonly destinatario: string;
+  @ApiProperty({
+    description: 'Nombre de la plantilla de correo utilizada para el envío',
+    example: 'SISIFO_PLANTILLA_SOLICITUD',
+  })
+  readonly template: string;
 
   @ApiProperty()
   readonly fecha_envio: Date;
 
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'Metadatos del evento de notificación, incluye destinatarios_to, destinatarios_cc y destinatarios_bcc como listas',
+    example: {
+      tipo_notificacion: 'solicitud_aprobacion_paa',
+      vigencia: '2025',
+      destinatarios_to: ['jefe@udistrital.edu.co'],
+      destinatarios_cc: [],
+      destinatarios_bcc: [],
+    },
+  })
   readonly metadatos: object;
 
   @ApiProperty({
