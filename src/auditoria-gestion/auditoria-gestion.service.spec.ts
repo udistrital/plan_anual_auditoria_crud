@@ -6,6 +6,7 @@ import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
 import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
+import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   // Datos de Auditoría
@@ -80,6 +81,7 @@ describe('AuditoriaGestionService', () => {
   let service: AuditoriaGestionService;
   let auditoriaModel: Model<Auditoria>;
   let auditoriaEstadoModel: Model<AuditoriaEstado>;
+  let planAuditoriaModel: Model<PlanAuditoria>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -101,6 +103,12 @@ describe('AuditoriaGestionService', () => {
             insertMany: jest.fn(),
           },
         },
+        {
+          provide: getModelToken(PlanAuditoria.name),
+          useValue: {
+            findByIdAndUpdate: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -110,6 +118,9 @@ describe('AuditoriaGestionService', () => {
     );
     auditoriaEstadoModel = module.get<Model<AuditoriaEstado>>(
       getModelToken(AuditoriaEstado.name),
+    );
+    planAuditoriaModel = module.get<Model<PlanAuditoria>>(
+      getModelToken(PlanAuditoria.name),
     );
   });
 
@@ -121,6 +132,7 @@ describe('AuditoriaGestionService', () => {
     expect(service).toBeDefined();
     expect(auditoriaModel).toBeDefined();
     expect(auditoriaEstadoModel).toBeDefined();
+    expect(planAuditoriaModel).toBeDefined();
   });
 
   describe('post', () => {
@@ -132,6 +144,10 @@ describe('AuditoriaGestionService', () => {
       const estadoCreateSpy = jest
         .spyOn(auditoriaEstadoModel, 'create')
         .mockResolvedValue(mockAuditoriaEstado as any);
+
+      const planUpdateSpy = jest
+        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
+        .mockResolvedValue({} as any);
 
       const result = await service.post(mockCreateAuditoriaGestionDto);
 
@@ -155,8 +171,15 @@ describe('AuditoriaGestionService', () => {
         }),
       );
 
+      expect(planUpdateSpy).toHaveBeenCalledWith(
+        mockCreateAuditoriaGestionDto.plan_auditoria_id,
+        { $push: { auditorias: mockAuditoria._id.toString() } },
+        { new: true },
+      );
+
       expect(auditoriaCreateSpy).toHaveBeenCalledTimes(1);
       expect(estadoCreateSpy).toHaveBeenCalledTimes(1);
+      expect(planUpdateSpy).toHaveBeenCalledTimes(1);
       expect(result).toEqual(mockAuditoriaEstado);
     });
 
@@ -168,6 +191,10 @@ describe('AuditoriaGestionService', () => {
       jest
         .spyOn(auditoriaEstadoModel, 'create')
         .mockResolvedValue(mockAuditoriaEstado as any);
+
+      jest
+        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
+        .mockResolvedValue({} as any);
 
       await service.post(mockCreateAuditoriaGestionDto);
 
@@ -188,6 +215,10 @@ describe('AuditoriaGestionService', () => {
       const estadoCreateSpy = jest
         .spyOn(auditoriaEstadoModel, 'create')
         .mockResolvedValue(mockAuditoriaEstado as any);
+
+      jest
+        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
+        .mockResolvedValue({} as any);
 
       await service.post(mockCreateAuditoriaGestionDto);
 
@@ -210,6 +241,7 @@ describe('AuditoriaGestionService', () => {
       );
 
       expect(auditoriaEstadoModel.create).not.toHaveBeenCalled();
+      expect(planAuditoriaModel.findByIdAndUpdate).not.toHaveBeenCalled();
     });
 
     it('Debería propagar errores si falla la creación del estado', async () => {
@@ -235,6 +267,10 @@ describe('AuditoriaGestionService', () => {
       const estadoCreateSpy = jest
         .spyOn(auditoriaEstadoModel, 'create')
         .mockResolvedValue(mockAuditoriaEstado as any);
+
+      jest
+        .spyOn(planAuditoriaModel, 'findByIdAndUpdate')
+        .mockResolvedValue({} as any);
 
       await service.post(mockCreateAuditoriaGestionDto);
 
