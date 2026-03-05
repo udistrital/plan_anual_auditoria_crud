@@ -7,6 +7,7 @@ import { Auditoria } from './schemas/auditoria.schema';
 import { AuditoriaDTO } from './dto/auditoria.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
+import { AuditoriaPadre } from '../auditoria-padre/schemas/auditoria-padre.schema';
 @Injectable()
 export class AuditoriaService {
   constructor(
@@ -14,15 +15,18 @@ export class AuditoriaService {
     private readonly AuditoriaModel: Model<Auditoria>,
     @InjectModel(PlanAuditoria.name)
     private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
+    @InjectModel(AuditoriaPadre.name)
+    private readonly AuditoriaPadreModel: Model<AuditoriaPadre>,
     @InjectModel(Auditor.name)
     private readonly AuditorModel: Model<Auditor>,
   ) {}
 
   private populateFields(): any[] {
-    return [{ path: 'plan_auditoria_id' }];
+    return [{ path: 'plan_auditoria_id' }, { path: 'auditoria_padre_id' }];
   }
 
   private async checkRelated(AuditoriaDTO: AuditoriaDTO) {
+    // TODO: eliminar la validación por `plan_auditoria_id` cuando la migración a `auditoria_padre_id` esté completa
     if (AuditoriaDTO.plan_auditoria_id) {
       const planAuditoria = await this.PlanAuditoriaModel.findById(
         AuditoriaDTO.plan_auditoria_id,
@@ -30,6 +34,17 @@ export class AuditoriaService {
       if (!planAuditoria) {
         throw new Error(
           `Plan auditoria relacionada con id ${AuditoriaDTO.plan_auditoria_id} no existe`,
+        );
+      }
+    }
+    // Validar relación con auditoria_padre si viene provista
+    if ((AuditoriaDTO as any).auditoria_padre_id) {
+      const padre = await this.AuditoriaPadreModel.findById(
+        (AuditoriaDTO as any).auditoria_padre_id,
+      ).exec();
+      if (!padre) {
+        throw new Error(
+          `Auditoria padre relacionada con id ${(AuditoriaDTO as any).auditoria_padre_id} no existe`,
         );
       }
     }

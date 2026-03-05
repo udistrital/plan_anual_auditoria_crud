@@ -38,7 +38,8 @@ export class AuditoriaController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    // TODO: eliminar 'plan_auditoria_id' de este pipe cuando la migración a auditoria_padre esté completa
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id', 'auditoria_padre_id']))
     AuditoriaDTO: AuditoriaDTO,
   ) {
     try {

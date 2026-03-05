@@ -11,6 +11,9 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly plan_auditoria_id: string;
 
   @ApiProperty()
+  readonly auditoria_padre_id: string;
+
+  @ApiProperty()
   readonly titulo: string;
 
   @ApiProperty()

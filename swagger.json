@@ -3192,6 +3192,9 @@
           "plan_auditoria_id": {
             "type": "string"
           },
+          "auditoria_padre_id": {
+            "type": "string"
+          },
           "titulo": {
             "type": "string"
           },
@@ -3274,6 +3277,7 @@
         },
         "required": [
           "plan_auditoria_id",
+          "auditoria_padre_id",
           "titulo",
           "tipo_evaluacion_id",
           "cronograma_id",
@@ -3711,6 +3715,9 @@
           "plan_auditoria_id": {
             "type": "string"
           },
+          "auditoria_padre_id": {
+            "type": "string"
+          },
           "titulo": {
             "type": "string"
           },
@@ -3815,6 +3822,7 @@
         },
         "required": [
           "plan_auditoria_id",
+          "auditoria_padre_id",
           "titulo",
           "tipo_evaluacion_id",
           "cronograma_id",
