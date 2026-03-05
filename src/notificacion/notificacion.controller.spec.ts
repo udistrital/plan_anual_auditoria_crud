@@ -3,6 +3,7 @@ import { NotificacionController } from './notificacion.controller';
 import { NotificacionDTO } from './dto/notificacion.dto';
 import { NotificacionService } from './notificacion.service';
 import { HttpStatus } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
@@ -15,7 +16,8 @@ const mockNotificacionDto: NotificacionDTO = {
     destinatarios_cc: [],
     destinatarios_bcc: [],
   },
-  referencia_id: '671aaa8a064222e6583d56e7',
+  referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
+  referencia_tipo: 'PAA',
 };
 
 const mockNotificacion = {
@@ -274,6 +276,7 @@ describe('NotificacionController', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
       template: 'SISIFO_PLANTILLA_RECHAZO',
+      referencia_tipo: 'SOLICITUD',
       metadatos: {
         tipo_notificacion: 'rechazo_paa',
         vigencia: '2025',
@@ -281,7 +284,7 @@ describe('NotificacionController', () => {
         destinatarios_cc: [],
         destinatarios_bcc: [],
       },
-      referencia_id: '671aaa8a064222e6583d56e8',
+      referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e8'),
     };
 
     it('Debería actualizar y retornar OK (200) con datos válidos', async () => {
