@@ -2880,6 +2880,232 @@
           "notificacion"
         ]
       }
+    },
+    "/auditoria-padre": {
+      "post": {
+        "operationId": "AuditoriaPadreController_post",
+        "summary": "Crear una nueva auditoria padre",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaPadreDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "La auditoria padre ha sido creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "auditoria-padre"
+        ]
+      },
+      "get": {
+        "operationId": "AuditoriaPadreController_getAll",
+        "summary": "Obtener todas las auditorias padre",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las auditorias padre.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaPadreDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auditoria-padre"
+        ]
+      }
+    },
+    "/auditoria-padre/{id}": {
+      "get": {
+        "operationId": "AuditoriaPadreController_getById",
+        "summary": "Obtener una auditoria padre por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la auditoria padre.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Auditoria padre no encontrada."
+          }
+        },
+        "tags": [
+          "auditoria-padre"
+        ]
+      },
+      "put": {
+        "operationId": "AuditoriaPadreController_put",
+        "summary": "Actualizar una auditoria padre",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaPadreDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La auditoria padre ha sido actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreDTO"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Auditoria padre no encontrada."
+          }
+        },
+        "tags": [
+          "auditoria-padre"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditoriaPadreController_delete",
+        "summary": "Eliminar una auditoria padre",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La auditoria padre ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Auditoria padre no encontrada."
+          }
+        },
+        "tags": [
+          "auditoria-padre"
+        ]
+      }
     }
   },
   "info": {
@@ -3658,6 +3884,73 @@
           "fecha_envio",
           "metadatos",
           "referencia_id"
+        ]
+      },
+      "AuditoriaPadreDTO": {
+        "type": "object",
+        "properties": {
+          "plan_auditoria_id": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "tipo_evaluacion_id": {
+            "type": "number"
+          },
+          "cronograma_actividad": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "vigencia_id": {
+            "type": "number"
+          },
+          "macroproceso_id": {
+            "type": "number"
+          },
+          "proceso_id": {
+            "type": "number"
+          },
+          "dependencia_id": {
+            "type": "number"
+          },
+          "auditorias": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_auditoria_id",
+          "titulo",
+          "tipo_evaluacion_id",
+          "cronograma_actividad",
+          "estado_id",
+          "vigencia_id",
+          "macroproceso_id",
+          "proceso_id",
+          "dependencia_id",
+          "auditorias",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
         ]
       }
     }
