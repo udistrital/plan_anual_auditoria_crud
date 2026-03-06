@@ -2,7 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditoriaDTO {
   @ApiProperty()
-  readonly plan_auditoria_id: string;
+  readonly plan_auditoria_id?: string;
+  @ApiProperty()
+  readonly auditoria_padre_id?: string;
 
   @ApiProperty()
   readonly titulo: string;

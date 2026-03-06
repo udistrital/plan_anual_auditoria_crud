@@ -14,6 +14,7 @@ import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
 import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.module';
 import { NotificacionModule } from './notificacion/notificacion.module';
+import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { NotificacionModule } from './notificacion/notificacion.module';
     TemaModule,
     AuditoriaGestionModule,
     NotificacionModule,
+    AuditoriaPadreModule,
   ],
   controllers: [AppController],
   providers: [AppService],

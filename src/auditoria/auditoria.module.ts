@@ -11,11 +11,16 @@ import {
   Auditor,
   AuditorSchema,
 } from '../auditoria-auditor/schemas/auditor.schema';
+import {
+  AuditoriaPadre,
+  AuditoriaPadreSchema
+} from 'src/auditoria-padre/schemas/auditoria-padre.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Auditoria.name, schema: AuditoriaSchema },
       { name: PlanAuditoria.name, schema: PlanAuditoriaSchema },
+      { name: AuditoriaPadre.name, schema: AuditoriaPadreSchema },
       { name: Auditor.name, schema: AuditorSchema },
     ]),
   ],

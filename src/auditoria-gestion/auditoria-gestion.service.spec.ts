@@ -35,6 +35,7 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
+  auditoria_padre_id: '67297dda3416d2a85e5d6d90',
   // Datos de Estado (auditoria_id se genera automáticamente)
   auditoria_id: undefined,
   usuario_id: 76767,

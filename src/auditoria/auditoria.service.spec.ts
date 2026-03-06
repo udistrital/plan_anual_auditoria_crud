@@ -4,13 +4,16 @@ import { getModelToken } from '@nestjs/mongoose';
 import { Auditoria } from './schemas/auditoria.schema';
 import { AuditoriaDTO } from './dto/auditoria.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
+import { AuditoriaPadre } from '../auditoria-padre/schemas/auditoria-padre.schema';
 import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
+import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
 
 const mockAuditoriaDTO: AuditoriaDTO = {
   titulo: 'Auditoría General 2024',
   tipo_evaluacion_id: 2,
   plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  auditoria_padre_id: '67297dda3416d2a85e5d6d90',
   cronograma_id: [1, 2, 3],
   estado_id: 3,
   no_auditoria: 123420,
@@ -50,6 +53,8 @@ describe('AuditoriaService', () => {
   let auditoriaService: AuditoriaService;
   let auditoriaModel: Model<Auditoria>;
   let planAuditoriaModel: Model<PlanAuditoria>;
+  let auditoriaPadreModel: Model<AuditoriaPadre>;
+  let auditorModel: Model<Auditor>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -71,6 +76,21 @@ describe('AuditoriaService', () => {
             findById: jest.fn(),
           },
         },
+        {
+          provide: getModelToken(Auditor.name),
+          useValue: {
+            find: jest.fn(),
+            select: jest.fn(),
+            lean: jest.fn(),
+            exec: jest.fn(),
+          },
+        },
+        {
+          provide: getModelToken(AuditoriaPadre.name),
+          useValue: {
+            findById: jest.fn().mockReturnValue({ exec: jest.fn().mockResolvedValue({ _id: '67297dda3416d2a85e5d6d90' }) }),
+          },
+        },
       ],
     }).compile();
 
@@ -81,6 +101,10 @@ describe('AuditoriaService', () => {
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
     );
+    auditoriaPadreModel = module.get<Model<AuditoriaPadre>>(
+      getModelToken(AuditoriaPadre.name),
+    );
+    auditorModel = module.get<Model<Auditor>>(getModelToken(Auditor.name));
   });
 
   afterEach(() => {
@@ -101,6 +125,10 @@ describe('AuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
         } as any);
 
+      const auditoriaPadreFindSpy = jest
+        .spyOn(auditoriaPadreModel, 'findById')
+        .mockReturnValue({ exec: jest.fn().mockResolvedValue({ _id: mockAuditoriaDTO.auditoria_padre_id }) } as any);
+
       const createSpy = jest
         .spyOn(auditoriaModel, 'create')
         .mockResolvedValue(mockAuditoria as any);
@@ -109,6 +137,9 @@ describe('AuditoriaService', () => {
 
       expect(planAuditoriaFindSpy).toHaveBeenCalledWith(
         mockAuditoriaDTO.plan_auditoria_id,
+      );
+      expect(auditoriaPadreFindSpy).toHaveBeenCalledWith(
+        mockAuditoriaDTO.auditoria_padre_id,
       );
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -142,6 +173,7 @@ describe('AuditoriaService', () => {
       const dtoSinPlanAuditoria = {
         ...mockAuditoriaDTO,
         plan_auditoria_id: undefined,
+        auditoria_padre_id: undefined,
       };
       const createSpy = jest
         .spyOn(auditoriaModel, 'create')
@@ -172,6 +204,25 @@ describe('AuditoriaService', () => {
           fechaModificacion: expect.any(Date),
         }),
       );
+    });
+
+    it('Debería lanzar un error si la auditoria padre relacionada no existe (post)', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
+        `Auditoria padre relacionada con id ${mockAuditoriaDTO.auditoria_padre_id} no existe`,
+      );
+
+      expect(auditoriaPadreModel.findById).toHaveBeenCalledWith(
+        mockAuditoriaDTO.auditoria_padre_id,
+      );
+      expect(auditoriaModel.create).not.toHaveBeenCalled();
     });
   });
 
@@ -235,6 +286,7 @@ describe('AuditoriaService', () => {
 
       expect(mockQuery.populate).toHaveBeenCalledWith([
         { path: 'plan_auditoria_id' },
+        { path: 'auditoria_padre_id' },
       ]);
     });
 
@@ -469,6 +521,27 @@ describe('AuditoriaService', () => {
       expect(calledWith.fecha_modificacion.getTime()).toBeLessThanOrEqual(
         dateAfter.getTime(),
       );
+    });
+
+    it('Debería lanzar un error si la auditoria padre relacionada no existe (put)', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.put(mockAuditoria._id, updateDto),
+      ).rejects.toThrow(
+        `Auditoria padre relacionada con id ${updateDto.auditoria_padre_id} no existe`,
+      );
+
+      expect(auditoriaPadreModel.findById).toHaveBeenCalledWith(
+        updateDto.auditoria_padre_id,
+      );
+      expect(auditoriaModel.findByIdAndUpdate).not.toHaveBeenCalled();
     });
   });
 

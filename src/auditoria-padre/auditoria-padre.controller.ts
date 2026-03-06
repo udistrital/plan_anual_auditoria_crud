@@ -10,8 +10,8 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { AuditoriaService } from './auditoria.service';
-import { AuditoriaDTO } from './dto/auditoria.dto';
+import { AuditoriaPadreService } from './auditoria-padre.service';
+import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
@@ -22,33 +22,33 @@ import {
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
-@ApiTags('auditoria')
-@Controller('auditoria')
-export class AuditoriaController {
-  constructor(private AuditoriaService: AuditoriaService) {}
+@ApiTags('auditoria-padre')
+@Controller('auditoria-padre')
+export class AuditoriaPadreController {
+  constructor(private AuditoriaPadreService: AuditoriaPadreService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nueva aditoria' })
-  @ApiBody({ type: AuditoriaDTO })
+  @ApiOperation({ summary: 'Crear una nueva auditoria padre' })
+  @ApiBody({ type: AuditoriaPadreDTO })
   @ApiResponse({
     status: 201,
-    description: 'La aditoria ha sido creada exitosamente.',
-    type: AuditoriaDTO,
+    description: 'La auditoria padre ha sido creada exitosamente.',
+    type: AuditoriaPadreDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
-    // TODO: eliminar 'plan_auditoria_id' de este pipe cuando la migración a auditoria_padre esté completa
-    @Body(new ParseObjectIdPipe(['plan_auditoria_id', 'auditoria_padre_id']))
-    AuditoriaDTO: AuditoriaDTO,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    auditoriaPadreDTO: AuditoriaPadreDTO,
   ) {
     try {
-      const auditoria = await this.AuditoriaService.post(AuditoriaDTO);
+      const auditoriaPadre =
+        await this.AuditoriaPadreService.post(auditoriaPadreDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Registro Exitoso',
-        Data: auditoria,
+        Data: auditoriaPadre,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
@@ -61,68 +61,24 @@ export class AuditoriaController {
     }
   }
 
-  @Get('/auditor/:personaId')
-  @ApiOperation({ summary: 'Obtener auditorías por auditor' })
-  @ApiParam({ name: 'personaId', type: 'number' })
-  @ApiResponse({
-    status: 200,
-    description: 'Devuelve las auditorías del auditor.',
-    type: [AuditoriaDTO],
-  })
-  async getByAuditor(
-    @Res() res,
-    @Param('personaId') personaId: string,
-    @Query() filterDto: FilterDto,
-  ) {
-    try {
-      if (!personaId || isNaN(+personaId)) {
-        throw new Error('personaId debe ser un número válido');
-      }
-
-      const auditorias = await this.AuditoriaService.getByAuditor(
-        +personaId,
-        filterDto,
-      );
-      const counts = await this.AuditoriaService.countByAuditor(
-        +personaId,
-        filterDto,
-      );
-
-      res.status(HttpStatus.OK).json({
-        Success: true,
-        Status: HttpStatus.OK,
-        Message: 'Peticion Exitosa',
-        Data: auditorias,
-        MetaData: { Count: counts },
-      });
-    } catch (error) {
-      res.status(HttpStatus.NOT_FOUND).json({
-        Success: false,
-        Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetByAuditor: sin datos o parámetro inválido.',
-        Data: error.message,
-      });
-    }
-  }
-
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las aditorias' })
+  @ApiOperation({ summary: 'Obtener todas las auditorias padre' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve todas las aditorias.',
-    type: [AuditoriaDTO],
+    description: 'Devuelve todas las auditorias padre.',
+    type: [AuditoriaPadreDTO],
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const auditorias = await this.AuditoriaService.getAll(filterDto);
-      const counts = await this.AuditoriaService.count(filterDto);
+      const auditoriasPadre =
+        await this.AuditoriaPadreService.getAll(filterDto);
+      const counts = await this.AuditoriaPadreService.count(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: auditorias,
+        Data: auditoriasPadre,
         MetaData: { Count: counts },
       });
     } catch (error) {
@@ -137,22 +93,22 @@ export class AuditoriaController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obtener una auditoria por Id' })
+  @ApiOperation({ summary: 'Obtener una auditoria padre por Id' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve la auditoria.',
-    type: AuditoriaDTO,
+    description: 'Devuelve la auditoria padre.',
+    type: AuditoriaPadreDTO,
   })
-  @ApiResponse({ status: 404, description: 'Auditoria no encontrada.' })
+  @ApiResponse({ status: 404, description: 'Auditoria padre no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const auditorias = await this.AuditoriaService.getById(id);
+      const auditoriaPadre = await this.AuditoriaPadreService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: auditorias,
+        Data: auditoriaPadre,
       });
     } catch (error) {
       res.status(HttpStatus.NOT_FOUND).json({
@@ -166,28 +122,31 @@ export class AuditoriaController {
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Actualizar una auditoria' })
+  @ApiOperation({ summary: 'Actualizar una auditoria padre' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: AuditoriaDTO })
+  @ApiBody({ type: AuditoriaPadreDTO })
   @ApiResponse({
     status: 200,
-    description: 'La auditoria ha sido actualizada exitosamente.',
-    type: AuditoriaDTO,
+    description: 'La auditoria padre ha sido actualizada exitosamente.',
+    type: AuditoriaPadreDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Contratista no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Auditoria padre no encontrada.' })
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() AuditoriaDTO: AuditoriaDTO,
+    @Body() auditoriaPadreDTO: AuditoriaPadreDTO,
   ) {
     try {
-      const auditorias = await this.AuditoriaService.put(id, AuditoriaDTO);
+      const auditoriaPadre = await this.AuditoriaPadreService.put(
+        id,
+        auditoriaPadreDTO,
+      );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Actualizacion Exitosa',
-        Data: auditorias,
+        Data: auditoriaPadre,
       });
     } catch (error) {
       res.status(HttpStatus.BAD_REQUEST).json({
@@ -201,16 +160,16 @@ export class AuditoriaController {
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Eliminar una auditoria' })
+  @ApiOperation({ summary: 'Eliminar una auditoria padre' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 200,
-    description: 'La auditoria ha sido eliminada exitosamente.',
+    description: 'La auditoria padre ha sido eliminada exitosamente.',
   })
-  @ApiResponse({ status: 404, description: 'Auditoria no encontrada.' })
+  @ApiResponse({ status: 404, description: 'Auditoria padre no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.AuditoriaService.delete(id);
+      await this.AuditoriaPadreService.delete(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
