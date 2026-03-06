@@ -205,6 +205,25 @@ describe('AuditoriaService', () => {
         }),
       );
     });
+
+    it('Debería lanzar un error si la auditoria padre relacionada no existe (post)', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
+        `Auditoria padre relacionada con id ${mockAuditoriaDTO.auditoria_padre_id} no existe`,
+      );
+
+      expect(auditoriaPadreModel.findById).toHaveBeenCalledWith(
+        mockAuditoriaDTO.auditoria_padre_id,
+      );
+      expect(auditoriaModel.create).not.toHaveBeenCalled();
+    });
   });
 
   describe('getAll', () => {
@@ -502,6 +521,27 @@ describe('AuditoriaService', () => {
       expect(calledWith.fecha_modificacion.getTime()).toBeLessThanOrEqual(
         dateAfter.getTime(),
       );
+    });
+
+    it('Debería lanzar un error si la auditoria padre relacionada no existe (put)', async () => {
+      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
+      } as any);
+
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      } as any);
+
+      await expect(
+        auditoriaService.put(mockAuditoria._id, updateDto),
+      ).rejects.toThrow(
+        `Auditoria padre relacionada con id ${updateDto.auditoria_padre_id} no existe`,
+      );
+
+      expect(auditoriaPadreModel.findById).toHaveBeenCalledWith(
+        updateDto.auditoria_padre_id,
+      );
+      expect(auditoriaModel.findByIdAndUpdate).not.toHaveBeenCalled();
     });
   });
 

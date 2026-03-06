@@ -38,13 +38,13 @@ export class AuditoriaService {
       }
     }
     // Validar relación con auditoria_padre si viene provista
-    if ((AuditoriaDTO as any).auditoria_padre_id) {
+    if (AuditoriaDTO.auditoria_padre_id) {
       const padre = await this.AuditoriaPadreModel.findById(
-        (AuditoriaDTO as any).auditoria_padre_id,
+        AuditoriaDTO.auditoria_padre_id,
       ).exec();
       if (!padre) {
         throw new Error(
-          `Auditoria padre relacionada con id ${(AuditoriaDTO as any).auditoria_padre_id} no existe`,
+          `Auditoria padre relacionada con id ${AuditoriaDTO.auditoria_padre_id} no existe`,
         );
       }
     }
