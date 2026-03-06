@@ -13,8 +13,8 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   tipo_evaluacion_id: number;
 
-  @Prop({ type: [{ type: String }], required: false })
-  cronograma_id: string[];
+  @Prop({ required: false })
+  cronograma_id: number[];
 
   @Prop({ required: false })
   estado_id: number;
