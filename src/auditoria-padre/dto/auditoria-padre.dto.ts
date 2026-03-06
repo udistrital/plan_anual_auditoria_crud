@@ -11,7 +11,7 @@ export class AuditoriaPadreDTO {
   readonly tipo_evaluacion_id: number;
 
   @ApiProperty()
-  readonly cronograma_actividad: string[] = [];
+  readonly cronograma_id: string[] = [];
 
   @ApiProperty()
   readonly estado_id: number;

@@ -11,7 +11,7 @@ const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
   titulo: 'Auditoría Padre 2024',
   tipo_evaluacion_id: 1,
-  cronograma_actividad: [],
+  cronograma_id: [],
   estado_id: 1,
   vigencia_id: 2024,
   macroproceso_id: 10,
