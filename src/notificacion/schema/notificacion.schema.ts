@@ -15,6 +15,9 @@ export class Notificacion extends Document {
   @Prop({ required: false, type: Types.ObjectId })
   referencia_id: Types.ObjectId;
 
+  @Prop({ required: true })
+  referencia_tipo: string;
+
   @Prop({ required: false })
   activo: boolean;
 

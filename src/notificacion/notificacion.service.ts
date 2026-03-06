@@ -53,10 +53,14 @@ export class NotificacionService {
     id: string,
     notificacionDTO: NotificacionDTO,
   ): Promise<Notificacion> {
+    const { ...updateFields } = notificacionDTO;
     const updateData = {
-      ...notificacionDTO,
+      ...updateFields,
       fecha_modificacion: new Date(),
     };
+    delete (updateData as any).activo;
+    delete (updateData as any).fecha_creacion;
+
     const update = await this.notificacionModel
       .findByIdAndUpdate(id, updateData, { new: true })
       .exec();

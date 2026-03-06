@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class NotificacionDTO {
   @ApiProperty({
@@ -26,6 +27,13 @@ export class NotificacionDTO {
   @ApiProperty({
     description: 'ObjectId del documento referenciado',
     example: '671aaa8a064222e6583d56e7',
+    type: String,
   })
-  readonly referencia_id: string;
+  readonly referencia_id: Types.ObjectId;
+
+  @ApiProperty({
+    description: 'Tipo del documento referenciado',
+    example: 'PAA',
+  })
+  readonly referencia_tipo: string;
 }

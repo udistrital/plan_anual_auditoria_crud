@@ -3,7 +3,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { NotificacionService } from './notificacion.service';
 import { NotificacionDTO } from './dto/notificacion.dto';
 import { Notificacion } from './schema/notificacion.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
@@ -16,7 +16,8 @@ const mockNotificacionDto: NotificacionDTO = {
     destinatarios_cc: [],
     destinatarios_bcc: [],
   },
-  referencia_id: '671aaa8a064222e6583d56e7',
+  referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
+  referencia_tipo: 'PAA',
 };
 
 const mockNotificacion = {
@@ -121,6 +122,17 @@ describe('NotificacionService', () => {
       const calledWith = createSpy.mock.calls[0][0] as any;
       expect(calledWith.template).toBe('SISIFO_PLANTILLA_SOLICITUD');
       expect(calledWith).not.toHaveProperty('destinatario');
+    });
+
+    it('Debería almacenar referencia_tipo correctamente', async () => {
+      const createSpy = jest
+        .spyOn(notificacionModel, 'create')
+        .mockResolvedValue(mockNotificacion as any);
+
+      await notificacionService.post(mockNotificacionDto);
+
+      const calledWith = createSpy.mock.calls[0][0] as any;
+      expect(calledWith.referencia_tipo).toBe('PAA');
     });
 
     it('Debería almacenar los destinatarios como listas dentro de metadatos', async () => {
@@ -262,6 +274,7 @@ describe('NotificacionService', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
       template: 'SISIFO_PLANTILLA_RECHAZO',
+      referencia_tipo: 'SOLICITUD',
       metadatos: {
         tipo_notificacion: 'rechazo_paa',
         vigencia: '2025',
@@ -269,7 +282,7 @@ describe('NotificacionService', () => {
         destinatarios_cc: [],
         destinatarios_bcc: [],
       },
-      referencia_id: '671aaa8a064222e6583d56e8',
+      referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e8'),
     };
 
     it('Debería actualizar un registro existente', async () => {
@@ -297,19 +310,39 @@ describe('NotificacionService', () => {
       expect(result).toEqual(updatedNotificacion);
     });
 
-    it('No debería incluir activo, fecha_creacion en la actualización', async () => {
+    it('No debería incluir activo ni fecha_creacion en la actualización', async () => {
       const updateSpy = jest
         .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      await notificacionService.put(mockNotificacion._id, updateDto);
+      // Se envía un DTO con activo y fecha_creacion para verificar que el service los elimina
+      const dtoConCamposProtegidos = {
+        ...updateDto,
+        activo: false,
+        fecha_creacion: new Date('2020-01-01'),
+      } as any;
+
+      await notificacionService.put(mockNotificacion._id, dtoConCamposProtegidos);
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith).not.toHaveProperty('activo');
       expect(calledWith).not.toHaveProperty('fecha_creacion');
       expect(calledWith).toHaveProperty('fecha_modificacion');
+    });
+
+    it('Debería actualizar referencia_tipo correctamente', async () => {
+      const updateSpy = jest
+        .spyOn(notificacionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue({ ...mockNotificacion, ...updateDto }),
+        } as any);
+
+      await notificacionService.put(mockNotificacion._id, updateDto);
+
+      const calledWith = updateSpy.mock.calls[0][1];
+      expect(calledWith.referencia_tipo).toBe('SOLICITUD');
     });
 
     it('Debería actualizar fecha_modificacion automáticamente', async () => {

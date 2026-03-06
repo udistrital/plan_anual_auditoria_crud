@@ -3651,13 +3651,19 @@
             "type": "string",
             "description": "ObjectId del documento referenciado",
             "example": "671aaa8a064222e6583d56e7"
+          },
+          "referencia_tipo": {
+            "type": "string",
+            "description": "Tipo del documento referenciado",
+            "example": "PAA"
           }
         },
         "required": [
           "template",
           "fecha_envio",
           "metadatos",
-          "referencia_id"
+          "referencia_id",
+          "referencia_tipo"
         ]
       }
     }
