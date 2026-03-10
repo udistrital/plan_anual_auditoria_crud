@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema({ collection: 'documento' })
 export class Documento extends Document {
   @Prop({ required: true })
-  referencia_id: string;
+  referencia_id: Types.ObjectId;
 
   @Prop({ required: true, enum: ['Auditoria', 'Plan Auditoria'] })
   referencia_tipo: string;

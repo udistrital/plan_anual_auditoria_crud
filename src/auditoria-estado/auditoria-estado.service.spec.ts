@@ -4,11 +4,11 @@ import { getModelToken } from '@nestjs/mongoose';
 import { AuditoriaEstado } from './schema/auditoria-estado.schema';
 import { AuditoriaEstadoDto } from './dto/auditoria-estado.dto';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditoriaEstadoDto: AuditoriaEstadoDto = {
-  auditoria_id: '672d3050f7814a9a0c5261d4',
+  auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR',
   observacion: 'Estado inicial de la auditoría',

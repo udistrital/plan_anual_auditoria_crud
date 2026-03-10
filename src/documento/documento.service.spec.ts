@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { DocumentoService } from './documento.service';
 import { Documento } from './schemas/documento.schema';
 import { DocumentoDTO } from './dto/documento.dto';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockDocumentoDto: DocumentoDTO = {
-  referencia_id: '67197dda3416d2a85e5d6d8f',
+  referencia_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   referencia_tipo: 'Plan Auditoria',
   nuxeo_id: 123456,
   nuxeo_enlace: 'https://nuxeo.example.com/doc/123456',

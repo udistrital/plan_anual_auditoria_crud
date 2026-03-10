@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { EstadoService } from './estado.service';
 import { PlanEstado } from './schema/estado.schema';
 import { PlanEstadoDto } from './dto/estado.dto';
@@ -8,7 +8,7 @@ import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockEstadoPlanDTO: PlanEstadoDto = {
-  plan_auditoria_id: '672d3050f7814a9a0c5261d4',
+  plan_auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'Auditor',
   observacion: 'Estado inicial del plan de auditoría',

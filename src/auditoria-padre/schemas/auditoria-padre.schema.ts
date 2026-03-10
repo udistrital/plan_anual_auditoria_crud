@@ -31,8 +31,8 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   dependencia_id: number;
 
-  @Prop({ type: [{ type: String }], required: false })
-  auditorias: string[];
+  @Prop({ type: [{ type: Types.ObjectId }], required: false })
+  auditoria_padre: Types.ObjectId[];
 
   @Prop({ required: false })
   activo: boolean;

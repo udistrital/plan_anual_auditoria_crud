@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 @Schema({ collection: 'plan_auditoria' })
 export class PlanAuditoria extends Document {
@@ -33,8 +33,8 @@ export class PlanAuditoria extends Document {
   @Prop({ required: false })
   secretario_tecnico_id: number;
 
-  @Prop({ type: [{ type: String }], required: false })
-  auditorias: string[];
+  @Prop({ type: [{ type: Types.ObjectId }], required: false })
+  auditorias: Types.ObjectId[];
 
   @Prop({ required: false })
   activo: boolean;

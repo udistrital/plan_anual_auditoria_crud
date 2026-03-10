@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class ActividadDTO {
   @ApiProperty()
-  readonly auditoria_id: string;
+  readonly auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly titulo: string;

@@ -4,6 +4,7 @@ import { FilterDto } from '../filters/filters.dto';
 import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { PlanAuditoriaService } from './plan-auditoria.service';
 import { PlanAuditoriaController } from './plan-auditoria.controller';
+import { Types } from 'mongoose';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
@@ -16,7 +17,7 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   jefe_dependencia_id: 5541,
   aprobado_secretario_tecnico: true,
   secretario_tecnico_id: 278,
-  auditorias: ['67197dda3416d2a85e5d6d90', '67197dda3416d2a85e5d6d91'],
+  auditorias: [new Types.ObjectId('67197dda3416d2a85e5d6d90'), new Types.ObjectId('67197dda3416d2a85e5d6d91')],
   activo: true,
   fecha_creacion: new Date('2024-01-15'),
   fecha_modificacion: new Date('2024-01-15'),
