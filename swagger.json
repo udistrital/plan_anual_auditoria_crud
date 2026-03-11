@@ -3886,9 +3886,13 @@
             }
           },
           "referencia_id": {
-            "type": "string",
             "description": "ObjectId del documento referenciado",
-            "example": "671aaa8a064222e6583d56e7"
+            "example": "671aaa8a064222e6583d56e7",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
           },
           "referencia_tipo": {
             "type": "string",
@@ -3937,6 +3941,9 @@
           "dependencia_id": {
             "type": "number"
           },
+          "no_auditoria": {
+            "type": "number"
+          },
           "auditoria_padre": {
             "type": "array",
             "items": {
@@ -3965,6 +3972,7 @@
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
+          "no_auditoria",
           "auditoria_padre",
           "activo",
           "fecha_creacion",

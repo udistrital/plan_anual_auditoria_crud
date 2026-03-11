@@ -17,6 +17,7 @@ const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   macroproceso_id: 10,
   proceso_id: 20,
   dependencia_id: 30,
+  no_auditoria: 2,
   auditoria_padre: [],
   activo: true,
   fecha_creacion: new Date('2024-01-01'),

@@ -95,8 +95,8 @@ describe('AuditorService', () => {
         expect.objectContaining({
           ...mockAuditorDto,
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockAuditor);
@@ -146,8 +146,8 @@ describe('AuditorService', () => {
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
     });

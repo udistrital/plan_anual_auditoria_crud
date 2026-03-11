@@ -30,6 +30,9 @@ export class AuditoriaPadreDTO {
   readonly dependencia_id: number;
 
   @ApiProperty()
+  readonly no_auditoria: number;
+
+  @ApiProperty()
   readonly auditoria_padre: Types.ObjectId[] = [];
 
   @ApiProperty()

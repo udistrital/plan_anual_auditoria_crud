@@ -27,7 +27,7 @@ export class NotificacionDTO {
   @ApiProperty({
     description: 'ObjectId del documento referenciado',
     example: '671aaa8a064222e6583d56e7',
-    type: String,
+    type: Types.ObjectId,
   })
   readonly referencia_id: Types.ObjectId;
 

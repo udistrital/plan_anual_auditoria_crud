@@ -102,8 +102,8 @@ describe('ActividadService', () => {
         expect.objectContaining({
           ...mockActividadDto,
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockActividad);
@@ -153,8 +153,8 @@ describe('ActividadService', () => {
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
     });
