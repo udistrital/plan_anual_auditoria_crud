@@ -241,6 +241,46 @@
         ]
       }
     },
+    "/plan-auditoria/{id}/generar-auditorias": {
+      "post": {
+        "operationId": "PlanAuditoriaController_generarAuditorias",
+        "summary": "Generar auditorías hija a partir de auditorías padre registradas en el plan.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Las auditorías hija han sido generadas exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanAuditoriaDTO"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de auditoria no encontrado."
+          }
+        },
+        "tags": [
+          "plan-auditoria"
+        ]
+      }
+    },
     "/auditoria": {
       "post": {
         "operationId": "AuditoriaController_post",

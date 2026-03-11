@@ -31,8 +31,12 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   dependencia_id: number;
 
+  // TODO: ¿Se mantiene esta lista?
   @Prop({ type: [{ type: String }], required: false })
   auditorias: string[];
+
+  @Prop({ required: false })
+  cantidad_auditorias: number;
 
   @Prop({ required: false })
   activo: boolean;
