@@ -28,7 +28,7 @@ export class AuditoriaPadreDTO {
   @ApiProperty()
   readonly dependencia_id: number;
 
-  // TODO: ¿Se mantiene esta lista?
+  // TODO: Eliminar este campo.
   @ApiProperty()
   readonly auditorias: string[] = [];
 

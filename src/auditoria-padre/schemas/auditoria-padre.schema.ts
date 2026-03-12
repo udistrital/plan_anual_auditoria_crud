@@ -31,7 +31,7 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   dependencia_id: number;
 
-  // TODO: ¿Se mantiene esta lista?
+  // TODO: Eliminar este campo.
   @Prop({ type: [{ type: String }], required: false })
   auditorias: string[];
 

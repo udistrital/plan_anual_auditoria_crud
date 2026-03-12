@@ -116,6 +116,7 @@ export class PlanAuditoriaService {
   /**
    * Genera las auditorías correspondientes a un plan de auditoría, a partir de sus auditorías padre. Para cada auditoría generada, también se genera su estado inicial y se actualiza el estado de su auditoría padre.
    * @param id Id del plan de auditoría para el cual se generarán las auditorías.
+   * TODO: Evaluar la creación de un DTO específico
    * @param auditoriaEstadoDto Información del estado inicial de las auditorías a generar.
    * @returns Lista de auditorías generadas.
    * @throws Error si el plan de auditoría no existe.
@@ -130,7 +131,7 @@ export class PlanAuditoriaService {
     const auditoriasPadre = await this.auditoriaPadreService.getAll({
       fields: undefined, sortby: undefined, order: undefined, populate: undefined,
 
-      query: `plan_auditoria_id:${id},activo:true`,
+      query: `plan_auditoria_id:${id},activo:true,estado_id:${7060}`, // Estado en borrador // TODO: Implementar estandarización
       limit: '0', offset: '0',
     });
 
@@ -142,28 +143,19 @@ export class PlanAuditoriaService {
         // 1. Generar la nueva auditoría.
         try {
           auditoria = await this.auditoriaService.post({
-            // TODO: Validar pertinencia de estos campos
-            no_auditoria: undefined, consecutivo_OCI: undefined,
+            no_auditoria: undefined, consecutivo_OCI: undefined, cronograma_id: undefined,
+            macroproceso_id: undefined, proceso_id: undefined, dependencia_id: undefined,
             consecutivo_IE: undefined, fecha_inicio: undefined, fecha_fin: undefined,
-            objetivo: undefined, alcance: undefined, criterio: undefined,
+            titulo: undefined, objetivo: undefined, alcance: undefined, criterio: undefined,
             rec_tecnologico: undefined, rec_humano: undefined, rec_fisico: undefined,
-            temas: undefined, correo_complementario: undefined, activo: undefined,
-            fecha_creacion: undefined, fecha_modificacion: undefined,
+            temas: undefined, correo_complementario: undefined, tipo_evaluacion_id: undefined,
+            activo: undefined, fecha_creacion: undefined, fecha_modificacion: undefined,
 
-            plan_auditoria_id: id,
+            plan_auditoria_id: id, // TODO: Eliminar cuando se complete la migración.
             auditoria_padre_id: auditoriaPadre._id,
-            titulo: auditoriaPadre.titulo,
-            tipo_evaluacion_id: auditoriaPadre.tipo_evaluacion_id,
-            cronograma_id: undefined, // TODO: Validar lógica de asignación
-            estado_id: 7061, // Por asignar // TODO: Evaluar estrategia de estandarización
+            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
             vigencia_id: auditoriaPadre.vigencia_id,
-            macroproceso_id: auditoriaPadre.macroproceso_id,
-            proceso_id: auditoriaPadre.proceso_id,
-            dependencia_id: auditoriaPadre.dependencia_id,
           });
-
-          // TODO: ¿Se mantiene esta lista?
-          auditoriaPadre.auditorias.push(auditoria._id.toString());
 
           nuevasAuditorias.push(auditoria);
         }
@@ -178,7 +170,7 @@ export class PlanAuditoriaService {
           await this.auditoriaEstadoService.post({
             ...auditoriaEstadoDto,
             auditoria_id: auditoria._id.toString(),
-            estado_id: 7061, // Por asignar // TODO: Evaluar estrategia de estandarización
+            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
           });
         }
         catch (error) {
@@ -186,20 +178,6 @@ export class PlanAuditoriaService {
           newError.stack += error.stack;
           throw newError;
         }
-      }
-
-      // Actualizar lista de hijas en auditoria padre
-      // TODO: Si no se mantiene lista de auditorías, eliminar
-      try {
-        this.auditoriaPadreService.put(auditoriaPadre._id.toString(), {
-          ...auditoriaPadre,
-          plan_auditoria_id: auditoriaPadre.plan_auditoria_id.toString(),
-        });
-      }
-      catch (error) {
-        const newError = new Error(`Error al actualizar auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}) después de generar sus auditorías.`);
-        newError.stack += error.stack;
-        throw newError;
       }
 
       // TODO: Actualizar estado de auditoría padre cuando se fusionen los cambios

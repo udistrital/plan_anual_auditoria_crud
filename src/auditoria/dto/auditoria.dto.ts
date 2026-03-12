@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditoriaDTO {
+  // TODO: Migración: eliminar `plan_auditoria_id` cuando la transición a `auditoria_padre_id` esté completa
   @ApiProperty()
   readonly plan_auditoria_id?: string;
   @ApiProperty()
