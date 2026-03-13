@@ -160,7 +160,7 @@ export class PlanAuditoriaService {
           nuevasAuditorias.push(auditoria);
         }
         catch (error) {
-          const newError = new Error(`Error al generar auditoría ${i} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`);
+          const newError = new Error(`Error al generar auditoría ${i+1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`);
           newError.stack += error.stack;
           throw newError;
         }
@@ -174,15 +174,16 @@ export class PlanAuditoriaService {
           });
         }
         catch (error) {
-          const newError = new Error(`Error al generar estado de auditoría ${i} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`);
+          const newError = new Error(`Error al generar estado de auditoría ${i+1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`);
           newError.stack += error.stack;
           throw newError;
         }
       }
 
-      // TODO: Actualizar estado de auditoría padre cuando se fusionen los cambios
+      // Actualiza estado auditoría padre
       try {
-
+        // TODO: Actualizar estado de auditoría padre a aprobada
+        await this.mockPruebaUnitariaActualizarEstadoAuditoriaPadre();
       }
       catch (error) {
         const newError = new Error(`Error al actualizar estado de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}) después de generar sus auditorías.`);
@@ -193,5 +194,8 @@ export class PlanAuditoriaService {
 
     return nuevasAuditorias;
   }
+
+  // TODO: Eliminar este método y su llamada cuando se fusionen cambios estado auditoría padre
+  async mockPruebaUnitariaActualizarEstadoAuditoriaPadre() {}
 
 }
