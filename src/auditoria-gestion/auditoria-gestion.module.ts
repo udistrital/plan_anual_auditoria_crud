@@ -3,13 +3,13 @@ import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { AuditoriaGestionController } from './auditoria-gestion.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
-  AuditoriaEstado,
-  AuditoriaEstadoSchema,
-} from '../auditoria-estado/schema/auditoria-estado.schema';
+  AuditoriaPadreEstado,
+  AuditoriaPadreEstadoSchema,
+} from '../auditoria-padre-estado/schema/auditoria-padre-estado.schema';
 import {
-  Auditoria,
-  AuditoriaSchema,
-} from '../auditoria/schemas/auditoria.schema';
+  AuditoriaPadre,
+  AuditoriaPadreSchema,
+} from '../auditoria-padre/schemas/auditoria-padre.schema';
 import {
   PlanAuditoria,
   PlanAuditoriaSchema,
@@ -18,8 +18,8 @@ import {
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: AuditoriaEstado.name, schema: AuditoriaEstadoSchema },
-      { name: Auditoria.name, schema: AuditoriaSchema },
+      { name: AuditoriaPadreEstado.name, schema: AuditoriaPadreEstadoSchema },
+      { name: AuditoriaPadre.name, schema: AuditoriaPadreSchema },
       { name: PlanAuditoria.name, schema: PlanAuditoriaSchema },
     ]),
   ],

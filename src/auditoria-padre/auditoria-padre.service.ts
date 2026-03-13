@@ -6,6 +6,7 @@ import { FiltersService } from '../filters/filters.service';
 import { AuditoriaPadre } from './schemas/auditoria-padre.schema';
 import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
+import { EstadoAuditoriaPadreService } from '../auditoria-padre-estado/auditoria-padre-estado.service';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -14,6 +15,7 @@ export class AuditoriaPadreService {
     private readonly AuditoriaPadreModel: Model<AuditoriaPadre>,
     @InjectModel(PlanAuditoria.name)
     private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
+    private readonly estadoAuditoriaPadreService: EstadoAuditoriaPadreService,
   ) {}
 
   private populateFields(): any[] {
@@ -42,7 +44,23 @@ export class AuditoriaPadreService {
       fecha_modificacion: fecha,
     };
     await this.checkRelated(auditoriaPadreDTO);
-    return await this.AuditoriaPadreModel.create(auditoriaPadreData);
+    const auditoriaPadreCreada = await this.AuditoriaPadreModel.create(auditoriaPadreData);
+    
+    if (auditoriaPadreDTO.estado_id) {
+      await this.estadoAuditoriaPadreService.post({
+        auditoria_padre_id: auditoriaPadreCreada._id.toString(),
+        estado_id: auditoriaPadreDTO.estado_id,
+        usuario_id: null,
+        usuario_rol: null,
+        observacion: 'Estado inicial',
+        actual: true,
+        fase_id: null,
+        fecha_ejecucion_estado: fecha,
+        activo: true,
+      });
+    }
+    
+    return auditoriaPadreCreada;
   }
 
   async getAll(filterDto: FilterDto): Promise<AuditoriaPadre[]> {
@@ -79,6 +97,26 @@ export class AuditoriaPadreService {
       delete auditoriaPadreDTO.fecha_creacion;
     }
     await this.checkRelated(auditoriaPadreDTO);
+    
+    const auditoriaPadreActual = await this.AuditoriaPadreModel.findById(id).exec();
+    if (!auditoriaPadreActual) {
+      throw new Error(`${id} no existe`);
+    }
+    
+    if (auditoriaPadreDTO.estado_id && auditoriaPadreDTO.estado_id !== auditoriaPadreActual.estado_id) {
+      await this.estadoAuditoriaPadreService.post({
+        auditoria_padre_id: id,
+        estado_id: auditoriaPadreDTO.estado_id,
+        usuario_id: null,
+        usuario_rol: null,
+        observacion: 'Cambio de estado',
+        actual: true,
+        fase_id: null,
+        fecha_ejecucion_estado: auditoriaPadreDTO.fecha_modificacion,
+        activo: true,
+      });
+    }
+    
     const update = await this.AuditoriaPadreModel.findByIdAndUpdate(
       id,
       auditoriaPadreDTO,

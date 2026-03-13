@@ -1,17 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
-import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
+import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
+import { AuditoriaPadreDTO } from 'src/auditoria-padre/dto/auditoria-padre.dto';
 
 export interface CreateAuditoriaGestion
-  extends AuditoriaDTO,
-    AuditoriaEstadoDto {}
+  extends AuditoriaPadreDTO,
+    Omit<AuditoriaPadreEstadoDto, 'auditoria_padre_id'> {}
 
 export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   @ApiProperty()
   readonly plan_auditoria_id: string;
-
-  @ApiProperty()
-  readonly auditoria_padre_id?: string;
 
   @ApiProperty()
   readonly titulo: string;
@@ -20,22 +17,13 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly tipo_evaluacion_id: number;
 
   @ApiProperty()
-  readonly cronograma_id: number[];
+  readonly cronograma_id: number[] = [];
 
   @ApiProperty()
   readonly estado_id: number;
 
   @ApiProperty()
-  readonly no_auditoria: number;
-
-  @ApiProperty()
   readonly vigencia_id: number;
-
-  @ApiProperty()
-  readonly consecutivo_OCI: string;
-
-  @ApiProperty()
-  readonly consecutivo_IE: string;
 
   @ApiProperty()
   readonly macroproceso_id: number;
@@ -47,46 +35,16 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly dependencia_id: number;
 
   @ApiProperty()
-  readonly fecha_inicio: Date;
+  readonly auditorias: string[] = [];
 
   @ApiProperty()
-  readonly fecha_fin: Date;
+  activo: boolean;
 
   @ApiProperty()
-  readonly objetivo: string;
+  fecha_creacion: Date;
 
   @ApiProperty()
-  readonly alcance: string;
-
-  @ApiProperty()
-  readonly criterio: string;
-
-  @ApiProperty()
-  readonly rec_tecnologico: string;
-
-  @ApiProperty()
-  readonly rec_humano: string;
-
-  @ApiProperty()
-  readonly rec_fisico: string;
-
-  @ApiProperty()
-  readonly temas: string;
-
-  @ApiProperty()
-  readonly correo_complementario: string;
-
-  @ApiProperty()
-  readonly activo: boolean;
-
-  @ApiProperty()
-  readonly fecha_creacion: Date;
-
-  @ApiProperty()
-  readonly fecha_modificacion: Date;
-
-  @ApiProperty()
-  readonly auditoria_id: string;
+  fecha_modificacion: Date;
 
   @ApiProperty()
   readonly usuario_id: number;

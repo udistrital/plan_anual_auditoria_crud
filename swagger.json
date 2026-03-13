@@ -2575,7 +2575,7 @@
     "/auditoria-gestion": {
       "post": {
         "operationId": "AuditoriaGestionController_post",
-        "summary": "Crear una nueva auditoria junto con su estado inicial",
+        "summary": "Crear una nueva auditoria padre junto con su estado inicial",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2589,7 +2589,7 @@
         },
         "responses": {
           "201": {
-            "description": "La auditoria ha sido creada exitosamente.",
+            "description": "La auditoria padre ha sido creada exitosamente.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2610,7 +2610,7 @@
     "/auditoria-gestion/{id}": {
       "put": {
         "operationId": "AuditoriaGestionController_put",
-        "summary": "Actualizar los estados de las auditorias existentes en un plan",
+        "summary": "Actualizar los estados de las auditorias padre existentes en un plan",
         "parameters": [
           {
             "name": "id",
@@ -2627,18 +2627,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AuditoriaEstadoDto"
+                "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Los estados de las auditorias han sido actualizados exitosamente.",
+            "description": "Los estados de las auditorias padre han sido actualizados exitosamente.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuditoriaEstadoDto"
+                  "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
                 }
               }
             }
@@ -3104,6 +3104,232 @@
         },
         "tags": [
           "auditoria-padre"
+        ]
+      }
+    },
+    "/auditoria-padre-estado": {
+      "post": {
+        "operationId": "EstadoAuditoriaPadreController_post",
+        "summary": "Crear un nuevo estado de auditoria padre",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "El estado de auditoria padre ha sido creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "auditoria-padre-estado"
+        ]
+      },
+      "get": {
+        "operationId": "EstadoAuditoriaPadreController_getAll",
+        "summary": "Obtener todos los estados de auditoria padre",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los estados de auditoria padre.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "auditoria-padre-estado"
+        ]
+      }
+    },
+    "/auditoria-padre-estado/{id}": {
+      "get": {
+        "operationId": "EstadoAuditoriaPadreController_getById",
+        "summary": "Obtener un estado de auditoria padre por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado de auditoria padre.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-padre-estado"
+        ]
+      },
+      "put": {
+        "operationId": "EstadoAuditoriaPadreController_put",
+        "summary": "Actualizar un estado de auditoria padre",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "El estado de auditoria padre ha sido actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaPadreEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-padre-estado"
+        ]
+      },
+      "delete": {
+        "operationId": "EstadoAuditoriaPadreController_delete",
+        "summary": "Eliminar un estado de auditoria padre",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "El estado de auditoria padre ha sido eliminado exitosamente."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-padre-estado"
         ]
       }
     }
@@ -3715,9 +3941,6 @@
           "plan_auditoria_id": {
             "type": "string"
           },
-          "auditoria_padre_id": {
-            "type": "string"
-          },
           "titulo": {
             "type": "string"
           },
@@ -3733,17 +3956,8 @@
           "estado_id": {
             "type": "number"
           },
-          "no_auditoria": {
-            "type": "number"
-          },
           "vigencia_id": {
             "type": "number"
-          },
-          "consecutivo_OCI": {
-            "type": "string"
-          },
-          "consecutivo_IE": {
-            "type": "string"
           },
           "macroproceso_id": {
             "type": "number"
@@ -3754,37 +3968,11 @@
           "dependencia_id": {
             "type": "number"
           },
-          "fecha_inicio": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "fecha_fin": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "objetivo": {
-            "type": "string"
-          },
-          "alcance": {
-            "type": "string"
-          },
-          "criterio": {
-            "type": "string"
-          },
-          "rec_tecnologico": {
-            "type": "string"
-          },
-          "rec_humano": {
-            "type": "string"
-          },
-          "rec_fisico": {
-            "type": "string"
-          },
-          "temas": {
-            "type": "string"
-          },
-          "correo_complementario": {
-            "type": "string"
+          "auditorias": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "activo": {
             "type": "boolean"
@@ -3795,9 +3983,6 @@
           },
           "fecha_modificacion": {
             "format": "date-time",
-            "type": "string"
-          },
-          "auditoria_id": {
             "type": "string"
           },
           "usuario_id": {
@@ -3822,38 +4007,68 @@
         },
         "required": [
           "plan_auditoria_id",
-          "auditoria_padre_id",
           "titulo",
           "tipo_evaluacion_id",
           "cronograma_id",
           "estado_id",
-          "no_auditoria",
           "vigencia_id",
-          "consecutivo_OCI",
-          "consecutivo_IE",
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
-          "fecha_inicio",
-          "fecha_fin",
-          "objetivo",
-          "alcance",
-          "criterio",
-          "rec_tecnologico",
-          "rec_humano",
-          "rec_fisico",
-          "temas",
-          "correo_complementario",
+          "auditorias",
           "activo",
           "fecha_creacion",
           "fecha_modificacion",
-          "auditoria_id",
           "usuario_id",
           "usuario_rol",
           "observacion",
           "actual",
           "fase_id",
           "fecha_ejecucion_estado"
+        ]
+      },
+      "AuditoriaPadreEstadoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_padre_id": {
+            "type": "string"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fase_id": {
+            "type": "string"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "auditoria_padre_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fase_id",
+          "fecha_ejecucion_estado",
+          "activo"
         ]
       },
       "NotificacionDTO": {
