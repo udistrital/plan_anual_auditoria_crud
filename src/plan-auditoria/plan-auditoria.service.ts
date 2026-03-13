@@ -137,7 +137,46 @@ export class PlanAuditoriaService {
 
     // Generar auditorías hija para cada auditoría padre y actualizar estado de auditoría padre
     for (const auditoriaPadre of auditoriasPadre) {
-      for (let i = 0; i < auditoriaPadre.cantidad_auditorias; i++) {
+
+      // Para evitar la creación de auditorías hijas duplicadas
+      const auditoriasHijasExistentes = await this.auditoriaService.getAll({
+        fields: undefined, sortby: undefined, order: undefined, populate: undefined,
+
+        query: `auditoria_padre_id:${auditoriaPadre._id},activo:true`,
+        limit: '0',
+        offset: '0',
+      });
+
+      // Crear estados de las auditorías hijas existentes si no existen.
+      const idsHijasExistentes = auditoriasHijasExistentes.map(a => a._id.toString()).join(',');
+      const estadosAuditoriaExistentes = await this.auditoriaEstadoService.getAll({
+        fields: undefined, sortby: undefined, order: undefined, populate: undefined,
+
+        query: `auditoria_id__in:${idsHijasExistentes},estado_id:${7061},activo:true`, // Por asignar // TODO: Implementar estandarización
+        limit: '0',
+        offset: '0',
+      });
+
+      const auditoriasHijasSinEstado = auditoriasHijasExistentes.filter(a => 
+        !estadosAuditoriaExistentes.find(e => e.auditoria_id === a._id.toString())
+      );
+      for (const auditoriaHijaSinEstado of auditoriasHijasSinEstado) {
+        try {
+          await this.auditoriaEstadoService.post({
+            ...auditoriaEstadoDto,
+            auditoria_id: auditoriaHijaSinEstado._id.toString(),
+            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
+          });
+        }
+        catch (error) {
+          const newError = new Error(`Error al generar estado de auditoría hija existente ${auditoriaHijaSinEstado._id} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`);
+          newError.stack += error.stack;
+          throw newError;
+        }
+      }
+
+      const cantidadACrear = auditoriaPadre.cantidad_auditorias - auditoriasHijasExistentes.length;
+      for (let i = 0; i < cantidadACrear; i++) {
         let auditoria: Auditoria;
 
         // 1. Generar la nueva auditoría.

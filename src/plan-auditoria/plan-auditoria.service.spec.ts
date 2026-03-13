@@ -63,12 +63,14 @@ describe('PlanAuditoriaService', () => {
           provide: AuditoriaService,
           useValue: {
             post: jest.fn(),
+            getAll: jest.fn(),
           },
         },
         {
           provide: EstadoAuditoriaService,
           useValue: {
             post: jest.fn(),
+            getAll: jest.fn(),
           },
         },
       ],
@@ -654,6 +656,10 @@ describe('PlanAuditoriaService', () => {
       const getAllSpy = jest
         .spyOn(auditoriaPadreService, 'getAll')
         .mockResolvedValue(auditoriasPadre as any);
+      
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([] as any);
 
       const createdAuditorias = [{ _id: 'a1' }, { _id: 'a2' }];
       jest.spyOn(auditoriaService, 'post')
@@ -683,6 +689,95 @@ describe('PlanAuditoriaService', () => {
       expect(result).toEqual([]);
     });
 
+    it('Debería generar auditorías únicamente auditorías faltantes', async () => {
+      jest
+        .spyOn(planAuditoriaModel, 'findById')
+        .mockReturnValue({ exec: jest.fn().mockResolvedValue(mockPlanAuditoria) } as any);
+
+      const auditoriasPadre = [
+        { _id: 'padre-1', cantidad_auditorias: 2, titulo: 'Padre 1', vigencia_id: 2024 },
+      ];
+
+      const getAllSpy = jest
+        .spyOn(auditoriaPadreService, 'getAll')
+        .mockResolvedValue(auditoriasPadre as any);
+      
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([{ _id: 'ex1' }] as any);
+
+      jest
+        .spyOn(estadoAuditoriaService, 'getAll')
+        .mockResolvedValue([{ auditoria_id: 'ex1' }] as any);
+
+      const createdAuditorias = [{ _id: 'a1' }];
+      jest.spyOn(auditoriaService, 'post')
+        .mockResolvedValueOnce(createdAuditorias[0] as any)
+
+      jest.spyOn(estadoAuditoriaService, 'post').mockResolvedValue(undefined as any);
+      // TODO: estado auditoría padre
+
+      const result = await planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto);
+
+      expect(getAllSpy).toHaveBeenCalled();
+      expect(result).toEqual(createdAuditorias as any);
+    });
+
+    it('Debería crear estados para auditorías hijas existentes cuando faltan', async () => {
+      jest
+        .spyOn(planAuditoriaModel, 'findById')
+        .mockReturnValue({ exec: jest.fn().mockResolvedValue(mockPlanAuditoria) } as any);
+
+      const auditoriasPadre = [ { _id: 'padre-ex', cantidad_auditorias: 2, titulo: 'Padre Ex', vigencia_id: 2024 } ];
+      jest
+        .spyOn(auditoriaPadreService, 'getAll')
+        .mockResolvedValue(auditoriasPadre as any);
+
+      const auditoriasHijasExistentes = [ { _id: 'ex1' }, { _id: 'ex2' } ];
+      jest.spyOn(auditoriaService, 'getAll').mockResolvedValue(auditoriasHijasExistentes as any);
+
+      // No existen estados para las hijas
+      jest.spyOn(estadoAuditoriaService, 'getAll').mockResolvedValue([] as any);
+
+      const postEstadoSpy = jest.spyOn(estadoAuditoriaService, 'post').mockResolvedValue(undefined as any);
+
+      // Como ya hay 2 hijas y cantidad_auditorias=2, no se crearán auditorías nuevas
+      jest.spyOn(planAuditoriaService, 'mockPruebaUnitariaActualizarEstadoAuditoriaPadre').mockResolvedValue(undefined as any);
+
+      const result = await planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto);
+
+      expect(postEstadoSpy).toHaveBeenCalledTimes(auditoriasHijasExistentes.length);
+      expect(postEstadoSpy).toHaveBeenCalledWith(expect.objectContaining({ auditoria_id: 'ex1' }));
+      expect(postEstadoSpy).toHaveBeenCalledWith(expect.objectContaining({ auditoria_id: 'ex2' }));
+      expect(result).toEqual([]);
+    });
+
+    it('Debería lanzar un error cuando falla la creación de estado para auditoría hija existente', async () => {
+      jest
+        .spyOn(planAuditoriaModel, 'findById')
+        .mockReturnValue({ exec: jest.fn().mockResolvedValue(mockPlanAuditoria) } as any);
+
+      const auditoriasPadre = [ { _id: 'padre-ex-err', cantidad_auditorias: 2, titulo: 'Padre Ex Err', vigencia_id: 2024 } ];
+      jest
+        .spyOn(auditoriaPadreService, 'getAll')
+        .mockResolvedValue(auditoriasPadre as any);
+
+      const auditoriasHijasExistentes = [ { _id: 'ex1' }, { _id: 'ex2' } ];
+      jest.spyOn(auditoriaService, 'getAll').mockResolvedValue(auditoriasHijasExistentes as any);
+
+      // No existen estados para las hijas
+      jest.spyOn(estadoAuditoriaService, 'getAll').mockResolvedValue([] as any);
+
+      // Falla la creación del estado en la segunda hija
+      jest.spyOn(estadoAuditoriaService, 'post')
+        .mockResolvedValueOnce(undefined as any)
+        .mockRejectedValueOnce(new Error('estado fail'));
+
+      await expect(planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto)).rejects.toThrow(
+        new Error(`Error al generar estado de auditoría hija existente ${auditoriasHijasExistentes[1]._id} de auditoríaPadre ${auditoriasPadre[0]._id} (${auditoriasPadre[0].titulo}).`),
+      );
+    });
+
     it('Debería lanzar un error cuando auditoriaService.post falla en alguna iteración (varias auditorías)', async () => {
       jest
         .spyOn(planAuditoriaModel, 'findById')
@@ -692,6 +787,10 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(auditoriaPadreService, 'getAll')
         .mockResolvedValue(auditoriasPadre as any);
+
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([] as any);
 
       // Simula éxito en la primera creación y fallo en la segunda
       const created = [{ _id: 'a1' }];
@@ -713,6 +812,10 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(auditoriaPadreService, 'getAll')
         .mockResolvedValue(auditoriasPadre as any);
+
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([] as any);
 
       // auditoriaService crea dos auditorías
       jest.spyOn(auditoriaService, 'post')
@@ -738,6 +841,10 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(auditoriaPadreService, 'getAll')
         .mockResolvedValue(auditoriasPadre as any);
+
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([] as any);
 
       jest.spyOn(auditoriaService, 'post')
         .mockResolvedValueOnce({ _id: 'new1' } as any);
