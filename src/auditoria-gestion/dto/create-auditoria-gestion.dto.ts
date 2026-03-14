@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 
@@ -86,7 +87,7 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly fecha_modificacion: Date;
 
   @ApiProperty()
-  readonly auditoria_id: string;
+  readonly auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly usuario_id: number;

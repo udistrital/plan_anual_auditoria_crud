@@ -10,6 +10,7 @@ import { AuditoriaGestionController } from './auditoria-gestion.controller';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
 import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
+import { Types } from 'mongoose';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   // Datos de Auditoría
@@ -63,7 +64,7 @@ const mockAuditoriaEstado = {
 };
 
 const mockAuditoriaEstadoDto: AuditoriaEstadoDto = {
-  auditoria_id: '672d3050f7814a9a0c5261d4',
+  auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR_LIDER',
   observacion: 'Cambio de estado a ejecución',

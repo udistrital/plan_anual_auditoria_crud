@@ -36,8 +36,8 @@ export class ActividadService {
     const actividadData = {
       ...ActividadDTO,
       activo: true,
-      fechaCreacion: fecha,
-      fechaModificacion: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
     await this.checkRelated(ActividadDTO);
     return await this.ActividadModel.create(actividadData);

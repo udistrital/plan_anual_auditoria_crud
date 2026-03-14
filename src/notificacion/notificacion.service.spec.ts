@@ -7,9 +7,9 @@ import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
-  template: 'SISIFO_PLANTILLA_SOLICITUD',
+  plantilla: 'SISIFO_PLANTILLA_SOLICITUD',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
-  metadatos: {
+  metadato: {
     tipo_notificacion: 'solicitud_aprobacion_paa',
     vigencia: '2025',
     destinatarios_to: ['jefe@correo.gov.co'],
@@ -112,7 +112,7 @@ describe('NotificacionService', () => {
       expect(calledWith.fecha_modificacion).toBeInstanceOf(Date);
     });
 
-    it('Debería almacenar el campo template correctamente', async () => {
+    it('Debería almacenar el campo plantilla correctamente', async () => {
       const createSpy = jest
         .spyOn(notificacionModel, 'create')
         .mockResolvedValue(mockNotificacion as any);
@@ -120,7 +120,7 @@ describe('NotificacionService', () => {
       await notificacionService.post(mockNotificacionDto);
 
       const calledWith = createSpy.mock.calls[0][0] as any;
-      expect(calledWith.template).toBe('SISIFO_PLANTILLA_SOLICITUD');
+      expect(calledWith.plantilla).toBe('SISIFO_PLANTILLA_SOLICITUD');
       expect(calledWith).not.toHaveProperty('destinatario');
     });
 
@@ -135,7 +135,7 @@ describe('NotificacionService', () => {
       expect(calledWith.referencia_tipo).toBe('PAA');
     });
 
-    it('Debería almacenar los destinatarios como listas dentro de metadatos', async () => {
+    it('Debería almacenar los destinatarios como listas dentro de metadato', async () => {
       const createSpy = jest
         .spyOn(notificacionModel, 'create')
         .mockResolvedValue(mockNotificacion as any);
@@ -143,12 +143,12 @@ describe('NotificacionService', () => {
       await notificacionService.post(mockNotificacionDto);
 
       const calledWith = createSpy.mock.calls[0][0] as any;
-      expect(calledWith.metadatos).toHaveProperty('destinatarios_to');
-      expect(calledWith.metadatos).toHaveProperty('destinatarios_cc');
-      expect(calledWith.metadatos).toHaveProperty('destinatarios_bcc');
-      expect(Array.isArray(calledWith.metadatos.destinatarios_to)).toBe(true);
-      expect(Array.isArray(calledWith.metadatos.destinatarios_cc)).toBe(true);
-      expect(Array.isArray(calledWith.metadatos.destinatarios_bcc)).toBe(true);
+      expect(calledWith.metadato).toHaveProperty('destinatarios_to');
+      expect(calledWith.metadato).toHaveProperty('destinatarios_cc');
+      expect(calledWith.metadato).toHaveProperty('destinatarios_bcc');
+      expect(Array.isArray(calledWith.metadato.destinatarios_to)).toBe(true);
+      expect(Array.isArray(calledWith.metadato.destinatarios_cc)).toBe(true);
+      expect(Array.isArray(calledWith.metadato.destinatarios_bcc)).toBe(true);
     });
 
     it('Debería propagar errores de la base de datos', async () => {
@@ -164,7 +164,7 @@ describe('NotificacionService', () => {
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
       query: 'activo:true',
-      fields: 'template,fecha_envio',
+      fields: 'plantilla,fecha_envio',
       sortby: 'fecha_creacion',
       order: 'desc',
       limit: '10',
@@ -173,8 +173,8 @@ describe('NotificacionService', () => {
     };
 
     const mockNotificaciones = [
-      { ...mockNotificacion, _id: '1', template: 'SISIFO_PLANTILLA_SOLICITUD' },
-      { ...mockNotificacion, _id: '2', template: 'SISIFO_PLANTILLA_RECHAZO' },
+      { ...mockNotificacion, _id: '1', plantilla: 'SISIFO_PLANTILLA_SOLICITUD' },
+      { ...mockNotificacion, _id: '2', plantilla: 'SISIFO_PLANTILLA_RECHAZO' },
     ];
 
     it('Debería retornar todos los registros con filtros aplicados', async () => {
@@ -273,9 +273,9 @@ describe('NotificacionService', () => {
   describe('put', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
-      template: 'SISIFO_PLANTILLA_RECHAZO',
+      plantilla: 'SISIFO_PLANTILLA_RECHAZO',
       referencia_tipo: 'SOLICITUD',
-      metadatos: {
+      metadato: {
         tipo_notificacion: 'rechazo_paa',
         vigencia: '2025',
         destinatarios_to: ['auditor@correo.gov.co'],
@@ -499,8 +499,8 @@ describe('NotificacionService', () => {
 
     it('Debería aplicar correctamente los filtros del FilterDto', async () => {
       const complexFilterDto: FilterDto = {
-        query: 'activo:true,template:SISIFO_PLANTILLA_SOLICITUD',
-        fields: 'template,fecha_envio',
+        query: 'activo:true,plantilla:SISIFO_PLANTILLA_SOLICITUD',
+        fields: 'plantilla,fecha_envio',
         sortby: 'fecha_creacion',
         order: 'desc',
         limit: '10',

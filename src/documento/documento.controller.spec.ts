@@ -9,9 +9,10 @@ jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { DocumentoController } from './documento.controller';
+import { Types } from 'mongoose';
 
 const mockDocumentoDto: DocumentoDTO = {
-  referencia_id: '67197dda3416d2a85e5d6d8f',
+  referencia_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   referencia_tipo: 'Plan Auditoria',
   nuxeo_id: 123456,
   nuxeo_enlace: 'https://nuxeo.example.com/doc/123456',

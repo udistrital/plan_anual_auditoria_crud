@@ -3304,11 +3304,15 @@
           "fecha_modificacion"
         ]
       },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
+      },
       "ActividadDTO": {
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -3371,7 +3375,7 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3411,7 +3415,7 @@
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3455,7 +3459,7 @@
         "type": "object",
         "properties": {
           "referencia_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "referencia_tipo": {
             "type": "string"
@@ -3491,7 +3495,7 @@
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "auditor_id": {
             "type": "number"
@@ -3532,7 +3536,7 @@
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "fecha_emision": {
             "format": "date-time",
@@ -3541,7 +3545,7 @@
           "muestra": {
             "type": "string"
           },
-          "aspectos_generales": {
+          "aspectos_general": {
             "type": "string"
           },
           "respuesta_preliminar": {
@@ -3550,10 +3554,10 @@
           "informe_final": {
             "type": "string"
           },
-          "observaciones_conclusiones": {
+          "observacion_conclusion": {
             "type": "string"
           },
-          "notas": {
+          "nota": {
             "type": "string"
           },
           "preliminar_auditor_id": {
@@ -3577,11 +3581,11 @@
           "auditoria_id",
           "fecha_emision",
           "muestra",
-          "aspectos_generales",
+          "aspectos_general",
           "respuesta_preliminar",
           "informe_final",
-          "observaciones_conclusiones",
-          "notas",
+          "observacion_conclusion",
+          "nota",
           "preliminar_auditor_id",
           "final_auditor_id",
           "preliminar_auditado_id",
@@ -3798,7 +3802,7 @@
             "type": "string"
           },
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3859,7 +3863,7 @@
       "NotificacionDTO": {
         "type": "object",
         "properties": {
-          "template": {
+          "plantilla": {
             "type": "string",
             "description": "Nombre de la plantilla de correo utilizada para el envío",
             "example": "SISIFO_PLANTILLA_SOLICITUD"
@@ -3868,7 +3872,7 @@
             "format": "date-time",
             "type": "string"
           },
-          "metadatos": {
+          "metadato": {
             "type": "object",
             "description": "Metadatos del evento de notificación, incluye destinatarios_to, destinatarios_cc y destinatarios_bcc como listas",
             "example": {
@@ -3882,9 +3886,13 @@
             }
           },
           "referencia_id": {
-            "type": "string",
             "description": "ObjectId del documento referenciado",
-            "example": "671aaa8a064222e6583d56e7"
+            "example": "671aaa8a064222e6583d56e7",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
           },
           "referencia_tipo": {
             "type": "string",
@@ -3893,9 +3901,9 @@
           }
         },
         "required": [
-          "template",
+          "plantilla",
           "fecha_envio",
-          "metadatos",
+          "metadato",
           "referencia_id",
           "referencia_tipo"
         ]
@@ -3904,7 +3912,7 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -3933,7 +3941,10 @@
           "dependencia_id": {
             "type": "number"
           },
-          "auditorias": {
+          "no_auditoria": {
+            "type": "number"
+          },
+          "auditoria_padre": {
             "type": "array",
             "items": {
               "type": "string"
@@ -3961,7 +3972,8 @@
           "macroproceso_id",
           "proceso_id",
           "dependencia_id",
-          "auditorias",
+          "no_auditoria",
+          "auditoria_padre",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

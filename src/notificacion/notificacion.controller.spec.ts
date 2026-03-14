@@ -7,9 +7,9 @@ import { Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockNotificacionDto: NotificacionDTO = {
-  template: 'SISIFO_PLANTILLA_SOLICITUD',
+  plantilla: 'SISIFO_PLANTILLA_SOLICITUD',
   fecha_envio: new Date('2024-06-01T10:00:00Z'),
-  metadatos: {
+  metadato: {
     tipo_notificacion: 'solicitud_aprobacion_paa',
     vigencia: '2025',
     destinatarios_to: ['jefe@correo.gov.co'],
@@ -275,9 +275,9 @@ describe('NotificacionController', () => {
   describe('put', () => {
     const updateDto: NotificacionDTO = {
       ...mockNotificacionDto,
-      template: 'SISIFO_PLANTILLA_RECHAZO',
+      plantilla: 'SISIFO_PLANTILLA_RECHAZO',
       referencia_tipo: 'SOLICITUD',
-      metadatos: {
+      metadato: {
         tipo_notificacion: 'rechazo_paa',
         vigencia: '2025',
         destinatarios_to: ['auditor@correo.gov.co'],
