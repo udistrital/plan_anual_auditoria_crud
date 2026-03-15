@@ -52,6 +52,19 @@ steps:
       event:
         - push
 
+  - name: unit_tests
+    image: node:current-alpine
+    commands:
+      - corepack enable pnpm
+      - pnpm install
+      - pnpm run test -- --runInBand --ci
+    when:
+      branch:
+        - develop
+        - feature/*
+      event:
+        - push
+
   - name: build
     image: node:current-alpine
     commands:
