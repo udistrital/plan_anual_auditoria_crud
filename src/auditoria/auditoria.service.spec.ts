@@ -54,7 +54,6 @@ describe('AuditoriaService', () => {
   let auditoriaModel: Model<Auditoria>;
   let planAuditoriaModel: Model<PlanAuditoria>;
   let auditoriaPadreModel: Model<AuditoriaPadre>;
-  let auditorModel: Model<Auditor>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -88,7 +87,11 @@ describe('AuditoriaService', () => {
         {
           provide: getModelToken(AuditoriaPadre.name),
           useValue: {
-            findById: jest.fn().mockReturnValue({ exec: jest.fn().mockResolvedValue({ _id: '67297dda3416d2a85e5d6d90' }) }),
+            findById: jest.fn().mockReturnValue({
+              exec: jest
+                .fn()
+                .mockResolvedValue({ _id: '67297dda3416d2a85e5d6d90' }),
+            }),
           },
         },
       ],
@@ -104,7 +107,6 @@ describe('AuditoriaService', () => {
     auditoriaPadreModel = module.get<Model<AuditoriaPadre>>(
       getModelToken(AuditoriaPadre.name),
     );
-    auditorModel = module.get<Model<Auditor>>(getModelToken(Auditor.name));
   });
 
   afterEach(() => {
@@ -127,7 +129,11 @@ describe('AuditoriaService', () => {
 
       const auditoriaPadreFindSpy = jest
         .spyOn(auditoriaPadreModel, 'findById')
-        .mockReturnValue({ exec: jest.fn().mockResolvedValue({ _id: mockAuditoriaDTO.auditoria_padre_id }) } as any);
+        .mockReturnValue({
+          exec: jest
+            .fn()
+            .mockResolvedValue({ _id: mockAuditoriaDTO.auditoria_padre_id }),
+        } as any);
 
       const createSpy = jest
         .spyOn(auditoriaModel, 'create')

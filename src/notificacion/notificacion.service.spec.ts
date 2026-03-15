@@ -173,7 +173,11 @@ describe('NotificacionService', () => {
     };
 
     const mockNotificaciones = [
-      { ...mockNotificacion, _id: '1', plantilla: 'SISIFO_PLANTILLA_SOLICITUD' },
+      {
+        ...mockNotificacion,
+        _id: '1',
+        plantilla: 'SISIFO_PLANTILLA_SOLICITUD',
+      },
       { ...mockNotificacion, _id: '2', plantilla: 'SISIFO_PLANTILLA_RECHAZO' },
     ];
 
@@ -222,9 +226,9 @@ describe('NotificacionService', () => {
 
       jest.spyOn(notificacionModel, 'find').mockReturnValue(mockQuery as any);
 
-      await expect(
-        notificacionService.getAll(mockFilterDto),
-      ).rejects.toThrow('Database error');
+      await expect(notificacionService.getAll(mockFilterDto)).rejects.toThrow(
+        'Database error',
+      );
     });
   });
 
@@ -251,9 +255,9 @@ describe('NotificacionService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        notificacionService.getById(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(notificacionService.getById(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(findByIdSpy).toHaveBeenCalledWith(nonExistentId);
     });
@@ -324,7 +328,10 @@ describe('NotificacionService', () => {
         fecha_creacion: new Date('2020-01-01'),
       } as any;
 
-      await notificacionService.put(mockNotificacion._id, dtoConCamposProtegidos);
+      await notificacionService.put(
+        mockNotificacion._id,
+        dtoConCamposProtegidos,
+      );
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith).not.toHaveProperty('activo');
@@ -336,7 +343,9 @@ describe('NotificacionService', () => {
       const updateSpy = jest
         .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
-          exec: jest.fn().mockResolvedValue({ ...mockNotificacion, ...updateDto }),
+          exec: jest
+            .fn()
+            .mockResolvedValue({ ...mockNotificacion, ...updateDto }),
         } as any);
 
       await notificacionService.put(mockNotificacion._id, updateDto);
@@ -421,9 +430,9 @@ describe('NotificacionService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(
-        notificacionService.delete(nonExistentId),
-      ).rejects.toThrow(`${nonExistentId} no existe`);
+      await expect(notificacionService.delete(nonExistentId)).rejects.toThrow(
+        `${nonExistentId} no existe`,
+      );
 
       expect(deleteSpy).toHaveBeenCalledWith(
         nonExistentId,

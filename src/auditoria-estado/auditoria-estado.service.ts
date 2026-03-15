@@ -56,11 +56,16 @@ export class EstadoAuditoriaService {
       );
     }
 
-    const estadoAuditoriaCreado = await this.AuditoriaEstadoModel.create(planEstadoData);
+    const estadoAuditoriaCreado =
+      await this.AuditoriaEstadoModel.create(planEstadoData);
     const AuditoriaDatosActualizarEstado = {
       estado_id: estadoAuditoriaCreado.estado_id,
-    }
-    await this.AuditoriaModel.findByIdAndUpdate(estadoAuditoriaCreado.auditoria_id, AuditoriaDatosActualizarEstado, { new: true }).exec();
+    };
+    await this.AuditoriaModel.findByIdAndUpdate(
+      estadoAuditoriaCreado.auditoria_id,
+      AuditoriaDatosActualizarEstado,
+      { new: true },
+    ).exec();
     return estadoAuditoriaCreado;
   }
 

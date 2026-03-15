@@ -54,7 +54,9 @@ describe('EstadoAuditoriaService', () => {
           provide: getModelToken(Auditoria.name),
           useValue: {
             findById: jest.fn(),
-            findByIdAndUpdate: jest.fn().mockReturnValue({ exec: jest.fn().mockResolvedValue(mockAuditoria) }),
+            findByIdAndUpdate: jest.fn().mockReturnValue({
+              exec: jest.fn().mockResolvedValue(mockAuditoria),
+            }),
           },
         },
       ],

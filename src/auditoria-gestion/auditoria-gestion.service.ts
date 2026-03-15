@@ -38,7 +38,8 @@ export class AuditoriaGestionService {
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-    const nuevoEstado = await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
+    const nuevoEstado =
+      await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
 
     const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
       createAuditoriaGestionDto.plan_auditoria_id,
@@ -47,7 +48,9 @@ export class AuditoriaGestionService {
     );
 
     if (!planActualizado) {
-      throw new Error(`Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`);
+      throw new Error(
+        `Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`,
+      );
     }
 
     return nuevoEstado;

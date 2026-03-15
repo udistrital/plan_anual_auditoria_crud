@@ -183,7 +183,10 @@ describe('AuditoriaPadreService', () => {
       } as any);
 
       await expect(
-        auditoriaPadreService.put(mockAuditoriaPadre._id, mockAuditoriaPadreDTO),
+        auditoriaPadreService.put(
+          mockAuditoriaPadre._id,
+          mockAuditoriaPadreDTO,
+        ),
       ).rejects.toThrow(`${mockAuditoriaPadre._id} no existe`);
     });
   });
@@ -191,7 +194,9 @@ describe('AuditoriaPadreService', () => {
   describe('delete', () => {
     it('Debería desactivar y retornar una auditoria padre', async () => {
       jest.spyOn(auditoriaPadreModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ ...mockAuditoriaPadre, activo: false }),
+        exec: jest
+          .fn()
+          .mockResolvedValue({ ...mockAuditoriaPadre, activo: false }),
       } as any);
 
       const result = await auditoriaPadreService.delete(mockAuditoriaPadre._id);
