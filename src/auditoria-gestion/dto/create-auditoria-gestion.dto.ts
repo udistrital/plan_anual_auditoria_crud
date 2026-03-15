@@ -4,8 +4,7 @@ import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dt
 import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 
 export interface CreateAuditoriaGestion
-  extends AuditoriaDTO,
-    AuditoriaEstadoDto {}
+  extends AuditoriaDTO, AuditoriaEstadoDto {}
 
 export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   @ApiProperty()

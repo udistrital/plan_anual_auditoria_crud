@@ -47,5 +47,6 @@ export class AuditoriaPadre extends Document {
   fecha_modificacion: Date;
 }
 
-export const AuditoriaPadreSchema = SchemaFactory.createForClass(AuditoriaPadre);
+export const AuditoriaPadreSchema =
+  SchemaFactory.createForClass(AuditoriaPadre);
 AuditoriaPadreSchema.set('versionKey', false);

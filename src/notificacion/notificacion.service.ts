@@ -13,9 +13,7 @@ export class NotificacionService {
     private readonly notificacionModel: Model<Notificacion>,
   ) {}
 
-  async post(
-    notificacionDTO: NotificacionDTO,
-  ): Promise<Notificacion> {
+  async post(notificacionDTO: NotificacionDTO): Promise<Notificacion> {
     const fecha = new Date();
     const notificacionData = {
       ...notificacionDTO,
@@ -41,9 +39,7 @@ export class NotificacionService {
   }
 
   async getById(id: string): Promise<Notificacion> {
-    const notificacion = await this.notificacionModel
-      .findById(id)
-      .exec();
+    const notificacion = await this.notificacionModel.findById(id).exec();
     if (!notificacion) {
       throw new Error(`${id} no existe`);
     }

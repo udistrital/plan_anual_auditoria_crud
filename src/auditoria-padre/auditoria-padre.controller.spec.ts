@@ -35,7 +35,6 @@ const mockAuditoriaPadre = {
 
 describe('AuditoriaPadreController', () => {
   let auditoriaPadreController: AuditoriaPadreController;
-  let auditoriaPadreService: AuditoriaPadreService;
 
   const mockAuditoriaPadreService = {
     post: jest.fn(),
@@ -60,9 +59,6 @@ describe('AuditoriaPadreController', () => {
     auditoriaPadreController = module.get<AuditoriaPadreController>(
       AuditoriaPadreController,
     );
-    auditoriaPadreService = module.get<AuditoriaPadreService>(
-      AuditoriaPadreService,
-    );
   });
 
   afterEach(() => {
@@ -82,7 +78,10 @@ describe('AuditoriaPadreController', () => {
 
       mockAuditoriaPadreService.post.mockResolvedValue(mockAuditoriaPadre);
 
-      await auditoriaPadreController.post(mockRes as any, mockAuditoriaPadreDTO);
+      await auditoriaPadreController.post(
+        mockRes as any,
+        mockAuditoriaPadreDTO,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -103,7 +102,10 @@ describe('AuditoriaPadreController', () => {
         new Error('Error al crear'),
       );
 
-      await auditoriaPadreController.post(mockRes as any, mockAuditoriaPadreDTO);
+      await auditoriaPadreController.post(
+        mockRes as any,
+        mockAuditoriaPadreDTO,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
     });
@@ -142,7 +144,10 @@ describe('AuditoriaPadreController', () => {
 
       mockAuditoriaPadreService.getById.mockResolvedValue(mockAuditoriaPadre);
 
-      await auditoriaPadreController.getById(mockRes as any, mockAuditoriaPadre._id);
+      await auditoriaPadreController.getById(
+        mockRes as any,
+        mockAuditoriaPadre._id,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -206,7 +211,10 @@ describe('AuditoriaPadreController', () => {
         activo: false,
       });
 
-      await auditoriaPadreController.delete(mockRes as any, mockAuditoriaPadre._id);
+      await auditoriaPadreController.delete(
+        mockRes as any,
+        mockAuditoriaPadre._id,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockRes.json).toHaveBeenCalledWith({

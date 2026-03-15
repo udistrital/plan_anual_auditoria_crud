@@ -28,7 +28,6 @@ export class Notificacion extends Document {
   fecha_modificacion: Date;
 }
 
-export const NotificacionSchema =
-  SchemaFactory.createForClass(Notificacion);
+export const NotificacionSchema = SchemaFactory.createForClass(Notificacion);
 
 NotificacionSchema.set('versionKey', false);
