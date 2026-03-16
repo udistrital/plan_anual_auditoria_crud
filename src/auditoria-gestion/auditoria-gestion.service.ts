@@ -1,77 +1,86 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Auditoria } from '../auditoria/schemas/auditoria.schema';
-import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
-import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
+import { AuditoriaPadre } from '../auditoria-padre/schemas/auditoria-padre.schema';
+import { AuditoriaPadreDTO } from 'src/auditoria-padre/dto/auditoria-padre.dto';
+import { AuditoriaPadreEstado } from '../auditoria-padre-estado/schema/auditoria-padre-estado.schema';
+import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
 import { CreateAuditoriaGestion } from './dto/create-auditoria-gestion.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 @Injectable()
 export class AuditoriaGestionService {
   constructor(
-    @InjectModel(Auditoria.name)
-    private readonly AuditoriaModel: Model<Auditoria>,
-    @InjectModel(AuditoriaEstado.name)
-    private readonly AuditoriaEstadoModel: Model<AuditoriaEstado>,
+    @InjectModel(AuditoriaPadre.name)
+    private readonly AuditoriaPadreModel: Model<AuditoriaPadre>,
+    @InjectModel(AuditoriaPadreEstado.name)
+    private readonly AuditoriaPadreEstadoModel: Model<AuditoriaPadreEstado>,
     @InjectModel(PlanAuditoria.name)
     private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
   ) {}
 
   async post(createAuditoriaGestionDto: CreateAuditoriaGestion) {
     const fecha = new Date();
-    const auditoria = { ...createAuditoriaGestionDto } as AuditoriaDTO;
-    const estado = { ...createAuditoriaGestionDto } as AuditoriaEstadoDto;
-    const auditoriaData = {
-      ...auditoria,
+    const auditoriaPadre = {
+      ...createAuditoriaGestionDto,
+    } as AuditoriaPadreDTO;
+    const auditoriaPadreData = {
+      ...auditoriaPadre,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
     };
-    const nuevaAuditoria = await this.AuditoriaModel.create(auditoriaData);
+    const nuevaAuditoriaPadre =
+      await this.AuditoriaPadreModel.create(auditoriaPadreData);
 
-    const auditoriaEstadoData = {
-      ...estado,
-      auditoria_id: nuevaAuditoria._id,
+    const auditoriaPadreEstadoData: Partial<AuditoriaPadreEstadoDto> = {
+      auditoria_padre_id: nuevaAuditoriaPadre._id.toString(),
+      usuario_id: createAuditoriaGestionDto.usuario_id,
+      usuario_rol: createAuditoriaGestionDto.usuario_rol,
+      observacion: createAuditoriaGestionDto.observacion,
+      estado_id: createAuditoriaGestionDto.estado_id,
+      fase_id: createAuditoriaGestionDto.fase_id,
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-    const nuevoEstado =
-      await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
-
-    const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
-      createAuditoriaGestionDto.plan_auditoria_id,
-      { $push: { auditorias: nuevaAuditoria._id.toString() } },
-      { new: true },
+    const nuevoEstado = await this.AuditoriaPadreEstadoModel.create(
+      auditoriaPadreEstadoData,
     );
 
-    if (!planActualizado) {
-      throw new Error(
-        `Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`,
+    if (createAuditoriaGestionDto.plan_auditoria_id) {
+      const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
+        createAuditoriaGestionDto.plan_auditoria_id,
+        { $push: { auditorias: nuevaAuditoriaPadre._id.toString() } },
+        { new: true },
       );
+
+      if (!planActualizado) {
+        throw new Error(
+          `Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`,
+        );
+      }
     }
 
     return nuevoEstado;
   }
 
-  async put(id: string, auditoriaNuevoEstado: AuditoriaEstadoDto) {
+  async put(id: string, auditoriaNuevoEstado: AuditoriaPadreEstadoDto) {
     const fecha = new Date();
-    const auditoriasEnPlan = await this.AuditoriaModel.find({
+    const auditoriasEnPlan = await this.AuditoriaPadreModel.find({
       plan_auditoria_id: id,
       activo: true,
     });
 
-    const estadosAnteriores = await this.AuditoriaEstadoModel.find({
-      auditoria_id: { $in: auditoriasEnPlan.map((a) => a._id) },
+    const estadosAnteriores = await this.AuditoriaPadreEstadoModel.find({
+      auditoria_padre_id: { $in: auditoriasEnPlan.map((a) => a._id) },
       actual: true,
     });
 
     if (estadosAnteriores.length > 0) {
-      await this.AuditoriaEstadoModel.updateMany(
+      await this.AuditoriaPadreEstadoModel.updateMany(
         {
-          auditoria_id: { $in: auditoriasEnPlan.map((a) => a._id) },
+          auditoria_padre_id: { $in: auditoriasEnPlan.map((a) => a._id) },
           actual: true,
         },
         { $set: { actual: false } },
@@ -79,7 +88,7 @@ export class AuditoriaGestionService {
     }
 
     const nuevosEstados = auditoriasEnPlan.map((auditoria) => ({
-      auditoria_id: auditoria._id,
+      auditoria_padre_id: auditoria._id,
       usuario_id: auditoriaNuevoEstado.usuario_id,
       usuario_rol: auditoriaNuevoEstado.usuario_rol,
       observacion: auditoriaNuevoEstado.observacion,
@@ -90,6 +99,14 @@ export class AuditoriaGestionService {
       fecha_ejecucion_estado: fecha,
     }));
 
-    return await this.AuditoriaEstadoModel.insertMany(nuevosEstados);
+    const estadosCreados =
+      await this.AuditoriaPadreEstadoModel.insertMany(nuevosEstados);
+
+    await this.AuditoriaPadreModel.updateMany(
+      { _id: { $in: auditoriasEnPlan.map((a) => a._id) } },
+      { $set: { estado_id: auditoriaNuevoEstado.estado_id } },
+    );
+
+    return estadosCreados;
   }
 }
