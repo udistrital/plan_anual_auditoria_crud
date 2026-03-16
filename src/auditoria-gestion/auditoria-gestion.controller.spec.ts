@@ -9,7 +9,6 @@ jest.mock('../auditoria-estado/dto/auditoria-estado.dto', () => ({
 import { AuditoriaGestionController } from './auditoria-gestion.controller';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
-import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
 import { Types } from 'mongoose';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
@@ -19,29 +18,16 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   tipo_evaluacion_id: 2,
   cronograma_id: [1, 2, 3],
   estado_id: 2552,
-  no_auditoria: 123420,
   vigencia_id: 1234,
-  consecutivo_OCI: 'EHS54F',
-  consecutivo_IE: 'PASJF4532',
   macroproceso_id: 10,
   proceso_id: 20,
   dependencia_id: 30,
-  fecha_inicio: new Date('2024-01-01'),
-  fecha_fin: new Date('2024-12-31'),
-  objetivo: 'Evaluar el cumplimiento de procesos',
-  alcance: 'Procesos administrativos y financieros',
-  criterio: 'Normas ISO 9001',
-  rec_tecnologico: 'Software de auditoría',
-  rec_humano: 'Equipo de 5 auditores',
-  rec_fisico: 'Oficinas y equipos',
-  temas: 'Gestión de calidad, procesos, controles',
-  correo_complementario: 'correo@email.com',
+  auditorias: [],
+  cantidad_auditorias: 0,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
-  auditoria_padre_id: '67297dda3416d2a85e5d6d90',
   // Datos de Estado (auditoria_id se crea automáticamente, no se envía en POST)
-  auditoria_id: undefined,
   usuario_id: 76767,
   usuario_rol: 'AUDITOR',
   observacion: 'Estado inicial de la auditoría',
@@ -63,8 +49,8 @@ const mockAuditoriaEstado = {
   fecha_ejecucion_estado: new Date('2024-01-15'),
 };
 
-const mockAuditoriaEstadoDto: AuditoriaEstadoDto = {
-  auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
+const mockAuditoriaPadreEstadoDto = {
+  auditoria_padre_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR_LIDER',
   observacion: 'Cambio de estado a ejecución',
@@ -207,11 +193,11 @@ describe('AuditoriaGestionController', () => {
         .mockResolvedValue([] as any);
       const res = mockResponse();
 
-      controller.put(res as any, planAuditoriaId, mockAuditoriaEstadoDto);
+      controller.put(res as any, planAuditoriaId, mockAuditoriaPadreEstadoDto);
 
       expect(serviceSpy).toHaveBeenCalledWith(
         planAuditoriaId,
-        mockAuditoriaEstadoDto,
+        mockAuditoriaPadreEstadoDto,
       );
     });
   });

@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
-import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
+import { AuditoriaPadreEstadoDto } from '../auditoria-padre-estado/dto/auditoria-padre-estado.dto';
 
 @ApiTags('auditoria-gestion')
 @Controller('auditoria-gestion')
@@ -27,12 +27,12 @@ export class AuditoriaGestionController {
 
   @Post()
   @ApiOperation({
-    summary: 'Crear una nueva auditoria junto con su estado inicial',
+    summary: 'Crear una nueva auditoria padre junto con su estado inicial',
   })
   @ApiBody({ type: CreateAuditoriaGestionDto })
   @ApiResponse({
     status: 201,
-    description: 'La auditoria ha sido creada exitosamente.',
+    description: 'La auditoria padre ha sido creada exitosamente.',
     type: CreateAuditoriaGestionDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
@@ -63,19 +63,20 @@ export class AuditoriaGestionController {
 
   @Put('/:id')
   @ApiOperation({
-    summary: 'Actualizar los estados de las auditorias existentes en un plan',
+    summary:
+      'Actualizar los estados de las auditorias padre existentes en un plan',
   })
   @ApiParam({
     name: 'id',
     type: String,
     description: 'ID del plan de auditorias a actualizar',
   })
-  @ApiBody({ type: AuditoriaEstadoDto })
+  @ApiBody({ type: AuditoriaPadreEstadoDto })
   @ApiResponse({
     status: 200,
     description:
-      'Los estados de las auditorias han sido actualizados exitosamente.',
-    type: AuditoriaEstadoDto,
+      'Los estados de las auditorias padre han sido actualizados exitosamente.',
+    type: AuditoriaPadreEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({
@@ -85,10 +86,13 @@ export class AuditoriaGestionController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() auditoriaEstado: AuditoriaEstadoDto,
+    @Body() auditoriaPadreEstado: AuditoriaPadreEstadoDto,
   ) {
     try {
-      const auditoria = this.auditoriaGestionService.put(id, auditoriaEstado);
+      const auditoria = await this.auditoriaGestionService.put(
+        id,
+        auditoriaPadreEstado,
+      );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,

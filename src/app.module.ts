@@ -15,6 +15,7 @@ import { TemaModule } from './tema/tema.module';
 import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.module';
 import { NotificacionModule } from './notificacion/notificacion.module';
 import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
+import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-padre-estado.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
     AuditoriaGestionModule,
     NotificacionModule,
     AuditoriaPadreModule,
+    EstadoAuditoriaPadreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
