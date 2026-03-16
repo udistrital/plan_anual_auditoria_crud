@@ -9,6 +9,7 @@ import {
 import { AuditoriaModule } from 'src/auditoria/auditoria.module';
 import { AuditoriaPadreModule } from 'src/auditoria-padre/auditoria-padre.module';
 import { EstadoAuditoriaModule } from 'src/auditoria-estado/auditoria-estado.module';
+import { EstadoAuditoriaPadreModule } from 'src/auditoria-padre-estado/auditoria-padre-estado.module';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -17,6 +18,7 @@ import { EstadoAuditoriaModule } from 'src/auditoria-estado/auditoria-estado.mod
     AuditoriaModule,
     AuditoriaPadreModule,
     EstadoAuditoriaModule,
+    EstadoAuditoriaPadreModule,
   ],
   controllers: [PlanAuditoriaController],
   providers: [PlanAuditoriaService],
