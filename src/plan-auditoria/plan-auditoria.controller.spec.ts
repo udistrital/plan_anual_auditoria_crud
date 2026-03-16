@@ -499,9 +499,16 @@ describe('PlanAuditoriaController', () => {
         .mockResolvedValue(mockAuditoriasGeneradas as any);
       const res = mockResponse();
 
-      await controller.generarAuditorias(res, mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -519,14 +526,22 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(res, nonExistentId, mockAuditoriaEstadoDto);
+      await controller.generarAuditorias(
+        res,
+        nonExistentId,
+        mockAuditoriaEstadoDto,
+      );
 
-      expect(serviceSpy).toHaveBeenCalledWith(nonExistentId, mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        nonExistentId,
+        mockAuditoriaEstadoDto,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error en servicio generarAuditorias: el plan de auditoria no existe',
+        Message:
+          'Error en servicio generarAuditorias: el plan de auditoria no existe',
         Data: mockError.message,
       });
     });
@@ -538,9 +553,16 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(res, mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -559,9 +581,16 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(res, invalidId, mockAuditoriaEstadoDto);
+      await controller.generarAuditorias(
+        res,
+        invalidId,
+        mockAuditoriaEstadoDto,
+      );
 
-      expect(serviceSpy).toHaveBeenCalledWith(invalidId, mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        invalidId,
+        mockAuditoriaEstadoDto,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -579,9 +608,16 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(res, mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockPlanAuditoria._id, mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,

@@ -185,7 +185,10 @@ export class PlanAuditoriaController {
   }
 
   @Post('/:id/generar-auditorias')
-  @ApiOperation({ summary: 'Generar auditorías hija a partir de auditorías padre registradas en el plan.' })
+  @ApiOperation({
+    summary:
+      'Generar auditorías hija a partir de auditorías padre registradas en el plan.',
+  })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: AuditoriaEstadoDto })
   @ApiResponse({
@@ -196,28 +199,31 @@ export class PlanAuditoriaController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
   async generarAuditorias(
-      @Res() res,
-      @Param('id') id: string,
-      auditoriaEstadoDto: AuditoriaEstadoDto, // TODO: Evaluar creación de un DTO específico
+    @Res() res,
+    @Param('id') id: string,
+    auditoriaEstadoDto: AuditoriaEstadoDto, // TODO: Evaluar creación de un DTO específico
   ) {
     try {
       const auditoriasGeneradas =
-          await this.planAuditoriaService.generarAuditorias(id, auditoriaEstadoDto);
+        await this.planAuditoriaService.generarAuditorias(
+          id,
+          auditoriaEstadoDto,
+        );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Auditorías generadas exitosamente',
         Data: auditoriasGeneradas,
       });
-    }
-    catch (error) {
+    } catch (error) {
       let status = HttpStatus.BAD_REQUEST;
       let message =
-          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
+        'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
 
       if (error.message.includes('no existe')) {
         status = HttpStatus.NOT_FOUND;
-        message = 'Error en servicio generarAuditorias: el plan de auditoria no existe';
+        message =
+          'Error en servicio generarAuditorias: el plan de auditoria no existe';
       } else {
         console.error('Error en servicio generarAuditorias:', error);
       }
@@ -230,5 +236,4 @@ export class PlanAuditoriaController {
       });
     }
   }
-
 }
