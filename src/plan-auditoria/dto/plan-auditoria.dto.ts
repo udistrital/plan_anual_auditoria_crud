@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class PlanAuditoriaDTO {
   @ApiProperty()
@@ -32,7 +33,7 @@ export class PlanAuditoriaDTO {
   readonly secretario_tecnico_id: number;
 
   @ApiProperty()
-  readonly auditorias: string[];
+  readonly auditorias: Types.ObjectId[];
 
   @ApiProperty()
   activo: boolean;

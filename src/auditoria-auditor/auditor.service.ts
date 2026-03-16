@@ -37,8 +37,8 @@ export class AuditorService {
     const actividadData = {
       ...AuditorDTO,
       activo: true,
-      fechaCreacion: fecha,
-      fechaModificacion: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
     await this.checkRelated(AuditorDTO);
     return await this.ActividadModel.create(actividadData);

@@ -24,9 +24,7 @@ import {
 @ApiTags('notificacion')
 @Controller('notificacion')
 export class NotificacionController {
-  constructor(
-    private notificacionService: NotificacionService,
-  ) {}
+  constructor(private notificacionService: NotificacionService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo registro de notificación' })
@@ -37,14 +35,9 @@ export class NotificacionController {
     type: NotificacionDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(
-    @Res() res,
-    @Body() notificacionDTO: NotificacionDTO,
-  ) {
+  async post(@Res() res, @Body() notificacionDTO: NotificacionDTO) {
     try {
-      const notificacion = await this.notificacionService.post(
-        notificacionDTO,
-      );
+      const notificacion = await this.notificacionService.post(notificacionDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -71,8 +64,7 @@ export class NotificacionController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const notificaciones =
-        await this.notificacionService.getAll(filterDto);
+      const notificaciones = await this.notificacionService.getAll(filterDto);
       const counts = await this.notificacionService.count(filterDto);
 
       res.status(HttpStatus.OK).json({

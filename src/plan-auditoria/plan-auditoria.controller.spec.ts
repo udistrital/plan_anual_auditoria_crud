@@ -4,6 +4,7 @@ import { FilterDto } from '../filters/filters.dto';
 import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { PlanAuditoriaService } from './plan-auditoria.service';
 import { PlanAuditoriaController } from './plan-auditoria.controller';
+import { Types } from 'mongoose';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
@@ -16,7 +17,10 @@ const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   jefe_dependencia_id: 5541,
   aprobado_secretario_tecnico: true,
   secretario_tecnico_id: 278,
-  auditorias: ['67197dda3416d2a85e5d6d90', '67197dda3416d2a85e5d6d91'],
+  auditorias: [
+    new Types.ObjectId('67197dda3416d2a85e5d6d90'),
+    new Types.ObjectId('67197dda3416d2a85e5d6d91'),
+  ],
   activo: true,
   fecha_creacion: new Date('2024-01-15'),
   fecha_modificacion: new Date('2024-01-15'),
@@ -51,6 +55,7 @@ describe('PlanAuditoriaController', () => {
             put: jest.fn(),
             delete: jest.fn(),
             count: jest.fn(),
+            generarAuditorias: jest.fn(),
           },
         },
       ],
@@ -472,6 +477,153 @@ describe('PlanAuditoriaController', () => {
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en el servicio Delete: la peticion contiene paratros incorrectos',
+        Data: mockError.message,
+      });
+    });
+  });
+
+  describe('generarAuditorias', () => {
+    const mockAuditoriasGeneradas = [
+      { _id: 'a1', nombre: 'Auditoria hija 1' },
+      { _id: 'a2', nombre: 'Auditoria hija 2' },
+    ];
+
+    const mockAuditoriaEstadoDto = {
+      estado: 'programada',
+      fecha: new Date('2024-02-01'),
+    } as any;
+
+    it('Debería generar auditorías y retornar CREATED (201) con datos válidos', async () => {
+      const serviceSpy = jest
+        .spyOn(service, 'generarAuditorias')
+        .mockResolvedValue(mockAuditoriasGeneradas as any);
+      const res = mockResponse();
+
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: true,
+        Status: HttpStatus.CREATED,
+        Message: 'Auditorías generadas exitosamente',
+        Data: mockAuditoriasGeneradas,
+      });
+    });
+
+    it('Debería retornar NOT_FOUND (404) cuando el plan no existe', async () => {
+      const nonExistentId = '671aaf35d779a09e092cb999';
+      const mockError = new Error(`${nonExistentId} no existe`);
+      const serviceSpy = jest
+        .spyOn(service, 'generarAuditorias')
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.generarAuditorias(
+        res,
+        nonExistentId,
+        mockAuditoriaEstadoDto,
+      );
+
+      expect(serviceSpy).toHaveBeenCalledWith(
+        nonExistentId,
+        mockAuditoriaEstadoDto,
+      );
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.NOT_FOUND,
+        Message:
+          'Error en servicio generarAuditorias: el plan de auditoria no existe',
+        Data: mockError.message,
+      });
+    });
+
+    it('Debería retornar BAD_REQUEST (400) cuando la validación falla', async () => {
+      const mockError = new Error('AuditoriaEstado validation failed');
+      const serviceSpy = jest
+        .spyOn(service, 'generarAuditorias')
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido',
+        Data: mockError.message,
+      });
+    });
+
+    it('Debería retornar BAD_REQUEST (400) cuando el ID tiene formato inválido', async () => {
+      const invalidId = 'invalid-id-format';
+      const mockError = new Error('Cast to ObjectId failed');
+      const serviceSpy = jest
+        .spyOn(service, 'generarAuditorias')
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.generarAuditorias(
+        res,
+        invalidId,
+        mockAuditoriaEstadoDto,
+      );
+
+      expect(serviceSpy).toHaveBeenCalledWith(
+        invalidId,
+        mockAuditoriaEstadoDto,
+      );
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido',
+        Data: mockError.message,
+      });
+    });
+
+    it('Debería manejar errores generales del servicio (BD) con BAD_REQUEST', async () => {
+      const mockError = new Error('Database failure');
+      const serviceSpy = jest
+        .spyOn(service, 'generarAuditorias')
+        .mockRejectedValue(mockError);
+      const res = mockResponse();
+
+      await controller.generarAuditorias(
+        res,
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+
+      expect(serviceSpy).toHaveBeenCalledWith(
+        mockPlanAuditoria._id,
+        mockAuditoriaEstadoDto,
+      );
+      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+      expect(res.json).toHaveBeenCalledWith({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido',
         Data: mockError.message,
       });
     });

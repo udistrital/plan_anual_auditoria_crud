@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { AuditoriaEstado } from '../auditoria-estado/schema/auditoria-estado.schema';
@@ -20,6 +20,7 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   proceso_id: 20,
   dependencia_id: 30,
   auditorias: [],
+  cantidad_auditorias: 0,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
@@ -54,7 +55,7 @@ const mockAuditoriaEstado = {
 };
 
 const mockAuditoriaEstadoDto: AuditoriaPadreEstadoDto = {
-  auditoria_padre_id: '672d3050f7814a9a0c5261d4',
+  auditoria_padre_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR_LIDER',
   observacion: 'Cambio de estado a ejecución',

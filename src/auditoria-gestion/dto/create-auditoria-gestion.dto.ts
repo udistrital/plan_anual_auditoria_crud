@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
 import { AuditoriaPadreDTO } from 'src/auditoria-padre/dto/auditoria-padre.dto';
 
@@ -8,7 +9,7 @@ export interface CreateAuditoriaGestion
 
 export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   @ApiProperty()
-  readonly plan_auditoria_id: string;
+  readonly plan_auditoria_id: string | Types.ObjectId;
 
   @ApiProperty()
   readonly titulo: string;
@@ -36,6 +37,9 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
 
   @ApiProperty()
   readonly auditorias: string[] = [];
+
+  @ApiProperty()
+  readonly cantidad_auditorias: number;
 
   @ApiProperty()
   activo: boolean;

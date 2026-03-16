@@ -31,8 +31,8 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   dependencia_id: number;
 
-  @Prop({ type: [{ type: String }], required: false })
-  auditorias: string[];
+  @Prop({ required: false })
+  cantidad_auditorias: number;
 
   @Prop({ required: false })
   activo: boolean;
@@ -44,5 +44,6 @@ export class AuditoriaPadre extends Document {
   fecha_modificacion: Date;
 }
 
-export const AuditoriaPadreSchema = SchemaFactory.createForClass(AuditoriaPadre);
+export const AuditoriaPadreSchema =
+  SchemaFactory.createForClass(AuditoriaPadre);
 AuditoriaPadreSchema.set('versionKey', false);

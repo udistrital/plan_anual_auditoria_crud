@@ -12,11 +12,11 @@ export class Informe extends Document {
 
   @Prop({ required: true }) fecha_emision: Date;
   @Prop() muestra: string;
-  @Prop() aspectos_generales: string;
+  @Prop() aspecto_general: string;
   @Prop() respuesta_preliminar: string;
   @Prop() informe_final: string;
-  @Prop() observaciones_conclusiones: string;
-  @Prop() notas: string;
+  @Prop() observacion_conclusion: string;
+  @Prop() nota: string;
 
   @Prop() preliminar_auditor_id: number;
   @Prop() final_auditor_id: number;

@@ -9,9 +9,10 @@ jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { AuditoriaPadreController } from './auditoria-padre.controller';
+import { Types } from 'mongoose';
 
 const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría Padre 2024',
   tipo_evaluacion_id: 1,
   cronograma_id: [],
@@ -20,7 +21,7 @@ const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   macroproceso_id: 10,
   proceso_id: 20,
   dependencia_id: 30,
-  auditorias: [],
+  cantidad_auditorias: 2,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
@@ -33,7 +34,6 @@ const mockAuditoriaPadre = {
 
 describe('AuditoriaPadreController', () => {
   let auditoriaPadreController: AuditoriaPadreController;
-  let auditoriaPadreService: AuditoriaPadreService;
 
   const mockAuditoriaPadreService = {
     post: jest.fn(),
@@ -58,9 +58,6 @@ describe('AuditoriaPadreController', () => {
     auditoriaPadreController = module.get<AuditoriaPadreController>(
       AuditoriaPadreController,
     );
-    auditoriaPadreService = module.get<AuditoriaPadreService>(
-      AuditoriaPadreService,
-    );
   });
 
   afterEach(() => {
@@ -80,7 +77,10 @@ describe('AuditoriaPadreController', () => {
 
       mockAuditoriaPadreService.post.mockResolvedValue(mockAuditoriaPadre);
 
-      await auditoriaPadreController.post(mockRes as any, mockAuditoriaPadreDTO);
+      await auditoriaPadreController.post(
+        mockRes as any,
+        mockAuditoriaPadreDTO,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -101,7 +101,10 @@ describe('AuditoriaPadreController', () => {
         new Error('Error al crear'),
       );
 
-      await auditoriaPadreController.post(mockRes as any, mockAuditoriaPadreDTO);
+      await auditoriaPadreController.post(
+        mockRes as any,
+        mockAuditoriaPadreDTO,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
     });
@@ -140,7 +143,10 @@ describe('AuditoriaPadreController', () => {
 
       mockAuditoriaPadreService.getById.mockResolvedValue(mockAuditoriaPadre);
 
-      await auditoriaPadreController.getById(mockRes as any, mockAuditoriaPadre._id);
+      await auditoriaPadreController.getById(
+        mockRes as any,
+        mockAuditoriaPadre._id,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockRes.json).toHaveBeenCalledWith({
@@ -204,7 +210,10 @@ describe('AuditoriaPadreController', () => {
         activo: false,
       });
 
-      await auditoriaPadreController.delete(mockRes as any, mockAuditoriaPadre._id);
+      await auditoriaPadreController.delete(
+        mockRes as any,
+        mockAuditoriaPadre._id,
+      );
 
       expect(mockRes.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockRes.json).toHaveBeenCalledWith({

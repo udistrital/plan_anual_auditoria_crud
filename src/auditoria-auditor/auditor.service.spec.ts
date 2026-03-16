@@ -3,12 +3,12 @@ import { getModelToken } from '@nestjs/mongoose';
 import { AuditorService } from './auditor.service';
 import { AuditorDTO } from './dto/auditor.dto';
 import { Auditor } from './schemas/auditor.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditorDto: AuditorDTO = {
-  auditoria_id: '671aa963064222e6583d56e4',
+  auditoria_id: new Types.ObjectId('671aa963064222e6583d56e4'),
   auditor_id: 12345,
   asignado: true,
   asignado_por_id: 67890,
@@ -95,8 +95,8 @@ describe('AuditorService', () => {
         expect.objectContaining({
           ...mockAuditorDto,
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockAuditor);
@@ -146,8 +146,8 @@ describe('AuditorService', () => {
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
     });
