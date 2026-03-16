@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class AuditoriaPadreDTO {
   @ApiProperty()
-  readonly plan_auditoria_id: string;
+  readonly plan_auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly titulo: string;
@@ -27,10 +28,6 @@ export class AuditoriaPadreDTO {
 
   @ApiProperty()
   readonly dependencia_id: number;
-
-  // TODO: Eliminar este campo.
-  @ApiProperty()
-  readonly auditorias: string[] = [];
 
   @ApiProperty()
   readonly cantidad_auditorias: number;

@@ -4,14 +4,14 @@ import { getModelToken } from '@nestjs/mongoose';
 import { InformeDTO } from './dto/informe.dto';
 import { Informe } from './schemas/informe.schema';
 import { Tema } from '../tema/schemas/tema.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockInformeDto: InformeDTO = {
-  auditoria_id: '507f1f77bcf86cd799439011',
+  auditoria_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   fecha_emision: new Date('2024-01-20'),
   muestra: 'Muestra de prueba',
-  aspectos_generales: 'Aspectos generales de prueba',
+  aspectos_general: 'Aspectos generales de prueba',
   activo: true,
   fecha_creacion: new Date(),
 };

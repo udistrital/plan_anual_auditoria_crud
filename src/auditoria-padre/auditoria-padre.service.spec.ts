@@ -4,11 +4,11 @@ import { getModelToken } from '@nestjs/mongoose';
 import { AuditoriaPadre } from './schemas/auditoria-padre.schema';
 import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría Padre 2024',
   tipo_evaluacion_id: 1,
   cronograma_id: [],
@@ -17,7 +17,7 @@ const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   macroproceso_id: 10,
   proceso_id: 20,
   dependencia_id: 30,
-  auditorias: [],
+  cantidad_auditorias: 2,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
@@ -182,7 +182,10 @@ describe('AuditoriaPadreService', () => {
       } as any);
 
       await expect(
-        auditoriaPadreService.put(mockAuditoriaPadre._id, mockAuditoriaPadreDTO),
+        auditoriaPadreService.put(
+          mockAuditoriaPadre._id,
+          mockAuditoriaPadreDTO,
+        ),
       ).rejects.toThrow(`${mockAuditoriaPadre._id} no existe`);
     });
   });
@@ -190,7 +193,9 @@ describe('AuditoriaPadreService', () => {
   describe('delete', () => {
     it('Debería desactivar y retornar una auditoria padre', async () => {
       jest.spyOn(auditoriaPadreModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue({ ...mockAuditoriaPadre, activo: false }),
+        exec: jest
+          .fn()
+          .mockResolvedValue({ ...mockAuditoriaPadre, activo: false }),
       } as any);
 
       const result = await auditoriaPadreService.delete(mockAuditoriaPadre._id);

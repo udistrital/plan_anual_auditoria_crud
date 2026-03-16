@@ -13,7 +13,7 @@ import {
 } from '../auditoria-auditor/schemas/auditor.schema';
 import {
   AuditoriaPadre,
-  AuditoriaPadreSchema
+  AuditoriaPadreSchema,
 } from 'src/auditoria-padre/schemas/auditoria-padre.schema';
 @Module({
   imports: [

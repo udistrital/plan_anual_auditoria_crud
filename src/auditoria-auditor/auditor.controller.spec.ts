@@ -6,9 +6,10 @@ import { FilterDto } from '../filters/filters.dto';
 
 // Importar el controlador después del mock
 import { AuditorController } from './auditor.controller';
+import { Types } from 'mongoose';
 
 const mockAuditorDto: AuditorDTO = {
-  auditoria_id: '671aaa8a064222e6583d56e7',
+  auditoria_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
   auditor_id: 12345,
   asignado: true,
   asignado_por_id: 67890,

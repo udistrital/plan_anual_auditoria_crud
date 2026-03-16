@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class DocumentoDTO {
   @ApiProperty()
-  readonly referencia_id: string;
+  readonly referencia_id: Types.ObjectId;
 
   @ApiProperty()
   readonly referencia_tipo: string;

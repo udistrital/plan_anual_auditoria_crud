@@ -213,7 +213,7 @@ export class PlanAuditoriaController {
     catch (error) {
       let status = HttpStatus.BAD_REQUEST;
       let message =
-          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parametro invalido';
+          'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
 
       if (error.message.includes('no existe')) {
         status = HttpStatus.NOT_FOUND;

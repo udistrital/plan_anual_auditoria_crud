@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Notificacion } from './schema/notificacion.schema';
@@ -13,12 +13,11 @@ export class NotificacionService {
     private readonly notificacionModel: Model<Notificacion>,
   ) {}
 
-  async post(
-    notificacionDTO: NotificacionDTO,
-  ): Promise<Notificacion> {
+  async post(notificacionDTO: NotificacionDTO): Promise<Notificacion> {
     const fecha = new Date();
     const notificacionData = {
       ...notificacionDTO,
+      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
@@ -40,9 +39,7 @@ export class NotificacionService {
   }
 
   async getById(id: string): Promise<Notificacion> {
-    const notificacion = await this.notificacionModel
-      .findById(id)
-      .exec();
+    const notificacion = await this.notificacionModel.findById(id).exec();
     if (!notificacion) {
       throw new Error(`${id} no existe`);
     }
@@ -56,6 +53,7 @@ export class NotificacionService {
     const { ...updateFields } = notificacionDTO;
     const updateData = {
       ...updateFields,
+      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
       fecha_modificacion: new Date(),
     };
     delete (updateData as any).activo;

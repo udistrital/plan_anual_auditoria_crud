@@ -4,9 +4,10 @@ import { InformeDTO } from './dto/informe.dto';
 import { InformeService } from './informe.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
+import { Types } from 'mongoose';
 
 const mockInformeDto: InformeDTO = {
-  auditoria_id: '507f1f77bcf86cd799439011',
+  auditoria_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   fecha_emision: new Date('2024-01-20'),
   muestra: 'Muestra de prueba',
   activo: true,

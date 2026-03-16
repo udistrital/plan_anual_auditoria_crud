@@ -9,9 +9,10 @@ jest.mock('../pipes/parse-object-id/parse-object-id.pipe.ts');
 
 // Importar el controlador después del mock
 import { ActividadController } from './actividad.controller';
+import { Types } from 'mongoose';
 
 const mockActividadDto: ActividadDTO = {
-  auditoria_id: '671aaa8a064222e6583d56e7',
+  auditoria_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
   titulo: 'Actividad de prueba',
   fecha_inicio: new Date('2024-01-01'),
   fecha_fin: new Date('2024-01-31'),

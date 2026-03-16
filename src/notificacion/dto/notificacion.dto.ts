@@ -6,7 +6,7 @@ export class NotificacionDTO {
     description: 'Nombre de la plantilla de correo utilizada para el envío',
     example: 'SISIFO_PLANTILLA_SOLICITUD',
   })
-  readonly template: string;
+  readonly plantilla: string;
 
   @ApiProperty()
   readonly fecha_envio: Date;
@@ -22,12 +22,12 @@ export class NotificacionDTO {
       destinatarios_bcc: [],
     },
   })
-  readonly metadatos: object;
+  readonly metadato: object;
 
   @ApiProperty({
     description: 'ObjectId del documento referenciado',
     example: '671aaa8a064222e6583d56e7',
-    type: String,
+    type: Types.ObjectId,
   })
   readonly referencia_id: Types.ObjectId;
 

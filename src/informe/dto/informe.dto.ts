@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class InformeDTO {
   @ApiProperty()
-  readonly auditoria_id: string;
+  readonly auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly fecha_emision: Date;
@@ -11,7 +12,7 @@ export class InformeDTO {
   readonly muestra?: string;
 
   @ApiProperty()
-  readonly aspectos_generales?: string;
+  readonly aspectos_general?: string;
 
   @ApiProperty()
   readonly respuesta_preliminar?: string;
@@ -20,10 +21,10 @@ export class InformeDTO {
   readonly informe_final?: string;
 
   @ApiProperty()
-  readonly observaciones_conclusiones?: string;
+  readonly observacion_conclusion?: string;
 
   @ApiProperty()
-  readonly notas?: string;
+  readonly nota?: string;
 
   @ApiProperty()
   readonly preliminar_auditor_id?: number;
