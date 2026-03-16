@@ -5,7 +5,6 @@ import { AuditoriaPadre } from '../../auditoria-padre/schemas/auditoria-padre.sc
 
 @Schema({ collection: 'auditoria' })
 export class Auditoria extends Document {
-  // TODO: Migración: eliminar `plan_auditoria_id` cuando la transición a `auditoria_padre_id` esté completa
   @Prop({ required: false, type: Types.ObjectId, ref: PlanAuditoria.name })
   plan_auditoria_id: PlanAuditoria | Types.ObjectId;
 
