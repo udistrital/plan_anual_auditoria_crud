@@ -60,7 +60,6 @@ steps:
       - pnpm run lint:ci
     when:
       branch:
-        - develop
         - feature/*
       event:
         - push
@@ -74,7 +73,6 @@ steps:
       - pnpm run test:ci
     when:
       branch:
-        - develop
         - feature/*
       event:
         - push
