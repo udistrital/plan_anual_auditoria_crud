@@ -1,17 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class AuditoriaDTO {
-  // TODO: Migración: eliminar `plan_auditoria_id` cuando la transición a `auditoria_padre_id` esté completa
+
   @ApiProperty()
   readonly plan_auditoria_id?: string;
+
   @ApiProperty()
   readonly auditoria_padre_id?: string;
-
-  @ApiProperty()
-  readonly titulo: string;
-
-  @ApiProperty()
-  readonly tipo_evaluacion_id: number;
 
   @ApiProperty()
   readonly cronograma_id: number[] = [];
@@ -20,7 +15,7 @@ export class AuditoriaDTO {
   readonly estado_id: number;
 
   @ApiProperty()
-  readonly no_auditoria: number;
+  readonly consecutivo_no_auditoria: number;
 
   @ApiProperty()
   readonly vigencia_id: number;
@@ -30,15 +25,6 @@ export class AuditoriaDTO {
 
   @ApiProperty()
   readonly consecutivo_IE: string;
-
-  @ApiProperty()
-  readonly macroproceso_id: number;
-
-  @ApiProperty()
-  readonly proceso_id: number;
-
-  @ApiProperty()
-  readonly dependencia_id: number;
 
   @ApiProperty()
   readonly fecha_inicio: Date;
@@ -65,7 +51,7 @@ export class AuditoriaDTO {
   readonly rec_fisico: string;
 
   @ApiProperty()
-  readonly temas: string;
+  readonly tema: string;
 
   @ApiProperty()
   readonly correo_complementario: string;
