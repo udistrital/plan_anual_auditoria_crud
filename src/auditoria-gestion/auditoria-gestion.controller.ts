@@ -63,7 +63,8 @@ export class AuditoriaGestionController {
 
   @Put('/:id')
   @ApiOperation({
-    summary: 'Actualizar los estados de las auditorias padre existentes en un plan',
+    summary:
+      'Actualizar los estados de las auditorias padre existentes en un plan',
   })
   @ApiParam({
     name: 'id',
@@ -88,7 +89,10 @@ export class AuditoriaGestionController {
     @Body() auditoriaPadreEstado: AuditoriaPadreEstadoDto,
   ) {
     try {
-      const auditoria = await this.auditoriaGestionService.put(id, auditoriaPadreEstado);
+      const auditoria = await this.auditoriaGestionService.put(
+        id,
+        auditoriaPadreEstado,
+      );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,

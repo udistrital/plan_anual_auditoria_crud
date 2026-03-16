@@ -33,7 +33,9 @@ export class EstadoAuditoriaPadreService {
     }
   }
 
-  async post(auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto): Promise<AuditoriaPadreEstado> {
+  async post(
+    auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
+  ): Promise<AuditoriaPadreEstado> {
     const fecha = new Date();
     const estadoData = {
       ...auditoriaPadreEstadoDto,
@@ -57,11 +59,16 @@ export class EstadoAuditoriaPadreService {
       );
     }
 
-    const estadoCreado = await this.AuditoriaPadreEstadoModel.create(estadoData);
+    const estadoCreado =
+      await this.AuditoriaPadreEstadoModel.create(estadoData);
     const datosActualizarEstado = {
       estado_id: estadoCreado.estado_id,
     };
-    await this.AuditoriaPadreModel.findByIdAndUpdate(estadoCreado.auditoria_padre_id, datosActualizarEstado, { new: true }).exec();
+    await this.AuditoriaPadreModel.findByIdAndUpdate(
+      estadoCreado.auditoria_padre_id,
+      datosActualizarEstado,
+      { new: true },
+    ).exec();
     return estadoCreado;
   }
 

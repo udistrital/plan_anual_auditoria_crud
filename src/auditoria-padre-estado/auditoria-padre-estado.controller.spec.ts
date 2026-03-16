@@ -9,7 +9,9 @@ describe('EstadoAuditoriaPadreController', () => {
       controllers: [EstadoAuditoriaPadreController],
     }).compile();
 
-    controller = module.get<EstadoAuditoriaPadreController>(EstadoAuditoriaPadreController);
+    controller = module.get<EstadoAuditoriaPadreController>(
+      EstadoAuditoriaPadreController,
+    );
   });
 
   it('should be defined', () => {

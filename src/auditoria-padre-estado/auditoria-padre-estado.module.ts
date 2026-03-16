@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuditoriaPadre, AuditoriaPadreSchema } from '../auditoria-padre/schemas/auditoria-padre.schema';
+import {
+  AuditoriaPadre,
+  AuditoriaPadreSchema,
+} from '../auditoria-padre/schemas/auditoria-padre.schema';
 import {
   AuditoriaPadreEstado,
   AuditoriaPadreEstadoSchema,

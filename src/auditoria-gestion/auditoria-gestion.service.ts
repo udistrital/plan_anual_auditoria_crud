@@ -21,14 +21,17 @@ export class AuditoriaGestionService {
 
   async post(createAuditoriaGestionDto: CreateAuditoriaGestion) {
     const fecha = new Date();
-    const auditoriaPadre = { ...createAuditoriaGestionDto } as AuditoriaPadreDTO;
+    const auditoriaPadre = {
+      ...createAuditoriaGestionDto,
+    } as AuditoriaPadreDTO;
     const auditoriaPadreData = {
       ...auditoriaPadre,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
     };
-    const nuevaAuditoriaPadre = await this.AuditoriaPadreModel.create(auditoriaPadreData);
+    const nuevaAuditoriaPadre =
+      await this.AuditoriaPadreModel.create(auditoriaPadreData);
 
     const auditoriaPadreEstadoData: Partial<AuditoriaPadreEstadoDto> = {
       auditoria_padre_id: nuevaAuditoriaPadre._id.toString(),
@@ -41,7 +44,9 @@ export class AuditoriaGestionService {
       activo: true,
       fecha_ejecucion_estado: fecha,
     };
-    const nuevoEstado = await this.AuditoriaPadreEstadoModel.create(auditoriaPadreEstadoData);
+    const nuevoEstado = await this.AuditoriaPadreEstadoModel.create(
+      auditoriaPadreEstadoData,
+    );
 
     if (createAuditoriaGestionDto.plan_auditoria_id) {
       const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
@@ -51,7 +56,9 @@ export class AuditoriaGestionService {
       );
 
       if (!planActualizado) {
-        throw new Error(`Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`);
+        throw new Error(
+          `Plan de auditoría con ID ${createAuditoriaGestionDto.plan_auditoria_id} no encontrado`,
+        );
       }
     }
 
@@ -92,7 +99,8 @@ export class AuditoriaGestionService {
       fecha_ejecucion_estado: fecha,
     }));
 
-    const estadosCreados = await this.AuditoriaPadreEstadoModel.insertMany(nuevosEstados);
+    const estadosCreados =
+      await this.AuditoriaPadreEstadoModel.insertMany(nuevosEstados);
 
     await this.AuditoriaPadreModel.updateMany(
       { _id: { $in: auditoriasEnPlan.map((a) => a._id) } },

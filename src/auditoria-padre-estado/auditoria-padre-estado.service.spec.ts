@@ -9,7 +9,9 @@ describe('EstadoAuditoriaPadreService', () => {
       providers: [EstadoAuditoriaPadreService],
     }).compile();
 
-    service = module.get<EstadoAuditoriaPadreService>(EstadoAuditoriaPadreService);
+    service = module.get<EstadoAuditoriaPadreService>(
+      EstadoAuditoriaPadreService,
+    );
   });
 
   it('should be defined', () => {

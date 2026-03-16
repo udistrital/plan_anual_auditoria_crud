@@ -9,7 +9,6 @@ jest.mock('../auditoria-estado/dto/auditoria-estado.dto', () => ({
 import { AuditoriaGestionController } from './auditoria-gestion.controller';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
-import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
 import { Types } from 'mongoose';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
