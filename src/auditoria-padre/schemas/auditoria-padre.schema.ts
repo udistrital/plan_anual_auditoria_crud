@@ -32,10 +32,7 @@ export class AuditoriaPadre extends Document {
   dependencia_id: number;
 
   @Prop({ required: false })
-  no_auditoria: number;
-
-  @Prop({ type: [{ type: Types.ObjectId }], required: false })
-  auditoria_padre: Types.ObjectId[];
+  cantidad_auditorias: number;
 
   @Prop({ required: false })
   activo: boolean;
