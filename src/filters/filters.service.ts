@@ -36,7 +36,7 @@ export class FiltersService {
               const list = tup[1].split('|');
               if (key[0].endsWith('id')) {
                 queryObj[key[0]] = {
-                  $in: [...list.map((v) => parseObjectId(v))]
+                  $in: [...list.map((v) => parseObjectId(v))],
                 };
               } else {
                 queryObj[key[0]] = { $in: [...list.map((v) => castValue(v))] };
