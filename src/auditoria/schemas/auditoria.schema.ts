@@ -12,19 +12,13 @@ export class Auditoria extends Document {
   auditoria_padre_id: AuditoriaPadre | Types.ObjectId;
 
   @Prop({ required: false })
-  titulo: string;
-
-  @Prop({ required: false })
-  tipo_evaluacion_id: number;
-
-  @Prop({ required: false })
   cronograma_id: number[] = [];
 
   @Prop({ required: false })
   estado_id: number;
 
   @Prop({ required: false })
-  no_auditoria: number;
+  consecutivo_no_auditoria: number;
 
   @Prop({ required: true })
   vigencia_id: number;
@@ -34,15 +28,6 @@ export class Auditoria extends Document {
 
   @Prop({ required: false })
   consecutivo_IE: string;
-
-  @Prop({ required: false })
-  macroproceso_id: number;
-
-  @Prop({ required: false })
-  proceso_id: number;
-
-  @Prop({ required: false })
-  dependencia_id: number;
 
   @Prop({ required: false })
   fecha_inicio: Date;
@@ -69,7 +54,7 @@ export class Auditoria extends Document {
   rec_fisico: string;
 
   @Prop({ required: false })
-  temas: string;
+  tema: string;
 
   @Prop({ required: false })
   correo_complementario: string;

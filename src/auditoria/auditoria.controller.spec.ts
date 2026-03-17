@@ -11,19 +11,14 @@ jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 import { AuditoriaController } from './auditoria.controller';
 
 const mockAuditoriaDTO: AuditoriaDTO = {
-  titulo: 'Auditoría General 2024',
-  tipo_evaluacion_id: 2,
   plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
   auditoria_padre_id: '67297dda3416d2a85e5d6d90',
   cronograma_id: [1, 2, 3],
   estado_id: 3,
-  no_auditoria: 123420,
+  consecutivo_no_auditoria: 123420,
   vigencia_id: 1234,
   consecutivo_OCI: 'EHS54F',
   consecutivo_IE: 'PASJF4532',
-  macroproceso_id: 10,
-  proceso_id: 20,
-  dependencia_id: 30,
   fecha_inicio: new Date('2024-01-01'),
   fecha_fin: new Date('2024-12-31'),
   objetivo: 'Evaluar el cumplimiento de procesos',
@@ -32,7 +27,7 @@ const mockAuditoriaDTO: AuditoriaDTO = {
   rec_tecnologico: 'Software de auditoría',
   rec_humano: 'Equipo de 5 auditores',
   rec_fisico: 'Oficinas y equipos',
-  temas: 'Gestión de calidad, procesos, controles',
+  tema: 'Gestión de calidad, procesos, controles',
   correo_complementario: 'correo@email.com',
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
@@ -304,7 +299,6 @@ describe('AuditoriaController', () => {
   describe('put', () => {
     const updateDto: AuditoriaDTO = {
       ...mockAuditoriaDTO,
-      titulo: 'Auditoría Actualizada 2024',
       objetivo: 'Objetivo actualizado',
       alcance: 'Alcance ampliado',
     };
