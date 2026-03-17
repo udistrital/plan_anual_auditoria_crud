@@ -260,7 +260,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AuditoriaEstadoDto"
+                "$ref": "#/components/schemas/GenerarAuditoriaDto"
               }
             }
           }
@@ -273,7 +273,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AuditoriaDTO"
+                    "$ref": "#/components/schemas/GenerarAuditoriaDto"
                   }
                 }
               }
@@ -3462,15 +3462,11 @@
           "fecha_modificacion"
         ]
       },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
-      },
-      "AuditoriaEstadoDto": {
+      "GenerarAuditoriaDto": {
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "$ref": "#/components/schemas/ObjectId"
+            "type": "string"
           },
           "usuario_id": {
             "type": "number"
@@ -3481,10 +3477,16 @@
           "observacion": {
             "type": "string"
           },
-          "actual": {
-            "type": "boolean"
+          "estado_id_padre_actual": {
+            "type": "number"
           },
-          "estado_id": {
+          "estado_id_padre_nuevo": {
+            "type": "number"
+          },
+          "estado_id_hija_actual": {
+            "type": "number"
+          },
+          "estado_id_hija_nuevo": {
             "type": "number"
           },
           "fase_id": {
@@ -3503,8 +3505,10 @@
           "usuario_id",
           "usuario_rol",
           "observacion",
-          "actual",
-          "estado_id",
+          "estado_id_padre_actual",
+          "estado_id_padre_nuevo",
+          "estado_id_hija_actual",
+          "estado_id_hija_nuevo",
           "fase_id",
           "fecha_ejecucion_estado",
           "activo"
@@ -3706,6 +3710,54 @@
         },
         "required": [
           "auditoria_padre_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fase_id",
+          "fecha_ejecucion_estado",
+          "activo"
+        ]
+      },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
+      },
+      "AuditoriaEstadoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fase_id": {
+            "type": "string"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "auditoria_id",
           "usuario_id",
           "usuario_rol",
           "observacion",

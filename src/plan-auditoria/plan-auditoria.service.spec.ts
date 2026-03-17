@@ -8,6 +8,8 @@ import { FilterDto } from '../filters/filters.dto';
 import { AuditoriaPadreService } from 'src/auditoria-padre/auditoria-padre.service';
 import { AuditoriaService } from 'src/auditoria/auditoria.service';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
+import { EstadoAuditoriaPadreService } from 'src/auditoria-padre-estado/auditoria-padre-estado.service';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
@@ -40,6 +42,7 @@ describe('PlanAuditoriaService', () => {
   let auditoriaService: AuditoriaService;
   let auditoriaPadreService: AuditoriaPadreService;
   let estadoAuditoriaService: EstadoAuditoriaService;
+  let auditoriaPadreEstadoService: EstadoAuditoriaPadreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -76,6 +79,12 @@ describe('PlanAuditoriaService', () => {
             getAll: jest.fn(),
           },
         },
+        {
+          provide: EstadoAuditoriaPadreService,
+          useValue: {
+            post: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -90,6 +99,9 @@ describe('PlanAuditoriaService', () => {
     );
     estadoAuditoriaService = module.get<EstadoAuditoriaService>(
       EstadoAuditoriaService,
+    );
+    auditoriaPadreEstadoService = module.get<EstadoAuditoriaPadreService>(
+      EstadoAuditoriaPadreService,
     );
   });
 
@@ -649,10 +661,19 @@ describe('PlanAuditoriaService', () => {
 
   describe('generarAuditorias', () => {
     const planId = 'plan-1';
-    const mockAuditoriaEstadoDto = {
-      estado: 'programada',
-      fecha: new Date(),
-    } as any;
+      const generarAuditoriaDto: GenerarAuditoriaDto = {
+        auditoria_id: undefined,
+        usuario_id: 1,
+        usuario_rol: 'ADMIN',
+        observacion: 'Generar auditorías de prueba',
+        estado_id_padre_actual: 1,
+        estado_id_padre_nuevo: 2,
+        estado_id_hija_actual: 1,
+        estado_id_hija_nuevo: 2,
+        fase_id: 'fase-1',
+        fecha_ejecucion_estado: new Date(),
+        activo: true,
+      } as any;
 
     it('Debería generar auditorías correctamente y retornar la lista', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
@@ -683,11 +704,13 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(estadoAuditoriaService, 'post')
         .mockResolvedValue(undefined as any);
-      // TODO: estado auditoría padre
+      jest
+        .spyOn(auditoriaPadreEstadoService, 'post')
+        .mockResolvedValue(undefined as any);
 
       const result = await planAuditoriaService.generarAuditorias(
         planId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(getAllSpy).toHaveBeenCalled();
@@ -703,7 +726,7 @@ describe('PlanAuditoriaService', () => {
 
       const result = await planAuditoriaService.generarAuditorias(
         planId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(result).toEqual([]);
@@ -743,11 +766,13 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(estadoAuditoriaService, 'post')
         .mockResolvedValue(undefined as any);
-      // TODO: estado auditoría padre
+      jest
+        .spyOn(auditoriaPadreEstadoService, 'post')
+        .mockResolvedValue(undefined as any);
 
       const result = await planAuditoriaService.generarAuditorias(
         planId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(getAllSpy).toHaveBeenCalled();
@@ -784,16 +809,13 @@ describe('PlanAuditoriaService', () => {
         .mockResolvedValue(undefined as any);
 
       // Como ya hay 2 hijas y cantidad_auditorias=2, no se crearán auditorías nuevas
-      jest
-        .spyOn(
-          planAuditoriaService,
-          'mockPruebaUnitariaActualizarEstadoAuditoriaPadre',
-        )
-        .mockResolvedValue(undefined as any);
+      jest.spyOn(auditoriaPadreEstadoService, 'post').mockResolvedValue(
+        undefined as any,
+      );
 
       const result = await planAuditoriaService.generarAuditorias(
         planId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(postEstadoSpy).toHaveBeenCalledTimes(
@@ -840,7 +862,7 @@ describe('PlanAuditoriaService', () => {
         .mockRejectedValueOnce(new Error('estado fail'));
 
       await expect(
-        planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto),
+        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
       ).rejects.toThrow(
         new Error(
           `Error al generar estado de auditoría hija existente ${auditoriasHijasExistentes[1]._id} de auditoríaPadre ${auditoriasPadre[0]._id} (${auditoriasPadre[0].titulo}).`,
@@ -875,7 +897,7 @@ describe('PlanAuditoriaService', () => {
         .mockRejectedValueOnce(new Error('post failed'));
 
       await expect(
-        planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto),
+        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
       ).rejects.toThrow(
         new Error(
           `Error al generar auditoría 2 de auditoríaPadre ${auditoriasPadre[0]._id} (${auditoriasPadre[0].titulo}).`,
@@ -915,7 +937,7 @@ describe('PlanAuditoriaService', () => {
         .mockRejectedValueOnce(new Error('estado fail'));
 
       await expect(
-        planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto),
+        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
       ).rejects.toThrow(
         new Error(
           `Error al generar estado de auditoría 2 de auditoríaPadre ${auditoriasPadre[0]._id} (${auditoriasPadre[0].titulo}).`,
@@ -949,16 +971,13 @@ describe('PlanAuditoriaService', () => {
       jest
         .spyOn(estadoAuditoriaService, 'post')
         .mockResolvedValue(undefined as any);
-      // TODO: actualizar cuando se fusionen cambios de auditoría padre
+      // Mockea fallo al actualizar estado de auditoría padre
       jest
-        .spyOn(
-          planAuditoriaService,
-          'mockPruebaUnitariaActualizarEstadoAuditoriaPadre',
-        )
+        .spyOn(auditoriaPadreEstadoService, 'post')
         .mockRejectedValue(new Error('estado padre fail'));
 
       await expect(
-        planAuditoriaService.generarAuditorias(planId, mockAuditoriaEstadoDto),
+        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
       ).rejects.toThrow(
         new Error(
           `Error al actualizar estado de auditoríaPadre ${auditoriasPadre[0]._id} (${auditoriasPadre[0].titulo}) después de generar sus auditorías.`,
@@ -975,7 +994,7 @@ describe('PlanAuditoriaService', () => {
       await expect(
         planAuditoriaService.generarAuditorias(
           missingId,
-          mockAuditoriaEstadoDto,
+          generarAuditoriaDto,
         ),
       ).rejects.toThrow(new Error(`${missingId} no existe`));
     });

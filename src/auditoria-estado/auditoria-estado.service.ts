@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { AuditoriaEstado } from './schema/auditoria-estado.schema';
@@ -36,6 +36,7 @@ export class EstadoAuditoriaService {
     const fecha = new Date();
     const planEstadoData = {
       ...auditoriaEstadoDto,
+      auditoria_id: new Types.ObjectId(auditoriaEstadoDto.auditoria_id),
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,

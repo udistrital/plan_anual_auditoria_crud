@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Auditoria } from './schemas/auditoria.schema';
@@ -53,6 +53,8 @@ export class AuditoriaService {
     const fecha = new Date();
     const AuditoriaData = {
       ...AuditoriaDto,
+      plan_auditoria_id: new Types.ObjectId(AuditoriaDto.plan_auditoria_id),
+      auditoria_padre_id: new Types.ObjectId(AuditoriaDto.auditoria_padre_id),
       activo: true,
       fechaCreacion: fecha,
       fechaModificacion: fecha,

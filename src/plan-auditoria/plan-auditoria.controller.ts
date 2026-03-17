@@ -20,8 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
-import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -190,24 +189,25 @@ export class PlanAuditoriaController {
       'Generar auditorías hija a partir de auditorías padre registradas en el plan.',
   })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: AuditoriaEstadoDto })
+  @ApiBody({ type: GenerarAuditoriaDto })
   @ApiResponse({
     status: 201,
     description: 'Las auditorías hija han sido generadas exitosamente.',
-    type: [AuditoriaDTO], // TODO: Evaluar creación de un DTO específico
+    type: [GenerarAuditoriaDto],
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
   async generarAuditorias(
     @Res() res,
     @Param('id') id: string,
-    auditoriaEstadoDto: AuditoriaEstadoDto, // TODO: Evaluar creación de un DTO específico
+    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
+    console.log('generarAuditoriasDto:', generarAuditoriaDto);
     try {
       const auditoriasGeneradas =
         await this.planAuditoriaService.generarAuditorias(
           id,
-          auditoriaEstadoDto,
+          generarAuditoriaDto,
         );
       res.status(HttpStatus.CREATED).json({
         Success: true,
