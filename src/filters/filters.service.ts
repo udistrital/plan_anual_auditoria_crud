@@ -34,7 +34,13 @@ export class FiltersService {
               break;
             case 'in':
               const list = tup[1].split('|');
-              queryObj[key[0]] = { $in: [...list.map((v) => castValue(v))] };
+              if (key[0].endsWith('id')) {
+                queryObj[key[0]] = {
+                  $in: [...list.map((v) => parseObjectId(v))],
+                };
+              } else {
+                queryObj[key[0]] = { $in: [...list.map((v) => castValue(v))] };
+              }
               break;
             case 'not':
               queryObj[key[0]] = { $ne: castValue(tup[1]) };
@@ -55,12 +61,7 @@ export class FiltersService {
         } else {
           if (key[0].endsWith('id')) {
             queryObj[key[0]] = {
-              $in: [
-                tup[1],
-                Types.ObjectId.isValid(tup[1])
-                  ? new Types.ObjectId(tup[1])
-                  : null,
-              ].filter(Boolean),
+              $in: [tup[1], parseObjectId(tup[1])].filter(Boolean),
             };
           } else {
             queryObj[key[0]] = castValue(tup[1]);
@@ -134,6 +135,10 @@ export class FiltersService {
   isPopulated(): boolean {
     return this.filterDto.populate === 'true';
   }
+}
+
+function parseObjectId(id: string) {
+  return Types.ObjectId.isValid(id) ? new Types.ObjectId(id) : null;
 }
 
 function castValue(value: string): any {
