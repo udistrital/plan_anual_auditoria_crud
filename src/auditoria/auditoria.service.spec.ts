@@ -134,7 +134,9 @@ describe('AuditoriaService', () => {
         .spyOn(auditoriaModel, 'create')
         .mockResolvedValue(mockAuditoria as any);
 
-      const result = await auditoriaService.post(mockAuditoriaDTO as AuditoriaDTO);
+      const result = await auditoriaService.post(
+        mockAuditoriaDTO as AuditoriaDTO,
+      );
 
       expect(planAuditoriaFindSpy).toHaveBeenCalledWith(
         mockAuditoriaDTO.plan_auditoria_id,
