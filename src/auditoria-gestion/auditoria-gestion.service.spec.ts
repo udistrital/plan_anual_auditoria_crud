@@ -236,7 +236,9 @@ describe('AuditoriaGestionService', () => {
       jest
         .spyOn(auditoriaPadreModel, 'create')
         .mockResolvedValue(mockAuditoriaPadre as any);
-      jest.spyOn(auditoriaPadreEstadoModel, 'create').mockRejectedValue(mockError);
+      jest
+        .spyOn(auditoriaPadreEstadoModel, 'create')
+        .mockRejectedValue(mockError);
 
       await expect(service.post(mockCreateAuditoriaGestionDto)).rejects.toThrow(
         'AuditoriaEstado validation failed',
@@ -390,7 +392,9 @@ describe('AuditoriaGestionService', () => {
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
 
-      jest.spyOn(auditoriaPadreEstadoModel, 'find').mockResolvedValue([] as any);
+      jest
+        .spyOn(auditoriaPadreEstadoModel, 'find')
+        .mockResolvedValue([] as any);
 
       const updateManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
@@ -473,7 +477,9 @@ describe('AuditoriaGestionService', () => {
     it('Debería manejar el caso cuando no hay auditorías en el plan', async () => {
       jest.spyOn(auditoriaPadreModel, 'find').mockResolvedValue([] as any);
 
-      jest.spyOn(auditoriaPadreEstadoModel, 'find').mockResolvedValue([] as any);
+      jest
+        .spyOn(auditoriaPadreEstadoModel, 'find')
+        .mockResolvedValue([] as any);
 
       const insertManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'insertMany')
@@ -503,7 +509,9 @@ describe('AuditoriaGestionService', () => {
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue([mockAuditorias[0]] as any);
 
-      jest.spyOn(auditoriaPadreEstadoModel, 'find').mockResolvedValue([] as any);
+      jest
+        .spyOn(auditoriaPadreEstadoModel, 'find')
+        .mockResolvedValue([] as any);
 
       const insertManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'insertMany')

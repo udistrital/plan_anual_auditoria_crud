@@ -24,8 +24,12 @@ describe('EstadoAuditoriaPadreController', () => {
       ],
     }).compile();
 
-    controller = module.get<EstadoAuditoriaPadreController>(EstadoAuditoriaPadreController);
-    service = module.get<EstadoAuditoriaPadreService>(EstadoAuditoriaPadreService);
+    controller = module.get<EstadoAuditoriaPadreController>(
+      EstadoAuditoriaPadreController,
+    );
+    service = module.get<EstadoAuditoriaPadreService>(
+      EstadoAuditoriaPadreService,
+    );
   });
 
   it('should be defined', () => {
