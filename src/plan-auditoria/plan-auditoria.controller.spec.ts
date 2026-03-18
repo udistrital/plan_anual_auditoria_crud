@@ -590,16 +590,9 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(
-        res,
-        invalidId,
-        generarAuditoriaDto,
-      );
+      await controller.generarAuditorias(res, invalidId, generarAuditoriaDto);
 
-      expect(serviceSpy).toHaveBeenCalledWith(
-        invalidId,
-        generarAuditoriaDto,
-      );
+      expect(serviceSpy).toHaveBeenCalledWith(invalidId, generarAuditoriaDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
