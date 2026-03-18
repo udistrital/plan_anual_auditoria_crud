@@ -5,11 +5,14 @@ import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { PlanAuditoria } from './schemas/plan-auditoria.schema';
 import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
-import { AuditoriaPadreService } from 'src/auditoria-padre/auditoria-padre.service';
-import { AuditoriaService } from 'src/auditoria/auditoria.service';
-import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
-import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
+import { AuditoriaPadreService } from '../auditoria-padre/auditoria-padre.service';
+import { AuditoriaService } from '../auditoria/auditoria.service';
+import { Auditoria } from '../auditoria/schemas/auditoria.schema';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { EstadoAuditoriaService } from '../auditoria-estado/auditoria-estado.service';
+import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
+import { EstadoAuditoriaPadreService } from 'src/auditoria-padre-estado/auditoria-padre-estado.service';
+import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
 
 @Injectable()
 export class PlanAuditoriaService {
@@ -19,6 +22,7 @@ export class PlanAuditoriaService {
     private readonly auditoriaPadreService: AuditoriaPadreService,
     private readonly auditoriaService: AuditoriaService,
     private readonly auditoriaEstadoService: EstadoAuditoriaService,
+    private readonly auditoriaPadreEstadoService: EstadoAuditoriaPadreService,
   ) {}
 
   async post(planAuditoriaDto: PlanAuditoriaDTO): Promise<PlanAuditoria> {
@@ -115,18 +119,43 @@ export class PlanAuditoriaService {
   /**
    * Genera las auditorías correspondientes a un plan de auditoría, a partir de sus auditorías padre. Para cada auditoría generada, también se genera su estado inicial y se actualiza el estado de su auditoría padre.
    * @param id Id del plan de auditoría para el cual se generarán las auditorías.
-   * TODO: Evaluar la creación de un DTO específico
-   * @param auditoriaEstadoDto Información del estado inicial de las auditorías a generar.
+   * @param generarAuditoriaDto DTO con la información necesaria para la generación de las auditorías y sus estados.
    * @returns Lista de auditorías generadas.
    * @throws Error si el plan de auditoría no existe.
    * @throws Error si ocurre un error al generar alguna de las auditorías o sus estados.
    */
   async generarAuditorias(
     id: string,
-    auditoriaEstadoDto: AuditoriaEstadoDto,
+    generarAuditoriaDto: GenerarAuditoriaDto,
   ): Promise<Auditoria[]> {
     // Para lanzar error específico en caso de que el plan de auditoría no exista.
     await this.getById(id);
+
+    // Crear prototipos de los estados de auditoría hija y auditoría padre para evitar repetir código en la iteración.
+    const prototipoAuditoriaEstado: AuditoriaEstadoDto = {
+      auditoria_id: undefined, // Se asigna en la iteración
+      actual: undefined,
+      activo: undefined,
+      fecha_ejecucion_estado: undefined,
+
+      usuario_id: generarAuditoriaDto.usuario_id,
+      usuario_rol: generarAuditoriaDto.usuario_rol,
+      observacion: generarAuditoriaDto.observacion,
+      estado_id: generarAuditoriaDto.estado_id_hija_nuevo,
+      fase_id: generarAuditoriaDto.fase_id,
+    };
+    const prototipoAuditoriaPadreEstado: AuditoriaPadreEstadoDto = {
+      auditoria_padre_id: undefined, // Se asigna en la iteración
+      actual: undefined,
+      fecha_ejecucion_estado: undefined,
+      activo: undefined,
+
+      usuario_id: generarAuditoriaDto.usuario_id,
+      usuario_rol: generarAuditoriaDto.usuario_rol,
+      observacion: generarAuditoriaDto.observacion,
+      estado_id: generarAuditoriaDto.estado_id_padre_nuevo,
+      fase_id: generarAuditoriaDto.fase_id,
+    };
 
     // Variables de retorno e iteración
     const nuevasAuditorias: Auditoria[] = [];
@@ -136,7 +165,7 @@ export class PlanAuditoriaService {
       order: undefined,
       populate: undefined,
 
-      query: `plan_auditoria_id:${id},activo:true,estado_id:${7060}`, // Estado en borrador // TODO: Implementar estandarización
+      query: `plan_auditoria_id:${id},activo:true,estado_id:${generarAuditoriaDto.estado_id_padre_actual}`,
       limit: '0',
       offset: '0',
     });
@@ -166,11 +195,12 @@ export class PlanAuditoriaService {
           order: undefined,
           populate: undefined,
 
-          query: `auditoria_id__in:${idsHijasExistentes},estado_id:${7061},activo:true`, // Por asignar // TODO: Implementar estandarización
+          query: `auditoria_id__in:${idsHijasExistentes},estado_id:${generarAuditoriaDto.estado_id_hija_nuevo},activo:true`,
           limit: '0',
           offset: '0',
         });
 
+      // Filtrar auditorías hijas existentes para identificar cuáles no tienen estado generado.
       const auditoriasHijasSinEstado = auditoriasHijasExistentes.filter(
         (a) =>
           !estadosAuditoriaExistentes.find(
@@ -180,9 +210,8 @@ export class PlanAuditoriaService {
       for (const auditoriaHijaSinEstado of auditoriasHijasSinEstado) {
         try {
           await this.auditoriaEstadoService.post({
-            ...auditoriaEstadoDto,
+            ...prototipoAuditoriaEstado,
             auditoria_id: auditoriaHijaSinEstado._id.toString(),
-            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
           });
         } catch (error) {
           const newError = new Error(
@@ -193,6 +222,7 @@ export class PlanAuditoriaService {
         }
       }
 
+      // Generación de auditorías hijas faltantes y sus estados
       const cantidadACrear =
         auditoriaPadre.cantidad_auditorias - auditoriasHijasExistentes.length;
       for (let i = 0; i < cantidadACrear; i++) {
@@ -201,32 +231,27 @@ export class PlanAuditoriaService {
         // 1. Generar la nueva auditoría.
         try {
           auditoria = await this.auditoriaService.post({
-            no_auditoria: undefined,
+            consecutivo_no_auditoria: undefined,
             consecutivo_OCI: undefined,
             cronograma_id: undefined,
-            macroproceso_id: undefined,
-            proceso_id: undefined,
-            dependencia_id: undefined,
+            estado_id: undefined,
             consecutivo_IE: undefined,
             fecha_inicio: undefined,
             fecha_fin: undefined,
-            titulo: undefined,
             objetivo: undefined,
             alcance: undefined,
             criterio: undefined,
             rec_tecnologico: undefined,
             rec_humano: undefined,
             rec_fisico: undefined,
-            temas: undefined,
+            tema: undefined,
             correo_complementario: undefined,
-            tipo_evaluacion_id: undefined,
             activo: undefined,
             fecha_creacion: undefined,
             fecha_modificacion: undefined,
 
-            plan_auditoria_id: id, // TODO: Eliminar cuando se complete la migración.
+            plan_auditoria_id: id,
             auditoria_padre_id: auditoriaPadre._id,
-            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
             vigencia_id: auditoriaPadre.vigencia_id,
           });
 
@@ -242,9 +267,8 @@ export class PlanAuditoriaService {
         // 2. Generar el estado de la nueva auditoría
         try {
           await this.auditoriaEstadoService.post({
-            ...auditoriaEstadoDto,
+            ...prototipoAuditoriaEstado,
             auditoria_id: auditoria._id.toString(),
-            estado_id: 7061, // Por asignar // TODO: Implementar estandarización
           });
         } catch (error) {
           const newError = new Error(
@@ -257,8 +281,10 @@ export class PlanAuditoriaService {
 
       // Actualiza estado auditoría padre
       try {
-        // TODO: Actualizar estado de auditoría padre a aprobada
-        await this.mockPruebaUnitariaActualizarEstadoAuditoriaPadre();
+        await this.auditoriaPadreEstadoService.post({
+          ...prototipoAuditoriaPadreEstado,
+          auditoria_padre_id: auditoriaPadre._id.toString(),
+        });
       } catch (error) {
         const newError = new Error(
           `Error al actualizar estado de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}) después de generar sus auditorías.`,
@@ -270,7 +296,4 @@ export class PlanAuditoriaService {
 
     return nuevasAuditorias;
   }
-
-  // TODO: Eliminar este método y su llamada cuando se fusionen cambios estado auditoría padre
-  async mockPruebaUnitariaActualizarEstadoAuditoriaPadre() {}
 }

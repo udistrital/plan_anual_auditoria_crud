@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { AuditoriaPadreEstado } from './schema/auditoria-padre-estado.schema';
@@ -33,10 +33,15 @@ export class EstadoAuditoriaPadreService {
     }
   }
 
-  async post(auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto): Promise<AuditoriaPadreEstado> {
+  async post(
+    auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
+  ): Promise<AuditoriaPadreEstado> {
     const fecha = new Date();
     const estadoData = {
       ...auditoriaPadreEstadoDto,
+      auditoria_padre_id: new Types.ObjectId(
+        auditoriaPadreEstadoDto.auditoria_padre_id,
+      ),
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
@@ -57,11 +62,16 @@ export class EstadoAuditoriaPadreService {
       );
     }
 
-    const estadoCreado = await this.AuditoriaPadreEstadoModel.create(estadoData);
+    const estadoCreado =
+      await this.AuditoriaPadreEstadoModel.create(estadoData);
     const datosActualizarEstado = {
       estado_id: estadoCreado.estado_id,
     };
-    await this.AuditoriaPadreModel.findByIdAndUpdate(estadoCreado.auditoria_padre_id, datosActualizarEstado, { new: true }).exec();
+    await this.AuditoriaPadreModel.findByIdAndUpdate(
+      estadoCreado.auditoria_padre_id,
+      datosActualizarEstado,
+      { new: true },
+    ).exec();
     return estadoCreado;
   }
 

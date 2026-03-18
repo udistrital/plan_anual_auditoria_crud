@@ -44,8 +44,9 @@ export class AuditoriaPadreService {
       fecha_modificacion: fecha,
     };
     await this.checkRelated(auditoriaPadreDTO);
-    const auditoriaPadreCreada = await this.AuditoriaPadreModel.create(auditoriaPadreData);
-    
+    const auditoriaPadreCreada =
+      await this.AuditoriaPadreModel.create(auditoriaPadreData);
+
     if (auditoriaPadreDTO.estado_id) {
       await this.estadoAuditoriaPadreService.post({
         auditoria_padre_id: auditoriaPadreCreada._id.toString(),
@@ -59,7 +60,7 @@ export class AuditoriaPadreService {
         activo: true,
       });
     }
-    
+
     return auditoriaPadreCreada;
   }
 
@@ -97,13 +98,17 @@ export class AuditoriaPadreService {
       delete auditoriaPadreDTO.fecha_creacion;
     }
     await this.checkRelated(auditoriaPadreDTO);
-    
-    const auditoriaPadreActual = await this.AuditoriaPadreModel.findById(id).exec();
+
+    const auditoriaPadreActual =
+      await this.AuditoriaPadreModel.findById(id).exec();
     if (!auditoriaPadreActual) {
       throw new Error(`${id} no existe`);
     }
-    
-    if (auditoriaPadreDTO.estado_id && auditoriaPadreDTO.estado_id !== auditoriaPadreActual.estado_id) {
+
+    if (
+      auditoriaPadreDTO.estado_id &&
+      auditoriaPadreDTO.estado_id !== auditoriaPadreActual.estado_id
+    ) {
       await this.estadoAuditoriaPadreService.post({
         auditoria_padre_id: id,
         estado_id: auditoriaPadreDTO.estado_id,
@@ -116,7 +121,7 @@ export class AuditoriaPadreService {
         activo: true,
       });
     }
-    
+
     const update = await this.AuditoriaPadreModel.findByIdAndUpdate(
       id,
       auditoriaPadreDTO,

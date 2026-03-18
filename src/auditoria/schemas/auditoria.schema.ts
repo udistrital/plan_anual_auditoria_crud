@@ -5,18 +5,11 @@ import { AuditoriaPadre } from '../../auditoria-padre/schemas/auditoria-padre.sc
 
 @Schema({ collection: 'auditoria' })
 export class Auditoria extends Document {
-  // TODO: Migración: eliminar `plan_auditoria_id` cuando la transición a `auditoria_padre_id` esté completa
   @Prop({ required: false, type: Types.ObjectId, ref: PlanAuditoria.name })
   plan_auditoria_id: PlanAuditoria | Types.ObjectId;
 
   @Prop({ required: false, type: Types.ObjectId, ref: AuditoriaPadre.name })
   auditoria_padre_id: AuditoriaPadre | Types.ObjectId;
-
-  @Prop({ required: false })
-  titulo: string;
-
-  @Prop({ required: false })
-  tipo_evaluacion_id: number;
 
   @Prop({ required: false })
   cronograma_id: number[] = [];
@@ -25,7 +18,7 @@ export class Auditoria extends Document {
   estado_id: number;
 
   @Prop({ required: false })
-  no_auditoria: number;
+  consecutivo_no_auditoria: number;
 
   @Prop({ required: true })
   vigencia_id: number;
@@ -35,15 +28,6 @@ export class Auditoria extends Document {
 
   @Prop({ required: false })
   consecutivo_IE: string;
-
-  @Prop({ required: false })
-  macroproceso_id: number;
-
-  @Prop({ required: false })
-  proceso_id: number;
-
-  @Prop({ required: false })
-  dependencia_id: number;
 
   @Prop({ required: false })
   fecha_inicio: Date;
@@ -70,7 +54,7 @@ export class Auditoria extends Document {
   rec_fisico: string;
 
   @Prop({ required: false })
-  temas: string;
+  tema: string;
 
   @Prop({ required: false })
   correo_complementario: string;
