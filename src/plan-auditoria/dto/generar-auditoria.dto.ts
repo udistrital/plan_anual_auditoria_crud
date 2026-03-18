@@ -1,7 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class GenerarAuditoriaDto {
-
   @ApiProperty()
   readonly auditoria_id: string;
 
@@ -34,5 +33,4 @@ export class GenerarAuditoriaDto {
 
   @ApiProperty()
   activo: boolean;
-
 }

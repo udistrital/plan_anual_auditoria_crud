@@ -661,19 +661,19 @@ describe('PlanAuditoriaService', () => {
 
   describe('generarAuditorias', () => {
     const planId = 'plan-1';
-      const generarAuditoriaDto: GenerarAuditoriaDto = {
-        auditoria_id: undefined,
-        usuario_id: 1,
-        usuario_rol: 'ADMIN',
-        observacion: 'Generar auditorías de prueba',
-        estado_id_padre_actual: 1,
-        estado_id_padre_nuevo: 2,
-        estado_id_hija_actual: 1,
-        estado_id_hija_nuevo: 2,
-        fase_id: 'fase-1',
-        fecha_ejecucion_estado: new Date(),
-        activo: true,
-      } as any;
+    const generarAuditoriaDto: GenerarAuditoriaDto = {
+      auditoria_id: undefined,
+      usuario_id: 1,
+      usuario_rol: 'ADMIN',
+      observacion: 'Generar auditorías de prueba',
+      estado_id_padre_actual: 1,
+      estado_id_padre_nuevo: 2,
+      estado_id_hija_actual: 1,
+      estado_id_hija_nuevo: 2,
+      fase_id: 'fase-1',
+      fecha_ejecucion_estado: new Date(),
+      activo: true,
+    } as any;
 
     it('Debería generar auditorías correctamente y retornar la lista', async () => {
       jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
@@ -809,9 +809,9 @@ describe('PlanAuditoriaService', () => {
         .mockResolvedValue(undefined as any);
 
       // Como ya hay 2 hijas y cantidad_auditorias=2, no se crearán auditorías nuevas
-      jest.spyOn(auditoriaPadreEstadoService, 'post').mockResolvedValue(
-        undefined as any,
-      );
+      jest
+        .spyOn(auditoriaPadreEstadoService, 'post')
+        .mockResolvedValue(undefined as any);
 
       const result = await planAuditoriaService.generarAuditorias(
         planId,
@@ -992,10 +992,7 @@ describe('PlanAuditoriaService', () => {
         .mockRejectedValue(new Error(`${missingId} no existe`));
 
       await expect(
-        planAuditoriaService.generarAuditorias(
-          missingId,
-          generarAuditoriaDto,
-        ),
+        planAuditoriaService.generarAuditorias(missingId, generarAuditoriaDto),
       ).rejects.toThrow(new Error(`${missingId} no existe`));
     });
   });

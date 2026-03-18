@@ -138,7 +138,7 @@ export class FiltersService {
 }
 
 function parseObjectId(id: string) {
-  return Types.ObjectId.isValid(id) ? new Types.ObjectId(id) : null;
+  return Types.ObjectId.isValid(id) ? new Types.ObjectId(id) : castValue(id);
 }
 
 function castValue(value: string): any {
