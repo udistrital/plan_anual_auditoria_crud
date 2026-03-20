@@ -3961,7 +3961,7 @@
           "muestra": {
             "type": "string"
           },
-          "aspectos_general": {
+          "aspecto_general": {
             "type": "string"
           },
           "respuesta_preliminar": {
@@ -3997,7 +3997,7 @@
           "auditoria_id",
           "fecha_emision",
           "muestra",
-          "aspectos_general",
+          "aspecto_general",
           "respuesta_preliminar",
           "informe_final",
           "observacion_conclusion",
