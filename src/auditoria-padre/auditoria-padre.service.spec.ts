@@ -6,6 +6,7 @@ import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
+import { EstadoAuditoriaPadreService } from '../auditoria-padre-estado/auditoria-padre-estado.service';
 
 const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
@@ -56,6 +57,12 @@ describe('AuditoriaPadreService', () => {
           provide: getModelToken(PlanAuditoria.name),
           useValue: {
             findById: jest.fn(),
+          },
+        },
+        {
+          provide: EstadoAuditoriaPadreService,
+          useValue: {
+            post: jest.fn(),
           },
         },
       ],
@@ -160,6 +167,10 @@ describe('AuditoriaPadreService', () => {
         exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
       } as any);
 
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockAuditoriaPadre),
+      } as any);
+
       jest.spyOn(auditoriaPadreModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAuditoriaPadre),
       } as any);
@@ -177,7 +188,7 @@ describe('AuditoriaPadreService', () => {
         exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
       } as any);
 
-      jest.spyOn(auditoriaPadreModel, 'findByIdAndUpdate').mockReturnValue({
+      jest.spyOn(auditoriaPadreModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 

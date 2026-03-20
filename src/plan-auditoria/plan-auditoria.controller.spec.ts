@@ -5,6 +5,7 @@ import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { PlanAuditoriaService } from './plan-auditoria.service';
 import { PlanAuditoriaController } from './plan-auditoria.controller';
 import { Types } from 'mongoose';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
@@ -487,10 +488,18 @@ describe('PlanAuditoriaController', () => {
       { _id: 'a1', nombre: 'Auditoria hija 1' },
       { _id: 'a2', nombre: 'Auditoria hija 2' },
     ];
-
-    const mockAuditoriaEstadoDto = {
-      estado: 'programada',
-      fecha: new Date('2024-02-01'),
+    const generarAuditoriaDto: GenerarAuditoriaDto = {
+      auditoria_id: undefined,
+      usuario_id: 1,
+      usuario_rol: 'ADMIN',
+      observacion: 'Generar auditorías controlador',
+      estado_id_padre_actual: 1,
+      estado_id_padre_nuevo: 2,
+      estado_id_hija_actual: 1,
+      estado_id_hija_nuevo: 2,
+      fase_id: 'fase-1',
+      fecha_ejecucion_estado: new Date('2024-02-01'),
+      activo: true,
     } as any;
 
     it('Debería generar auditorías y retornar CREATED (201) con datos válidos', async () => {
@@ -502,12 +511,12 @@ describe('PlanAuditoriaController', () => {
       await controller.generarAuditorias(
         res,
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(serviceSpy).toHaveBeenCalledWith(
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(res.json).toHaveBeenCalledWith({
@@ -529,12 +538,12 @@ describe('PlanAuditoriaController', () => {
       await controller.generarAuditorias(
         res,
         nonExistentId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(serviceSpy).toHaveBeenCalledWith(
         nonExistentId,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
@@ -556,12 +565,12 @@ describe('PlanAuditoriaController', () => {
       await controller.generarAuditorias(
         res,
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(serviceSpy).toHaveBeenCalledWith(
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
@@ -581,16 +590,9 @@ describe('PlanAuditoriaController', () => {
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.generarAuditorias(
-        res,
-        invalidId,
-        mockAuditoriaEstadoDto,
-      );
+      await controller.generarAuditorias(res, invalidId, generarAuditoriaDto);
 
-      expect(serviceSpy).toHaveBeenCalledWith(
-        invalidId,
-        mockAuditoriaEstadoDto,
-      );
+      expect(serviceSpy).toHaveBeenCalledWith(invalidId, generarAuditoriaDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -611,12 +613,12 @@ describe('PlanAuditoriaController', () => {
       await controller.generarAuditorias(
         res,
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
 
       expect(serviceSpy).toHaveBeenCalledWith(
         mockPlanAuditoria._id,
-        mockAuditoriaEstadoDto,
+        generarAuditoriaDto,
       );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({

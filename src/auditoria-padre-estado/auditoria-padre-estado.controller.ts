@@ -25,7 +25,9 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('auditoria-padre-estado')
 @Controller('auditoria-padre-estado')
 export class EstadoAuditoriaPadreController {
-  constructor(private estadoAuditoriaPadreService: EstadoAuditoriaPadreService) {}
+  constructor(
+    private estadoAuditoriaPadreService: EstadoAuditoriaPadreService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de auditoria padre' })
@@ -42,8 +44,9 @@ export class EstadoAuditoriaPadreController {
     auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
   ) {
     try {
-      const estado =
-        await this.estadoAuditoriaPadreService.post(auditoriaPadreEstadoDto);
+      const estado = await this.estadoAuditoriaPadreService.post(
+        auditoriaPadreEstadoDto,
+      );
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -70,8 +73,7 @@ export class EstadoAuditoriaPadreController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const estados =
-        await this.estadoAuditoriaPadreService.getAll(filterDto);
+      const estados = await this.estadoAuditoriaPadreService.getAll(filterDto);
       const counts = await this.estadoAuditoriaPadreService.count(filterDto);
 
       res.status(HttpStatus.OK).json({
@@ -127,7 +129,8 @@ export class EstadoAuditoriaPadreController {
   @ApiBody({ type: AuditoriaPadreEstadoDto })
   @ApiResponse({
     status: 200,
-    description: 'El estado de auditoria padre ha sido actualizado exitosamente.',
+    description:
+      'El estado de auditoria padre ha sido actualizado exitosamente.',
     type: AuditoriaPadreEstadoDto,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })

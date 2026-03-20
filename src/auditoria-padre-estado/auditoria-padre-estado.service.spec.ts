@@ -35,7 +35,9 @@ describe('EstadoAuditoriaPadreService', () => {
       ],
     }).compile();
 
-    service = module.get<EstadoAuditoriaPadreService>(EstadoAuditoriaPadreService);
+    service = module.get<EstadoAuditoriaPadreService>(
+      EstadoAuditoriaPadreService,
+    );
     auditoriaPadreEstadoModel = module.get<Model<AuditoriaPadreEstado>>(
       getModelToken(AuditoriaPadreEstado.name),
     );
