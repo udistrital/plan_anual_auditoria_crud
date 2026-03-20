@@ -11,7 +11,7 @@ const mockInformeDto: InformeDTO = {
   auditoria_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   fecha_emision: new Date('2024-01-20'),
   muestra: 'Muestra de prueba',
-  aspectos_general: 'Aspectos generales de prueba',
+  aspecto_general: 'Aspectos generales de prueba',
   activo: true,
   fecha_creacion: new Date(),
 };

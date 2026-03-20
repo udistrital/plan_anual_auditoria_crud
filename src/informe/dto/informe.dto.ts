@@ -6,13 +6,13 @@ export class InformeDTO {
   readonly auditoria_id: Types.ObjectId;
 
   @ApiProperty()
-  readonly fecha_emision: Date;
+  readonly fecha_emision?: Date;
 
   @ApiProperty()
   readonly muestra?: string;
 
   @ApiProperty()
-  readonly aspectos_general?: string;
+  readonly aspecto_general?: string;
 
   @ApiProperty()
   readonly respuesta_preliminar?: string;

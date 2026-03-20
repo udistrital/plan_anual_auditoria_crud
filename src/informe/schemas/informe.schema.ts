@@ -10,7 +10,7 @@ export class Informe extends Document {
   })
   auditoria_id: mongoose.Types.ObjectId;
 
-  @Prop({ required: true }) fecha_emision: Date;
+  @Prop() fecha_emision: Date;
   @Prop() muestra: string;
   @Prop() aspecto_general: string;
   @Prop() respuesta_preliminar: string;
