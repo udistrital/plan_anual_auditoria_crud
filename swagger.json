@@ -260,7 +260,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AuditoriaEstadoDto"
+                "$ref": "#/components/schemas/GenerarAuditoriaDto"
               }
             }
           }
@@ -273,7 +273,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AuditoriaDTO"
+                    "$ref": "#/components/schemas/GenerarAuditoriaDto"
                   }
                 }
               }
@@ -3462,15 +3462,11 @@
           "fecha_modificacion"
         ]
       },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
-      },
-      "AuditoriaEstadoDto": {
+      "GenerarAuditoriaDto": {
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "$ref": "#/components/schemas/ObjectId"
+            "type": "string"
           },
           "usuario_id": {
             "type": "number"
@@ -3481,10 +3477,16 @@
           "observacion": {
             "type": "string"
           },
-          "actual": {
-            "type": "boolean"
+          "estado_id_padre_actual": {
+            "type": "number"
           },
-          "estado_id": {
+          "estado_id_padre_nuevo": {
+            "type": "number"
+          },
+          "estado_id_hija_actual": {
+            "type": "number"
+          },
+          "estado_id_hija_nuevo": {
             "type": "number"
           },
           "fase_id": {
@@ -3503,8 +3505,10 @@
           "usuario_id",
           "usuario_rol",
           "observacion",
-          "actual",
-          "estado_id",
+          "estado_id_padre_actual",
+          "estado_id_padre_nuevo",
+          "estado_id_hija_actual",
+          "estado_id_hija_nuevo",
           "fase_id",
           "fecha_ejecucion_estado",
           "activo"
@@ -3519,12 +3523,6 @@
           "auditoria_padre_id": {
             "type": "string"
           },
-          "titulo": {
-            "type": "string"
-          },
-          "tipo_evaluacion_id": {
-            "type": "number"
-          },
           "cronograma_id": {
             "type": "array",
             "items": {
@@ -3534,7 +3532,7 @@
           "estado_id": {
             "type": "number"
           },
-          "no_auditoria": {
+          "consecutivo_no_auditoria": {
             "type": "number"
           },
           "vigencia_id": {
@@ -3545,15 +3543,6 @@
           },
           "consecutivo_IE": {
             "type": "string"
-          },
-          "macroproceso_id": {
-            "type": "number"
-          },
-          "proceso_id": {
-            "type": "number"
-          },
-          "dependencia_id": {
-            "type": "number"
           },
           "fecha_inicio": {
             "format": "date-time",
@@ -3581,7 +3570,7 @@
           "rec_fisico": {
             "type": "string"
           },
-          "temas": {
+          "tema": {
             "type": "string"
           },
           "correo_complementario": {
@@ -3602,17 +3591,12 @@
         "required": [
           "plan_auditoria_id",
           "auditoria_padre_id",
-          "titulo",
-          "tipo_evaluacion_id",
           "cronograma_id",
           "estado_id",
-          "no_auditoria",
+          "consecutivo_no_auditoria",
           "vigencia_id",
           "consecutivo_OCI",
           "consecutivo_IE",
-          "macroproceso_id",
-          "proceso_id",
-          "dependencia_id",
           "fecha_inicio",
           "fecha_fin",
           "objetivo",
@@ -3621,7 +3605,7 @@
           "rec_tecnologico",
           "rec_humano",
           "rec_fisico",
-          "temas",
+          "tema",
           "correo_complementario",
           "activo",
           "fecha_creacion",
@@ -3726,6 +3710,54 @@
         },
         "required": [
           "auditoria_padre_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fase_id",
+          "fecha_ejecucion_estado",
+          "activo"
+        ]
+      },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
+      },
+      "AuditoriaEstadoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fase_id": {
+            "type": "string"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "auditoria_id",
           "usuario_id",
           "usuario_rol",
           "observacion",
@@ -3929,7 +3961,7 @@
           "muestra": {
             "type": "string"
           },
-          "aspectos_general": {
+          "aspecto_general": {
             "type": "string"
           },
           "respuesta_preliminar": {
@@ -3965,7 +3997,7 @@
           "auditoria_id",
           "fecha_emision",
           "muestra",
-          "aspectos_general",
+          "aspecto_general",
           "respuesta_preliminar",
           "informe_final",
           "observacion_conclusion",
