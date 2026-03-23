@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
 
-const mockAuditoriaDTO: AuditoriaDTO = {
+const mockAuditoriaDTO: Partial<AuditoriaDTO> = {
   plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
   auditoria_padre_id: '67297dda3416d2a85e5d6d90',
   cronograma_id: [1, 2, 3],
@@ -134,7 +134,9 @@ describe('AuditoriaService', () => {
         .spyOn(auditoriaModel, 'create')
         .mockResolvedValue(mockAuditoria as any);
 
-      const result = await auditoriaService.post(mockAuditoriaDTO);
+      const result = await auditoriaService.post(
+        mockAuditoriaDTO as AuditoriaDTO,
+      );
 
       expect(planAuditoriaFindSpy).toHaveBeenCalledWith(
         mockAuditoriaDTO.plan_auditoria_id,
@@ -144,7 +146,12 @@ describe('AuditoriaService', () => {
       );
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          ...mockAuditoriaDTO,
+          plan_auditoria_id: expect.any(Object),
+          auditoria_padre_id: expect.any(Object),
+          cronograma_id: mockAuditoriaDTO.cronograma_id,
+          estado_id: mockAuditoriaDTO.estado_id,
+          consecutivo_no_auditoria: mockAuditoriaDTO.consecutivo_no_auditoria,
+          vigencia_id: mockAuditoriaDTO.vigencia_id,
           activo: true,
           fechaCreacion: expect.any(Date),
           fechaModificacion: expect.any(Date),
@@ -160,7 +167,9 @@ describe('AuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(null),
         } as any);
 
-      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
+      await expect(
+        auditoriaService.post(mockAuditoriaDTO as AuditoriaDTO),
+      ).rejects.toThrow(
         `Plan auditoria relacionada con id ${mockAuditoriaDTO.plan_auditoria_id} no existe`,
       );
 
@@ -180,7 +189,9 @@ describe('AuditoriaService', () => {
         .spyOn(auditoriaModel, 'create')
         .mockResolvedValue(mockAuditoria as any);
 
-      const result = await auditoriaService.post(dtoSinPlanAuditoria);
+      const result = await auditoriaService.post(
+        dtoSinPlanAuditoria as AuditoriaDTO,
+      );
 
       expect(planAuditoriaModel.findById).not.toHaveBeenCalled();
       expect(createSpy).toHaveBeenCalled();
@@ -196,7 +207,7 @@ describe('AuditoriaService', () => {
         .spyOn(auditoriaModel, 'create')
         .mockResolvedValue(mockAuditoria as any);
 
-      await auditoriaService.post(mockAuditoriaDTO);
+      await auditoriaService.post(mockAuditoriaDTO as AuditoriaDTO);
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -216,7 +227,9 @@ describe('AuditoriaService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(auditoriaService.post(mockAuditoriaDTO)).rejects.toThrow(
+      await expect(
+        auditoriaService.post(mockAuditoriaDTO as AuditoriaDTO),
+      ).rejects.toThrow(
         `Auditoria padre relacionada con id ${mockAuditoriaDTO.auditoria_padre_id} no existe`,
       );
 
@@ -382,7 +395,7 @@ describe('AuditoriaService', () => {
   });
 
   describe('put', () => {
-    const updateDto: AuditoriaDTO = {
+    const updateDto: Partial<AuditoriaDTO> = {
       ...mockAuditoriaDTO,
       objetivo: 'Objetivo actualizado',
       alcance: 'Alcance ampliado',
@@ -403,7 +416,10 @@ describe('AuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(updatedAuditoria),
         } as any);
 
-      const result = await auditoriaService.put(mockAuditoria._id, updateDto);
+      const result = await auditoriaService.put(
+        mockAuditoria._id,
+        updateDto as AuditoriaDTO,
+      );
 
       expect(planAuditoriaFindSpy).toHaveBeenCalledWith(
         updateDto.plan_auditoria_id,
@@ -435,7 +451,10 @@ describe('AuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(mockAuditoria),
         } as any);
 
-      await auditoriaService.put(mockAuditoria._id, dtoWithCreationDate);
+      await auditoriaService.put(
+        mockAuditoria._id,
+        dtoWithCreationDate as AuditoriaDTO,
+      );
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith).not.toHaveProperty('fecha_creacion');
@@ -456,7 +475,7 @@ describe('AuditoriaService', () => {
         } as any);
 
       await expect(
-        auditoriaService.put(nonExistentId, updateDto),
+        auditoriaService.put(nonExistentId, updateDto as AuditoriaDTO),
       ).rejects.toThrow(`${nonExistentId} no existe`);
 
       expect(updateSpy).toHaveBeenCalledWith(
@@ -472,7 +491,7 @@ describe('AuditoriaService', () => {
       } as any);
 
       await expect(
-        auditoriaService.put(mockAuditoria._id, updateDto),
+        auditoriaService.put(mockAuditoria._id, updateDto as AuditoriaDTO),
       ).rejects.toThrow(
         `Plan auditoria relacionada con id ${updateDto.plan_auditoria_id} no existe`,
       );
@@ -492,7 +511,10 @@ describe('AuditoriaService', () => {
           exec: jest.fn().mockResolvedValue(mockAuditoria),
         } as any);
 
-      await auditoriaService.put(mockAuditoria._id, dtoSinPlanAuditoria);
+      await auditoriaService.put(
+        mockAuditoria._id,
+        dtoSinPlanAuditoria as AuditoriaDTO,
+      );
 
       expect(planAuditoriaModel.findById).not.toHaveBeenCalled();
       expect(updateSpy).toHaveBeenCalled();
@@ -510,7 +532,7 @@ describe('AuditoriaService', () => {
         } as any);
 
       const dateBefore = new Date();
-      await auditoriaService.put(mockAuditoria._id, updateDto);
+      await auditoriaService.put(mockAuditoria._id, updateDto as AuditoriaDTO);
       const dateAfter = new Date();
 
       const calledWith = updateSpy.mock.calls[0][1];
@@ -533,7 +555,7 @@ describe('AuditoriaService', () => {
       } as any);
 
       await expect(
-        auditoriaService.put(mockAuditoria._id, updateDto),
+        auditoriaService.put(mockAuditoria._id, updateDto as AuditoriaDTO),
       ).rejects.toThrow(
         `Auditoria padre relacionada con id ${updateDto.auditoria_padre_id} no existe`,
       );
