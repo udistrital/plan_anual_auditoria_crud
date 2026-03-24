@@ -5,7 +5,7 @@ import { AuditoriaPadreDTO } from 'src/auditoria-padre/dto/auditoria-padre.dto';
 
 export interface CreateAuditoriaGestion
   extends AuditoriaPadreDTO,
-    Omit<AuditoriaPadreEstadoDto, 'auditoria_padre_id'> {}
+  Omit<AuditoriaPadreEstadoDto, 'auditoria_padre_id'> { }
 
 export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   @ApiProperty()
