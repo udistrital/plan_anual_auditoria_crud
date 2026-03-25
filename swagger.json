@@ -3523,6 +3523,9 @@
           "auditoria_padre_id": {
             "type": "string"
           },
+          "subtitulo": {
+            "type": "string"
+          },
           "cronograma_id": {
             "type": "array",
             "items": {
@@ -3591,6 +3594,7 @@
         "required": [
           "plan_auditoria_id",
           "auditoria_padre_id",
+          "subtitulo",
           "cronograma_id",
           "estado_id",
           "consecutivo_no_auditoria",
