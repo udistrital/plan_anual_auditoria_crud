@@ -23,12 +23,19 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri:
-          `mongodb://${configService.get('PLAN_ANUAL_AUDITORIA_USER')}:${configService.get('PLAN_ANUAL_AUDITORIA_PASS')}@` +
-          `${configService.get('PLAN_ANUAL_AUDITORIA_HOST')}:${configService.get('PLAN_ANUAL_AUDITORIA_PORT')}/${configService.get('PLAN_ANUAL_AUDITORIA_DB')}` +
-          `?authSource=${configService.get('PLAN_ANUAL_AUDITORIA_AUTH_DB')}`,
-      }),
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const user = encodeURIComponent(configService.get<string>('PLAN_ANUAL_AUDITORIA_USER'));
+        const pass = encodeURIComponent(configService.get<string>('PLAN_ANUAL_AUDITORIA_PASS'));
+        const host = configService.get<string>('PLAN_ANUAL_AUDITORIA_HOST');
+        const port = configService.get<string>('PLAN_ANUAL_AUDITORIA_PORT');
+        const db = configService.get<string>('PLAN_ANUAL_AUDITORIA_DB');
+        const authDb = configService.get<string>('PLAN_ANUAL_AUDITORIA_AUTH_DB');
+
+        return {
+          uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
+        };
+      },
       inject: [ConfigService],
     }),
     PlanAuditoriaModule,
