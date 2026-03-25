@@ -38,9 +38,12 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
           'PLAN_ANUAL_AUDITORIA_AUTH_DB',
         );
 
-        return {
-          uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
-        };
+        const uri = `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`;
+
+        const maskedUri = uri.replace(pass, '********');
+        console.log(`Conectando a MongoDB en: ${maskedUri}`);
+
+        return { uri };
       },
       inject: [ConfigService],
     }),
