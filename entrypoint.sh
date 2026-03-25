@@ -1,7 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -e
-set -u
-set -o pipefail
+echo "Init app with PARAMETER_STORE: $PARAMETER_STORE"
 
 exec node dist/main
