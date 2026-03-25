@@ -25,12 +25,18 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
-        const user = encodeURIComponent(configService.get<string>('PLAN_ANUAL_AUDITORIA_USER'));
-        const pass = encodeURIComponent(configService.get<string>('PLAN_ANUAL_AUDITORIA_PASS'));
+        const user = encodeURIComponent(
+          configService.get<string>('PLAN_ANUAL_AUDITORIA_USER'),
+        );
+        const pass = encodeURIComponent(
+          configService.get<string>('PLAN_ANUAL_AUDITORIA_PASS'),
+        );
         const host = configService.get<string>('PLAN_ANUAL_AUDITORIA_HOST');
         const port = configService.get<string>('PLAN_ANUAL_AUDITORIA_PORT');
         const db = configService.get<string>('PLAN_ANUAL_AUDITORIA_DB');
-        const authDb = configService.get<string>('PLAN_ANUAL_AUDITORIA_AUTH_DB');
+        const authDb = configService.get<string>(
+          'PLAN_ANUAL_AUDITORIA_AUTH_DB',
+        );
 
         return {
           uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
