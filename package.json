@@ -88,6 +88,9 @@
       "ajv": "^8.18.0",
       "file-type": "^21.3.2",
       "js-yaml": "^4.1.1"
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "@nestjs/core"
+    ]
   }
 }
