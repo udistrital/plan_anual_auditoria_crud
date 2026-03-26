@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpStatus,
   Post,
   Put,
@@ -105,6 +106,50 @@ export class AuditoriaGestionController {
         Status: HttpStatus.BAD_REQUEST,
         Message:
           'Error servicio Update: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Delete('/:plan_id/auditoria-padre-borrador')
+  @ApiOperation({
+    summary:
+      'Eliminar lógicamente auditorías padre en estado borrador de un plan',
+  })
+  @ApiParam({
+    name: 'plan_id',
+    type: String,
+    description: 'ID del plan de auditorias',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Las auditorías padre en borrador han sido eliminadas exitosamente.',
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de Auditorias no encontrado.',
+  })
+  async deleteMasivo(
+    @Res() res,
+    @Param('plan_id') planId: string,
+  ) {
+    try {
+      const resultado =
+        await this.auditoriaGestionService.deleteMasivo(planId);
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Eliminación Exitosa',
+        Data: resultado,
+      });
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error servicio Delete: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
         Data: error.message,
       });
     }

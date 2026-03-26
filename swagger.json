@@ -3157,6 +3157,37 @@
         ]
       }
     },
+    "/auditoria-gestion/{plan_id}/auditoria-padre-borrador": {
+      "delete": {
+        "operationId": "AuditoriaGestionController_deleteMasivo",
+        "summary": "Eliminar lógicamente auditorías padre en estado borrador de un plan",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "required": true,
+            "in": "path",
+            "description": "ID del plan de auditorias",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Las auditorías padre en borrador han sido eliminadas exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de Auditorias no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-gestion"
+        ]
+      }
+    },
     "/notificacion": {
       "post": {
         "operationId": "NotificacionController_post",

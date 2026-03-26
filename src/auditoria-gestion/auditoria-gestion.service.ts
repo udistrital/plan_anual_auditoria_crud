@@ -109,4 +109,65 @@ export class AuditoriaGestionService {
 
     return estadosCreados;
   }
+
+  async deleteMasivo(planId: string) {
+    const fecha = new Date();
+
+    const plan = await this.PlanAuditoriaModel.findById(planId).exec();
+    if (!plan) {
+      throw new Error(`Plan de auditoría con ID ${planId} no encontrado`);
+    }
+
+    const auditoriasEnPlan = await this.AuditoriaPadreModel.find({
+      plan_auditoria_id: planId,
+      activo: true,
+    });
+
+    if (auditoriasEnPlan.length === 0) {
+      return {
+        message: 'No se encontraron auditorías para eliminar',
+        eliminadas: 0,
+      };
+    }
+
+    const idsAuditoriasEliminar = auditoriasEnPlan.map((a) => a._id);
+    const idsAuditoriasEliminarStrings = idsAuditoriasEliminar.map((id) => id.toString());
+
+    await this.AuditoriaPadreEstadoModel.updateMany(
+      {
+        auditoria_padre_id: { $in: idsAuditoriasEliminar },
+        actual: true,
+      },
+      { $set: { actual: false } },
+    );
+
+    await this.AuditoriaPadreModel.updateMany(
+      { _id: { $in: idsAuditoriasEliminar } },
+      {
+        $set: {
+          activo: false,
+          fecha_eliminacion: fecha,
+          fecha_modificacion: fecha,
+        },
+      },
+    );
+
+    const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
+      planId,
+      {
+        $set: {
+          auditorias: [],
+          fecha_modificacion: fecha,
+        },
+      },
+      { new: true },
+    );
+
+    return {
+      message: 'Auditorías eliminadas exitosamente',
+      eliminadas: auditoriasEnPlan.length,
+      auditorias_ids: idsAuditoriasEliminarStrings,
+      auditorias_removidas_del_plan: plan.auditorias.length,
+    };
+  }
 }
