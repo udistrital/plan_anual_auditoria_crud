@@ -8,7 +8,7 @@ import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { AuditoriaPadreService } from '../auditoria-padre/auditoria-padre.service';
 import { AuditoriaService } from '../auditoria/auditoria.service';
 import { Auditoria } from '../auditoria/schemas/auditoria.schema';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 import { EstadoAuditoriaService } from '../auditoria-estado/auditoria-estado.service';
 import { AuditoriaEstadoDto } from '../auditoria-estado/dto/auditoria-estado.dto';
 import { EstadoAuditoriaPadreService } from 'src/auditoria-padre-estado/auditoria-padre-estado.service';

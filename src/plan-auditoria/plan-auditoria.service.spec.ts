@@ -9,7 +9,7 @@ import { AuditoriaPadreService } from 'src/auditoria-padre/auditoria-padre.servi
 import { AuditoriaService } from 'src/auditoria/auditoria.service';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
 import { EstadoAuditoriaPadreService } from 'src/auditoria-padre-estado/auditoria-padre-estado.service';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
