@@ -7,6 +7,11 @@ import { AuditoriaPadre } from './schemas/auditoria-padre.schema';
 import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { EstadoAuditoriaPadreService } from '../auditoria-padre-estado/auditoria-padre-estado.service';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
+import { AuditoriaService } from 'src/auditoria/auditoria.service';
+import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
+import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -16,6 +21,8 @@ export class AuditoriaPadreService {
     @InjectModel(PlanAuditoria.name)
     private readonly PlanAuditoriaModel: Model<PlanAuditoria>,
     private readonly estadoAuditoriaPadreService: EstadoAuditoriaPadreService,
+    private readonly auditoriaService: AuditoriaService,
+    private readonly auditoriaEstadoService: EstadoAuditoriaService,
   ) {}
 
   private populateFields(): any[] {
@@ -151,4 +158,184 @@ export class AuditoriaPadreService {
       filtersService.getQuery(),
     ).exec();
   }
+
+  /**
+   * Generar las auditorías correspondientes a una auditoría padre. Para cada auditoría generada, también se genera su estado inicial y se acutaliza el estado de la auditoría padre.
+   * @param id Id de la auditoría padre para la cual se generarán las adutirías hijas.
+   * @param generarAuditoriaDto DTO con la información necesaria para la generación de las auditorías y sus estados.
+   * @returns Lista de auditorías generadas.
+   * @throws Error si la auditoría padre no existe.
+   * @throws Error si la auditoría padre no tiene una cantidad de auditorías asignada.
+   * @throws Error si ocurre un error al generar alguna de las auditorías o sus estados.
+   */
+  async generarAuditorias(id: string, generarAuditoriaDto: GenerarAuditoriaDto): Promise<Auditoria[]> {
+    // Si la auditoría padre no existe, se lanza un error para evitar generar auditorías hijas sin una padre válido.
+    const auditoriaPadre = await this.getById(id);
+    if (!auditoriaPadre.cantidad_auditorias) {
+      throw new Error(`La auditoría padre con ID ${id} no tiene una cantidad de auditorías asignada.`);
+    }
+
+    // Variable de retorno
+    const nuevasAuditorias: Auditoria[] = [];
+
+    // Crear prototipos de los estados de auditoría hija para evitar repetir código en la iteración.
+    const prototipoAuditoriaEstado: AuditoriaEstadoDto = {
+      auditoria_id: undefined, // Se asigna en la iteración
+      actual: undefined,
+      activo: undefined,
+      fecha_ejecucion_estado: undefined,
+
+      usuario_id: generarAuditoriaDto.usuario_id,
+      usuario_rol: generarAuditoriaDto.usuario_rol,
+      observacion: generarAuditoriaDto.observacion,
+      estado_id: generarAuditoriaDto.estado_id_hija_nuevo,
+      fase_id: generarAuditoriaDto.fase_id,
+    };
+
+    // Para evitar la creación de auditorías hijas duplicadas
+    const auditoriasHijasExistentes = await this.auditoriaService.getAll({
+      fields: undefined,
+      sortby: undefined,
+      order: undefined,
+      populate: undefined,
+
+      query: `auditoria_padre_id:${id},activo:true`,
+      limit: '0',
+      offset: '0',
+    });
+
+    // Crear estados de las auditorías hijas existentes si no existen.
+    const idsHijasExistentes = auditoriasHijasExistentes
+      .map((a) => a._id.toString())
+      .join(',');
+    const estadosAuditoriaExistentes =
+      await this.auditoriaEstadoService.getAll({
+        fields: undefined,
+        sortby: undefined,
+        order: undefined,
+        populate: undefined,
+
+        query: `auditoria_id__in:${idsHijasExistentes},estado_id:${generarAuditoriaDto.estado_id_hija_nuevo},activo:true`,
+        limit: '0',
+        offset: '0',
+      });
+
+    // Filtrar auditorías hijas existentes para identificar cuáles no tienen estado generado.
+    const auditoriasHijasSinEstado = auditoriasHijasExistentes.filter(
+      (a) =>
+        !estadosAuditoriaExistentes.find(
+          (e) => e.auditoria_id === a._id.toString(),
+        ),
+    );
+    for (const auditoriaHijaSinEstado of auditoriasHijasSinEstado) {
+      try {
+        await this.auditoriaEstadoService.post({
+          ...prototipoAuditoriaEstado,
+          auditoria_id: auditoriaHijaSinEstado._id.toString(),
+        });
+      } catch (error) {
+        const newError = new Error(
+          `Error al generar estado de auditoría hija existente ${auditoriaHijaSinEstado._id} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
+        );
+        newError.stack += error.stack;
+        throw newError;
+      }
+    }
+
+    // Generación de auditorías hijas faltantes y sus estados
+    const cantidadACrear =
+      auditoriaPadre.cantidad_auditorias - auditoriasHijasExistentes.length;
+    for (let i = 0; i < cantidadACrear; i++) {
+      const auditoriaGenerada = await this.generarAuditoria(i, auditoriaPadre, prototipoAuditoriaEstado);
+      nuevasAuditorias.push(auditoriaGenerada);
+    }
+
+    // Actualiza estado auditoría padre
+    try {
+      await this.estadoAuditoriaPadreService.post({
+        actual: undefined,
+        fecha_ejecucion_estado: undefined,
+        activo: undefined,
+
+        auditoria_padre_id: auditoriaPadre._id.toString(),
+        usuario_id: generarAuditoriaDto.usuario_id,
+        usuario_rol: generarAuditoriaDto.usuario_rol,
+        observacion: generarAuditoriaDto.observacion,
+        estado_id: generarAuditoriaDto.estado_id_padre_nuevo,
+        fase_id: generarAuditoriaDto.fase_id,
+      });
+    } catch (error) {
+      const newError = new Error(
+        `Error al actualizar estado de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}) después de generar sus auditorías.`,
+      );
+      newError.stack += error.stack;
+      throw newError;
+    }
+
+    return nuevasAuditorias;
+  }
+
+  /**
+   * Genera una auditoría hija a partir de una auditoría padre, y su estado inicial. Esta función es utilizada en la generación individual y masiva de auditorías hijas para evitar repetir código.
+   * @param i Índice de la auditoría hija a generar, usado para mensajes de error.
+   * @param auditoriaPadre Auditoría padre a partir de la cual se generará la auditoría hija.
+   * @param prototipoAuditoriaEstado Prototipo del estado de la auditoría.
+   * @returns Promesa con la auditoría generada.
+   * @throws Error si ocurre un error al generar la auditoría o su estado.
+   */
+  private async generarAuditoria(i: number, auditoriaPadre: AuditoriaPadre, prototipoAuditoriaEstado: AuditoriaEstadoDto): Promise<Auditoria> {
+    let auditoria: Auditoria;
+
+    // 1. Generar la nueva auditoría.
+    try {
+      auditoria = await this.auditoriaService.post({
+        consecutivo_no_auditoria: undefined,
+        consecutivo_OCI: undefined,
+        cronograma_id: undefined,
+        estado_id: undefined,
+        consecutivo_IE: undefined,
+        fecha_inicio: undefined,
+        fecha_fin: undefined,
+        objetivo: undefined,
+        alcance: undefined,
+        criterio: undefined,
+        rec_tecnologico: undefined,
+        rec_humano: undefined,
+        rec_fisico: undefined,
+        tema: undefined,
+        correo_complementario: undefined,
+        activo: undefined,
+        fecha_creacion: undefined,
+        fecha_modificacion: undefined,
+
+        plan_auditoria_id: auditoriaPadre.plan_auditoria_id.toString(),
+        auditoria_padre_id: auditoriaPadre._id,
+        vigencia_id: auditoriaPadre.vigencia_id,
+      });
+
+    } catch (error) {
+      const newError = new Error(
+        `Error al generar auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
+      );
+      newError.stack += error.stack;
+      throw newError;
+    }
+
+    // 2. Generar el estado de la nueva auditoría
+    try {
+      await this.auditoriaEstadoService.post({
+        ...prototipoAuditoriaEstado,
+        auditoria_id: auditoria._id.toString(),
+      });
+    } catch (error) {
+      const newError = new Error(
+        `Error al generar estado de auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
+      );
+      newError.stack += error.stack;
+      throw newError;
+    }
+
+    return auditoria;
+  }
+
 }

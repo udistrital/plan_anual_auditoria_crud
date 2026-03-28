@@ -21,6 +21,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
+import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
 
 @ApiTags('auditoria-padre')
 @Controller('auditoria-padre')
@@ -184,6 +185,60 @@ export class AuditoriaPadreController {
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en el servicio Delete: la peticion contiene parametros incorrectos',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Post('/:id/generar-todas')
+  @ApiOperation({
+    summary:
+      'Generar auditorías hija hasta completar la cantidad_auditoria especificada.',
+  })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: GenerarAuditoriaDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Las auditorías hija han sido generadas exitosamente.',
+    type: [GenerarAuditoriaDto],
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Auditoría padre no encontrada.' })
+  async generarAuditorias(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
+  ) {
+    console.log('generarAuditoriasDto:', generarAuditoriaDto);
+    try {
+      const auditoriasGeneradas =
+        await this.AuditoriaPadreService.generarAuditorias(
+          id,
+          generarAuditoriaDto,
+        );
+      res.status(HttpStatus.CREATED).json({
+        Success: true,
+        Status: HttpStatus.CREATED,
+        Message: 'Auditorías generadas exitosamente',
+        Data: auditoriasGeneradas,
+      });
+    } catch (error) {
+      let status = HttpStatus.BAD_REQUEST;
+      let message =
+        'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
+
+      if (error.message.includes('no existe')) {
+        status = HttpStatus.NOT_FOUND;
+        message =
+          'Error en servicio generarAuditorias: el plan de auditoria no existe';
+      } else {
+        console.error('Error en servicio generarAuditorias:', error);
+      }
+
+      res.status(status).json({
+        Success: false,
+        Status: status,
+        Message: message,
         Data: error.message,
       });
     }
