@@ -572,4 +572,117 @@ describe('AuditoriaPadreService', () => {
     });
   });
 
+  describe('generarUnaAuditoria', () => {
+    const auditoriaPadreId = 'padre-una';
+    const generarAuditoriaDto: GenerarAuditoriaDto = {
+      auditoria_id: undefined,
+      usuario_id: 1,
+      usuario_rol: 'ADMIN',
+      observacion: 'Generar una auditoría de prueba',
+      estado_id_padre_actual: 1,
+      estado_id_padre_nuevo: 2,
+      estado_id_hija_actual: 1,
+      estado_id_hija_nuevo: 2,
+      fase_id: 'fase-1',
+      fecha_ejecucion_estado: new Date(),
+      activo: true,
+    } as any;
+
+    const mockAuditoriaPadreConCantidad = {
+      _id: auditoriaPadreId,
+      plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
+      titulo: 'Padre Único',
+      cantidad_auditorias: 3,
+      vigencia_id: 2024,
+    } as any;
+
+    it('Debería generar una auditoría cuando hay cupo disponible', async () => {
+      jest
+        .spyOn(auditoriaPadreService, 'getById')
+        .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
+
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([{ _id: 'ex1' }] as any);
+
+      const generarAuditoriaSpy = jest
+        .spyOn(auditoriaPadreService as any, 'generarAuditoria')
+        .mockResolvedValue({ _id: 'nueva-auditoria' } as any);
+
+      const result = await auditoriaPadreService.generarUnaAuditoria(
+        auditoriaPadreId,
+        generarAuditoriaDto,
+      );
+
+      expect(generarAuditoriaSpy).toHaveBeenCalledWith(
+        1,
+        mockAuditoriaPadreConCantidad,
+        expect.objectContaining({
+          estado_id: generarAuditoriaDto.estado_id_hija_nuevo,
+          usuario_id: generarAuditoriaDto.usuario_id,
+          usuario_rol: generarAuditoriaDto.usuario_rol,
+          fase_id: generarAuditoriaDto.fase_id,
+        }),
+      );
+      expect(result).toEqual({ _id: 'nueva-auditoria' });
+    });
+
+    it('Debería lanzar error cuando no existe cantidad_auditorias', async () => {
+      const auditoriaPadreSinCantidad = {
+        ...mockAuditoriaPadreConCantidad,
+        cantidad_auditorias: 0,
+      };
+
+      jest
+        .spyOn(auditoriaPadreService, 'getById')
+        .mockResolvedValue(auditoriaPadreSinCantidad as any);
+
+      await expect(
+        auditoriaPadreService.generarUnaAuditoria(
+          auditoriaPadreId,
+          generarAuditoriaDto,
+        ),
+      ).rejects.toThrow(
+        new Error(
+          `La auditoría padre con ID ${auditoriaPadreId} no tiene una cantidad de auditorías asignada.`,
+        ),
+      );
+    });
+
+    it('Debería lanzar error cuando ya alcanzó el máximo de auditorías hijas', async () => {
+      jest
+        .spyOn(auditoriaPadreService, 'getById')
+        .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
+
+      jest.spyOn(auditoriaService, 'getAll').mockResolvedValue(
+        [{ _id: 'ex1' }, { _id: 'ex2' }, { _id: 'ex3' }] as any,
+      );
+
+      await expect(
+        auditoriaPadreService.generarUnaAuditoria(
+          auditoriaPadreId,
+          generarAuditoriaDto,
+        ),
+      ).rejects.toThrow(
+        new Error(
+          `La auditoría padre con ID ${auditoriaPadreId} ya tiene el número máximo de auditorías hijas generadas.`,
+        ),
+      );
+    });
+
+    it('Debería propagar error cuando la auditoría padre no existe', async () => {
+      const missingId = 'no-existe';
+      jest
+        .spyOn(auditoriaPadreService, 'getById')
+        .mockRejectedValue(new Error(`${missingId} no existe`));
+
+      await expect(
+        auditoriaPadreService.generarUnaAuditoria(
+          missingId,
+          generarAuditoriaDto,
+        ),
+      ).rejects.toThrow(new Error(`${missingId} no existe`));
+    });
+  });
+
 });

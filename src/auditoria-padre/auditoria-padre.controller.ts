@@ -243,4 +243,57 @@ export class AuditoriaPadreController {
       });
     }
   }
+
+  @Post('/:id/generar-una')
+  @ApiOperation({
+    summary:
+      'Generar una auditoría hija si el número de auditorías hijas existentes es menor que la cantidad_auditoria especificada en la auditoría padre.',
+  })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiBody({ type: GenerarAuditoriaDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Las auditoría hija ha sido generada exitosamente.',
+    type: [GenerarAuditoriaDto],
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({ status: 404, description: 'Auditoría padre no encontrada.' })
+  async generarUnaAuditorias(
+    @Res() res,
+    @Param('id') id: string,
+    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
+  ) {
+    try {
+      const auditoriaGenerada =
+        await this.AuditoriaPadreService.generarUnaAuditoria(
+          id,
+          generarAuditoriaDto,
+        );
+      res.status(HttpStatus.CREATED).json({
+        Success: true,
+        Status: HttpStatus.CREATED,
+        Message: 'Auditoría generada exitosamente',
+        Data: auditoriaGenerada,
+      });
+    } catch (error) {
+      let status = HttpStatus.BAD_REQUEST;
+      let message =
+        'Error en servicio generarUnaAuditoria: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
+
+      if (error.message.includes('no existe')) {
+        status = HttpStatus.NOT_FOUND;
+        message =
+          'Error en servicio generarUnaAuditoria: el plan de auditoria no existe';
+      } else {
+        console.error('Error en servicio generarUnaAuditoria:', error);
+      }
+
+      res.status(status).json({
+        Success: false,
+        Status: status,
+        Message: message,
+        Data: error.message,
+      });
+    }
+  }
 }
