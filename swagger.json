@@ -3172,6 +3172,16 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteMasivoAuditoriaDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Las auditorías padre en borrador han sido eliminadas exitosamente."
@@ -3181,6 +3191,56 @@
           },
           "404": {
             "description": "Plan de Auditorias no encontrado."
+          }
+        },
+        "tags": [
+          "auditoria-gestion"
+        ]
+      }
+    },
+    "/auditoria-gestion/{plan_id}/auditoria/{auditoria_id}": {
+      "delete": {
+        "operationId": "AuditoriaGestionController_deleteUnica",
+        "summary": "Eliminar lógicamente una auditoría padre específica",
+        "parameters": [
+          {
+            "name": "plan_id",
+            "required": true,
+            "in": "path",
+            "description": "ID del plan de auditorias",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "auditoria_id",
+            "required": true,
+            "in": "path",
+            "description": "ID de la auditoría a eliminar",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteMasivoAuditoriaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La auditoría ha sido eliminada exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Auditoría no encontrada."
           }
         },
         "tags": [
@@ -4254,6 +4314,31 @@
           "actual",
           "fase_id",
           "fecha_ejecucion_estado"
+        ]
+      },
+      "DeleteMasivoAuditoriaDto": {
+        "type": "object",
+        "properties": {
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fase_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "usuario_id",
+          "usuario_rol",
+          "estado_id"
         ]
       },
       "NotificacionDTO": {
