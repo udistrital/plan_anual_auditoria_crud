@@ -202,7 +202,6 @@ export class PlanAuditoriaController {
     @Param('id') id: string,
     @Body() generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
-    console.log('generarAuditoriasDto:', generarAuditoriaDto);
     try {
       const auditoriasGeneradas =
         await this.planAuditoriaService.generarAuditorias(
