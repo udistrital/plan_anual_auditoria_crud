@@ -190,7 +190,7 @@ export class AuditoriaPadreController {
     }
   }
 
-  @Post('/:id/generar-todas')
+  @Post('/:id/generar-auditorias')
   @ApiOperation({
     summary:
       'Generar auditorías hija hasta completar la cantidad_auditoria especificada.',
@@ -244,7 +244,7 @@ export class AuditoriaPadreController {
     }
   }
 
-  @Post('/:id/generar-una')
+  @Post('/:id/generar-auditoria')
   @ApiOperation({
     summary:
       'Generar una auditoría hija si el número de auditorías hijas existentes es menor que la cantidad_auditoria especificada en la auditoría padre.',

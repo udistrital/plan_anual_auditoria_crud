@@ -517,7 +517,7 @@
         ]
       }
     },
-    "/auditoria-padre/{id}/generar-todas": {
+    "/auditoria-padre/{id}/generar-auditorias": {
       "post": {
         "operationId": "AuditoriaPadreController_generarAuditorias",
         "summary": "Generar auditorías hija hasta completar la cantidad_auditoria especificada.",
@@ -567,7 +567,7 @@
         ]
       }
     },
-    "/auditoria-padre/{id}/generar-una": {
+    "/auditoria-padre/{id}/generar-auditoria": {
       "post": {
         "operationId": "AuditoriaPadreController_generarUnaAuditorias",
         "summary": "Generar una auditoría hija si el número de auditorías hijas existentes es menor que la cantidad_auditoria especificada en la auditoría padre.",
@@ -3731,6 +3731,9 @@
           "auditoria_padre_id": {
             "type": "string"
           },
+          "subtitulo": {
+            "type": "string"
+          },
           "cronograma_id": {
             "type": "array",
             "items": {
@@ -3799,6 +3802,7 @@
         "required": [
           "plan_auditoria_id",
           "auditoria_padre_id",
+          "subtitulo",
           "cronograma_id",
           "estado_id",
           "consecutivo_no_auditoria",

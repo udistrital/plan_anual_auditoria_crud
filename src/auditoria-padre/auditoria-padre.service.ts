@@ -340,6 +340,7 @@ export class AuditoriaPadreService {
         consecutivo_no_auditoria: undefined,
         consecutivo_OCI: undefined,
         cronograma_id: undefined,
+        subtitulo: undefined,
         estado_id: undefined,
         consecutivo_IE: undefined,
         fecha_inicio: undefined,
@@ -356,7 +357,7 @@ export class AuditoriaPadreService {
         fecha_creacion: undefined,
         fecha_modificacion: undefined,
 
-        plan_auditoria_id: auditoriaPadre.plan_auditoria_id.toString(),
+        plan_auditoria_id: auditoriaPadre.plan_auditoria_id?.toString() || undefined,
         auditoria_padre_id: auditoriaPadre._id,
         vigencia_id: auditoriaPadre.vigencia_id,
       });
