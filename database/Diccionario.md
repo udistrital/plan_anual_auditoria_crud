@@ -185,6 +185,7 @@ Campo paramétrico: vigencia_id.
 |-------|------|-----------|-------------|
 | consecutivo_OCI | String | No | Número OCI |
 | consecutivo_IE | String | No | Número IE |
+| subtitulo | String | No | Subtítulo de la auditoría |
 | fecha_inicio | Date | No | Inicio de auditoría |
 | fecha_fin | Date | No | Fin de auditoría |
 | objetivo | String | No | Objetivos específicos |
