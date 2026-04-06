@@ -8,6 +8,9 @@ export class AuditoriaDTO {
   readonly auditoria_padre_id?: string;
 
   @ApiProperty()
+  readonly subtitulo: string;
+
+  @ApiProperty()
   readonly cronograma_id: number[] = [];
 
   @ApiProperty()

@@ -32,7 +32,7 @@ export class FiltersService {
             case 'lte':
               queryObj[key[0]] = { $lte: castValue(tup[1]) };
               break;
-            case 'in':
+            case 'in': {
               const list = tup[1].split('|');
               if (key[0].endsWith('id')) {
                 queryObj[key[0]] = {
@@ -42,6 +42,7 @@ export class FiltersService {
                 queryObj[key[0]] = { $in: [...list.map((v) => castValue(v))] };
               }
               break;
+            }
             case 'not':
               queryObj[key[0]] = { $ne: castValue(tup[1]) };
               break;

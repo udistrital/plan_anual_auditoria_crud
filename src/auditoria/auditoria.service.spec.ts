@@ -12,6 +12,7 @@ import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
 const mockAuditoriaDTO: Partial<AuditoriaDTO> = {
   plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
   auditoria_padre_id: '67297dda3416d2a85e5d6d90',
+  subtitulo: 'prueba',
   cronograma_id: [1, 2, 3],
   estado_id: 3,
   consecutivo_no_auditoria: 123420,
@@ -148,6 +149,7 @@ describe('AuditoriaService', () => {
         expect.objectContaining({
           plan_auditoria_id: expect.any(Object),
           auditoria_padre_id: expect.any(Object),
+          subtitulo: mockAuditoriaDTO.subtitulo,
           cronograma_id: mockAuditoriaDTO.cronograma_id,
           estado_id: mockAuditoriaDTO.estado_id,
           consecutivo_no_auditoria: mockAuditoriaDTO.consecutivo_no_auditoria,

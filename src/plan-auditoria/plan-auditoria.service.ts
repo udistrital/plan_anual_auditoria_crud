@@ -233,6 +233,7 @@ export class PlanAuditoriaService {
           auditoria = await this.auditoriaService.post({
             consecutivo_no_auditoria: undefined,
             consecutivo_OCI: undefined,
+            subtitulo: undefined,
             cronograma_id: undefined,
             estado_id: undefined,
             consecutivo_IE: undefined,
