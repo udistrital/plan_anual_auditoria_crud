@@ -278,19 +278,11 @@ describe('AuditoriaGestionService', () => {
       { ...mockAuditoriaPadre, _id: 'aud2' },
       { ...mockAuditoriaPadre, _id: 'aud3' },
     ];
-    const mockEstadosAnteriores = [
-      { ...mockAuditoriaPadreEstado, _id: 'est1', auditoria_padre_id: 'aud1' },
-      { ...mockAuditoriaPadreEstado, _id: 'est2', auditoria_padre_id: 'aud2' },
-    ];
 
     it('Debería actualizar estados de todas las auditorías en un plan', async () => {
       const auditoriaFindSpy = jest
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
-
-      const estadoFindSpy = jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue(mockEstadosAnteriores as any);
 
       const estadoUpdateManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
@@ -309,11 +301,6 @@ describe('AuditoriaGestionService', () => {
       expect(auditoriaFindSpy).toHaveBeenCalledWith({
         plan_auditoria_id: planAuditoriaId,
         activo: true,
-      });
-
-      expect(estadoFindSpy).toHaveBeenCalledWith({
-        auditoria_padre_id: { $in: ['aud1', 'aud2', 'aud3'] },
-        actual: true,
       });
 
       expect(estadoUpdateManySpy).toHaveBeenCalledWith(
@@ -363,10 +350,6 @@ describe('AuditoriaGestionService', () => {
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
 
-      jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue(mockEstadosAnteriores as any);
-
       const updateManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
         .mockResolvedValue({ modifiedCount: 2 } as any);
@@ -387,14 +370,10 @@ describe('AuditoriaGestionService', () => {
       expect(updateManyOrder).toBeLessThan(insertManyOrder);
     });
 
-    it('Debería NO llamar updateMany si no hay estados anteriores', async () => {
+    it('Debería llamar updateMany incluso si no hay estados anteriores', async () => {
       jest
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
-
-      jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue([] as any);
 
       const updateManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
@@ -410,17 +389,19 @@ describe('AuditoriaGestionService', () => {
 
       await service.put(planAuditoriaId, mockAuditoriaEstadoDto);
 
-      expect(updateManySpy).not.toHaveBeenCalled();
+      expect(updateManySpy).toHaveBeenCalledWith(
+        {
+          auditoria_padre_id: { $in: ['aud1', 'aud2', 'aud3'] },
+          actual: true,
+        },
+        { $set: { actual: false } },
+      );
     });
 
     it('Debería crear un estado por cada auditoría en el plan', async () => {
       jest
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
-
-      jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue(mockEstadosAnteriores as any);
 
       jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
@@ -444,10 +425,6 @@ describe('AuditoriaGestionService', () => {
       jest
         .spyOn(auditoriaPadreModel, 'find')
         .mockResolvedValue(mockAuditorias as any);
-
-      jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue(mockEstadosAnteriores as any);
 
       jest
         .spyOn(auditoriaPadreEstadoModel, 'updateMany')
@@ -477,21 +454,13 @@ describe('AuditoriaGestionService', () => {
     it('Debería manejar el caso cuando no hay auditorías en el plan', async () => {
       jest.spyOn(auditoriaPadreModel, 'find').mockResolvedValue([] as any);
 
-      jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue([] as any);
-
       const insertManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'insertMany')
         .mockResolvedValue([] as any);
 
-      jest
-        .spyOn(auditoriaPadreModel, 'updateMany')
-        .mockResolvedValue({ modifiedCount: 0 } as any);
-
       const result = await service.put(planAuditoriaId, mockAuditoriaEstadoDto);
 
-      expect(insertManySpy).toHaveBeenCalledWith([]);
+      expect(insertManySpy).not.toHaveBeenCalled();
       expect(result).toEqual([]);
     });
 
@@ -510,8 +479,8 @@ describe('AuditoriaGestionService', () => {
         .mockResolvedValue([mockAuditorias[0]] as any);
 
       jest
-        .spyOn(auditoriaPadreEstadoModel, 'find')
-        .mockResolvedValue([] as any);
+        .spyOn(auditoriaPadreEstadoModel, 'updateMany')
+        .mockResolvedValue({ modifiedCount: 0 } as any);
 
       const insertManySpy = jest
         .spyOn(auditoriaPadreEstadoModel, 'insertMany')
