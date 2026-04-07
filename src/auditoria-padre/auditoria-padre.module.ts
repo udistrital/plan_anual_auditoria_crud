@@ -11,6 +11,8 @@ import {
   PlanAuditoriaSchema,
 } from 'src/plan-auditoria/schemas/plan-auditoria.schema';
 import { EstadoAuditoriaPadreModule } from '../auditoria-padre-estado/auditoria-padre-estado.module';
+import { AuditoriaModule } from 'src/auditoria/auditoria.module';
+import { EstadoAuditoriaModule } from 'src/auditoria-estado/auditoria-estado.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { EstadoAuditoriaPadreModule } from '../auditoria-padre-estado/auditoria-
       { name: PlanAuditoria.name, schema: PlanAuditoriaSchema },
     ]),
     EstadoAuditoriaPadreModule,
+    AuditoriaModule,
+    EstadoAuditoriaModule,
   ],
   controllers: [AuditoriaPadreController],
   providers: [AuditoriaPadreService],

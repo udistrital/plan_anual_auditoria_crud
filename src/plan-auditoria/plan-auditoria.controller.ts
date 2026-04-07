@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')

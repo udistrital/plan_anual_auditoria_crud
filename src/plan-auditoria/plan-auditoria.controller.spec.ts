@@ -5,7 +5,7 @@ import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { PlanAuditoriaService } from './plan-auditoria.service';
 import { PlanAuditoriaController } from './plan-auditoria.controller';
 import { Types } from 'mongoose';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
