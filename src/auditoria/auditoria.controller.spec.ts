@@ -29,7 +29,7 @@ const mockAuditoriaDTO: AuditoriaDTO = {
   rec_humano: 'Equipo de 5 auditores',
   rec_fisico: 'Oficinas y equipos',
   tema: 'Gestión de calidad, procesos, controles',
-  correo_complementario: 'correo@email.com',
+  correo_complementario: [{ dependencia_id: 30, correo: 'correo@email.com' }],
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),

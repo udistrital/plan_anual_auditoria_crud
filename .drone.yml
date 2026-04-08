@@ -54,6 +54,7 @@ steps:
 
   - name: lint
     image: node:current-alpine
+    pull: always
     commands:
       - corepack enable pnpm
       - pnpm install
@@ -79,6 +80,7 @@ steps:
 
   - name: build
     image: node:current-alpine
+    pull: always
     commands:
       - corepack enable pnpm
       - pnpm install
