@@ -654,9 +654,13 @@ describe('AuditoriaPadreService', () => {
         .spyOn(auditoriaPadreService, 'getById')
         .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
 
-      jest.spyOn(auditoriaService, 'getAll').mockResolvedValue(
-        [{ _id: 'ex1' }, { _id: 'ex2' }, { _id: 'ex3' }] as any,
-      );
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([
+          { _id: 'ex1' },
+          { _id: 'ex2' },
+          { _id: 'ex3' },
+        ] as any);
 
       await expect(
         auditoriaPadreService.generarUnaAuditoria(
@@ -684,5 +688,4 @@ describe('AuditoriaPadreService', () => {
       ).rejects.toThrow(new Error(`${missingId} no existe`));
     });
   });
-
 });
