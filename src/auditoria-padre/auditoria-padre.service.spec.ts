@@ -18,9 +18,9 @@ const mockAuditoriaPadreDTO: AuditoriaPadreDTO = {
   cronograma_id: [],
   estado_id: 1,
   vigencia_id: 2024,
-  macroproceso_id: 10,
-  proceso_id: 20,
-  dependencia_id: 30,
+  macroproceso_id: [10],
+  proceso_id: [20],
+  dependencia_id: [30],
   cantidad_auditorias: 2,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
@@ -654,9 +654,13 @@ describe('AuditoriaPadreService', () => {
         .spyOn(auditoriaPadreService, 'getById')
         .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
 
-      jest.spyOn(auditoriaService, 'getAll').mockResolvedValue(
-        [{ _id: 'ex1' }, { _id: 'ex2' }, { _id: 'ex3' }] as any,
-      );
+      jest
+        .spyOn(auditoriaService, 'getAll')
+        .mockResolvedValue([
+          { _id: 'ex1' },
+          { _id: 'ex2' },
+          { _id: 'ex3' },
+        ] as any);
 
       await expect(
         auditoriaPadreService.generarUnaAuditoria(
@@ -684,5 +688,4 @@ describe('AuditoriaPadreService', () => {
       ).rejects.toThrow(new Error(`${missingId} no existe`));
     });
   });
-
 });

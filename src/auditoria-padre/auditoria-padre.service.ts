@@ -12,7 +12,6 @@ import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
 import { AuditoriaService } from 'src/auditoria/auditoria.service';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
-import { stringify } from 'querystring';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -172,11 +171,16 @@ export class AuditoriaPadreService {
    * @throws Error si la auditoría padre no tiene una cantidad de auditorías asignada.
    * @throws Error si ocurre un error al generar alguna de las auditorías o sus estados.
    */
-  async generarAuditorias(id: string, generarAuditoriaDto: GenerarAuditoriaDto): Promise<Auditoria[]> {
+  async generarAuditorias(
+    id: string,
+    generarAuditoriaDto: GenerarAuditoriaDto,
+  ): Promise<Auditoria[]> {
     // Si la auditoría padre no existe, se lanza un error para evitar generar auditorías hijas sin una padre válido.
     const auditoriaPadre = await this.getById(id);
     if (!auditoriaPadre.cantidad_auditorias) {
-      throw new Error(`La auditoría padre con ID ${id} no tiene una cantidad de auditorías asignada.`);
+      throw new Error(
+        `La auditoría padre con ID ${id} no tiene una cantidad de auditorías asignada.`,
+      );
     }
 
     // Variable de retorno
@@ -212,8 +216,8 @@ export class AuditoriaPadreService {
     const idsHijasExistentes = auditoriasHijasExistentes
       .map((a) => a._id.toString())
       .join(',');
-    const estadosAuditoriaExistentes =
-      await this.auditoriaEstadoService.getAll({
+    const estadosAuditoriaExistentes = await this.auditoriaEstadoService.getAll(
+      {
         fields: undefined,
         sortby: undefined,
         order: undefined,
@@ -222,7 +226,8 @@ export class AuditoriaPadreService {
         query: `auditoria_id__in:${idsHijasExistentes},estado_id:${generarAuditoriaDto.estado_id_hija_nuevo},activo:true`,
         limit: '0',
         offset: '0',
-      });
+      },
+    );
 
     // Filtrar auditorías hijas existentes para identificar cuáles no tienen estado generado.
     const auditoriasHijasSinEstado = auditoriasHijasExistentes.filter(
@@ -250,7 +255,11 @@ export class AuditoriaPadreService {
     const cantidadACrear =
       auditoriaPadre.cantidad_auditorias - auditoriasHijasExistentes.length;
     for (let i = 0; i < cantidadACrear; i++) {
-      const auditoriaGenerada = await this.generarAuditoria(i, auditoriaPadre, prototipoAuditoriaEstado);
+      const auditoriaGenerada = await this.generarAuditoria(
+        i,
+        auditoriaPadre,
+        prototipoAuditoriaEstado,
+      );
       nuevasAuditorias.push(auditoriaGenerada);
     }
 
@@ -289,10 +298,15 @@ export class AuditoriaPadreService {
    * @throws Error si la auditoría padre ya tiene el número máximo de auditorías hijas generadas.
    * @throws Error si ocurre un error al generar la auditoría hija o su estado.
    */
-  async generarUnaAuditoria(id: string, generarAuditoriaDto: GenerarAuditoriaDto): Promise<Auditoria> {
+  async generarUnaAuditoria(
+    id: string,
+    generarAuditoriaDto: GenerarAuditoriaDto,
+  ): Promise<Auditoria> {
     const auditoriaPadre = await this.getById(id);
     if (!auditoriaPadre.cantidad_auditorias) {
-      throw new Error(`La auditoría padre con ID ${id} no tiene una cantidad de auditorías asignada.`);
+      throw new Error(
+        `La auditoría padre con ID ${id} no tiene una cantidad de auditorías asignada.`,
+      );
     }
 
     const prototipoAuditoriaEstado: AuditoriaEstadoDto = {
@@ -319,11 +333,19 @@ export class AuditoriaPadreService {
       offset: '0',
     });
 
-    if (auditoriasHijasExistentes.length >= auditoriaPadre.cantidad_auditorias) {
-      throw new Error(`La auditoría padre con ID ${id} ya tiene el número máximo de auditorías hijas generadas.`);
+    if (
+      auditoriasHijasExistentes.length >= auditoriaPadre.cantidad_auditorias
+    ) {
+      throw new Error(
+        `La auditoría padre con ID ${id} ya tiene el número máximo de auditorías hijas generadas.`,
+      );
     }
 
-    return await this.generarAuditoria(auditoriasHijasExistentes.length, auditoriaPadre, prototipoAuditoriaEstado);
+    return await this.generarAuditoria(
+      auditoriasHijasExistentes.length,
+      auditoriaPadre,
+      prototipoAuditoriaEstado,
+    );
   }
 
   /**
@@ -334,7 +356,11 @@ export class AuditoriaPadreService {
    * @returns Promesa con la auditoría generada.
    * @throws Error si ocurre un error al generar la auditoría o su estado.
    */
-  private async generarAuditoria(i: number, auditoriaPadre: AuditoriaPadre, prototipoAuditoriaEstado: AuditoriaEstadoDto): Promise<Auditoria> {
+  private async generarAuditoria(
+    i: number,
+    auditoriaPadre: AuditoriaPadre,
+    prototipoAuditoriaEstado: AuditoriaEstadoDto,
+  ): Promise<Auditoria> {
     let auditoria: Auditoria;
 
     // 1. Generar la nueva auditoría.
@@ -360,11 +386,11 @@ export class AuditoriaPadreService {
         fecha_creacion: undefined,
         fecha_modificacion: undefined,
 
-        plan_auditoria_id: auditoriaPadre.plan_auditoria_id?.toString() || undefined,
+        plan_auditoria_id:
+          auditoriaPadre.plan_auditoria_id?.toString() || undefined,
         auditoria_padre_id: auditoriaPadre._id,
         vigencia_id: auditoriaPadre.vigencia_id,
       });
-
     } catch (error) {
       const newError = new Error(
         `Error al generar auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
@@ -389,5 +415,4 @@ export class AuditoriaPadreService {
 
     return auditoria;
   }
-
 }

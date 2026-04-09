@@ -40,7 +40,7 @@ steps:
         - push
 
   - name: install_dependencies
-    image: node:current-alpine
+    image: node:lts-alpine
     commands:
       - corepack enable pnpm
       - pnpm install
@@ -53,7 +53,7 @@ steps:
         - push
 
   - name: lint
-    image: node:current-alpine
+    image: node:lts-alpine
     commands:
       - corepack enable pnpm
       - pnpm install
@@ -66,7 +66,7 @@ steps:
 
 
   - name: unit_tests
-    image: node:current-alpine
+    image: node:lts-alpine
     commands:
       - corepack enable pnpm
       - pnpm install
@@ -78,7 +78,7 @@ steps:
         - push
 
   - name: build
-    image: node:current-alpine
+    image: node:lts-alpine
     commands:
       - corepack enable pnpm
       - pnpm install
