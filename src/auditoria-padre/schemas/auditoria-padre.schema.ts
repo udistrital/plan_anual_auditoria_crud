@@ -28,7 +28,7 @@ export class AuditoriaPadre extends Document {
   @Prop({ required: false })
   proceso_id: number[];
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: [Number], default: [] })
   dependencia_id: number[];
 
   @Prop({ required: false })

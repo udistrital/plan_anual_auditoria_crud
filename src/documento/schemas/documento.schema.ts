@@ -18,6 +18,9 @@ export class Documento extends Document {
   @Prop({ required: true })
   tipo_id: number;
 
+  @Prop({ required: false, type: Object, default: {} })
+  metadatos?: Record<string, any>;
+
   @Prop({ required: true })
   activo: boolean;
 
