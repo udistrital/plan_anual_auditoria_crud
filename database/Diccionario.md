@@ -270,12 +270,7 @@ Actividades realizadas durante la ejecución de auditoría.
 | descripcion | String | No | Descripción detallada |
 | observacion | String | No | Observaciones |
 | folio | Number | No | Número de folio |
-| medio_id | Number | No | ID del medio utilizado |
-
-Campo paramétrico: medio_id.
-
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
+| medio | String | No | Nombre del medio utilizado |
 | carpeta | String | No | Ruta de almacenamiento |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Fecha de creación |
