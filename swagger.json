@@ -4004,8 +4004,8 @@
           "folio": {
             "type": "number"
           },
-          "medio_id": {
-            "type": "number"
+          "medio": {
+            "type": "string"
           },
           "carpeta": {
             "type": "string"
@@ -4031,7 +4031,7 @@
           "descripcion",
           "observacion",
           "folio",
-          "medio_id",
+          "medio",
           "carpeta",
           "activo",
           "fecha_creacion",
