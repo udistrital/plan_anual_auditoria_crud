@@ -42,6 +42,9 @@ export class AuditoriaPadre extends Document {
 
   @Prop({ required: false })
   fecha_modificacion: Date;
+
+  @Prop({ required: false })
+  fecha_eliminacion: Date;
 }
 
 export const AuditoriaPadreSchema =

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpStatus,
   Post,
   Put,
@@ -17,6 +18,7 @@ import {
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
 import { AuditoriaPadreEstadoDto } from '../auditoria-padre-estado/dto/auditoria-padre-estado.dto';
+import { DeleteMasivoAuditoriaDto } from './dto/delete-masivo-auditoria.dto';
 
 @ApiTags('auditoria-gestion')
 @Controller('auditoria-gestion')
@@ -105,6 +107,106 @@ export class AuditoriaGestionController {
         Status: HttpStatus.BAD_REQUEST,
         Message:
           'Error servicio Update: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Delete('/:plan_id/auditoria-padre-borrador')
+  @ApiOperation({
+    summary:
+      'Eliminar lógicamente auditorías padre en estado borrador de un plan',
+  })
+  @ApiParam({
+    name: 'plan_id',
+    type: String,
+    description: 'ID del plan de auditorias',
+  })
+  @ApiBody({ type: DeleteMasivoAuditoriaDto })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Las auditorías padre en borrador han sido eliminadas exitosamente.',
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de Auditorias no encontrado.',
+  })
+  async deleteMasivo(
+    @Res() res,
+    @Param('plan_id') planId: string,
+    @Body() deleteMasivoDto: DeleteMasivoAuditoriaDto,
+  ) {
+    try {
+      const resultado = await this.auditoriaGestionService.deleteMasivo(
+        planId,
+        deleteMasivoDto,
+      );
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Eliminación Exitosa',
+        Data: resultado,
+      });
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message:
+          'Error servicio Delete: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Delete('/:plan_id/auditoria/:auditoria_id')
+  @ApiOperation({
+    summary: 'Eliminar lógicamente una auditoría padre específica',
+  })
+  @ApiParam({
+    name: 'plan_id',
+    type: String,
+    description: 'ID del plan de auditorias',
+  })
+  @ApiParam({
+    name: 'auditoria_id',
+    type: String,
+    description: 'ID de la auditoría a eliminar',
+  })
+  @ApiBody({ type: DeleteMasivoAuditoriaDto })
+  @ApiResponse({
+    status: 200,
+    description: 'La auditoría ha sido eliminada exitosamente.',
+  })
+  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Auditoría no encontrada.',
+  })
+  async deleteUnica(
+    @Res() res,
+    @Param('plan_id') planId: string,
+    @Param('auditoria_id') auditoriaId: string,
+    @Body() deleteMasivoDto: DeleteMasivoAuditoriaDto,
+  ) {
+    try {
+      const resultado = await this.auditoriaGestionService.deleteUnica(
+        auditoriaId,
+        planId,
+        deleteMasivoDto,
+      );
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Eliminación Exitosa',
+        Data: resultado,
+      });
+    } catch (error) {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message: 'Error servicio Delete',
         Data: error.message,
       });
     }

@@ -20,7 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
+import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -202,7 +202,6 @@ export class PlanAuditoriaController {
     @Param('id') id: string,
     @Body() generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
-    console.log('generarAuditoriasDto:', generarAuditoriaDto);
     try {
       const auditoriasGeneradas =
         await this.planAuditoriaService.generarAuditorias(

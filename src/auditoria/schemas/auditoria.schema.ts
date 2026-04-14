@@ -12,6 +12,9 @@ export class Auditoria extends Document {
   auditoria_padre_id: AuditoriaPadre | Types.ObjectId;
 
   @Prop({ required: false })
+  subtitulo: string;
+
+  @Prop({ required: false })
   cronograma_id: number[] = [];
 
   @Prop({ required: false })
