@@ -60,7 +60,7 @@ export class Auditoria extends Document {
   tema: string;
 
   @Prop({ required: false })
-  correo_complementario: string;
+  correo_complementario: object[] = [];
 
   @Prop({ required: false })
   activo: boolean;

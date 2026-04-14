@@ -21,13 +21,13 @@ export class AuditoriaPadreDTO {
   readonly vigencia_id: number;
 
   @ApiProperty()
-  readonly macroproceso_id: number;
+  readonly macroproceso_id: number[] = [];
 
   @ApiProperty()
-  readonly proceso_id: number;
+  readonly proceso_id: number[] = [];
 
   @ApiProperty()
-  readonly dependencia_id: number;
+  readonly dependencia_id: number[] = [];
 
   @ApiProperty()
   readonly cantidad_auditorias: number;
