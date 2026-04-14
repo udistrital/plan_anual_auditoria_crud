@@ -56,7 +56,7 @@ export class AuditoriaDTO {
   readonly tema: string;
 
   @ApiProperty()
-  readonly correo_complementario: string;
+  readonly correo_complementario: object[] = [];
 
   @ApiProperty()
   activo: boolean;

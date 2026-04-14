@@ -3730,13 +3730,22 @@
             "type": "number"
           },
           "macroproceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "proceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "dependencia_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "cantidad_auditorias": {
             "type": "number"
@@ -3876,7 +3885,10 @@
             "type": "string"
           },
           "correo_complementario": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "activo": {
             "type": "boolean"
@@ -4349,13 +4361,22 @@
             "type": "number"
           },
           "macroproceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "proceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "dependencia_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "auditorias": {
             "type": "array",
