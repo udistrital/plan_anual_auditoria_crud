@@ -30,7 +30,7 @@ export class PlanAuditoriaService {
       );
     }
 
-    const planAuditoriaData = {
+    const planAuditoriaData: PlanAuditoriaDTO = {
       ...planAuditoriaDto,
       activo: true,
       fecha_creacion: fecha,

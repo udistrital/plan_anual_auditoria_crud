@@ -15,12 +15,11 @@ export class NotificacionService {
 
   async post(notificacionDTO: NotificacionDTO): Promise<Notificacion> {
     const fecha = new Date();
-    const notificacionData = {
+    const notificacionData: NotificacionDTO = {
       ...notificacionDTO,
       referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
       activo: true,
-      fecha_creacion: fecha,
-      fecha_modificacion: fecha,
+      fecha_envio: fecha,
     };
     return await this.notificacionModel.create(notificacionData);
   }
@@ -51,10 +50,9 @@ export class NotificacionService {
     notificacionDTO: NotificacionDTO,
   ): Promise<Notificacion> {
     const { ...updateFields } = notificacionDTO;
-    const updateData = {
+    const updateData: NotificacionDTO = {
       ...updateFields,
       referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
-      fecha_modificacion: new Date(),
     };
     delete (updateData as any).activo;
     delete (updateData as any).fecha_creacion;

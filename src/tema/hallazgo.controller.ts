@@ -52,7 +52,7 @@ export class HallazgoController {
         Message: 'Hallazgo creado exitosamente',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -87,7 +87,7 @@ export class HallazgoController {
         Data: hallazgos,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -115,7 +115,7 @@ export class HallazgoController {
         Message: 'Peticion Exitosa',
         Data: hallazgo,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -148,7 +148,7 @@ export class HallazgoController {
         Message: 'Hallazgo actualizado exitosamente',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -175,7 +175,7 @@ export class HallazgoController {
         Message: 'Hallazgo eliminado exitosamente',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

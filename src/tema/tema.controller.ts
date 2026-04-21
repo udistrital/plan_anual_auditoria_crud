@@ -48,7 +48,7 @@ export class TemaController {
         Message: 'Registro Exitoso',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -78,7 +78,7 @@ export class TemaController {
         Data: tema,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -107,7 +107,7 @@ export class TemaController {
         Message: 'Peticion Exitosa',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -142,7 +142,7 @@ export class TemaController {
         Message: 'Actualizacion Exitosa',
         Data: tema,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +172,7 @@ export class TemaController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

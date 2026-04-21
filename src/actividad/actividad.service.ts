@@ -33,7 +33,7 @@ export class ActividadService {
   }
   async post(ActividadDTO: ActividadDTO): Promise<Actividad> {
     const fecha = new Date();
-    const actividadData = {
+    const actividadData: ActividadDTO = {
       ...ActividadDTO,
       activo: true,
       fecha_creacion: fecha,

@@ -21,10 +21,10 @@ export class EstadoService {
 
   private async checkRelated(PlanEstadoDto: PlanEstadoDto) {
     if (PlanEstadoDto.plan_auditoria_id) {
-      const actividad = await this.PlanAuditoriaModel.findById(
+      const plan = await this.PlanAuditoriaModel.findById(
         PlanEstadoDto.plan_auditoria_id,
       ).exec();
-      if (!actividad) {
+      if (!plan) {
         throw new Error(
           `Plan auditoria relacionada con id ${PlanEstadoDto.plan_auditoria_id} no existe`,
         );
@@ -34,7 +34,7 @@ export class EstadoService {
 
   async post(PlanEstadoDto: PlanEstadoDto): Promise<PlanEstado> {
     const fecha = new Date();
-    const planEstadoData = {
+    const planEstadoData: PlanEstadoDto = {
       ...PlanEstadoDto,
       actual: true,
       activo: true,
@@ -74,11 +74,11 @@ export class EstadoService {
   }
 
   async getById(id: string): Promise<PlanEstado> {
-    const planAuditoria = await this.PlanEstadoModel.findById(id).exec();
-    if (!planAuditoria) {
+    const planAuditoriaEstado = await this.PlanEstadoModel.findById(id).exec();
+    if (!planAuditoriaEstado) {
       throw new Error(`${id} no existe`);
     }
-    return planAuditoria;
+    return planAuditoriaEstado;
   }
 
   async put(id: string, PlanEstadoDto: PlanEstadoDto): Promise<PlanEstado> {

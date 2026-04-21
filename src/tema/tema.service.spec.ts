@@ -5,11 +5,11 @@ import { TemaDTO } from './dto/tema.dto';
 import { CreateSubtemaDTO, UpdateSubtemaDTO } from './dto/subtema.dto';
 import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 import { Tema } from './schemas/tema.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockTemaDto: TemaDTO = {
-  informe_id: '507f1f77bcf86cd799439011',
+  informe_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   titulo: 'Gestión Documental',
   activo: true,
   subtema: [],

@@ -36,4 +36,7 @@ export class NotificacionDTO {
     example: 'PAA',
   })
   readonly referencia_tipo: string;
+
+  @ApiProperty()
+  readonly activo: boolean;
 }

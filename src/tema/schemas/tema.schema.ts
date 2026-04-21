@@ -41,8 +41,8 @@ const SubtemaSchema = new mongoose.Schema<ISubtema>(
 
 @Schema({ collection: 'tema', versionKey: false, timestamps: true })
 export class Tema extends Document {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  informe_id: mongoose.Types.ObjectId;
+  @Prop({ type: Types.ObjectId, required: true })
+  informe_id: Types.ObjectId;
 
   @Prop({ required: true })
   titulo: string;

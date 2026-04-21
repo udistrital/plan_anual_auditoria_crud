@@ -37,7 +37,7 @@ export class EstadoAuditoriaPadreService {
     auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
   ): Promise<AuditoriaPadreEstado> {
     const fecha = new Date();
-    const estadoData = {
+    const estadoData: AuditoriaPadreEstadoDto = {
       ...auditoriaPadreEstadoDto,
       auditoria_padre_id: new Types.ObjectId(
         auditoriaPadreEstadoDto.auditoria_padre_id,

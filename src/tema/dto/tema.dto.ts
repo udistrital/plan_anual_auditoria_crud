@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class TemaDTO {
   @ApiProperty({ description: 'ID del informe padre' })
-  readonly informe_id: string;
+  readonly informe_id: Types.ObjectId;
 
   @ApiProperty({ description: 'Título del tema' })
   readonly titulo: string;

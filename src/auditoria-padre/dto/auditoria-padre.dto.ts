@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 
 export class AuditoriaPadreDTO {
   @ApiProperty()
-  readonly plan_auditoria_id: string | Types.ObjectId;
+  readonly plan_auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly titulo: string;

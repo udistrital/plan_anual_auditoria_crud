@@ -48,7 +48,7 @@ export class DocumentoController {
         Message: 'Registro Exitoso',
         Data: documento,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -78,7 +78,7 @@ export class DocumentoController {
         Data: documento,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -107,7 +107,7 @@ export class DocumentoController {
         Message: 'Peticion Exitosa',
         Data: documento,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -132,7 +132,8 @@ export class DocumentoController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() DocumentoDTO: DocumentoDTO,
+    @Body(new ParseObjectIdPipe(['auditoria_padre_id']))
+    DocumentoDTO: DocumentoDTO,
   ) {
     try {
       const documento = await this.documentoService.put(id, DocumentoDTO);
@@ -142,7 +143,7 @@ export class DocumentoController {
         Message: 'Actualizacion Exitosa',
         Data: documento,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +173,7 @@ export class DocumentoController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

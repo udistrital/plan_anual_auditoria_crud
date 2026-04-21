@@ -9,7 +9,7 @@ import { AuditoriaPadreEstadoDto } from '../auditoria-padre-estado/dto/auditoria
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría General 2024',
   tipo_evaluacion_id: 2,
   cronograma_id: [1, 2, 3],
@@ -33,14 +33,14 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
 
 const mockAuditoriaPadre = {
   _id: '672d3050f7814a9a0c5261d4',
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría General 2024',
   activo: true,
 };
 
 const mockAuditoriaPadreEstado = {
   _id: '672d36737e962bcac5ce9beb',
-  auditoria_padre_id: '672d3050f7814a9a0c5261d4',
+  auditoria_padre_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR',
   observacion: 'Estado inicial de la auditoría',

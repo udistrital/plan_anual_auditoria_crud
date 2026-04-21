@@ -3653,11 +3653,15 @@
           "fecha_modificacion"
         ]
       },
+      "ObjectId": {
+        "type": "object",
+        "properties": {}
+      },
       "GenerarAuditoriaDto": {
         "type": "object",
         "properties": {
           "auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3709,7 +3713,7 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -3782,7 +3786,7 @@
         "type": "object",
         "properties": {
           "auditoria_padre_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3826,10 +3830,10 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "auditoria_padre_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "subtitulo": {
             "type": "string"
@@ -3926,10 +3930,6 @@
           "fecha_creacion",
           "fecha_modificacion"
         ]
-      },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
       },
       "AuditoriaEstadoDto": {
         "type": "object",
@@ -4223,8 +4223,12 @@
         "type": "object",
         "properties": {
           "informe_id": {
-            "type": "string",
-            "description": "ID del informe padre"
+            "description": "ID del informe padre",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
           },
           "titulo": {
             "type": "string",
@@ -4343,7 +4347,7 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -4507,6 +4511,9 @@
             "type": "string",
             "description": "Tipo del documento referenciado",
             "example": "PAA"
+          },
+          "activo": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -4514,7 +4521,8 @@
           "fecha_envio",
           "metadato",
           "referencia_id",
-          "referencia_tipo"
+          "referencia_tipo",
+          "activo"
         ]
       }
     }

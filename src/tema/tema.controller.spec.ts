@@ -4,9 +4,10 @@ import { TemaDTO } from './dto/tema.dto';
 import { TemaService } from './tema.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
+import { Types } from 'mongoose';
 
 const mockTemaDto: TemaDTO = {
-  informe_id: '507f1f77bcf86cd799439011',
+  informe_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   titulo: 'Gestión Documental',
   activo: true,
   subtema: [],

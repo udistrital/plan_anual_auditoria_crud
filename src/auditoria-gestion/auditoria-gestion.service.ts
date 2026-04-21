@@ -29,7 +29,7 @@ export class AuditoriaGestionService {
 
   private async obtenerAuditoriasPorPlan(planId: string) {
     return this.AuditoriaPadreModel.find({
-      plan_auditoria_id: planId,
+      plan_auditoria_id: new Types.ObjectId(planId),
       activo: true,
     });
   }
@@ -50,18 +50,21 @@ export class AuditoriaGestionService {
     auditorias: AuditoriaPadre[],
     datosEstado: DatosEstado,
     fecha: Date,
-  ) {
-    return auditorias.map((auditoria) => ({
-      auditoria_padre_id: auditoria._id,
-      usuario_id: datosEstado.usuario_id,
-      usuario_rol: datosEstado.usuario_rol,
-      observacion: datosEstado.observacion,
-      estado_id: datosEstado.estado_id,
-      fase_id: datosEstado.fase_id,
-      actual: true,
-      activo: true,
-      fecha_ejecucion_estado: fecha,
-    }));
+  ): AuditoriaPadreEstadoDto[] {
+    const nuevosEstados: AuditoriaPadreEstadoDto[] = auditorias.map(
+      (auditoria) => ({
+        auditoria_padre_id: new Types.ObjectId(auditoria._id),
+        usuario_id: datosEstado.usuario_id,
+        usuario_rol: datosEstado.usuario_rol,
+        observacion: datosEstado.observacion,
+        estado_id: datosEstado.estado_id,
+        fase_id: datosEstado.fase_id,
+        actual: true,
+        activo: true,
+        fecha_ejecucion_estado: fecha,
+      }),
+    );
+    return nuevosEstados;
   }
 
   private async actualizarEstadoAuditorias(
@@ -87,8 +90,8 @@ export class AuditoriaGestionService {
     const nuevaAuditoriaPadre =
       await this.AuditoriaPadreModel.create(auditoriaPadreData);
 
-    const nuevoEstado = await this.AuditoriaPadreEstadoModel.create({
-      auditoria_padre_id: nuevaAuditoriaPadre._id,
+    const nuevoEstadoData: AuditoriaPadreEstadoDto = {
+      auditoria_padre_id: new Types.ObjectId(nuevaAuditoriaPadre._id),
       usuario_id: createAuditoriaGestionDto.usuario_id,
       usuario_rol: createAuditoriaGestionDto.usuario_rol,
       observacion: createAuditoriaGestionDto.observacion,
@@ -97,7 +100,10 @@ export class AuditoriaGestionService {
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,
-    });
+    };
+
+    const nuevoEstado =
+      await this.AuditoriaPadreEstadoModel.create(nuevoEstadoData);
 
     if (createAuditoriaGestionDto.plan_auditoria_id) {
       const planActualizado = await this.PlanAuditoriaModel.findByIdAndUpdate(
@@ -124,7 +130,9 @@ export class AuditoriaGestionService {
       return [];
     }
 
-    const idsAuditorias = auditoriasEnPlan.map((a) => a._id);
+    const idsAuditorias = auditoriasEnPlan.map(
+      (a) => new Types.ObjectId(a._id),
+    );
 
     await this.desactivarEstadosActuales(idsAuditorias);
 
@@ -162,7 +170,9 @@ export class AuditoriaGestionService {
       };
     }
 
-    const idsAuditorias = auditoriasEnPlan.map((a) => a._id);
+    const idsAuditorias = auditoriasEnPlan.map(
+      (a) => new Types.ObjectId(a._id),
+    );
 
     await this.desactivarEstadosActuales(idsAuditorias);
 
@@ -225,8 +235,8 @@ export class AuditoriaGestionService {
 
     await this.desactivarEstadosActuales([auditoria._id]);
 
-    const nuevoEstadoEliminacion = {
-      auditoria_padre_id: auditoria._id,
+    const nuevoEstadoEliminacion: AuditoriaPadreEstadoDto = {
+      auditoria_padre_id: new Types.ObjectId(auditoria._id),
       usuario_id: datosUsuario.usuario_id,
       usuario_rol: datosUsuario.usuario_rol,
       observacion: datosUsuario.observacion || 'Auditoría eliminada',

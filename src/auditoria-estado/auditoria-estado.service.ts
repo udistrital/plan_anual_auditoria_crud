@@ -34,7 +34,7 @@ export class EstadoAuditoriaService {
 
   async post(auditoriaEstadoDto: AuditoriaEstadoDto): Promise<AuditoriaEstado> {
     const fecha = new Date();
-    const planEstadoData = {
+    const auditoriaEstadoData: AuditoriaEstadoDto = {
       ...auditoriaEstadoDto,
       auditoria_id: new Types.ObjectId(auditoriaEstadoDto.auditoria_id),
       actual: true,
@@ -58,7 +58,7 @@ export class EstadoAuditoriaService {
     }
 
     const estadoAuditoriaCreado =
-      await this.AuditoriaEstadoModel.create(planEstadoData);
+      await this.AuditoriaEstadoModel.create(auditoriaEstadoData);
     const AuditoriaDatosActualizarEstado = {
       estado_id: estadoAuditoriaCreado.estado_id,
     };
@@ -88,21 +88,21 @@ export class EstadoAuditoriaService {
   }
 
   async getById(id: string): Promise<AuditoriaEstado> {
-    const planAuditoria = await this.AuditoriaEstadoModel.findById(id).exec();
-    if (!planAuditoria) {
+    const auditoriaEstado = await this.AuditoriaEstadoModel.findById(id).exec();
+    if (!auditoriaEstado) {
       throw new Error(`${id} no existe`);
     }
-    return planAuditoria;
+    return auditoriaEstado;
   }
 
   async put(
     id: string,
-    PlanEstadoDto: AuditoriaEstadoDto,
+    auditoriaEstadoDto: AuditoriaEstadoDto,
   ): Promise<AuditoriaEstado> {
-    await this.checkRelated(PlanEstadoDto);
+    await this.checkRelated(auditoriaEstadoDto);
     const update = await this.AuditoriaEstadoModel.findByIdAndUpdate(
       id,
-      PlanEstadoDto,
+      auditoriaEstadoDto,
       { new: true },
     ).exec();
     if (!update) {

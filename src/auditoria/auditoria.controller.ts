@@ -50,7 +50,7 @@ export class AuditoriaController {
         Message: 'Registro Exitoso',
         Data: auditoria,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -95,7 +95,7 @@ export class AuditoriaController {
         Data: auditorias,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -125,7 +125,7 @@ export class AuditoriaController {
         Data: auditorias,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -154,7 +154,7 @@ export class AuditoriaController {
         Message: 'Peticion Exitosa',
         Data: auditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -179,7 +179,8 @@ export class AuditoriaController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() AuditoriaDTO: AuditoriaDTO,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id', 'auditoria_padre_id']))
+    AuditoriaDTO: AuditoriaDTO,
   ) {
     try {
       const auditorias = await this.AuditoriaService.put(id, AuditoriaDTO);
@@ -189,7 +190,7 @@ export class AuditoriaController {
         Message: 'Actualizacion Exitosa',
         Data: auditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -219,7 +220,7 @@ export class AuditoriaController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Informe } from './schemas/informe.schema';
@@ -22,7 +22,7 @@ export class InformeService {
 
   async post(InformeDTO: InformeDTO): Promise<Informe> {
     const fecha = new Date();
-    const informeData = {
+    const informeData: InformeDTO = {
       ...InformeDTO,
       activo: true,
       fecha_creacion: fecha,
@@ -93,7 +93,7 @@ export class InformeService {
     }
 
     const temas = await this.TemaModel.find({
-      informe_id: informeId,
+      informe_id: new Types.ObjectId(informeId),
       activo: true,
     }).exec();
 

@@ -56,13 +56,13 @@ export class DocumentoService {
 
   async post(DocumentoDTO: DocumentoDTO): Promise<Documento> {
     const fecha = new Date();
-    const actividadData = {
+    const documentoData: DocumentoDTO = {
       ...DocumentoDTO,
       activo: true,
-      fechaCreacion: fecha,
+      fecha_creacion: fecha,
     };
     // await this.checkRelated(DocumentoDTO);
-    return await this.DocumentoModel.create(actividadData);
+    return await this.DocumentoModel.create(documentoData);
   }
 
   async getAll(filterDto: FilterDto): Promise<Documento[]> {
