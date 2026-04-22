@@ -4096,6 +4096,9 @@
           "tipo_id": {
             "type": "number"
           },
+          "metadatos": {
+            "type": "object"
+          },
           "activo": {
             "type": "boolean"
           },
