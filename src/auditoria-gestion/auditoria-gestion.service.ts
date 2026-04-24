@@ -53,7 +53,7 @@ export class AuditoriaGestionService {
   ): AuditoriaPadreEstadoDto[] {
     const nuevosEstados: AuditoriaPadreEstadoDto[] = auditorias.map(
       (auditoria) => ({
-        auditoria_padre_id: new Types.ObjectId(auditoria._id),
+        auditoria_padre_id: auditoria._id,
         usuario_id: datosEstado.usuario_id,
         usuario_rol: datosEstado.usuario_rol,
         observacion: datosEstado.observacion,
@@ -91,7 +91,7 @@ export class AuditoriaGestionService {
       await this.AuditoriaPadreModel.create(auditoriaPadreData);
 
     const nuevoEstadoData: AuditoriaPadreEstadoDto = {
-      auditoria_padre_id: new Types.ObjectId(nuevaAuditoriaPadre._id),
+      auditoria_padre_id: nuevaAuditoriaPadre._id,
       usuario_id: createAuditoriaGestionDto.usuario_id,
       usuario_rol: createAuditoriaGestionDto.usuario_rol,
       observacion: createAuditoriaGestionDto.observacion,
@@ -130,9 +130,7 @@ export class AuditoriaGestionService {
       return [];
     }
 
-    const idsAuditorias = auditoriasEnPlan.map(
-      (a) => new Types.ObjectId(a._id),
-    );
+    const idsAuditorias = auditoriasEnPlan.map((a) => a._id);
 
     await this.desactivarEstadosActuales(idsAuditorias);
 
@@ -170,9 +168,7 @@ export class AuditoriaGestionService {
       };
     }
 
-    const idsAuditorias = auditoriasEnPlan.map(
-      (a) => new Types.ObjectId(a._id),
-    );
+    const idsAuditorias = auditoriasEnPlan.map((a) => a._id);
 
     await this.desactivarEstadosActuales(idsAuditorias);
 
@@ -236,7 +232,7 @@ export class AuditoriaGestionService {
     await this.desactivarEstadosActuales([auditoria._id]);
 
     const nuevoEstadoEliminacion: AuditoriaPadreEstadoDto = {
-      auditoria_padre_id: new Types.ObjectId(auditoria._id),
+      auditoria_padre_id: auditoria._id,
       usuario_id: datosUsuario.usuario_id,
       usuario_rol: datosUsuario.usuario_rol,
       observacion: datosUsuario.observacion || 'Auditoría eliminada',

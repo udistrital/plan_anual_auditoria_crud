@@ -48,8 +48,8 @@ export class AuditoriaPadreService {
     const auditoriaPadreData: AuditoriaPadreDTO = {
       ...auditoriaPadreDTO,
       plan_auditoria_id: auditoriaPadreDTO.plan_auditoria_id
-        ? new Types.ObjectId(auditoriaPadreDTO.plan_auditoria_id)
-        : undefined,
+        ? auditoriaPadreDTO.plan_auditoria_id
+        : null,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
@@ -60,7 +60,7 @@ export class AuditoriaPadreService {
 
     if (auditoriaPadreDTO.estado_id) {
       const padreEstadoData: AuditoriaPadreEstadoDto = {
-        auditoria_padre_id: new Types.ObjectId(auditoriaPadreCreada._id),
+        auditoria_padre_id: auditoriaPadreCreada._id,
         estado_id: auditoriaPadreDTO.estado_id,
         usuario_id: null,
         usuario_rol: null,
@@ -240,7 +240,7 @@ export class AuditoriaPadreService {
       try {
         await this.auditoriaEstadoService.post({
           ...prototipoAuditoriaEstado,
-          auditoria_id: new Types.ObjectId(auditoriaHijaSinEstado._id),
+          auditoria_id: auditoriaHijaSinEstado._id,
         });
       } catch (error: any) {
         const newError = new Error(
@@ -270,7 +270,7 @@ export class AuditoriaPadreService {
         fecha_ejecucion_estado: undefined,
         activo: undefined,
 
-        auditoria_padre_id: new Types.ObjectId(auditoriaPadre._id),
+        auditoria_padre_id: auditoriaPadre._id,
         usuario_id: generarAuditoriaDto.usuario_id,
         usuario_rol: generarAuditoriaDto.usuario_rol,
         observacion: generarAuditoriaDto.observacion,
@@ -388,9 +388,9 @@ export class AuditoriaPadreService {
         fecha_modificacion: undefined,
 
         plan_auditoria_id: auditoriaPadre.plan_auditoria_id
-          ? new Types.ObjectId(auditoriaPadre.plan_auditoria_id.toString())
+          ? (auditoriaPadre.plan_auditoria_id as Types.ObjectId)
           : null,
-        auditoria_padre_id: new Types.ObjectId(auditoriaPadre._id),
+        auditoria_padre_id: auditoriaPadre._id,
         vigencia_id: auditoriaPadre.vigencia_id,
       });
     } catch (error: any) {
@@ -405,7 +405,7 @@ export class AuditoriaPadreService {
     try {
       await this.auditoriaEstadoService.post({
         ...prototipoAuditoriaEstado,
-        auditoria_id: new Types.ObjectId(auditoria._id),
+        auditoria_id: auditoria._id,
       });
     } catch (error: any) {
       const newError = new Error(

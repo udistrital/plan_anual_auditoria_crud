@@ -155,8 +155,8 @@ describe('AuditoriaService', () => {
           consecutivo_no_auditoria: mockAuditoriaDTO.consecutivo_no_auditoria,
           vigencia_id: mockAuditoriaDTO.vigencia_id,
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockAuditoria);
@@ -214,8 +214,8 @@ describe('AuditoriaService', () => {
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
     });

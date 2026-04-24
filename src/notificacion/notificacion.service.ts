@@ -55,7 +55,7 @@ export class NotificacionService {
       referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
     };
     delete (updateData as any).activo;
-    delete (updateData as any).fecha_creacion;
+    delete (updateData as any).fecha_envio;
 
     const update = await this.notificacionModel
       .findByIdAndUpdate(id, updateData, { new: true })
