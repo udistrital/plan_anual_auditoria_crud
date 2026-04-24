@@ -36,7 +36,7 @@ export class EstadoAuditoriaService {
     const fecha = new Date();
     const auditoriaEstadoData: AuditoriaEstadoDto = {
       ...auditoriaEstadoDto,
-      auditoria_id: new Types.ObjectId(auditoriaEstadoDto.auditoria_id),
+      auditoria_id: auditoriaEstadoDto.auditoria_id,
       actual: true,
       activo: true,
       fecha_ejecucion_estado: fecha,

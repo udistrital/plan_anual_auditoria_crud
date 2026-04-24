@@ -13,6 +13,7 @@ import { AuditoriaService } from 'src/auditoria/auditoria.service';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
 import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
+import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -363,10 +364,10 @@ export class AuditoriaPadreService {
     prototipoAuditoriaEstado: AuditoriaEstadoDto,
   ): Promise<Auditoria> {
     let auditoria: Auditoria;
-
+    const padreData: AuditoriaPadreDTO = auditoriaPadre as unknown as AuditoriaPadreDTO;
     // 1. Generar la nueva auditoría.
     try {
-      auditoria = await this.auditoriaService.post({
+      const auditoriaHijaData: AuditoriaDTO = {
         consecutivo_no_auditoria: undefined,
         consecutivo_OCI: undefined,
         cronograma_id: undefined,
@@ -387,12 +388,11 @@ export class AuditoriaPadreService {
         fecha_creacion: undefined,
         fecha_modificacion: undefined,
 
-        plan_auditoria_id: auditoriaPadre.plan_auditoria_id
-          ? (auditoriaPadre.plan_auditoria_id as Types.ObjectId)
-          : null,
+        plan_auditoria_id: padreData.plan_auditoria_id,
         auditoria_padre_id: auditoriaPadre._id,
-        vigencia_id: auditoriaPadre.vigencia_id,
-      });
+        vigencia_id: padreData.vigencia_id,
+      };
+      auditoria = await this.auditoriaService.post(auditoriaHijaData);
     } catch (error: any) {
       const newError = new Error(
         `Error al generar auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,

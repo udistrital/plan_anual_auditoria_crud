@@ -17,7 +17,7 @@ export class NotificacionService {
     const fecha = new Date();
     const notificacionData: NotificacionDTO = {
       ...notificacionDTO,
-      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
+      referencia_id: notificacionDTO.referencia_id,
       activo: true,
       fecha_envio: fecha,
     };
@@ -52,7 +52,7 @@ export class NotificacionService {
     const { ...updateFields } = notificacionDTO;
     const updateData: NotificacionDTO = {
       ...updateFields,
-      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
+      referencia_id: notificacionDTO.referencia_id,
     };
     delete (updateData as any).activo;
     delete (updateData as any).fecha_envio;
