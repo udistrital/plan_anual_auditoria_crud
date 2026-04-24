@@ -364,7 +364,8 @@ export class AuditoriaPadreService {
     prototipoAuditoriaEstado: AuditoriaEstadoDto,
   ): Promise<Auditoria> {
     let auditoria: Auditoria;
-    const padreData: AuditoriaPadreDTO = auditoriaPadre as unknown as AuditoriaPadreDTO;
+    const padreData: AuditoriaPadreDTO =
+      auditoriaPadre as unknown as AuditoriaPadreDTO;
     // 1. Generar la nueva auditoría.
     try {
       const auditoriaHijaData: AuditoriaDTO = {
