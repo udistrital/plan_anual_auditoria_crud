@@ -53,7 +53,9 @@ export class AuditoriaService {
     const fecha = new Date();
     const AuditoriaData = {
       ...AuditoriaDto,
-      plan_auditoria_id: new Types.ObjectId(AuditoriaDto.plan_auditoria_id),
+      plan_auditoria_id: AuditoriaDto.plan_auditoria_id
+          ? new Types.ObjectId(AuditoriaDto.plan_auditoria_id as string)
+          : undefined,
       auditoria_padre_id: new Types.ObjectId(AuditoriaDto.auditoria_padre_id),
       activo: true,
       fechaCreacion: fecha,
