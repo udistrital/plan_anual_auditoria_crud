@@ -48,7 +48,7 @@ export class AuditorController {
         Message: 'Registro Exitoso',
         Data: auditor,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -78,7 +78,7 @@ export class AuditorController {
         Data: auditor,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -107,7 +107,7 @@ export class AuditorController {
         Message: 'Peticion Exitosa',
         Data: auditor,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -132,7 +132,7 @@ export class AuditorController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() AuditorDTO: AuditorDTO,
+    @Body(new ParseObjectIdPipe(['auditoria_id'])) AuditorDTO: AuditorDTO,
   ) {
     try {
       const auditor = await this.actividadService.put(id, AuditorDTO);
@@ -142,7 +142,7 @@ export class AuditorController {
         Message: 'Actualizacion Exitosa',
         Data: auditor,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +172,7 @@ export class AuditorController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

@@ -48,7 +48,7 @@ export class EstadoController {
         Message: 'Registro Exitoso',
         Data: estadoPlan,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -78,7 +78,7 @@ export class EstadoController {
         Data: estadoPlan,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -107,7 +107,7 @@ export class EstadoController {
         Message: 'Peticion Exitosa',
         Data: estadoPlan,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -132,7 +132,8 @@ export class EstadoController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() PlanEstadoDto: PlanEstadoDto,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    PlanEstadoDto: PlanEstadoDto,
   ) {
     try {
       const estadoPlan = await this.estadoService.put(id, PlanEstadoDto);
@@ -142,7 +143,7 @@ export class EstadoController {
         Message: 'Actualizacion Exitosa',
         Data: estadoPlan,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +173,7 @@ export class EstadoController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

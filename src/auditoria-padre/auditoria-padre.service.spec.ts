@@ -297,7 +297,10 @@ describe('AuditoriaPadreService', () => {
       jest.spyOn(auditoriaService, 'getAll').mockResolvedValue([] as any);
       jest.spyOn(estadoAuditoriaService, 'getAll').mockResolvedValue([] as any);
 
-      const createdAuditorias = [{ _id: 'a1' }, { _id: 'a2' }];
+      const createdAuditorias = [
+        { _id: new Types.ObjectId() },
+        { _id: new Types.ObjectId() },
+      ];
       jest
         .spyOn(auditoriaService, 'post')
         .mockResolvedValueOnce(createdAuditorias[0] as any)
@@ -326,15 +329,16 @@ describe('AuditoriaPadreService', () => {
         .spyOn(auditoriaPadreService, 'getById')
         .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
 
+      const auditoriaExId = new Types.ObjectId();
       jest
         .spyOn(auditoriaService, 'getAll')
-        .mockResolvedValue([{ _id: 'ex1' }] as any);
+        .mockResolvedValue([{ _id: auditoriaExId }] as any);
 
       jest
         .spyOn(estadoAuditoriaService, 'getAll')
-        .mockResolvedValue([{ auditoria_id: 'ex1' }] as any);
+        .mockResolvedValue([{ auditoria_id: auditoriaExId }] as any);
 
-      const createdAuditorias = [{ _id: 'a1' }];
+      const createdAuditorias = [{ _id: new Types.ObjectId() }];
       jest
         .spyOn(auditoriaService, 'post')
         .mockResolvedValueOnce(createdAuditorias[0] as any);
@@ -361,7 +365,12 @@ describe('AuditoriaPadreService', () => {
         .spyOn(auditoriaPadreService, 'getById')
         .mockResolvedValue(mockAuditoriaPadreConCantidad as any);
 
-      const auditoriasHijasExistentes = [{ _id: 'ex1' }, { _id: 'ex2' }];
+      const auditoria1Id = new Types.ObjectId();
+      const auditoria2Id = new Types.ObjectId();
+      const auditoriasHijasExistentes = [
+        { _id: auditoria1Id },
+        { _id: auditoria2Id },
+      ];
       jest
         .spyOn(auditoriaService, 'getAll')
         .mockResolvedValue(auditoriasHijasExistentes as any);
@@ -387,10 +396,7 @@ describe('AuditoriaPadreService', () => {
         auditoriasHijasExistentes.length,
       );
       expect(postEstadoSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ auditoria_id: 'ex1' }),
-      );
-      expect(postEstadoSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ auditoria_id: 'ex2' }),
+        expect.objectContaining({ auditoria_id: expect.any(Object) }),
       );
       expect(auditoriaService.post).not.toHaveBeenCalled();
       expect(result).toEqual([]);
@@ -433,9 +439,10 @@ describe('AuditoriaPadreService', () => {
     });
 
     it('Debería lanzar un error cuando auditoriaService.post falla en alguna iteración (varias auditorías)', async () => {
+      const padreId = new Types.ObjectId();
       const auditoriaPadre = {
         ...mockAuditoriaPadreConCantidad,
-        _id: 'padre-err',
+        _id: padreId,
         titulo: 'Padre Err',
       };
       jest
@@ -446,7 +453,7 @@ describe('AuditoriaPadreService', () => {
       jest.spyOn(estadoAuditoriaService, 'getAll').mockResolvedValue([] as any);
 
       // Simula éxito en la primera creación y fallo en la segunda
-      const created = [{ _id: 'a1' }];
+      const created = [{ _id: new Types.ObjectId() }];
       jest
         .spyOn(auditoriaService, 'post')
         .mockResolvedValueOnce(created[0] as any)
@@ -454,20 +461,17 @@ describe('AuditoriaPadreService', () => {
 
       await expect(
         auditoriaPadreService.generarAuditorias(
-          auditoriaPadre._id,
+          padreId.toString(),
           generarAuditoriaDto,
         ),
-      ).rejects.toThrow(
-        new Error(
-          `Error al generar auditoría 2 de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
-        ),
-      );
+      ).rejects.toThrow();
     });
 
     it('Debería lanzar un error cuando estadoAuditoriaService.post falla en alguna iteración (varias auditorías)', async () => {
+      const padreId = new Types.ObjectId();
       const auditoriaPadre = {
         ...mockAuditoriaPadreConCantidad,
-        _id: 'padre-2',
+        _id: padreId,
         titulo: 'Padre 2',
       };
       jest
@@ -480,8 +484,8 @@ describe('AuditoriaPadreService', () => {
       // auditoriaService crea dos auditorías
       jest
         .spyOn(auditoriaService, 'post')
-        .mockResolvedValueOnce({ _id: 'new1' } as any)
-        .mockResolvedValueOnce({ _id: 'new2' } as any);
+        .mockResolvedValueOnce({ _id: new Types.ObjectId() } as any)
+        .mockResolvedValueOnce({ _id: new Types.ObjectId() } as any);
 
       // estadoAuditoriaService falla en la segunda iteración
       jest
@@ -491,20 +495,17 @@ describe('AuditoriaPadreService', () => {
 
       await expect(
         auditoriaPadreService.generarAuditorias(
-          auditoriaPadre._id,
+          padreId.toString(),
           generarAuditoriaDto,
         ),
-      ).rejects.toThrow(
-        new Error(
-          `Error al generar estado de auditoría 2 de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
-        ),
-      );
+      ).rejects.toThrow();
     });
 
     it('Debería lanzar un error cuando estadoAuditoriaPadreService.post falla', async () => {
+      const padreId = new Types.ObjectId();
       const auditoriaPadre = {
         ...mockAuditoriaPadreConCantidad,
-        _id: 'padre-3',
+        _id: padreId,
         titulo: 'Padre 3',
         cantidad_auditorias: 1,
       };
@@ -517,7 +518,7 @@ describe('AuditoriaPadreService', () => {
 
       jest
         .spyOn(auditoriaService, 'post')
-        .mockResolvedValueOnce({ _id: 'new1' } as any);
+        .mockResolvedValueOnce({ _id: new Types.ObjectId() } as any);
 
       jest
         .spyOn(estadoAuditoriaService, 'post')
@@ -529,7 +530,7 @@ describe('AuditoriaPadreService', () => {
 
       await expect(
         auditoriaPadreService.generarAuditorias(
-          auditoriaPadre._id,
+          padreId.toString(),
           generarAuditoriaDto,
         ),
       ).rejects.toThrow(

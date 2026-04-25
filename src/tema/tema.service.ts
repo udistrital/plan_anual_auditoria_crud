@@ -25,7 +25,7 @@ export class TemaService {
 
   async post(TemaDTO: TemaDTO): Promise<Tema> {
     const fecha = new Date();
-    const temaData = {
+    const temaData: TemaDTO = {
       ...TemaDTO,
       activo: true,
       fecha_creacion: fecha,

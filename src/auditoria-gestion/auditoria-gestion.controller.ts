@@ -19,6 +19,7 @@ import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';
 import { AuditoriaPadreEstadoDto } from '../auditoria-padre-estado/dto/auditoria-padre-estado.dto';
 import { DeleteMasivoAuditoriaDto } from './dto/delete-masivo-auditoria.dto';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('auditoria-gestion')
 @Controller('auditoria-gestion')
@@ -40,7 +41,8 @@ export class AuditoriaGestionController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
-    @Body() createAuditoriaGestionDto: CreateAuditoriaGestionDto,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    createAuditoriaGestionDto: CreateAuditoriaGestionDto,
   ) {
     try {
       const auditoria = await this.auditoriaGestionService.post(
@@ -52,7 +54,7 @@ export class AuditoriaGestionController {
         Message: 'Registro Exitoso',
         Data: auditoria,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -88,7 +90,8 @@ export class AuditoriaGestionController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() auditoriaPadreEstado: AuditoriaPadreEstadoDto,
+    @Body(new ParseObjectIdPipe(['auditoria_padre_id']))
+    auditoriaPadreEstado: AuditoriaPadreEstadoDto,
   ) {
     try {
       const auditoria = await this.auditoriaGestionService.put(
@@ -101,7 +104,7 @@ export class AuditoriaGestionController {
         Message: 'Actualización Exitosa',
         Data: auditoria,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -149,7 +152,7 @@ export class AuditoriaGestionController {
         Message: 'Eliminación Exitosa',
         Data: resultado,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -202,7 +205,7 @@ export class AuditoriaGestionController {
         Message: 'Eliminación Exitosa',
         Data: resultado,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,

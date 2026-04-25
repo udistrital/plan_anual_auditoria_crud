@@ -12,6 +12,8 @@ import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
 import { AuditoriaService } from 'src/auditoria/auditoria.service';
 import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
+import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
+import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -44,11 +46,11 @@ export class AuditoriaPadreService {
 
   async post(auditoriaPadreDTO: AuditoriaPadreDTO): Promise<AuditoriaPadre> {
     const fecha = new Date();
-    const auditoriaPadreData = {
+    const auditoriaPadreData: AuditoriaPadreDTO = {
       ...auditoriaPadreDTO,
       plan_auditoria_id: auditoriaPadreDTO.plan_auditoria_id
-        ? new Types.ObjectId(auditoriaPadreDTO.plan_auditoria_id as string)
-        : undefined,
+        ? auditoriaPadreDTO.plan_auditoria_id
+        : null,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
@@ -58,8 +60,8 @@ export class AuditoriaPadreService {
       await this.AuditoriaPadreModel.create(auditoriaPadreData);
 
     if (auditoriaPadreDTO.estado_id) {
-      await this.estadoAuditoriaPadreService.post({
-        auditoria_padre_id: auditoriaPadreCreada._id.toString(),
+      const padreEstadoData: AuditoriaPadreEstadoDto = {
+        auditoria_padre_id: auditoriaPadreCreada._id,
         estado_id: auditoriaPadreDTO.estado_id,
         usuario_id: null,
         usuario_rol: null,
@@ -68,7 +70,8 @@ export class AuditoriaPadreService {
         fase_id: null,
         fecha_ejecucion_estado: fecha,
         activo: true,
-      });
+      };
+      await this.estadoAuditoriaPadreService.post(padreEstadoData);
     }
 
     return auditoriaPadreCreada;
@@ -120,7 +123,7 @@ export class AuditoriaPadreService {
       auditoriaPadreDTO.estado_id !== auditoriaPadreActual.estado_id
     ) {
       await this.estadoAuditoriaPadreService.post({
-        auditoria_padre_id: id,
+        auditoria_padre_id: new Types.ObjectId(id),
         estado_id: auditoriaPadreDTO.estado_id,
         usuario_id: null,
         usuario_rol: null,
@@ -232,17 +235,15 @@ export class AuditoriaPadreService {
     // Filtrar auditorías hijas existentes para identificar cuáles no tienen estado generado.
     const auditoriasHijasSinEstado = auditoriasHijasExistentes.filter(
       (a) =>
-        !estadosAuditoriaExistentes.find(
-          (e) => e.auditoria_id === a._id.toString(),
-        ),
+        !estadosAuditoriaExistentes.find((e) => e.auditoria_id.equals(a._id)),
     );
     for (const auditoriaHijaSinEstado of auditoriasHijasSinEstado) {
       try {
         await this.auditoriaEstadoService.post({
           ...prototipoAuditoriaEstado,
-          auditoria_id: auditoriaHijaSinEstado._id.toString(),
+          auditoria_id: auditoriaHijaSinEstado._id,
         });
-      } catch (error) {
+      } catch (error: any) {
         const newError = new Error(
           `Error al generar estado de auditoría hija existente ${auditoriaHijaSinEstado._id} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
         );
@@ -265,19 +266,20 @@ export class AuditoriaPadreService {
 
     // Actualiza estado auditoría padre
     try {
-      await this.estadoAuditoriaPadreService.post({
+      const estadoPadre: AuditoriaPadreEstadoDto = {
         actual: undefined,
         fecha_ejecucion_estado: undefined,
         activo: undefined,
 
-        auditoria_padre_id: auditoriaPadre._id.toString(),
+        auditoria_padre_id: auditoriaPadre._id,
         usuario_id: generarAuditoriaDto.usuario_id,
         usuario_rol: generarAuditoriaDto.usuario_rol,
         observacion: generarAuditoriaDto.observacion,
         estado_id: generarAuditoriaDto.estado_id_padre_nuevo,
         fase_id: generarAuditoriaDto.fase_id,
-      });
-    } catch (error) {
+      };
+      await this.estadoAuditoriaPadreService.post(estadoPadre);
+    } catch (error: any) {
       const newError = new Error(
         `Error al actualizar estado de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}) después de generar sus auditorías.`,
       );
@@ -362,10 +364,11 @@ export class AuditoriaPadreService {
     prototipoAuditoriaEstado: AuditoriaEstadoDto,
   ): Promise<Auditoria> {
     let auditoria: Auditoria;
-
+    const padreData: AuditoriaPadreDTO =
+      auditoriaPadre as unknown as AuditoriaPadreDTO;
     // 1. Generar la nueva auditoría.
     try {
-      auditoria = await this.auditoriaService.post({
+      const auditoriaHijaData: AuditoriaDTO = {
         consecutivo_no_auditoria: undefined,
         consecutivo_OCI: undefined,
         cronograma_id: undefined,
@@ -386,12 +389,12 @@ export class AuditoriaPadreService {
         fecha_creacion: undefined,
         fecha_modificacion: undefined,
 
-        plan_auditoria_id:
-          auditoriaPadre.plan_auditoria_id?.toString() || undefined,
+        plan_auditoria_id: padreData.plan_auditoria_id,
         auditoria_padre_id: auditoriaPadre._id,
-        vigencia_id: auditoriaPadre.vigencia_id,
-      });
-    } catch (error) {
+        vigencia_id: padreData.vigencia_id,
+      };
+      auditoria = await this.auditoriaService.post(auditoriaHijaData);
+    } catch (error: any) {
       const newError = new Error(
         `Error al generar auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
       );
@@ -403,9 +406,9 @@ export class AuditoriaPadreService {
     try {
       await this.auditoriaEstadoService.post({
         ...prototipoAuditoriaEstado,
-        auditoria_id: auditoria._id.toString(),
+        auditoria_id: auditoria._id,
       });
-    } catch (error) {
+    } catch (error: any) {
       const newError = new Error(
         `Error al generar estado de auditoría ${i + 1} de auditoríaPadre ${auditoriaPadre._id} (${auditoriaPadre.titulo}).`,
       );

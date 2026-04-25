@@ -5,13 +5,13 @@ import { Auditoria } from './schemas/auditoria.schema';
 import { AuditoriaDTO } from './dto/auditoria.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { AuditoriaPadre } from '../auditoria-padre/schemas/auditoria-padre.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { Auditor } from '../auditoria-auditor/schemas/auditor.schema';
 
 const mockAuditoriaDTO: Partial<AuditoriaDTO> = {
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
-  auditoria_padre_id: '67297dda3416d2a85e5d6d90',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
+  auditoria_padre_id: new Types.ObjectId('67297dda3416d2a85e5d6d90'),
   subtitulo: 'prueba',
   cronograma_id: [1, 2, 3],
   estado_id: 3,
@@ -155,8 +155,8 @@ describe('AuditoriaService', () => {
           consecutivo_no_auditoria: mockAuditoriaDTO.consecutivo_no_auditoria,
           vigencia_id: mockAuditoriaDTO.vigencia_id,
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockAuditoria);
@@ -214,8 +214,8 @@ describe('AuditoriaService', () => {
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           activo: true,
-          fechaCreacion: expect.any(Date),
-          fechaModificacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
+          fecha_modificacion: expect.any(Date),
         }),
       );
     });

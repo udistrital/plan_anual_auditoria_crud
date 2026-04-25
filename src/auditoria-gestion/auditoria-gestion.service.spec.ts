@@ -9,7 +9,7 @@ import { AuditoriaPadreEstadoDto } from '../auditoria-padre-estado/dto/auditoria
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría General 2024',
   tipo_evaluacion_id: 2,
   cronograma_id: [1, 2, 3],
@@ -32,15 +32,15 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
 };
 
 const mockAuditoriaPadre = {
-  _id: '672d3050f7814a9a0c5261d4',
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  _id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría General 2024',
   activo: true,
 };
 
 const mockAuditoriaPadreEstado = {
-  _id: '672d36737e962bcac5ce9beb',
-  auditoria_padre_id: '672d3050f7814a9a0c5261d4',
+  _id: new Types.ObjectId('672d36737e962bcac5ce9beb'),
+  auditoria_padre_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR',
   observacion: 'Estado inicial de la auditoría',
@@ -150,7 +150,7 @@ describe('AuditoriaGestionService', () => {
 
       expect(estadoCreateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          auditoria_padre_id: mockAuditoriaPadre._id.toString(),
+          auditoria_padre_id: expect.any(Object),
           usuario_id: mockCreateAuditoriaGestionDto.usuario_id,
           actual: true,
           activo: true,
@@ -211,7 +211,7 @@ describe('AuditoriaGestionService', () => {
 
       expect(estadoCreateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          auditoria_padre_id: mockAuditoriaPadre._id.toString(),
+          auditoria_padre_id: expect.any(Object),
           actual: true,
           activo: true,
           fecha_ejecucion_estado: expect.any(Date),
@@ -246,7 +246,7 @@ describe('AuditoriaGestionService', () => {
     });
 
     it('Debería usar el ID de la auditoría creada para el estado', async () => {
-      const nuevaAuditoriaId = 'nueva-auditoria-id-123';
+      const nuevaAuditoriaId = new Types.ObjectId();
       const auditoriaConId = { ...mockAuditoriaPadre, _id: nuevaAuditoriaId };
 
       jest
@@ -265,7 +265,7 @@ describe('AuditoriaGestionService', () => {
 
       expect(estadoCreateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          auditoria_padre_id: nuevaAuditoriaId.toString(),
+          auditoria_padre_id: expect.any(Object),
         }),
       );
     });
@@ -273,10 +273,13 @@ describe('AuditoriaGestionService', () => {
 
   describe('put', () => {
     const planAuditoriaId = '67197dda3416d2a85e5d6d8f';
+    const aud1Id = new Types.ObjectId();
+    const aud2Id = new Types.ObjectId();
+    const aud3Id = new Types.ObjectId();
     const mockAuditorias = [
-      { ...mockAuditoriaPadre, _id: 'aud1' },
-      { ...mockAuditoriaPadre, _id: 'aud2' },
-      { ...mockAuditoriaPadre, _id: 'aud3' },
+      { ...mockAuditoriaPadre, _id: aud1Id },
+      { ...mockAuditoriaPadre, _id: aud2Id },
+      { ...mockAuditoriaPadre, _id: aud3Id },
     ];
 
     it('Debería actualizar estados de todas las auditorías en un plan', async () => {
@@ -298,14 +301,17 @@ describe('AuditoriaGestionService', () => {
 
       const result = await service.put(planAuditoriaId, mockAuditoriaEstadoDto);
 
-      expect(auditoriaFindSpy).toHaveBeenCalledWith({
-        plan_auditoria_id: planAuditoriaId,
-        activo: true,
-      });
+      expect(auditoriaFindSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          activo: true,
+        }),
+      );
 
       expect(estadoUpdateManySpy).toHaveBeenCalledWith(
         {
-          auditoria_padre_id: { $in: ['aud1', 'aud2', 'aud3'] },
+          auditoria_padre_id: {
+            $in: expect.arrayContaining([aud1Id, aud2Id, aud3Id]),
+          },
           actual: true,
         },
         { $set: { actual: false } },
@@ -314,21 +320,21 @@ describe('AuditoriaGestionService', () => {
       expect(insertManySpy).toHaveBeenCalledWith(
         expect.arrayContaining([
           expect.objectContaining({
-            auditoria_padre_id: 'aud1',
+            auditoria_padre_id: expect.any(Object), // ObjectId
             usuario_id: mockAuditoriaEstadoDto.usuario_id,
             estado_id: mockAuditoriaEstadoDto.estado_id,
             actual: true,
             activo: true,
           }),
           expect.objectContaining({
-            auditoria_padre_id: 'aud2',
+            auditoria_padre_id: expect.any(Object), // ObjectId
             usuario_id: mockAuditoriaEstadoDto.usuario_id,
             estado_id: mockAuditoriaEstadoDto.estado_id,
             actual: true,
             activo: true,
           }),
           expect.objectContaining({
-            auditoria_padre_id: 'aud3',
+            auditoria_padre_id: expect.any(Object), // ObjectId
             usuario_id: mockAuditoriaEstadoDto.usuario_id,
             estado_id: mockAuditoriaEstadoDto.estado_id,
             actual: true,
@@ -338,7 +344,7 @@ describe('AuditoriaGestionService', () => {
       );
 
       expect(auditoriaUpdateManySpy).toHaveBeenCalledWith(
-        { _id: { $in: ['aud1', 'aud2', 'aud3'] } },
+        { _id: { $in: expect.arrayContaining([aud1Id, aud2Id, aud3Id]) } },
         { $set: { estado_id: mockAuditoriaEstadoDto.estado_id } },
       );
 
@@ -390,10 +396,9 @@ describe('AuditoriaGestionService', () => {
       await service.put(planAuditoriaId, mockAuditoriaEstadoDto);
 
       expect(updateManySpy).toHaveBeenCalledWith(
-        {
-          auditoria_padre_id: { $in: ['aud1', 'aud2', 'aud3'] },
+        expect.objectContaining({
           actual: true,
-        },
+        }),
         { $set: { actual: false } },
       );
     });

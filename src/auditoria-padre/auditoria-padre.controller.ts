@@ -51,7 +51,7 @@ export class AuditoriaPadreController {
         Message: 'Registro Exitoso',
         Data: auditoriaPadre,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -82,7 +82,7 @@ export class AuditoriaPadreController {
         Data: auditoriasPadre,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -111,7 +111,7 @@ export class AuditoriaPadreController {
         Message: 'Peticion Exitosa',
         Data: auditoriaPadre,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -136,7 +136,8 @@ export class AuditoriaPadreController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() auditoriaPadreDTO: AuditoriaPadreDTO,
+    @Body(new ParseObjectIdPipe(['plan_auditoria_id']))
+    auditoriaPadreDTO: AuditoriaPadreDTO,
   ) {
     try {
       const auditoriaPadre = await this.AuditoriaPadreService.put(
@@ -149,7 +150,7 @@ export class AuditoriaPadreController {
         Message: 'Actualizacion Exitosa',
         Data: auditoriaPadre,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -179,7 +180,7 @@ export class AuditoriaPadreController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -207,7 +208,8 @@ export class AuditoriaPadreController {
   async generarAuditorias(
     @Res() res,
     @Param('id') id: string,
-    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
+    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
     console.log('generarAuditoriasDto:', generarAuditoriaDto);
     try {
@@ -222,7 +224,7 @@ export class AuditoriaPadreController {
         Message: 'Auditorías generadas exitosamente',
         Data: auditoriasGeneradas,
       });
-    } catch (error) {
+    } catch (error: any) {
       let status = HttpStatus.BAD_REQUEST;
       let message =
         'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
@@ -261,7 +263,8 @@ export class AuditoriaPadreController {
   async generarUnaAuditorias(
     @Res() res,
     @Param('id') id: string,
-    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
+    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
     try {
       const auditoriaGenerada =
@@ -275,7 +278,7 @@ export class AuditoriaPadreController {
         Message: 'Auditoría generada exitosamente',
         Data: auditoriaGenerada,
       });
-    } catch (error) {
+    } catch (error: any) {
       let status = HttpStatus.BAD_REQUEST;
       let message =
         'Error en servicio generarUnaAuditoria: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';

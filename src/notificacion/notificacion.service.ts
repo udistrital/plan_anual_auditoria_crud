@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Notificacion } from './schema/notificacion.schema';
@@ -15,12 +15,11 @@ export class NotificacionService {
 
   async post(notificacionDTO: NotificacionDTO): Promise<Notificacion> {
     const fecha = new Date();
-    const notificacionData = {
+    const notificacionData: NotificacionDTO = {
       ...notificacionDTO,
-      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
+      referencia_id: notificacionDTO.referencia_id,
       activo: true,
-      fecha_creacion: fecha,
-      fecha_modificacion: fecha,
+      fecha_envio: fecha,
     };
     return await this.notificacionModel.create(notificacionData);
   }
@@ -51,13 +50,12 @@ export class NotificacionService {
     notificacionDTO: NotificacionDTO,
   ): Promise<Notificacion> {
     const { ...updateFields } = notificacionDTO;
-    const updateData = {
+    const updateData: NotificacionDTO = {
       ...updateFields,
-      referencia_id: new Types.ObjectId(notificacionDTO.referencia_id),
-      fecha_modificacion: new Date(),
+      referencia_id: notificacionDTO.referencia_id,
     };
     delete (updateData as any).activo;
-    delete (updateData as any).fecha_creacion;
+    delete (updateData as any).fecha_envio;
 
     const update = await this.notificacionModel
       .findByIdAndUpdate(id, updateData, { new: true })

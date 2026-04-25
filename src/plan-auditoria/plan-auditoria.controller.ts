@@ -21,6 +21,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -46,7 +47,7 @@ export class PlanAuditoriaController {
         Message: 'Registro Exitoso',
         Data: planAuditoria,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -75,7 +76,7 @@ export class PlanAuditoriaController {
         Data: planAuditorias,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -104,7 +105,7 @@ export class PlanAuditoriaController {
         Message: 'Peticion Exitosa',
         Data: planAuditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -142,7 +143,7 @@ export class PlanAuditoriaController {
         Message: 'Actualizacion Exitosa',
         Data: planAuditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +173,7 @@ export class PlanAuditoriaController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -200,7 +201,8 @@ export class PlanAuditoriaController {
   async generarAuditorias(
     @Res() res,
     @Param('id') id: string,
-    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
+    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    generarAuditoriaDto: GenerarAuditoriaDto,
   ) {
     try {
       const auditoriasGeneradas =
@@ -214,7 +216,7 @@ export class PlanAuditoriaController {
         Message: 'Auditorías generadas exitosamente',
         Data: auditoriasGeneradas,
       });
-    } catch (error) {
+    } catch (error: any) {
       let status = HttpStatus.BAD_REQUEST;
       let message =
         'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';

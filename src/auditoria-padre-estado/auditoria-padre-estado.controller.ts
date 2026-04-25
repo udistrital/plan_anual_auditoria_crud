@@ -53,7 +53,7 @@ export class EstadoAuditoriaPadreController {
         Message: 'Registro Exitoso',
         Data: estado,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -83,7 +83,7 @@ export class EstadoAuditoriaPadreController {
         Data: estados,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -112,7 +112,7 @@ export class EstadoAuditoriaPadreController {
         Message: 'Peticion Exitosa',
         Data: estado,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -138,7 +138,8 @@ export class EstadoAuditoriaPadreController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
+    @Body(new ParseObjectIdPipe(['auditoria_padre_id']))
+    auditoriaPadreEstadoDto: AuditoriaPadreEstadoDto,
   ) {
     try {
       const estado = await this.estadoAuditoriaPadreService.put(
@@ -151,7 +152,7 @@ export class EstadoAuditoriaPadreController {
         Message: 'Actualizacion Exitosa',
         Data: estado,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -181,7 +182,7 @@ export class EstadoAuditoriaPadreController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

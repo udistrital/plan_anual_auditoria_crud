@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('informe')
 @Controller('informe')
@@ -35,7 +36,10 @@ export class InformeController {
     type: InformeDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() InformeDTO: InformeDTO) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['auditoria_id'])) InformeDTO: InformeDTO,
+  ) {
     try {
       const informe = await this.informeService.post(InformeDTO);
       res.status(HttpStatus.CREATED).json({
@@ -44,7 +48,7 @@ export class InformeController {
         Message: 'Registro Exitoso',
         Data: informe,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -74,7 +78,7 @@ export class InformeController {
         Data: informe,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -103,7 +107,7 @@ export class InformeController {
         Message: 'Peticion Exitosa',
         Data: informe,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -128,7 +132,7 @@ export class InformeController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() InformeDTO: InformeDTO,
+    @Body(new ParseObjectIdPipe(['auditoria_id'])) InformeDTO: InformeDTO,
   ) {
     try {
       const informe = await this.informeService.put(id, InformeDTO);
@@ -138,7 +142,7 @@ export class InformeController {
         Message: 'Actualizacion Exitosa',
         Data: informe,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -168,7 +172,7 @@ export class InformeController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -203,7 +207,7 @@ export class InformeController {
         Data: hallazgos,
         MetaData: { Count: hallazgos.length },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

@@ -48,7 +48,7 @@ export class ActividadController {
         Message: 'Registro Exitoso',
         Data: actividad,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -78,7 +78,7 @@ export class ActividadController {
         Data: actividad,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -107,7 +107,7 @@ export class ActividadController {
         Message: 'Peticion Exitosa',
         Data: actividad,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -132,7 +132,7 @@ export class ActividadController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() ActividadDTO: ActividadDTO,
+    @Body(new ParseObjectIdPipe(['auditoria_id'])) ActividadDTO: ActividadDTO,
   ) {
     try {
       const actividad = await this.actividadService.put(id, ActividadDTO);
@@ -142,7 +142,7 @@ export class ActividadController {
         Message: 'Actualizacion Exitosa',
         Data: actividad,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,7 +172,7 @@ export class ActividadController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

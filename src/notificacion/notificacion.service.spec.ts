@@ -18,6 +18,7 @@ const mockNotificacionDto: NotificacionDTO = {
   },
   referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
   referencia_tipo: 'PAA',
+  activo: true,
 };
 
 const mockNotificacion = {
@@ -73,8 +74,7 @@ describe('NotificacionService', () => {
         expect.objectContaining({
           ...mockNotificacionDto,
           activo: true,
-          fecha_creacion: expect.any(Date),
-          fecha_modificacion: expect.any(Date),
+          fecha_envio: expect.any(Date),
         }),
       );
       expect(result).toEqual(mockNotificacion);
@@ -92,7 +92,7 @@ describe('NotificacionService', () => {
       );
     });
 
-    it('Debería establecer fecha_creacion y fecha_modificacion automáticamente', async () => {
+    it('Debería establecer fecha_envio automáticamente', async () => {
       const createSpy = jest
         .spyOn(notificacionModel, 'create')
         .mockResolvedValue(mockNotificacion as any);
@@ -102,14 +102,13 @@ describe('NotificacionService', () => {
       const dateAfter = new Date();
 
       const calledWith = createSpy.mock.calls[0][0] as any;
-      expect(calledWith.fecha_creacion).toBeInstanceOf(Date);
-      expect(calledWith.fecha_creacion.getTime()).toBeGreaterThanOrEqual(
+      expect(calledWith.fecha_envio).toBeInstanceOf(Date);
+      expect(calledWith.fecha_envio.getTime()).toBeGreaterThanOrEqual(
         dateBefore.getTime(),
       );
-      expect(calledWith.fecha_creacion.getTime()).toBeLessThanOrEqual(
+      expect(calledWith.fecha_envio.getTime()).toBeLessThanOrEqual(
         dateAfter.getTime(),
       );
-      expect(calledWith.fecha_modificacion).toBeInstanceOf(Date);
     });
 
     it('Debería almacenar el campo plantilla correctamente', async () => {
@@ -165,7 +164,7 @@ describe('NotificacionService', () => {
     const mockFilterDto: FilterDto = {
       query: 'activo:true',
       fields: 'plantilla,fecha_envio',
-      sortby: 'fecha_creacion',
+      sortby: 'fecha_envio',
       order: 'desc',
       limit: '10',
       offset: '0',
@@ -303,29 +302,32 @@ describe('NotificacionService', () => {
         updateDto,
       );
 
+      // El servicio elimina activo y fecha_envio
       expect(updateSpy).toHaveBeenCalledWith(
         mockNotificacion._id,
         expect.objectContaining({
-          ...updateDto,
-          fecha_modificacion: expect.any(Date),
+          plantilla: updateDto.plantilla,
+          referencia_tipo: updateDto.referencia_tipo,
+          metadato: updateDto.metadato,
+          referencia_id: updateDto.referencia_id,
         }),
         { new: true },
       );
       expect(result).toEqual(updatedNotificacion);
     });
 
-    it('No debería incluir activo ni fecha_creacion en la actualización', async () => {
+    it('No debería incluir activo ni fecha_envio en la actualización', async () => {
       const updateSpy = jest
         .spyOn(notificacionModel, 'findByIdAndUpdate')
         .mockReturnValue({
           exec: jest.fn().mockResolvedValue(mockNotificacion),
         } as any);
 
-      // Se envía un DTO con activo y fecha_creacion para verificar que el service los elimina
+      // Se envía un DTO con activo y fecha_envio para verificar que el service los elimina
       const dtoConCamposProtegidos = {
         ...updateDto,
         activo: false,
-        fecha_creacion: new Date('2020-01-01'),
+        fecha_envio: new Date('2020-01-01'),
       } as any;
 
       await notificacionService.put(
@@ -335,8 +337,7 @@ describe('NotificacionService', () => {
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith).not.toHaveProperty('activo');
-      expect(calledWith).not.toHaveProperty('fecha_creacion');
-      expect(calledWith).toHaveProperty('fecha_modificacion');
+      expect(calledWith).not.toHaveProperty('fecha_envio');
     });
 
     it('Debería actualizar referencia_tipo correctamente', async () => {
@@ -352,27 +353,6 @@ describe('NotificacionService', () => {
 
       const calledWith = updateSpy.mock.calls[0][1];
       expect(calledWith.referencia_tipo).toBe('SOLICITUD');
-    });
-
-    it('Debería actualizar fecha_modificacion automáticamente', async () => {
-      const updateSpy = jest
-        .spyOn(notificacionModel, 'findByIdAndUpdate')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockNotificacion),
-        } as any);
-
-      const dateBefore = new Date();
-      await notificacionService.put(mockNotificacion._id, updateDto);
-      const dateAfter = new Date();
-
-      const calledWith = updateSpy.mock.calls[0][1];
-      expect(calledWith.fecha_modificacion).toBeInstanceOf(Date);
-      expect(calledWith.fecha_modificacion.getTime()).toBeGreaterThanOrEqual(
-        dateBefore.getTime(),
-      );
-      expect(calledWith.fecha_modificacion.getTime()).toBeLessThanOrEqual(
-        dateAfter.getTime(),
-      );
     });
 
     it('Debería lanzar un error si el registro no existe', async () => {
@@ -510,7 +490,7 @@ describe('NotificacionService', () => {
       const complexFilterDto: FilterDto = {
         query: 'activo:true,plantilla:SISIFO_PLANTILLA_SOLICITUD',
         fields: 'plantilla,fecha_envio',
-        sortby: 'fecha_creacion',
+        sortby: 'fecha_envio',
         order: 'desc',
         limit: '10',
         offset: '0',
