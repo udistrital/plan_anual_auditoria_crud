@@ -25,14 +25,10 @@ export class UpdateSubtemaDTO {
   readonly titulo?: string;
 }
 
-// DTO completo para respuestas (mantener el original)
 export class SubtemaDTO {
   @ApiProperty()
   readonly titulo: string;
 
   @ApiProperty()
   activo: boolean;
-
-  @ApiProperty({ required: false })
-  readonly hallazgo?: any[];
 }

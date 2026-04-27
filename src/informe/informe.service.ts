@@ -6,6 +6,7 @@ import { FiltersService } from '../filters/filters.service';
 import { Informe } from './schemas/informe.schema';
 import { InformeDTO } from './dto/informe.dto';
 import { Tema } from '../tema/schemas/tema.schema';
+import { Hallazgo } from '../hallazgo/schemas/hallazgo.schema';
 
 @Injectable()
 export class InformeService {
@@ -14,6 +15,8 @@ export class InformeService {
     private readonly InformeModel: Model<Informe>,
     @InjectModel(Tema.name)
     private readonly TemaModel: Model<Tema>,
+    @InjectModel(Hallazgo.name)
+    private readonly HallazgoModel: Model<Hallazgo>,
   ) {}
 
   private populateFields(): any[] {
@@ -92,38 +95,46 @@ export class InformeService {
       throw new Error(`Informe ${informeId} no existe`);
     }
 
+<<<<<<< Updated upstream
     const temas = await this.TemaModel.find({
       informe_id: new Types.ObjectId(informeId),
       activo: true,
     }).exec();
+=======
+    // Queries en paralelo: estructura de temas y hallazgos del informe
+    const [temas, hallazgos] = await Promise.all([
+      this.TemaModel.find({ informe_id: informeId, activo: true }).lean().exec(),
+      this.HallazgoModel.find({ informe_id: informeId, activo: true }).lean().exec(),
+    ]);
+>>>>>>> Stashed changes
 
-    const hallazgos = [];
-
-    temas.forEach((tema) => {
-      tema.subtema.forEach((subtema) => {
+    // Mapa subtema_id → { tema, subtema } para enriquecer cada hallazgo con contexto
+    const subtemaMap = new Map<string, { tema: any; subtema: any }>();
+    for (const tema of temas) {
+      for (const subtema of (tema.subtema || [])) {
         if (subtema.activo) {
-          subtema.hallazgo.forEach((hallazgo) => {
-            if (hallazgo.activo) {
-              hallazgos.push({
-                _id: hallazgo._id,
-                titulo: hallazgo.titulo,
-                criterio: hallazgo.criterio,
-                descripcion: hallazgo.descripcion,
-                activo: hallazgo.activo,
-                tema_id: tema._id,
-                tema_titulo: tema.titulo,
-                subtema_id: subtema._id,
-                subtema_titulo: subtema.titulo,
-                informe_id: informeId,
-                createdAt: hallazgo.createdAt,
-                updatedAt: hallazgo.updatedAt,
-              });
-            }
-          });
+          subtemaMap.set(subtema._id.toString(), { tema, subtema });
         }
-      });
-    });
+      }
+    }
 
-    return hallazgos;
+    return hallazgos.map((hallazgo: any) => {
+      const ctx = subtemaMap.get(hallazgo.subtema_id?.toString());
+      return {
+        _id: hallazgo._id,
+        titulo: hallazgo.titulo,
+        criterio: hallazgo.criterio,
+        descripcion: hallazgo.descripcion,
+        rechazado: hallazgo.rechazado,
+        activo: hallazgo.activo,
+        informe_id: informeId,
+        subtema_id: hallazgo.subtema_id,
+        subtema_titulo: ctx?.subtema?.titulo ?? null,
+        tema_id: ctx?.tema?._id ?? null,
+        tema_titulo: ctx?.tema?.titulo ?? null,
+        createdAt: hallazgo.createdAt,
+        updatedAt: hallazgo.updatedAt,
+      };
+    });
   }
 }

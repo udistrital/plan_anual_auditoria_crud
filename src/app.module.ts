@@ -12,6 +12,7 @@ import { AuditorModule } from './auditoria-auditor/auditor.module';
 import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.module';
 import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
+import { HallazgoModule } from './hallazgo/hallazgo.module';
 import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.module';
 import { NotificacionModule } from './notificacion/notificacion.module';
 import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
@@ -39,7 +40,7 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
         );
 
         return {
-          uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
+          uri: `mongodb://desarrollooas:desarrollooas2019@mongotest.udistritaloas.edu.co:27017/auditoria?authSource=admin`,
         };
       },
       inject: [ConfigService],
@@ -53,6 +54,7 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
     AuditorModule,
     InformeModule,
     TemaModule,
+    HallazgoModule,
     AuditoriaGestionModule,
     NotificacionModule,
     AuditoriaPadreModule,

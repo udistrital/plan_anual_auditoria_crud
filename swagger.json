@@ -3098,7 +3098,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Devuelve el hallazgo con información del subtema y tema padre."
+            "description": "Devuelve el hallazgo."
           },
           "404": {
             "description": "Hallazgo no encontrado."
@@ -4297,6 +4297,14 @@
       "CreateHallazgoDTO": {
         "type": "object",
         "properties": {
+          "auditoria_id": {
+            "type": "string",
+            "description": "ID de la auditoría"
+          },
+          "informe_id": {
+            "type": "string",
+            "description": "ID del informe"
+          },
           "subtema_id": {
             "type": "string",
             "description": "ID del subtema padre"
@@ -4313,6 +4321,11 @@
             "type": "string",
             "description": "Descripción del hallazgo"
           },
+          "rechazado": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indica si el hallazgo fue rechazado"
+          },
           "activo": {
             "type": "boolean",
             "default": true,
@@ -4320,6 +4333,8 @@
           }
         },
         "required": [
+          "auditoria_id",
+          "informe_id",
           "subtema_id",
           "titulo",
           "criterio",
@@ -4340,6 +4355,10 @@
           "descripcion": {
             "type": "string",
             "description": "Descripción del hallazgo"
+          },
+          "rechazado": {
+            "type": "boolean",
+            "description": "Indica si el hallazgo fue rechazado"
           }
         }
       },

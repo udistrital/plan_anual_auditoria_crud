@@ -1,7 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-// DTO para crear un nuevo hallazgo
 export class CreateHallazgoDTO {
+  @ApiProperty({ description: 'ID de la auditoría' })
+  readonly auditoria_id: string;
+
+  @ApiProperty({ description: 'ID del informe' })
+  readonly informe_id: string;
+
   @ApiProperty({ description: 'ID del subtema padre' })
   readonly subtema_id: string;
 
@@ -16,35 +21,46 @@ export class CreateHallazgoDTO {
 
   @ApiProperty({
     required: false,
+    default: false,
+    description: 'Indica si el hallazgo fue rechazado',
+  })
+  rechazado?: boolean;
+
+  @ApiProperty({
+    required: false,
     default: true,
     description: 'Estado activo del hallazgo',
   })
   activo?: boolean;
 }
 
-// DTO para actualizar un hallazgo existente
 export class UpdateHallazgoDTO {
-  @ApiProperty({
-    required: false,
-    description: 'Título del hallazgo',
-  })
+  @ApiProperty({ required: false, description: 'Título del hallazgo' })
   readonly titulo?: string;
 
-  @ApiProperty({
-    required: false,
-    description: 'Criterio del hallazgo',
-  })
+  @ApiProperty({ required: false, description: 'Criterio del hallazgo' })
   readonly criterio?: string;
 
+  @ApiProperty({ required: false, description: 'Descripción del hallazgo' })
+  readonly descripcion?: string;
+
   @ApiProperty({
     required: false,
-    description: 'Descripción del hallazgo',
+    description: 'Indica si el hallazgo fue rechazado',
   })
-  readonly descripcion?: string;
+  readonly rechazado?: boolean;
 }
 
-// DTO completo para respuestas (mantener el original)
 export class HallazgoDTO {
+  @ApiProperty()
+  readonly auditoria_id: string;
+
+  @ApiProperty()
+  readonly informe_id: string;
+
+  @ApiProperty()
+  readonly subtema_id: string;
+
   @ApiProperty()
   readonly titulo: string;
 
@@ -53,6 +69,9 @@ export class HallazgoDTO {
 
   @ApiProperty()
   readonly descripcion: string;
+
+  @ApiProperty()
+  readonly rechazado: boolean;
 
   @ApiProperty()
   activo: boolean;
