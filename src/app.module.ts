@@ -17,6 +17,7 @@ import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.mo
 import { NotificacionModule } from './notificacion/notificacion.module';
 import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
 import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-padre-estado.module';
+import { ObservacionModule } from './observacion/observacion.module';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
         );
 
         return {
-          uri: `mongodb://desarrollooas:desarrollooas2019@mongotest.udistritaloas.edu.co:27017/auditoria?authSource=admin`,
+          uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
         };
       },
       inject: [ConfigService],
@@ -59,6 +60,7 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
     NotificacionModule,
     AuditoriaPadreModule,
     EstadoAuditoriaPadreModule,
+    ObservacionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -10,8 +10,8 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { HallazgoService } from './hallazgo.service';
-import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
+import { ObservacionService } from './observacion.service';
+import { CreateObservacionDTO, UpdateObservacionDTO } from './dto/observacion.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
@@ -23,159 +23,161 @@ import {
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
 
-@ApiTags('hallazgo')
-@Controller('hallazgo')
-export class HallazgoController {
-  constructor(private hallazgoService: HallazgoService) {}
+@ApiTags('observacion')
+@Controller('observacion')
+export class ObservacionController {
+  constructor(private observacionService: ObservacionService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Crear un nuevo hallazgo' })
-  @ApiBody({ type: CreateHallazgoDTO })
+  @ApiOperation({ summary: 'Crear una nueva observación' })
+  @ApiBody({ type: CreateObservacionDTO })
   @ApiResponse({
     status: 201,
-    description: 'El hallazgo ha sido creado exitosamente.',
+    description: 'La observación ha sido creada exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['auditoria_id', 'informe_id', 'subtema_id']))
-    createHallazgoDTO: CreateHallazgoDTO,
+    @Body(new ParseObjectIdPipe(['hallazgo_id']))
+    createObservacionDTO: CreateObservacionDTO,
   ) {
     try {
-      const hallazgo =
-        await this.hallazgoService.agregarHallazgo(createHallazgoDTO);
+      const observacion =
+        await this.observacionService.agregarObservacion(createObservacionDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
-        Message: 'Hallazgo creado exitosamente',
-        Data: hallazgo,
+        Message: 'Observación creada exitosamente',
+        Data: observacion,
       });
     } catch (error: unknown) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message: 'Error al crear hallazgo',
+        Message: 'Error al crear observación',
         Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los hallazgos' })
+  @ApiOperation({ summary: 'Obtener todas las observaciones' })
   @ApiQuery({
     name: 'query',
     required: false,
     description:
-      'Filtros en formato query. Ejemplo: subtema_id:507f1f77bcf86cd799439011',
-    example: 'subtema_id:507f1f77bcf86cd799439011',
+      'Filtros en formato query. Ejemplo: hallazgo_id:507f1f77bcf86cd799439011',
+    example: 'hallazgo_id:507f1f77bcf86cd799439011',
   })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve todos los hallazgos filtrados.',
+    description: 'Devuelve todas las observaciones filtradas.',
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const hallazgos = await this.hallazgoService.getAllHallazgos(filterDto);
-      const counts = await this.hallazgoService.countHallazgos(filterDto);
+      const observaciones =
+        await this.observacionService.getAllObservaciones(filterDto);
+      const counts =
+        await this.observacionService.countObservaciones(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: hallazgos,
+        Data: observaciones,
         MetaData: { Count: counts },
       });
     } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error al obtener hallazgos',
+        Message: 'Error al obtener observaciones',
         Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obtener un hallazgo por su ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
-  @ApiResponse({ status: 200, description: 'Devuelve el hallazgo.' })
-  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
+  @ApiOperation({ summary: 'Obtener una observación por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID de la observación' })
+  @ApiResponse({ status: 200, description: 'Devuelve la observación.' })
+  @ApiResponse({ status: 404, description: 'Observación no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const hallazgo = await this.hallazgoService.getHallazgoById(id);
+      const observacion = await this.observacionService.getObservacionById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: hallazgo,
+        Data: observacion,
       });
     } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Hallazgo no encontrado',
+        Message: 'Observación no encontrada',
         Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
 
   @Put('/:id')
-  @ApiOperation({ summary: 'Actualizar un hallazgo por su ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
-  @ApiBody({ type: UpdateHallazgoDTO })
+  @ApiOperation({ summary: 'Actualizar una observación por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID de la observación' })
+  @ApiBody({ type: UpdateObservacionDTO })
   @ApiResponse({
     status: 200,
-    description: 'El hallazgo ha sido actualizado exitosamente.',
+    description: 'La observación ha sido actualizada exitosamente.',
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Observación no encontrada.' })
   async update(
     @Res() res,
     @Param('id') id: string,
-    @Body() updateHallazgoDTO: UpdateHallazgoDTO,
+    @Body() updateObservacionDTO: UpdateObservacionDTO,
   ) {
     try {
-      const hallazgo = await this.hallazgoService.updateHallazgo(
+      const observacion = await this.observacionService.updateObservacion(
         id,
-        updateHallazgoDTO,
+        updateObservacionDTO,
       );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Hallazgo actualizado exitosamente',
-        Data: hallazgo,
+        Message: 'Observación actualizada exitosamente',
+        Data: observacion,
       });
     } catch (error: unknown) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
-        Message: 'Error al actualizar hallazgo',
+        Message: 'Error al actualizar observación',
         Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
 
   @Delete('/:id')
-  @ApiOperation({ summary: 'Eliminar un hallazgo por su ID' })
-  @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
+  @ApiOperation({ summary: 'Eliminar una observación por su ID' })
+  @ApiParam({ name: 'id', type: 'string', description: 'ID de la observación' })
   @ApiResponse({
     status: 200,
-    description: 'El hallazgo ha sido eliminado exitosamente.',
+    description: 'La observación ha sido eliminada exitosamente.',
   })
-  @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
+  @ApiResponse({ status: 404, description: 'Observación no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      const hallazgo = await this.hallazgoService.deleteHallazgo(id);
+      const observacion = await this.observacionService.deleteObservacion(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
-        Message: 'Hallazgo eliminado exitosamente',
-        Data: hallazgo,
+        Message: 'Observación eliminada exitosamente',
+        Data: observacion,
       });
     } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
-        Message: 'Error al eliminar hallazgo',
+        Message: 'Error al eliminar observación',
         Data: error instanceof Error ? error.message : String(error),
       });
     }

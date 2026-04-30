@@ -95,18 +95,10 @@ export class InformeService {
       throw new Error(`Informe ${informeId} no existe`);
     }
 
-<<<<<<< Updated upstream
-    const temas = await this.TemaModel.find({
-      informe_id: new Types.ObjectId(informeId),
-      activo: true,
-    }).exec();
-=======
-    // Queries en paralelo: estructura de temas y hallazgos del informe
     const [temas, hallazgos] = await Promise.all([
-      this.TemaModel.find({ informe_id: informeId, activo: true }).lean().exec(),
-      this.HallazgoModel.find({ informe_id: informeId, activo: true }).lean().exec(),
+      this.TemaModel.find({ informe_id: new Types.ObjectId(informeId), activo: true }).lean().exec(),
+      this.HallazgoModel.find({ informe_id: new Types.ObjectId(informeId), activo: true }).lean().exec(),
     ]);
->>>>>>> Stashed changes
 
     // Mapa subtema_id → { tema, subtema } para enriquecer cada hallazgo con contexto
     const subtemaMap = new Map<string, { tema: any; subtema: any }>();
