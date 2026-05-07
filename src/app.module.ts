@@ -18,6 +18,8 @@ import { NotificacionModule } from './notificacion/notificacion.module';
 import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
 import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-padre-estado.module';
 import { ObservacionModule } from './observacion/observacion.module';
+import { PlanMejoramientoModule } from './plan-mejoramiento/plan-mejoramiento.module';
+import { PlanMejoramientoEstadoModule } from './plan-mejoramiento-estado/plan-mejoramiento-estado.module';
 
 @Module({
   imports: [
@@ -61,6 +63,8 @@ import { ObservacionModule } from './observacion/observacion.module';
     AuditoriaPadreModule,
     EstadoAuditoriaPadreModule,
     ObservacionModule,
+    PlanMejoramientoModule,
+    PlanMejoramientoEstadoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
