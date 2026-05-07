@@ -20,6 +20,11 @@ import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-p
 import { ObservacionModule } from './observacion/observacion.module';
 import { PlanMejoramientoModule } from './plan-mejoramiento/plan-mejoramiento.module';
 import { PlanMejoramientoEstadoModule } from './plan-mejoramiento-estado/plan-mejoramiento-estado.module';
+import { PlanMejoramientoAuditorModule } from './plan-mejoramiento-auditor/plan-mejoramiento-auditor.module';
+import { AccionMejoraModule } from './accion-mejora/accion-mejora.module';
+import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion.module';
+import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
+import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
 
 @Module({
   imports: [
@@ -65,6 +70,11 @@ import { PlanMejoramientoEstadoModule } from './plan-mejoramiento-estado/plan-me
     ObservacionModule,
     PlanMejoramientoModule,
     PlanMejoramientoEstadoModule,
+    PlanMejoramientoAuditorModule,
+    AccionMejoraModule,
+    SeguimientoAccionModule,
+    ResponsableAccionModule,
+    CalificacionAccionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
