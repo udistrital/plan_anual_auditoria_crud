@@ -22,6 +22,9 @@ export class PlanMejoramiento extends Document {
   estado_id: number;
 
   @Prop({ required: false })
+  fuente: number;
+
+  @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })

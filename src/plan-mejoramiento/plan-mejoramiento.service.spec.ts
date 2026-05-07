@@ -13,6 +13,7 @@ const mockPlanMejoramientoDto: PlanMejoramientoDto = {
   fecha_apertura: new Date('2024-01-01'),
   fecha_limite: new Date('2024-12-31'),
   estado_id: 1,
+  fuente: 1,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),

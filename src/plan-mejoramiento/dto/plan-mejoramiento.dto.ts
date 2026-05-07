@@ -21,6 +21,9 @@ export class PlanMejoramientoDto {
   readonly estado_id: number;
 
   @ApiProperty()
+  readonly fuente: number;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()
