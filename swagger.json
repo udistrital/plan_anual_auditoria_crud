@@ -4394,6 +4394,13 @@
           "preliminar_auditado_id": {
             "type": "number"
           },
+          "dias_revision": {
+            "type": "number"
+          },
+          "fecha_fin_revision": {
+            "format": "date-time",
+            "type": "string"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -4414,6 +4421,8 @@
           "preliminar_auditor_id",
           "final_auditor_id",
           "preliminar_auditado_id",
+          "dias_revision",
+          "fecha_fin_revision",
           "activo",
           "fecha_creacion"
         ]
@@ -4530,6 +4539,11 @@
             "default": null,
             "description": "ID del usuario que rechazó el hallazgo"
           },
+          "rechazado_por_rol": {
+            "type": "string",
+            "default": null,
+            "description": "Rol del usuario que rechazó el hallazgo"
+          },
           "activo": {
             "type": "boolean",
             "default": true,
@@ -4567,6 +4581,10 @@
           "rechazado_por": {
             "type": "number",
             "description": "ID del usuario que rechazó el hallazgo"
+          },
+          "rechazado_por_rol": {
+            "type": "string",
+            "description": "Rol del usuario que rechazó el hallazgo"
           }
         }
       },

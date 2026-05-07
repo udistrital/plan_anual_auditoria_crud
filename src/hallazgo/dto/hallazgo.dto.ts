@@ -35,6 +35,13 @@ export class CreateHallazgoDTO {
 
   @ApiProperty({
     required: false,
+    default: null,
+    description: 'Rol del usuario que rechazó el hallazgo',
+  })
+  rechazado_por_rol?: string | null;
+
+  @ApiProperty({
+    required: false,
     default: true,
     description: 'Estado activo del hallazgo',
   })
@@ -62,6 +69,12 @@ export class UpdateHallazgoDTO {
     description: 'ID del usuario que rechazó el hallazgo',
   })
   readonly rechazado_por?: number | null;
+
+  @ApiProperty({
+    required: false,
+    description: 'Rol del usuario que rechazó el hallazgo',
+  })
+  readonly rechazado_por_rol?: string | null;
 }
 
 export class HallazgoDTO {
@@ -88,6 +101,9 @@ export class HallazgoDTO {
 
   @ApiProperty()
   readonly rechazado_por: number | null;
+
+  @ApiProperty()
+  readonly rechazado_por_rol: string | null;
 
   @ApiProperty()
   activo: boolean;

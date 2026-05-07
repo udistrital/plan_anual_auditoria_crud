@@ -4,7 +4,10 @@ import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Observacion } from './schemas/observacion.schema';
-import { CreateObservacionDTO, UpdateObservacionDTO } from './dto/observacion.dto';
+import {
+  CreateObservacionDTO,
+  UpdateObservacionDTO,
+} from './dto/observacion.dto';
 
 @Injectable()
 export class ObservacionService {
@@ -42,7 +45,8 @@ export class ObservacionService {
   }
 
   async getObservacionById(observacionId: string): Promise<Observacion> {
-    const observacion = await this.ObservacionModel.findById(observacionId).exec();
+    const observacion =
+      await this.ObservacionModel.findById(observacionId).exec();
     if (!observacion) {
       throw new Error(`Observacion ${observacionId} no existe`);
     }
