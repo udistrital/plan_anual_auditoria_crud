@@ -27,6 +27,9 @@ export class Hallazgo extends Document {
   @Prop({ required: false, default: null })
   rechazado_por: number | null;
 
+  @Prop({ required: false, default: null })
+  rechazado_por_rol: string | null;
+
   @Prop({ default: true })
   activo: boolean;
 
