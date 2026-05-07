@@ -11,7 +11,10 @@ import {
   Res,
 } from '@nestjs/common';
 import { ObservacionService } from './observacion.service';
-import { CreateObservacionDTO, UpdateObservacionDTO } from './dto/observacion.dto';
+import {
+  CreateObservacionDTO,
+  UpdateObservacionDTO,
+} from './dto/observacion.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
   ApiTags,
