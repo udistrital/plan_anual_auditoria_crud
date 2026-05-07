@@ -31,7 +31,6 @@ export class Tema extends Document {
   @Prop({ type: [SubtemaSchema], default: [] })
   subtema: Types.DocumentArray<ISubtema>;
 
-
   createdAt?: Date;
   updatedAt?: Date;
 }

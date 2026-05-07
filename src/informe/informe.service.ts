@@ -96,14 +96,24 @@ export class InformeService {
     }
 
     const [temas, hallazgos] = await Promise.all([
-      this.TemaModel.find({ informe_id: new Types.ObjectId(informeId), activo: true }).lean().exec(),
-      this.HallazgoModel.find({ informe_id: new Types.ObjectId(informeId), activo: true }).lean().exec(),
+      this.TemaModel.find({
+        informe_id: new Types.ObjectId(informeId),
+        activo: true,
+      })
+        .lean()
+        .exec(),
+      this.HallazgoModel.find({
+        informe_id: new Types.ObjectId(informeId),
+        activo: true,
+      })
+        .lean()
+        .exec(),
     ]);
 
     // Mapa subtema_id → { tema, subtema } para enriquecer cada hallazgo con contexto
     const subtemaMap = new Map<string, { tema: any; subtema: any }>();
     for (const tema of temas) {
-      for (const subtema of (tema.subtema || [])) {
+      for (const subtema of tema.subtema || []) {
         if (subtema.activo) {
           subtemaMap.set(subtema._id.toString(), { tema, subtema });
         }
