@@ -51,13 +51,17 @@ describe('InformeService', () => {
         {
           provide: getModelToken(Tema.name),
           useValue: {
-            find: jest.fn().mockImplementation(() => createQueryBuilderMock([])),
+            find: jest
+              .fn()
+              .mockImplementation(() => createQueryBuilderMock([])),
           },
         },
         {
           provide: getModelToken(Hallazgo.name),
           useValue: {
-            find: jest.fn().mockImplementation(() => createQueryBuilderMock([])),
+            find: jest
+              .fn()
+              .mockImplementation(() => createQueryBuilderMock([])),
             findById: jest.fn(),
           },
         },
@@ -304,13 +308,13 @@ describe('InformeService', () => {
         exec: jest.fn().mockResolvedValue(mockInforme),
       } as any);
 
-      jest.spyOn(temaModel, 'find').mockReturnValue(
-        createQueryBuilderMock(mockTemas) as any,
-      );
+      jest
+        .spyOn(temaModel, 'find')
+        .mockReturnValue(createQueryBuilderMock(mockTemas) as any);
 
-      jest.spyOn(hallazgoModel, 'find').mockReturnValue(
-        createQueryBuilderMock(mockHallazgos) as any,
-      );
+      jest
+        .spyOn(hallazgoModel, 'find')
+        .mockReturnValue(createQueryBuilderMock(mockHallazgos) as any);
 
       const result = await informeService.getHallazgosByInforme(
         mockInforme._id,
