@@ -41,7 +41,7 @@ import { ObservacionModule } from './observacion/observacion.module';
         );
 
         return {
-          uri: `mongodb://desarrollooas:desarrollooas2019@mongotest.udistritaloas.edu.co:27017/auditoria?authSource=admin`,
+          uri: `mongodb://${user}:${pass}@${host}:${port}/${db}?authSource=${authDb}`,
         };
       },
       inject: [ConfigService],
