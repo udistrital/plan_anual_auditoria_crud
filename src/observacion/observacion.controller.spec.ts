@@ -2,7 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ObservacionService } from './observacion.service';
 import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
-import { CreateObservacionDTO, UpdateObservacionDTO } from './dto/observacion.dto';
+import {
+  CreateObservacionDTO,
+  UpdateObservacionDTO,
+} from './dto/observacion.dto';
 
 jest.mock('../pipes/parse-object-id/parse-object-id.pipe.ts');
 
@@ -180,7 +183,9 @@ describe('ObservacionController', () => {
 
       await controller.getById(res, mockObservacion._id);
 
-      expect(service.getObservacionById).toHaveBeenCalledWith(mockObservacion._id);
+      expect(service.getObservacionById).toHaveBeenCalledWith(
+        mockObservacion._id,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
@@ -265,7 +270,9 @@ describe('ObservacionController', () => {
 
       await controller.delete(res, mockObservacion._id);
 
-      expect(service.deleteObservacion).toHaveBeenCalledWith(mockObservacion._id);
+      expect(service.deleteObservacion).toHaveBeenCalledWith(
+        mockObservacion._id,
+      );
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,

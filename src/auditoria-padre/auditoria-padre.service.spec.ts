@@ -40,9 +40,6 @@ describe('AuditoriaPadreService', () => {
   let auditoriaPadreService: AuditoriaPadreService;
   let auditoriaPadreModel: Model<AuditoriaPadre>;
   let planAuditoriaModel: Model<PlanAuditoria>;
-  let auditoriaService: AuditoriaService;
-  let estadoAuditoriaService: EstadoAuditoriaService;
-  let auditoriaPadreEstadoService: EstadoAuditoriaPadreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -95,13 +92,6 @@ describe('AuditoriaPadreService', () => {
     );
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
-    );
-    auditoriaPadreEstadoService = module.get<EstadoAuditoriaPadreService>(
-      EstadoAuditoriaPadreService,
-    );
-    auditoriaService = module.get<AuditoriaService>(AuditoriaService);
-    estadoAuditoriaService = module.get<EstadoAuditoriaService>(
-      EstadoAuditoriaService,
     );
   });
 

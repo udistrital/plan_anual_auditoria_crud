@@ -6,8 +6,6 @@ import { FiltersService } from '../filters/filters.service';
 import { PlanAuditoria } from './schemas/plan-auditoria.schema';
 import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { AuditoriaPadreService } from '../auditoria-padre/auditoria-padre.service';
-import { Auditoria } from '../auditoria/schemas/auditoria.schema';
-import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 @Injectable()
 export class PlanAuditoriaService {
@@ -107,5 +105,4 @@ export class PlanAuditoriaService {
       .countDocuments(filtersService.getQuery())
       .exec();
   }
-  
 }

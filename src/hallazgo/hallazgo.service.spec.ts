@@ -4,7 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 import { Hallazgo } from './schemas/hallazgo.schema';
 import { Tema } from '../tema/schemas/tema.schema';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockCreateHallazgoDto: CreateHallazgoDTO = {
@@ -76,7 +76,9 @@ describe('HallazgoService', () => {
         .spyOn(hallazgoModel, 'create')
         .mockImplementationOnce(() => Promise.resolve(mockHallazgo as any));
 
-      const result = await hallazgoService.agregarHallazgo(mockCreateHallazgoDto);
+      const result = await hallazgoService.agregarHallazgo(
+        mockCreateHallazgoDto,
+      );
 
       expect(temaModel.findOne).toHaveBeenCalledWith({
         'subtema._id': mockCreateHallazgoDto.subtema_id,
@@ -99,7 +101,10 @@ describe('HallazgoService', () => {
 
   describe('getAllHallazgos', () => {
     it('Debería retornar todos los hallazgos con filtros aplicados', async () => {
-      const mockHallazgos = [mockHallazgo, { ...mockHallazgo, _id: '507f1f77bcf86cd799439099' }];
+      const mockHallazgos = [
+        mockHallazgo,
+        { ...mockHallazgo, _id: '507f1f77bcf86cd799439099' },
+      ];
       const mockFilterDto: FilterDto = {
         query: '',
         fields: '',
@@ -147,7 +152,9 @@ describe('HallazgoService', () => {
 
     it('Debería lanzar un error si countDocuments falla', async () => {
       jest.spyOn(hallazgoModel, 'countDocuments').mockReturnValue({
-        exec: jest.fn().mockRejectedValue(new Error('Error al contar hallazgos')),
+        exec: jest
+          .fn()
+          .mockRejectedValue(new Error('Error al contar hallazgos')),
       } as any);
 
       await expect(hallazgoService.countHallazgos(filterDto)).rejects.toThrow(
@@ -184,7 +191,9 @@ describe('HallazgoService', () => {
       const updatedHallazgo = { ...mockHallazgo, ...mockUpdateHallazgoDto };
 
       jest.spyOn(hallazgoModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updatedHallazgo as unknown as Hallazgo),
+        exec: jest
+          .fn()
+          .mockResolvedValue(updatedHallazgo as unknown as Hallazgo),
       } as any);
 
       const result = await hallazgoService.updateHallazgo(
@@ -216,7 +225,9 @@ describe('HallazgoService', () => {
       const deletedHallazgo = { ...mockHallazgo, activo: false };
 
       jest.spyOn(hallazgoModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(deletedHallazgo as unknown as Hallazgo),
+        exec: jest
+          .fn()
+          .mockResolvedValue(deletedHallazgo as unknown as Hallazgo),
       } as any);
 
       const result = await hallazgoService.deleteHallazgo(mockHallazgo._id);

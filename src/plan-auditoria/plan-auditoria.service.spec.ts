@@ -35,7 +35,6 @@ const mockPlanAuditoria = {
 describe('PlanAuditoriaService', () => {
   let planAuditoriaService: PlanAuditoriaService;
   let planAuditoriaModel: Model<PlanAuditoria>;
-  let auditoriaPadreService: AuditoriaPadreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -65,9 +64,6 @@ describe('PlanAuditoriaService', () => {
       module.get<PlanAuditoriaService>(PlanAuditoriaService);
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
-    );
-    auditoriaPadreService = module.get<AuditoriaPadreService>(
-      AuditoriaPadreService,
     );
   });
 

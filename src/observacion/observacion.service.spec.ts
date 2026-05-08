@@ -1,9 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ObservacionService } from './observacion.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { CreateObservacionDTO, UpdateObservacionDTO } from './dto/observacion.dto';
+import {
+  CreateObservacionDTO,
+  UpdateObservacionDTO,
+} from './dto/observacion.dto';
 import { Observacion } from './schemas/observacion.schema';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
 const mockCreateObservacionDto: CreateObservacionDTO = {
@@ -105,7 +108,8 @@ describe('ObservacionService', () => {
 
       jest.spyOn(observacionModel, 'find').mockReturnValue(mockQuery as any);
 
-      const result = await observacionService.getAllObservaciones(mockFilterDto);
+      const result =
+        await observacionService.getAllObservaciones(mockFilterDto);
 
       expect(result).toEqual(mockObservaciones);
     });
@@ -157,7 +161,9 @@ describe('ObservacionService', () => {
         mockObservacion._id,
       );
 
-      expect(observacionModel.findById).toHaveBeenCalledWith(mockObservacion._id);
+      expect(observacionModel.findById).toHaveBeenCalledWith(
+        mockObservacion._id,
+      );
       expect(result).toEqual(mockObservacion);
     });
 
@@ -174,7 +180,10 @@ describe('ObservacionService', () => {
 
   describe('updateObservacion', () => {
     it('Debería actualizar y devolver la observación', async () => {
-      const updatedObservacion = { ...mockObservacion, ...mockUpdateObservacionDto };
+      const updatedObservacion = {
+        ...mockObservacion,
+        ...mockUpdateObservacionDto,
+      };
 
       jest.spyOn(observacionModel, 'findByIdAndUpdate').mockReturnValue({
         exec: jest

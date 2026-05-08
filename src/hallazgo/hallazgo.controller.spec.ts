@@ -119,7 +119,9 @@ describe('HallazgoController', () => {
     ];
 
     it('Debería retornar OK (200) con todos los hallazgos y metadata', async () => {
-      jest.spyOn(service, 'getAllHallazgos').mockResolvedValue(mockHallazgos as any);
+      jest
+        .spyOn(service, 'getAllHallazgos')
+        .mockResolvedValue(mockHallazgos as any);
       jest.spyOn(service, 'countHallazgos').mockResolvedValue(2);
       const res = mockResponse();
 

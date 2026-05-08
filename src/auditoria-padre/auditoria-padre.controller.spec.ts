@@ -33,14 +33,6 @@ const mockAuditoriaPadre = {
 
 describe('AuditoriaPadreController', () => {
   let auditoriaPadreController: AuditoriaPadreController;
-  let auditoriaPadreService: AuditoriaPadreService;
-
-  const mockResponse = () => {
-    const res: any = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    return res;
-  };
 
   const mockAuditoriaPadreService = {
     post: jest.fn(),
@@ -64,9 +56,6 @@ describe('AuditoriaPadreController', () => {
 
     auditoriaPadreController = module.get<AuditoriaPadreController>(
       AuditoriaPadreController,
-    );
-    auditoriaPadreService = module.get<AuditoriaPadreService>(
-      AuditoriaPadreService,
     );
   });
 
