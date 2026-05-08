@@ -35,6 +35,7 @@ const mockUpdateSubtemaDto: UpdateSubtemaDTO = {
 describe('TemaService', () => {
   let temaService: TemaService;
   let temaModel: Model<Tema>;
+  let hallazgoModel: Model<Hallazgo>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -64,6 +65,7 @@ describe('TemaService', () => {
 
     temaService = module.get<TemaService>(TemaService);
     temaModel = module.get<Model<Tema>>(getModelToken(Tema.name));
+    hallazgoModel = module.get<Model<Hallazgo>>(getModelToken(Hallazgo.name));
   });
 
   it('Debería estar definido', () => {
@@ -329,6 +331,10 @@ describe('TemaService', () => {
 
       jest.spyOn(temaModel, 'findOne').mockReturnValue({
         exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      jest.spyOn(hallazgoModel, 'updateMany').mockReturnValue({
+        exec: jest.fn().mockResolvedValue({}),
       } as any);
 
       await temaService.deleteSubtema('sub1');

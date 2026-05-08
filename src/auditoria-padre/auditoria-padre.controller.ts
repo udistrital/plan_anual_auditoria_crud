@@ -21,7 +21,6 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
 
 @ApiTags('auditoria-padre')
 @Controller('auditoria-padre')
@@ -190,5 +189,4 @@ export class AuditoriaPadreController {
       });
     }
   }
-
 }
