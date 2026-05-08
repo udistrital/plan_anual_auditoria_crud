@@ -107,45 +107,5 @@ export class PlanAuditoriaService {
       .countDocuments(filtersService.getQuery())
       .exec();
   }
-
-  /**
-   * Genera las auditorías correspondientes a un plan de auditoría, a partir de sus auditorías padre. Para cada auditoría generada, también se genera su estado inicial y se actualiza el estado de su auditoría padre.
-   * @param id Id del plan de auditoría para el cual se generarán las auditorías.
-   * @param generarAuditoriaDto DTO con la información necesaria para la generación de las auditorías y sus estados.
-   * @returns Lista de auditorías generadas.
-   * @throws Error si el plan de auditoría no existe.
-   * @throws Error si ocurre un error al generar alguna de las auditorías o sus estados.
-   */
-  async generarAuditorias(
-    id: string,
-    generarAuditoriaDto: GenerarAuditoriaDto,
-  ): Promise<Auditoria[]> {
-    // Para lanzar error específico en caso de que el plan de auditoría no exista.
-    await this.getById(id);
-
-    const auditoriasPadre = await this.auditoriaPadreService.getAll({
-      fields: undefined,
-      sortby: undefined,
-      order: undefined,
-      populate: undefined,
-
-      query: `plan_auditoria_id:${id},activo:true,estado_id:${generarAuditoriaDto.estado_id_padre_actual}`,
-      limit: '0',
-      offset: '0',
-    });
-
-    const nuevasAuditorias: Auditoria[] = [];
-
-    // Delegar la generación de cada auditoría padre al servicio centralizado.
-    for (const auditoriaPadre of auditoriasPadre) {
-      const auditoriasGeneradasPadre =
-        await this.auditoriaPadreService.generarAuditorias(
-          auditoriaPadre._id.toString(),
-          generarAuditoriaDto,
-        );
-      nuevasAuditorias.push(...auditoriasGeneradasPadre);
-    }
-
-    return nuevasAuditorias;
-  }
+  
 }
