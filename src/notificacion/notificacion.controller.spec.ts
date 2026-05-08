@@ -18,6 +18,7 @@ const mockNotificacionDto: NotificacionDTO = {
   },
   referencia_id: new Types.ObjectId('671aaa8a064222e6583d56e7'),
   referencia_tipo: 'PAA',
+  activo: true,
 };
 
 const mockNotificacion = {

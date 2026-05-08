@@ -22,6 +22,9 @@ export class Informe extends Document {
   @Prop() final_auditor_id: number;
   @Prop() preliminar_auditado_id: number;
 
+  @Prop({ default: 3 }) dias_revision: number;
+  @Prop() fecha_fin_revision: Date;
+
   @Prop({ default: true }) activo: boolean;
 }
 export const InformeSchema = SchemaFactory.createForClass(Informe);

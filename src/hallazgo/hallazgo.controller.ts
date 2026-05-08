@@ -10,7 +10,7 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { TemaService } from './tema.service';
+import { HallazgoService } from './hallazgo.service';
 import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 import { FilterDto } from '../filters/filters.dto';
 import {
@@ -26,7 +26,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('hallazgo')
 @Controller('hallazgo')
 export class HallazgoController {
-  constructor(private temaService: TemaService) {}
+  constructor(private hallazgoService: HallazgoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo hallazgo' })
@@ -38,26 +38,24 @@ export class HallazgoController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async create(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['subtema_id']))
+    @Body(new ParseObjectIdPipe(['auditoria_id', 'informe_id', 'subtema_id']))
     createHallazgoDTO: CreateHallazgoDTO,
   ) {
     try {
-      const tema = await this.temaService.agregarHallazgo(
-        createHallazgoDTO.subtema_id,
-        createHallazgoDTO,
-      );
+      const hallazgo =
+        await this.hallazgoService.agregarHallazgo(createHallazgoDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Hallazgo creado exitosamente',
-        Data: tema,
+        Data: hallazgo,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message: 'Error al crear hallazgo',
-        Data: error.message,
+        Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -77,9 +75,8 @@ export class HallazgoController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const hallazgos = await this.temaService.getAllHallazgos(filterDto);
-      const counts = await this.temaService.countHallazgos(filterDto);
-
+      const hallazgos = await this.hallazgoService.getAllHallazgos(filterDto);
+      const counts = await this.hallazgoService.countHallazgos(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -87,12 +84,12 @@ export class HallazgoController {
         Data: hallazgos,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message: 'Error al obtener hallazgos',
-        Data: error.message,
+        Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -100,27 +97,23 @@ export class HallazgoController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener un hallazgo por su ID' })
   @ApiParam({ name: 'id', type: 'string', description: 'ID del hallazgo' })
-  @ApiResponse({
-    status: 200,
-    description:
-      'Devuelve el hallazgo con información del subtema y tema padre.',
-  })
+  @ApiResponse({ status: 200, description: 'Devuelve el hallazgo.' })
   @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const hallazgo = await this.temaService.getHallazgoById(id);
+      const hallazgo = await this.hallazgoService.getHallazgoById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
         Data: hallazgo,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message: 'Hallazgo no encontrado',
-        Data: error.message,
+        Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -141,19 +134,22 @@ export class HallazgoController {
     @Body() updateHallazgoDTO: UpdateHallazgoDTO,
   ) {
     try {
-      const tema = await this.temaService.updateHallazgo(id, updateHallazgoDTO);
+      const hallazgo = await this.hallazgoService.updateHallazgo(
+        id,
+        updateHallazgoDTO,
+      );
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Hallazgo actualizado exitosamente',
-        Data: tema,
+        Data: hallazgo,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message: 'Error al actualizar hallazgo',
-        Data: error.message,
+        Data: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -168,19 +164,19 @@ export class HallazgoController {
   @ApiResponse({ status: 404, description: 'Hallazgo no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      const tema = await this.temaService.deleteHallazgo(id);
+      const hallazgo = await this.hallazgoService.deleteHallazgo(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Hallazgo eliminado exitosamente',
-        Data: tema,
+        Data: hallazgo,
       });
-    } catch (error) {
+    } catch (error: unknown) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message: 'Error al eliminar hallazgo',
-        Data: error.message,
+        Data: error instanceof Error ? error.message : String(error),
       });
     }
   }

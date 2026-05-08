@@ -36,6 +36,12 @@ export class InformeDTO {
   readonly preliminar_auditado_id?: number;
 
   @ApiProperty()
+  readonly dias_revision?: number;
+
+  @ApiProperty()
+  readonly fecha_fin_revision?: Date;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()

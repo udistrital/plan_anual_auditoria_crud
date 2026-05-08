@@ -16,7 +16,7 @@ const mockActividadDto: ActividadDTO = {
   descripcion: 'Descripción de la actividad de prueba',
   observacion: 'Observaciones importantes',
   folio: 123,
-  medio_id: 1,
+  medio: 'Físico',
   carpeta: 'carpeta-prueba',
   activo: true,
   fecha_creacion: new Date('2024-01-01'),

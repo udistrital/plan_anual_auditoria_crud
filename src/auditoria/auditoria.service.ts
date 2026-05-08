@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 import { FiltersService } from '../filters/filters.service';
 import { Auditoria } from './schemas/auditoria.schema';
@@ -26,7 +26,6 @@ export class AuditoriaService {
   }
 
   private async checkRelated(AuditoriaDTO: AuditoriaDTO) {
-    // TODO: eliminar la validación por `plan_auditoria_id` cuando la migración a `auditoria_padre_id` esté completa
     if (AuditoriaDTO.plan_auditoria_id) {
       const planAuditoria = await this.PlanAuditoriaModel.findById(
         AuditoriaDTO.plan_auditoria_id,
@@ -51,13 +50,13 @@ export class AuditoriaService {
   }
   async post(AuditoriaDto: AuditoriaDTO): Promise<Auditoria> {
     const fecha = new Date();
-    const AuditoriaData = {
+    const AuditoriaData: AuditoriaDTO = {
       ...AuditoriaDto,
-      plan_auditoria_id: new Types.ObjectId(AuditoriaDto.plan_auditoria_id),
-      auditoria_padre_id: new Types.ObjectId(AuditoriaDto.auditoria_padre_id),
+      plan_auditoria_id: AuditoriaDto.plan_auditoria_id,
+      auditoria_padre_id: AuditoriaDto.auditoria_padre_id,
       activo: true,
-      fechaCreacion: fecha,
-      fechaModificacion: fecha,
+      fecha_creacion: fecha,
+      fecha_modificacion: fecha,
     };
     await this.checkRelated(AuditoriaDto);
     return await this.AuditoriaModel.create(AuditoriaData);

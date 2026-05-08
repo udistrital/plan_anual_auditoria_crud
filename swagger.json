@@ -241,56 +241,6 @@
         ]
       }
     },
-    "/plan-auditoria/{id}/generar-auditorias": {
-      "post": {
-        "operationId": "PlanAuditoriaController_generarAuditorias",
-        "summary": "Generar auditorías hija a partir de auditorías padre registradas en el plan.",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerarAuditoriaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Las auditorías hija han sido generadas exitosamente.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GenerarAuditoriaDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Solicitud incorrecta."
-          },
-          "404": {
-            "description": "Plan de auditoria no encontrado."
-          }
-        },
-        "tags": [
-          "plan-auditoria"
-        ]
-      }
-    },
     "/auditoria-padre": {
       "post": {
         "operationId": "AuditoriaPadreController_post",
@@ -510,106 +460,6 @@
           },
           "404": {
             "description": "Auditoria padre no encontrada."
-          }
-        },
-        "tags": [
-          "auditoria-padre"
-        ]
-      }
-    },
-    "/auditoria-padre/{id}/generar-auditorias": {
-      "post": {
-        "operationId": "AuditoriaPadreController_generarAuditorias",
-        "summary": "Generar auditorías hija hasta completar la cantidad_auditoria especificada.",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerarAuditoriaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Las auditorías hija han sido generadas exitosamente.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GenerarAuditoriaDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Solicitud incorrecta."
-          },
-          "404": {
-            "description": "Auditoría padre no encontrada."
-          }
-        },
-        "tags": [
-          "auditoria-padre"
-        ]
-      }
-    },
-    "/auditoria-padre/{id}/generar-auditoria": {
-      "post": {
-        "operationId": "AuditoriaPadreController_generarUnaAuditorias",
-        "summary": "Generar una auditoría hija si el número de auditorías hijas existentes es menor que la cantidad_auditoria especificada en la auditoría padre.",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerarAuditoriaDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Las auditoría hija ha sido generada exitosamente.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GenerarAuditoriaDto"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Solicitud incorrecta."
-          },
-          "404": {
-            "description": "Auditoría padre no encontrada."
           }
         },
         "tags": [
@@ -3098,7 +2948,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Devuelve el hallazgo con información del subtema y tema padre."
+            "description": "Devuelve el hallazgo."
           },
           "404": {
             "description": "Hallazgo no encontrado."
@@ -3573,6 +3423,205 @@
           "notificacion"
         ]
       }
+    },
+    "/observacion": {
+      "post": {
+        "operationId": "ObservacionController_create",
+        "summary": "Crear una nueva observación",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateObservacionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "La observación ha sido creada exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "observacion"
+        ]
+      },
+      "get": {
+        "operationId": "ObservacionController_getAll",
+        "summary": "Obtener todas las observaciones",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": "Filtros en formato query. Ejemplo: hallazgo_id:507f1f77bcf86cd799439011",
+            "schema": {
+              "example": "hallazgo_id:507f1f77bcf86cd799439011",
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las observaciones filtradas."
+          }
+        },
+        "tags": [
+          "observacion"
+        ]
+      }
+    },
+    "/observacion/{id}": {
+      "get": {
+        "operationId": "ObservacionController_getById",
+        "summary": "Obtener una observación por su ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID de la observación",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la observación."
+          },
+          "404": {
+            "description": "Observación no encontrada."
+          }
+        },
+        "tags": [
+          "observacion"
+        ]
+      },
+      "put": {
+        "operationId": "ObservacionController_update",
+        "summary": "Actualizar una observación por su ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID de la observación",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateObservacionDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "La observación ha sido actualizada exitosamente."
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Observación no encontrada."
+          }
+        },
+        "tags": [
+          "observacion"
+        ]
+      },
+      "delete": {
+        "operationId": "ObservacionController_delete",
+        "summary": "Eliminar una observación por su ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "description": "ID de la observación",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La observación ha sido eliminada exitosamente."
+          },
+          "404": {
+            "description": "Observación no encontrada."
+          }
+        },
+        "tags": [
+          "observacion"
+        ]
+      }
     }
   },
   "info": {
@@ -3653,63 +3702,15 @@
           "fecha_modificacion"
         ]
       },
-      "GenerarAuditoriaDto": {
+      "ObjectId": {
         "type": "object",
-        "properties": {
-          "auditoria_id": {
-            "type": "string"
-          },
-          "usuario_id": {
-            "type": "number"
-          },
-          "usuario_rol": {
-            "type": "string"
-          },
-          "observacion": {
-            "type": "string"
-          },
-          "estado_id_padre_actual": {
-            "type": "number"
-          },
-          "estado_id_padre_nuevo": {
-            "type": "number"
-          },
-          "estado_id_hija_actual": {
-            "type": "number"
-          },
-          "estado_id_hija_nuevo": {
-            "type": "number"
-          },
-          "fase_id": {
-            "type": "string"
-          },
-          "fecha_ejecucion_estado": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "activo": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "auditoria_id",
-          "usuario_id",
-          "usuario_rol",
-          "observacion",
-          "estado_id_padre_actual",
-          "estado_id_padre_nuevo",
-          "estado_id_hija_actual",
-          "estado_id_hija_nuevo",
-          "fase_id",
-          "fecha_ejecucion_estado",
-          "activo"
-        ]
+        "properties": {}
       },
       "AuditoriaPadreDTO": {
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -3730,13 +3731,22 @@
             "type": "number"
           },
           "macroproceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "proceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "dependencia_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "cantidad_auditorias": {
             "type": "number"
@@ -3773,7 +3783,7 @@
         "type": "object",
         "properties": {
           "auditoria_padre_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "usuario_id": {
             "type": "number"
@@ -3817,10 +3827,10 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "auditoria_padre_id": {
-            "type": "string"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "subtitulo": {
             "type": "string"
@@ -3876,7 +3886,10 @@
             "type": "string"
           },
           "correo_complementario": {
-            "type": "string"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "activo": {
             "type": "boolean"
@@ -3914,10 +3927,6 @@
           "fecha_creacion",
           "fecha_modificacion"
         ]
-      },
-      "ObjectId": {
-        "type": "object",
-        "properties": {}
       },
       "AuditoriaEstadoDto": {
         "type": "object",
@@ -3992,8 +4001,8 @@
           "folio": {
             "type": "number"
           },
-          "medio_id": {
-            "type": "number"
+          "medio": {
+            "type": "string"
           },
           "carpeta": {
             "type": "string"
@@ -4019,7 +4028,7 @@
           "descripcion",
           "observacion",
           "folio",
-          "medio_id",
+          "medio",
           "carpeta",
           "activo",
           "fecha_creacion",
@@ -4083,6 +4092,9 @@
           },
           "tipo_id": {
             "type": "number"
+          },
+          "metadatos": {
+            "type": "object"
           },
           "activo": {
             "type": "boolean"
@@ -4180,6 +4192,13 @@
           "preliminar_auditado_id": {
             "type": "number"
           },
+          "dias_revision": {
+            "type": "number"
+          },
+          "fecha_fin_revision": {
+            "format": "date-time",
+            "type": "string"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -4200,6 +4219,8 @@
           "preliminar_auditor_id",
           "final_auditor_id",
           "preliminar_auditado_id",
+          "dias_revision",
+          "fecha_fin_revision",
           "activo",
           "fecha_creacion"
         ]
@@ -4208,8 +4229,12 @@
         "type": "object",
         "properties": {
           "informe_id": {
-            "type": "string",
-            "description": "ID del informe padre"
+            "description": "ID del informe padre",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
           },
           "titulo": {
             "type": "string",
@@ -4278,6 +4303,14 @@
       "CreateHallazgoDTO": {
         "type": "object",
         "properties": {
+          "auditoria_id": {
+            "type": "string",
+            "description": "ID de la auditoría"
+          },
+          "informe_id": {
+            "type": "string",
+            "description": "ID del informe"
+          },
           "subtema_id": {
             "type": "string",
             "description": "ID del subtema padre"
@@ -4294,6 +4327,21 @@
             "type": "string",
             "description": "Descripción del hallazgo"
           },
+          "rechazado": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indica si el hallazgo fue rechazado"
+          },
+          "rechazado_por": {
+            "type": "number",
+            "default": null,
+            "description": "ID del usuario que rechazó el hallazgo"
+          },
+          "rechazado_por_rol": {
+            "type": "string",
+            "default": null,
+            "description": "Rol del usuario que rechazó el hallazgo"
+          },
           "activo": {
             "type": "boolean",
             "default": true,
@@ -4301,6 +4349,8 @@
           }
         },
         "required": [
+          "auditoria_id",
+          "informe_id",
           "subtema_id",
           "titulo",
           "criterio",
@@ -4321,6 +4371,18 @@
           "descripcion": {
             "type": "string",
             "description": "Descripción del hallazgo"
+          },
+          "rechazado": {
+            "type": "boolean",
+            "description": "Indica si el hallazgo fue rechazado"
+          },
+          "rechazado_por": {
+            "type": "number",
+            "description": "ID del usuario que rechazó el hallazgo"
+          },
+          "rechazado_por_rol": {
+            "type": "string",
+            "description": "Rol del usuario que rechazó el hallazgo"
           }
         }
       },
@@ -4328,7 +4390,7 @@
         "type": "object",
         "properties": {
           "plan_auditoria_id": {
-            "type": "object"
+            "$ref": "#/components/schemas/ObjectId"
           },
           "titulo": {
             "type": "string"
@@ -4349,13 +4411,22 @@
             "type": "number"
           },
           "macroproceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "proceso_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "dependencia_id": {
-            "type": "number"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "auditorias": {
             "type": "array",
@@ -4483,6 +4554,9 @@
             "type": "string",
             "description": "Tipo del documento referenciado",
             "example": "PAA"
+          },
+          "activo": {
+            "type": "boolean"
           }
         },
         "required": [
@@ -4490,8 +4564,70 @@
           "fecha_envio",
           "metadato",
           "referencia_id",
-          "referencia_tipo"
+          "referencia_tipo",
+          "activo"
         ]
+      },
+      "CreateObservacionDTO": {
+        "type": "object",
+        "properties": {
+          "hallazgo_id": {
+            "type": "string",
+            "description": "ID del hallazgo asociado"
+          },
+          "observacion": {
+            "type": "string",
+            "description": "Texto de la observación"
+          },
+          "dependencia_id": {
+            "default": [],
+            "description": "Array de IDs de dependencias asociadas",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "usuario_id": {
+            "type": "number",
+            "description": "ID del usuario que crea la observación"
+          },
+          "usuario_rol": {
+            "type": "string",
+            "description": "Rol del usuario que crea la observación"
+          },
+          "activo": {
+            "type": "boolean",
+            "default": true,
+            "description": "Estado activo de la observación"
+          }
+        },
+        "required": [
+          "hallazgo_id",
+          "observacion",
+          "dependencia_id",
+          "usuario_id",
+          "usuario_rol"
+        ]
+      },
+      "UpdateObservacionDTO": {
+        "type": "object",
+        "properties": {
+          "observacion": {
+            "type": "string",
+            "description": "Texto de la observación"
+          },
+          "dependencia_id": {
+            "description": "Array de IDs de dependencias asociadas",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "activo": {
+            "type": "boolean",
+            "description": "Estado activo de la observación"
+          }
+        }
       }
     }
   }

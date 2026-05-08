@@ -23,13 +23,13 @@ export class AuditoriaPadre extends Document {
   vigencia_id: number;
 
   @Prop({ required: false })
-  macroproceso_id: number;
+  macroproceso_id: number[];
 
   @Prop({ required: false })
-  proceso_id: number;
+  proceso_id: number[];
 
-  @Prop({ required: false })
-  dependencia_id: number;
+  @Prop({ required: false, type: [Number], default: [] })
+  dependencia_id: number[];
 
   @Prop({ required: false })
   cantidad_auditorias: number;

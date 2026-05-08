@@ -10,7 +10,7 @@ export interface CreateAuditoriaGestion
 
 export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   @ApiProperty()
-  readonly plan_auditoria_id: string | Types.ObjectId;
+  readonly plan_auditoria_id: Types.ObjectId;
 
   @ApiProperty()
   readonly titulo: string;
@@ -28,13 +28,13 @@ export class CreateAuditoriaGestionDto implements CreateAuditoriaGestion {
   readonly vigencia_id: number;
 
   @ApiProperty()
-  readonly macroproceso_id: number;
+  readonly macroproceso_id: number[] = [];
 
   @ApiProperty()
-  readonly proceso_id: number;
+  readonly proceso_id: number[] = [];
 
   @ApiProperty()
-  readonly dependencia_id: number;
+  readonly dependencia_id: number[] = [];
 
   @ApiProperty()
   readonly auditorias: string[] = [];

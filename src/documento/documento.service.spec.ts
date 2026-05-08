@@ -69,7 +69,7 @@ describe('DocumentoService', () => {
         expect.objectContaining({
           ...mockDocumentoDto,
           activo: true,
-          fechaCreacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
         }),
       );
       expect(createSpy).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe('DocumentoService', () => {
       );
     });
 
-    it('Debería establecer fechaCreacion automáticamente', async () => {
+    it('Debería establecer fecha_creacion automáticamente', async () => {
       const createSpy = jest
         .spyOn(documentoModel, 'create')
         .mockResolvedValue(mockDocumento as any);
@@ -99,7 +99,7 @@ describe('DocumentoService', () => {
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          fechaCreacion: expect.any(Date),
+          fecha_creacion: expect.any(Date),
         }),
       );
     });

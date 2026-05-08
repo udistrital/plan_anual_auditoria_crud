@@ -97,19 +97,19 @@ Campo paramétrico: vigencia_id.
 
 | Campo | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
-| macroproceso_id | Number | No | ID del macroproceso |
+| macroproceso_id | Array[Number] | No | ID del macroproceso |
 
 Campo paramétrico: macroproceso_id.
 
 | Campo | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
-| proceso_id | Number | No | ID del proceso |
+| proceso_id | Array[Number] | No | ID del proceso |
 
 Campo paramétrico: proceso_id.
 
 | Campo | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
-| dependencia_id | Number | No | ID de la dependencia |
+| dependencia_id | Array[Number] | No | ID de la dependencia |
 
 Campo paramétrico: dependencia_id.
 
@@ -195,7 +195,7 @@ Campo paramétrico: vigencia_id.
 | rec_humano | String | No | Recursos humanos |
 | rec_fisico | String | No | Recursos físicos |
 | tema | String | No | Tema principal |
-| correo_complementario | String | No | Correo adicional |
+| correo_complementario | Array[Object] | No | Correo adicional |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Fecha de creación |
 | fecha_modificacion | Date | No | Fecha de última actualización |
@@ -270,12 +270,7 @@ Actividades realizadas durante la ejecución de auditoría.
 | descripcion | String | No | Descripción detallada |
 | observacion | String | No | Observaciones |
 | folio | Number | No | Número de folio |
-| medio_id | Number | No | ID del medio utilizado |
-
-Campo paramétrico: medio_id.
-
-| Campo | Tipo | Requerido | Descripción |
-|-------|------|-----------|-------------|
+| medio | String | No | Nombre del medio utilizado |
 | carpeta | String | No | Ruta de almacenamiento |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Fecha de creación |

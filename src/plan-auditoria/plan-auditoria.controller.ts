@@ -20,7 +20,6 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -46,7 +45,7 @@ export class PlanAuditoriaController {
         Message: 'Registro Exitoso',
         Data: planAuditoria,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -75,7 +74,7 @@ export class PlanAuditoriaController {
         Data: planAuditorias,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -104,7 +103,7 @@ export class PlanAuditoriaController {
         Message: 'Peticion Exitosa',
         Data: planAuditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -142,7 +141,7 @@ export class PlanAuditoriaController {
         Message: 'Actualizacion Exitosa',
         Data: planAuditorias,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -172,65 +171,12 @@ export class PlanAuditoriaController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en el servicio Delete: la peticion contiene paratros incorrectos',
-        Data: error.message,
-      });
-    }
-  }
-
-  @Post('/:id/generar-auditorias')
-  @ApiOperation({
-    summary:
-      'Generar auditorías hija a partir de auditorías padre registradas en el plan.',
-  })
-  @ApiParam({ name: 'id', type: 'string' })
-  @ApiBody({ type: GenerarAuditoriaDto })
-  @ApiResponse({
-    status: 201,
-    description: 'Las auditorías hija han sido generadas exitosamente.',
-    type: [GenerarAuditoriaDto],
-  })
-  @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Plan de auditoria no encontrado.' })
-  async generarAuditorias(
-    @Res() res,
-    @Param('id') id: string,
-    @Body() generarAuditoriaDto: GenerarAuditoriaDto,
-  ) {
-    try {
-      const auditoriasGeneradas =
-        await this.planAuditoriaService.generarAuditorias(
-          id,
-          generarAuditoriaDto,
-        );
-      res.status(HttpStatus.CREATED).json({
-        Success: true,
-        Status: HttpStatus.CREATED,
-        Message: 'Auditorías generadas exitosamente',
-        Data: auditoriasGeneradas,
-      });
-    } catch (error) {
-      let status = HttpStatus.BAD_REQUEST;
-      let message =
-        'Error en servicio generarAuditorias: la solicitud contiene un tipo de dato incorrecto o un parámetro invalido';
-
-      if (error.message.includes('no existe')) {
-        status = HttpStatus.NOT_FOUND;
-        message =
-          'Error en servicio generarAuditorias: el plan de auditoria no existe';
-      } else {
-        console.error('Error en servicio generarAuditorias:', error);
-      }
-
-      res.status(status).json({
-        Success: false,
-        Status: status,
-        Message: message,
         Data: error.message,
       });
     }

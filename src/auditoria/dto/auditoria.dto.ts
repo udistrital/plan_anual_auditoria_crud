@@ -1,11 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class AuditoriaDTO {
   @ApiProperty()
-  readonly plan_auditoria_id?: string;
+  readonly plan_auditoria_id?: Types.ObjectId;
 
   @ApiProperty()
-  readonly auditoria_padre_id?: string;
+  readonly auditoria_padre_id?: Types.ObjectId;
 
   @ApiProperty()
   readonly subtitulo: string;
@@ -56,7 +57,7 @@ export class AuditoriaDTO {
   readonly tema: string;
 
   @ApiProperty()
-  readonly correo_complementario: string;
+  readonly correo_complementario: object[] = [];
 
   @ApiProperty()
   activo: boolean;

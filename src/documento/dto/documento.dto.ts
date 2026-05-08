@@ -17,6 +17,9 @@ export class DocumentoDTO {
   @ApiProperty()
   readonly tipo_id: number;
 
+  @ApiProperty({ required: false, type: Object })
+  readonly metadatos?: Record<string, any>;
+
   @ApiProperty()
   activo: boolean;
 

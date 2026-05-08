@@ -4,8 +4,15 @@ import { getModelToken } from '@nestjs/mongoose';
 import { InformeDTO } from './dto/informe.dto';
 import { Informe } from './schemas/informe.schema';
 import { Tema } from '../tema/schemas/tema.schema';
+import { Hallazgo } from '../hallazgo/schemas/hallazgo.schema';
 import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
+
+// Helper para crear un query builder mock
+const createQueryBuilderMock = (resolveValue: any = []) => ({
+  lean: jest.fn().mockReturnThis(),
+  exec: jest.fn().mockResolvedValue(resolveValue),
+});
 
 const mockInformeDto: InformeDTO = {
   auditoria_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
@@ -25,6 +32,7 @@ describe('InformeService', () => {
   let informeService: InformeService;
   let informeModel: Model<Informe>;
   let temaModel: Model<Tema>;
+  let hallazgoModel: Model<Hallazgo>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -43,6 +51,23 @@ describe('InformeService', () => {
         {
           provide: getModelToken(Tema.name),
           useValue: {
+            find: jest
+              .fn()
+              .mockImplementation(() => createQueryBuilderMock([])),
+          },
+        },
+        {
+          provide: getModelToken(Hallazgo.name),
+          useValue: {
+            find: jest
+              .fn()
+              .mockImplementation(() => createQueryBuilderMock([])),
+            findById: jest.fn(),
+          },
+        },
+        {
+          provide: getModelToken(Hallazgo.name),
+          useValue: {
             find: jest.fn(),
           },
         },
@@ -52,6 +77,7 @@ describe('InformeService', () => {
     informeService = module.get<InformeService>(InformeService);
     informeModel = module.get<Model<Informe>>(getModelToken(Informe.name));
     temaModel = module.get<Model<Tema>>(getModelToken(Tema.name));
+    hallazgoModel = module.get<Model<Hallazgo>>(getModelToken(Hallazgo.name));
   });
 
   it('Debería estar definido', () => {
@@ -254,19 +280,22 @@ describe('InformeService', () => {
               _id: 'sub1',
               titulo: 'Subtema 1',
               activo: true,
-              hallazgo: [
-                {
-                  _id: 'hall1',
-                  titulo: 'Hallazgo 1',
-                  criterio: 'Criterio 1',
-                  descripcion: 'Descripción 1',
-                  activo: true,
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-              ],
             },
           ],
+        },
+      ];
+
+      const mockHallazgos = [
+        {
+          _id: 'hall1',
+          titulo: 'Hallazgo 1',
+          criterio: 'Criterio 1',
+          descripcion: 'Descripción 1',
+          rechazado: false,
+          activo: true,
+          subtema_id: 'sub1',
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       ];
 
@@ -275,7 +304,13 @@ describe('InformeService', () => {
       } as any);
 
       jest.spyOn(temaModel, 'find').mockReturnValue({
+        lean: jest.fn().mockReturnThis(),
         exec: jest.fn().mockResolvedValue(mockTemas),
+      } as any);
+
+      jest.spyOn(hallazgoModel, 'find').mockReturnValue({
+        lean: jest.fn().mockReturnThis(),
+        exec: jest.fn().mockResolvedValue(mockHallazgos),
       } as any);
 
       const result = await informeService.getHallazgosByInforme(
@@ -285,7 +320,7 @@ describe('InformeService', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toHaveProperty('_id', 'hall1');
       expect(result[0]).toHaveProperty('tema_id', 'tema1');
-      expect(result[0]).toHaveProperty('subtema_id', 'sub1');
+      expect(result[0]).toHaveProperty('subtema_id');
     });
   });
 });

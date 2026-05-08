@@ -6,7 +6,6 @@ import { PlanAuditoria } from './schemas/plan-auditoria.schema';
 import { PlanAuditoriaDTO } from './dto/plan-auditoria.dto';
 import { FilterDto } from '../filters/filters.dto';
 import { AuditoriaPadreService } from 'src/auditoria-padre/auditoria-padre.service';
-import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
 
 const mockPlanAuditoriaDTO: PlanAuditoriaDTO = {
   objetivo: 'Evaluar la eficiencia de los procesos administrativos',
@@ -36,7 +35,6 @@ const mockPlanAuditoria = {
 describe('PlanAuditoriaService', () => {
   let planAuditoriaService: PlanAuditoriaService;
   let planAuditoriaModel: Model<PlanAuditoria>;
-  let auditoriaPadreService: AuditoriaPadreService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -57,7 +55,6 @@ describe('PlanAuditoriaService', () => {
           provide: AuditoriaPadreService,
           useValue: {
             getAll: jest.fn(),
-            generarAuditorias: jest.fn(),
           },
         },
       ],
@@ -67,9 +64,6 @@ describe('PlanAuditoriaService', () => {
       module.get<PlanAuditoriaService>(PlanAuditoriaService);
     planAuditoriaModel = module.get<Model<PlanAuditoria>>(
       getModelToken(PlanAuditoria.name),
-    );
-    auditoriaPadreService = module.get<AuditoriaPadreService>(
-      AuditoriaPadreService,
     );
   });
 
@@ -624,135 +618,6 @@ describe('PlanAuditoriaService', () => {
 
       expect(countSpy).toHaveBeenCalled();
       expect(result).toBe(3);
-    });
-  });
-
-  describe('generarAuditorias', () => {
-    const planId = 'plan-1';
-    const generarAuditoriaDto: GenerarAuditoriaDto = {
-      auditoria_id: undefined,
-      usuario_id: 1,
-      usuario_rol: 'ADMIN',
-      observacion: 'Generar auditorías de prueba',
-      estado_id_padre_actual: 1,
-      estado_id_padre_nuevo: 2,
-      estado_id_hija_actual: 1,
-      estado_id_hija_nuevo: 2,
-      fase_id: 'fase-1',
-      fecha_ejecucion_estado: new Date(),
-      activo: true,
-    } as any;
-
-    it('Debería delegar la generación por cada auditoría padre y consolidar el resultado', async () => {
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-
-      const auditoriasPadre = [{ _id: 'padre-1' }, { _id: 'padre-2' }];
-      const getAllSpy = jest
-        .spyOn(auditoriaPadreService, 'getAll')
-        .mockResolvedValue(auditoriasPadre as any);
-
-      const generarAuditoriasSpy = jest
-        .spyOn(auditoriaPadreService, 'generarAuditorias')
-        .mockResolvedValueOnce([{ _id: 'a1' }] as any)
-        .mockResolvedValueOnce([{ _id: 'a2' }, { _id: 'a3' }] as any);
-
-      const result = await planAuditoriaService.generarAuditorias(
-        planId,
-        generarAuditoriaDto,
-      );
-
-      expect(getAllSpy).toHaveBeenCalledWith({
-        fields: undefined,
-        sortby: undefined,
-        order: undefined,
-        populate: undefined,
-        query: `plan_auditoria_id:${planId},activo:true,estado_id:${generarAuditoriaDto.estado_id_padre_actual}`,
-        limit: '0',
-        offset: '0',
-      });
-      expect(generarAuditoriasSpy).toHaveBeenNthCalledWith(
-        1,
-        'padre-1',
-        generarAuditoriaDto,
-      );
-      expect(generarAuditoriasSpy).toHaveBeenNthCalledWith(
-        2,
-        'padre-2',
-        generarAuditoriaDto,
-      );
-      expect(result).toEqual([{ _id: 'a1' }, { _id: 'a2' }, { _id: 'a3' }]);
-    });
-
-    it('Debería retornar array vacío cuando no hay auditorías padre elegibles', async () => {
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-
-      jest.spyOn(auditoriaPadreService, 'getAll').mockResolvedValue([] as any);
-      const generarAuditoriasSpy = jest.spyOn(
-        auditoriaPadreService,
-        'generarAuditorias',
-      );
-
-      const result = await planAuditoriaService.generarAuditorias(
-        planId,
-        generarAuditoriaDto,
-      );
-
-      expect(generarAuditoriasSpy).not.toHaveBeenCalled();
-      expect(result).toEqual([]);
-    });
-
-    it('Debería propagar error cuando el plan no existe', async () => {
-      const missingId = 'no-existe';
-      jest
-        .spyOn(planAuditoriaService, 'getById')
-        .mockRejectedValue(new Error(`${missingId} no existe`));
-
-      const getAllSpy = jest.spyOn(auditoriaPadreService, 'getAll');
-
-      await expect(
-        planAuditoriaService.generarAuditorias(missingId, generarAuditoriaDto),
-      ).rejects.toThrow(new Error(`${missingId} no existe`));
-
-      expect(getAllSpy).not.toHaveBeenCalled();
-    });
-
-    it('Debería propagar error cuando falla la consulta de auditorías padre', async () => {
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-
-      const mockError = new Error('error consultando auditorías padre');
-      jest.spyOn(auditoriaPadreService, 'getAll').mockRejectedValue(mockError);
-
-      await expect(
-        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
-      ).rejects.toThrow(mockError);
-    });
-
-    it('Debería propagar error cuando falla generar auditorías de una auditoría padre', async () => {
-      jest.spyOn(planAuditoriaModel, 'findById').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockPlanAuditoria),
-      } as any);
-
-      jest
-        .spyOn(auditoriaPadreService, 'getAll')
-        .mockResolvedValue([{ _id: 'padre-1' }, { _id: 'padre-2' }] as any);
-
-      const mockError = new Error('falló la generación para padre-2');
-      const generarAuditoriasSpy = jest
-        .spyOn(auditoriaPadreService, 'generarAuditorias')
-        .mockResolvedValueOnce([{ _id: 'a1' }] as any)
-        .mockRejectedValueOnce(mockError);
-
-      await expect(
-        planAuditoriaService.generarAuditorias(planId, generarAuditoriaDto),
-      ).rejects.toThrow(mockError);
-
-      expect(generarAuditoriasSpy).toHaveBeenCalledTimes(2);
     });
   });
 });

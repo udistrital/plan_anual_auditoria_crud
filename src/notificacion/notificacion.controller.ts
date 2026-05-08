@@ -20,6 +20,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('notificacion')
 @Controller('notificacion')
@@ -35,7 +36,11 @@ export class NotificacionController {
     type: NotificacionDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  async post(@Res() res, @Body() notificacionDTO: NotificacionDTO) {
+  async post(
+    @Res() res,
+    @Body(new ParseObjectIdPipe(['referencia_id']))
+    notificacionDTO: NotificacionDTO,
+  ) {
     try {
       const notificacion = await this.notificacionService.post(notificacionDTO);
       res.status(HttpStatus.CREATED).json({
@@ -44,7 +49,7 @@ export class NotificacionController {
         Message: 'Registro Exitoso',
         Data: notificacion,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -74,7 +79,7 @@ export class NotificacionController {
         Data: notificaciones,
         MetaData: { Count: counts },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -106,7 +111,7 @@ export class NotificacionController {
         Message: 'Peticion Exitosa',
         Data: notificacion,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,
@@ -135,7 +140,8 @@ export class NotificacionController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body() notificacionDTO: NotificacionDTO,
+    @Body(new ParseObjectIdPipe(['referencia_id']))
+    notificacionDTO: NotificacionDTO,
   ) {
     try {
       const notificacion = await this.notificacionService.put(
@@ -148,7 +154,7 @@ export class NotificacionController {
         Message: 'Actualizacion Exitosa',
         Data: notificacion,
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
@@ -181,7 +187,7 @@ export class NotificacionController {
           _id: id,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(HttpStatus.NOT_FOUND).json({
         Success: false,
         Status: HttpStatus.NOT_FOUND,

@@ -11,7 +11,7 @@ import { Auditoria } from '../auditoria/schemas/auditoria.schema';
 export class AuditorService {
   constructor(
     @InjectModel(Auditor.name)
-    private readonly ActividadModel: Model<Auditor>,
+    private readonly AuditorModel: Model<Auditor>,
     @InjectModel(Auditoria.name)
     private readonly AuditoriaModel: Model<Auditoria>,
   ) {}
@@ -34,14 +34,14 @@ export class AuditorService {
   }
   async post(AuditorDTO: AuditorDTO): Promise<Auditor> {
     const fecha = new Date();
-    const actividadData = {
+    const auditorData: AuditorDTO = {
       ...AuditorDTO,
       activo: true,
       fecha_creacion: fecha,
       fecha_modificacion: fecha,
     };
     await this.checkRelated(AuditorDTO);
-    return await this.ActividadModel.create(actividadData);
+    return await this.AuditorModel.create(auditorData);
   }
   async getAll(filterDto: FilterDto): Promise<Auditor[]> {
     const filtersService = new FiltersService(filterDto);
@@ -49,7 +49,7 @@ export class AuditorService {
     if (filtersService.isPopulated()) {
       populateFields = this.populateFields();
     }
-    return (await this.ActividadModel.find(
+    return (await this.AuditorModel.find(
       filtersService.getQuery(),
       filtersService.getFields() as any,
       filtersService.getLimitAndOffset(),
@@ -61,11 +61,11 @@ export class AuditorService {
   }
 
   async getById(id: string): Promise<Auditor> {
-    const planAuditoria = await this.ActividadModel.findById(id).exec();
-    if (!planAuditoria) {
+    const auditor = await this.AuditorModel.findById(id).exec();
+    if (!auditor) {
       throw new Error(`${id} no existe`);
     }
-    return planAuditoria;
+    return auditor;
   }
 
   async put(id: string, AuditorDTO: AuditorDTO): Promise<Auditor> {
@@ -74,7 +74,7 @@ export class AuditorService {
       delete AuditorDTO.fecha_creacion;
     }
     await this.checkRelated(AuditorDTO);
-    const update = await this.ActividadModel.findByIdAndUpdate(id, AuditorDTO, {
+    const update = await this.AuditorModel.findByIdAndUpdate(id, AuditorDTO, {
       new: true,
     }).exec();
     if (!update) {
@@ -84,7 +84,7 @@ export class AuditorService {
   }
 
   async delete(id: string): Promise<Auditor> {
-    const deleted = await this.ActividadModel.findByIdAndUpdate(
+    const deleted = await this.AuditorModel.findByIdAndUpdate(
       id,
       { activo: false },
       { new: true },
@@ -97,7 +97,7 @@ export class AuditorService {
   async count(filterDto: FilterDto): Promise<number> {
     const filtersService = new FiltersService(filterDto);
 
-    return await this.ActividadModel.countDocuments(
+    return await this.AuditorModel.countDocuments(
       filtersService.getQuery(),
     ).exec();
   }

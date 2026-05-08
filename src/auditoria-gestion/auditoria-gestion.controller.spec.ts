@@ -13,15 +13,15 @@ import { Types } from 'mongoose';
 
 const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
   // Datos de Auditoría
-  plan_auditoria_id: '67197dda3416d2a85e5d6d8f',
+  plan_auditoria_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
   titulo: 'Auditoría General 2024',
   tipo_evaluacion_id: 2,
   cronograma_id: [1, 2, 3],
   estado_id: 2552,
   vigencia_id: 1234,
-  macroproceso_id: 10,
-  proceso_id: 20,
-  dependencia_id: 30,
+  macroproceso_id: [10],
+  proceso_id: [20],
+  dependencia_id: [30],
   auditorias: [],
   cantidad_auditorias: 0,
   activo: true,
@@ -38,7 +38,7 @@ const mockCreateAuditoriaGestionDto: CreateAuditoriaGestionDto = {
 
 const mockAuditoriaEstado = {
   _id: '672d36737e962bcac5ce9beb',
-  auditoria_id: '672d3050f7814a9a0c5261d4',
+  auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   usuario_id: 76767,
   usuario_rol: 'AUDITOR',
   observacion: 'Estado inicial de la auditoría',

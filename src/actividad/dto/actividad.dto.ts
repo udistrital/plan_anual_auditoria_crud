@@ -27,7 +27,7 @@ export class ActividadDTO {
   readonly folio: number;
 
   @ApiProperty()
-  readonly medio_id: number;
+  readonly medio: string;
 
   @ApiProperty()
   readonly carpeta: string;

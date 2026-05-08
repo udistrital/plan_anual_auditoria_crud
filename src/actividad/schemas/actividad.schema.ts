@@ -29,7 +29,7 @@ export class Actividad extends Document {
   folio: number;
 
   @Prop({ required: false })
-  medio_id: number;
+  medio: string;
 
   @Prop({ required: false })
   carpeta: string;
