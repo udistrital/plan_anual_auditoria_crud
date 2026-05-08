@@ -20,8 +20,6 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
-import { GenerarAuditoriaDto } from '../auditoria-padre/dto/generar-auditoria.dto';
-import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pipe';
 
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
@@ -183,5 +181,4 @@ export class PlanAuditoriaController {
       });
     }
   }
-
 }

@@ -7,13 +7,9 @@ import { AuditoriaPadre } from './schemas/auditoria-padre.schema';
 import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { PlanAuditoria } from '../plan-auditoria/schemas/plan-auditoria.schema';
 import { EstadoAuditoriaPadreService } from '../auditoria-padre-estado/auditoria-padre-estado.service';
-import { GenerarAuditoriaDto } from './dto/generar-auditoria.dto';
-import { Auditoria } from 'src/auditoria/schemas/auditoria.schema';
 import { AuditoriaService } from 'src/auditoria/auditoria.service';
-import { AuditoriaEstadoDto } from 'src/auditoria-estado/dto/auditoria-estado.dto';
 import { EstadoAuditoriaService } from 'src/auditoria-estado/auditoria-estado.service';
 import { AuditoriaPadreEstadoDto } from 'src/auditoria-padre-estado/dto/auditoria-padre-estado.dto';
-import { AuditoriaDTO } from 'src/auditoria/dto/auditoria.dto';
 
 @Injectable()
 export class AuditoriaPadreService {
@@ -164,5 +160,4 @@ export class AuditoriaPadreService {
       filtersService.getQuery(),
     ).exec();
   }
-
 }
