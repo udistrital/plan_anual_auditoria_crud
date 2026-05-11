@@ -26,9 +26,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('hallazgo')
 @Controller('hallazgo')
 export class HallazgoController {
-  constructor(
-    private readonly hallazgoService: HallazgoService
-  ) {}
+  constructor(private readonly hallazgoService: HallazgoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo hallazgo' })

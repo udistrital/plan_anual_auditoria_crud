@@ -24,9 +24,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('estado-plan')
 @Controller('estado')
 export class EstadoController {
-  constructor(
-    private readonly estadoService: EstadoService
-  ) {}
+  constructor(private readonly estadoService: EstadoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de plan' })

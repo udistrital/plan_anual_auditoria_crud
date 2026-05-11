@@ -25,9 +25,7 @@ import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pip
 @ApiTags('notificacion')
 @Controller('notificacion')
 export class NotificacionController {
-  constructor(
-    private readonly notificacionService: NotificacionService
-  ) {}
+  constructor(private readonly notificacionService: NotificacionService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo registro de notificación' })

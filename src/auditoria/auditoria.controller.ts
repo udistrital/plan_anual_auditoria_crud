@@ -25,9 +25,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('auditoria')
 @Controller('auditoria')
 export class AuditoriaController {
-  constructor(
-    private readonly AuditoriaService: AuditoriaService
-  ) {}
+  constructor(private readonly AuditoriaService: AuditoriaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva aditoria' })

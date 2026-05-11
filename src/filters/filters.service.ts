@@ -60,9 +60,9 @@ export class FiltersService {
               break;
           }
         } else if (key[0].endsWith('id')) {
-            queryObj[key[0]] = {
-              $in: [tup[1], parseObjectId(tup[1])].filter(Boolean),
-            };
+          queryObj[key[0]] = {
+            $in: [tup[1], parseObjectId(tup[1])].filter(Boolean),
+          };
         } else {
           queryObj[key[0]] = castValue(tup[1]);
         }

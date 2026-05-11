@@ -25,7 +25,9 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('auditoria-estado')
 @Controller('auditoria-estado')
 export class EstadoAuditoriaController {
-  constructor(private readonly estadoAuditoriaService: EstadoAuditoriaService) {}
+  constructor(
+    private readonly estadoAuditoriaService: EstadoAuditoriaService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de auditoria' })
