@@ -59,14 +59,12 @@ export class FiltersService {
             default:
               break;
           }
-        } else {
-          if (key[0].endsWith('id')) {
+        } else if (key[0].endsWith('id')) {
             queryObj[key[0]] = {
               $in: [tup[1], parseObjectId(tup[1])].filter(Boolean),
             };
-          } else {
-            queryObj[key[0]] = castValue(tup[1]);
-          }
+        } else {
+          queryObj[key[0]] = castValue(tup[1]);
         }
       });
     }
@@ -86,50 +84,47 @@ export class FiltersService {
   }
 
   getSortBy(): any[] {
-    //Filtro de ordenamiento
-    const sortbyArray = [];
-    if (this.filterDto.sortby) {
-      const sortbyProperties = this.filterDto.sortby.split(',');
-      if (this.filterDto.order) {
-        const orderProperties = this.filterDto.order.split(',');
-        if (orderProperties.length == 1) {
-          //Si order solo contiene un valor ordena todos los campos de acuerdo al mismo
-          const orderTerm = this.filterDto.order == 'desc' ? -1 : 1;
-          sortbyProperties.forEach(function (property) {
-            sortbyArray.push([property, orderTerm]);
-          });
-        } else if (sortbyProperties.length == orderProperties.length) {
-          //Si order y sortby tienen el mismo tamaño, se ordena cada campo de acuerdo al orden específico
-          for (let i = 0; i < sortbyProperties.length; i++) {
-            sortbyArray.push([
-              sortbyProperties[i],
-              orderProperties[i] == 'desc' ? -1 : 1,
-            ]);
-          }
-        } else {
-          //Si order y sortby tienen tamaños diferentes, se ignora el orden definido y se ordena de forma ascendente
-          sortbyProperties.forEach(function (property) {
-            sortbyArray.push([property, 1]);
-          });
-        }
-      } else {
-        //Si order no está definido, por defecto todos los campos son ordenados ascendentemente
-        sortbyProperties.forEach(function (property) {
-          sortbyArray.push([property, 1]);
-        });
-      }
+    const sortbyArray: any[] = [];
+
+    const sortby = this.filterDto.sortby;
+    if (!sortby) return sortbyArray;
+
+    const sortbyProperties = sortby.split(',');
+
+    const order = this.filterDto.order;
+    const orderProperties = order ? order.split(',') : [];
+
+    // Caso 1: sin order => ascendente por defecto
+    if (!order) {
+      return this.buildDefaultSort(sortbyProperties);
     }
-    return sortbyArray;
+
+    // Caso 2: un solo orden para todos
+    if (orderProperties.length === 1) {
+      const orderValue = order === 'desc' ? -1 : 1;
+      return sortbyProperties.map((prop) => [prop, orderValue]);
+    }
+
+    // Caso 3: match 1 a 1
+    if (sortbyProperties.length === orderProperties.length) {
+      return sortbyProperties.map((prop, i) => [
+        prop,
+        orderProperties[i] === 'desc' ? -1 : 1,
+      ]);
+    }
+
+    // Caso 4: mismatch => default asc
+    return this.buildDefaultSort(sortbyProperties);
+  }
+
+  private buildDefaultSort(properties: string[]): any[] {
+    return properties.map((prop) => [prop, 1]);
   }
 
   getLimitAndOffset(): object {
     return {
-      skip: parseInt(
-        this.filterDto.offset !== undefined ? this.filterDto.offset : '0',
-      ),
-      limit: parseInt(
-        this.filterDto.limit !== undefined ? this.filterDto.limit : '10',
-      ),
+      skip: parseInt(this.filterDto.offset ?? '0'),
+      limit: parseInt(this.filterDto.limit ?? '10'),
     };
   }
 
@@ -143,27 +138,29 @@ function parseObjectId(id: string) {
 }
 
 function castValue(value: string): any {
-  if (value) {
-    const datatype = value.match(/<[^>]+>/);
-    if (datatype === null) {
-      return value;
-    } else {
-      const val = value.slice(0, value.length - 3);
-      switch (datatype[0][1]) {
-        case 'n':
-          return Number(val);
-          break;
-        case 'd':
-          return new Date(val);
-          break;
-        case 'b':
-          return value.toLowerCase() === 'true';
-          break;
-        default:
-          break;
-      }
-    }
-  } else {
+  if (!value) {
     return null;
+  }
+
+  const datatype = /<[^>]+>/.exec(value);
+
+  if (!datatype) {
+    return value;
+  }
+
+  const val = value.slice(0, value.length - 3);
+
+  switch (datatype[0][1]) {
+    case 'n':
+      return Number(val);
+
+    case 'd':
+      return new Date(val);
+
+    case 'b':
+      return value.toLowerCase() === 'true';
+
+    default:
+      return value;
   }
 }

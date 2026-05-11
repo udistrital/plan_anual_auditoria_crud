@@ -25,7 +25,9 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('actividad')
 @Controller('actividad')
 export class ActividadController {
-  constructor(private actividadService: ActividadService) {}
+  constructor(
+    private readonly actividadService: ActividadService
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva actividad' })

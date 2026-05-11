@@ -25,7 +25,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('auditor')
 @Controller('auditor')
 export class AuditorController {
-  constructor(private actividadService: AuditorService) {}
+  constructor(private readonly auditorService: AuditorService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva auditor' })
@@ -41,7 +41,7 @@ export class AuditorController {
     @Body(new ParseObjectIdPipe(['auditoria_id'])) AuditorDTO: AuditorDTO,
   ) {
     try {
-      const auditor = await this.actividadService.post(AuditorDTO);
+      const auditor = await this.auditorService.post(AuditorDTO);
       res.status(HttpStatus.CREATED).json({
         Success: true,
         Status: HttpStatus.CREATED,
@@ -68,8 +68,8 @@ export class AuditorController {
   })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const auditor = await this.actividadService.getAll(filterDto);
-      const counts = await this.actividadService.count(filterDto);
+      const auditor = await this.auditorService.getAll(filterDto);
+      const counts = await this.auditorService.count(filterDto);
 
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -94,13 +94,13 @@ export class AuditorController {
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 200,
-    description: 'Devuelve la auditor.',
+    description: 'Devuelve el auditor.',
     type: AuditorDTO,
   })
   @ApiResponse({ status: 404, description: 'Auditor no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const auditor = await this.actividadService.getById(id);
+      const auditor = await this.auditorService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -124,7 +124,7 @@ export class AuditorController {
   @ApiBody({ type: AuditorDTO })
   @ApiResponse({
     status: 200,
-    description: 'La auditor ha sido actualizada exitosamente.',
+    description: 'El auditor ha sido actualizada exitosamente.',
     type: AuditorDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
@@ -135,7 +135,7 @@ export class AuditorController {
     @Body(new ParseObjectIdPipe(['auditoria_id'])) AuditorDTO: AuditorDTO,
   ) {
     try {
-      const auditor = await this.actividadService.put(id, AuditorDTO);
+      const auditor = await this.auditorService.put(id, AuditorDTO);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -158,12 +158,12 @@ export class AuditorController {
   @ApiParam({ name: 'id', type: 'string' })
   @ApiResponse({
     status: 200,
-    description: 'La auditor ha sido eliminada exitosamente.',
+    description: 'El auditor ha sido eliminada exitosamente.',
   })
   @ApiResponse({ status: 404, description: 'Auditor no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {
-      await this.actividadService.delete(id);
+      await this.auditorService.delete(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,

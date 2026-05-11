@@ -25,7 +25,9 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('auditoria')
 @Controller('auditoria')
 export class AuditoriaController {
-  constructor(private AuditoriaService: AuditoriaService) {}
+  constructor(
+    private readonly AuditoriaService: AuditoriaService
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva aditoria' })
@@ -38,7 +40,7 @@ export class AuditoriaController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
-    // TODO: eliminar 'plan_auditoria_id' de este pipe cuando la migración a auditoria_padre esté completa
+    // Eliminar 'plan_auditoria_id' de este pipe cuando la migración a auditoria_padre esté completa
     @Body(new ParseObjectIdPipe(['plan_auditoria_id', 'auditoria_padre_id']))
     AuditoriaDTO: AuditoriaDTO,
   ) {
