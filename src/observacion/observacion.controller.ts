@@ -29,7 +29,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('observacion')
 @Controller('observacion')
 export class ObservacionController {
-  constructor(private observacionService: ObservacionService) {}
+  constructor(private readonly observacionService: ObservacionService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear una nueva observación' })

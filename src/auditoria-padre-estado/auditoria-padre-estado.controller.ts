@@ -26,7 +26,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @Controller('auditoria-padre-estado')
 export class EstadoAuditoriaPadreController {
   constructor(
-    private estadoAuditoriaPadreService: EstadoAuditoriaPadreService,
+    private readonly estadoAuditoriaPadreService: EstadoAuditoriaPadreService,
   ) {}
 
   @Post()

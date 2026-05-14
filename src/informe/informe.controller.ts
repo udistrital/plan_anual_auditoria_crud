@@ -25,7 +25,7 @@ import { ParseObjectIdPipe } from 'src/pipes/parse-object-id/parse-object-id.pip
 @ApiTags('informe')
 @Controller('informe')
 export class InformeController {
-  constructor(private informeService: InformeService) {}
+  constructor(private readonly informeService: InformeService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo informe' })

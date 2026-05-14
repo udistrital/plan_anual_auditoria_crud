@@ -25,7 +25,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('documento')
 @Controller('documento')
 export class DocumentoController {
-  constructor(private documentoService: DocumentoService) {}
+  constructor(private readonly documentoService: DocumentoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nueva documento' })
