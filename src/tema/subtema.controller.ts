@@ -26,7 +26,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('subtema')
 @Controller('subtema')
 export class SubtemaController {
-  constructor(private temaService: TemaService) {}
+  constructor(private readonly temaService: TemaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo subtema' })

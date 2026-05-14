@@ -8,7 +8,7 @@ import { DocumentoDTO } from './dto/documento.dto';
 
 @Injectable()
 export class DocumentoService {
-  private referenciaTipo: { Nombre: string }[] = [
+  private readonly referenciaTipo: { Nombre: string }[] = [
     { Nombre: 'Plan Auditoria' },
     { Nombre: 'Auditoria' },
   ];

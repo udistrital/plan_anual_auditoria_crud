@@ -24,7 +24,7 @@ import {
 @ApiTags('plan-auditoria')
 @Controller('plan-auditoria')
 export class PlanAuditoriaController {
-  constructor(private planAuditoriaService: PlanAuditoriaService) {}
+  constructor(private readonly planAuditoriaService: PlanAuditoriaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo plan de auditoria' })

@@ -24,8 +24,12 @@ async function loadSsmParameters() {
     ),
   ]);
 
-  process.env.PLAN_ANUAL_AUDITORIA_USER = userRes.Parameter!.Value!;
-  process.env.PLAN_ANUAL_AUDITORIA_PASS = passRes.Parameter!.Value!;
+  if (!userRes.Parameter?.Value || !passRes.Parameter?.Value) {
+    throw new Error('No se pudieron cargar parámetros desde AWS SSM');
+  }
+
+  process.env.PLAN_ANUAL_AUDITORIA_USER = userRes.Parameter.Value;
+  process.env.PLAN_ANUAL_AUDITORIA_PASS = passRes.Parameter.Value;
 }
 
 async function bootstrap() {
