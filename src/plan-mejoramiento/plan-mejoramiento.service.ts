@@ -40,8 +40,9 @@ export class PlanMejoramientoService {
   }
 
   async getById(id: string): Promise<PlanMejoramiento> {
-    const planMejoramiento =
-      await this.planMejoramientoModel.findById(id).exec();
+    const planMejoramiento = await this.planMejoramientoModel
+      .findById(id)
+      .exec();
     if (!planMejoramiento) {
       throw new Error(`${id} no existe`);
     }

@@ -30,7 +30,11 @@ export class AccionMejoraController {
   @Post()
   @ApiOperation({ summary: 'Crear una nueva acción de mejora' })
   @ApiBody({ type: AccionMejoraDto })
-  @ApiResponse({ status: 201, description: 'Acción de mejora creada exitosamente.', type: AccionMejoraDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Acción de mejora creada exitosamente.',
+    type: AccionMejoraDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -58,7 +62,11 @@ export class AccionMejoraController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todas las acciones de mejora' })
-  @ApiResponse({ status: 200, description: 'Devuelve todas las acciones de mejora.', type: [AccionMejoraDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todas las acciones de mejora.',
+    type: [AccionMejoraDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const acciones = await this.accionMejoraService.getAll(filterDto);
@@ -84,7 +92,11 @@ export class AccionMejoraController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener una acción de mejora por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve la acción de mejora.', type: AccionMejoraDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve la acción de mejora.',
+    type: AccionMejoraDto,
+  })
   @ApiResponse({ status: 404, description: 'Acción de mejora no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -110,7 +122,11 @@ export class AccionMejoraController {
   @ApiOperation({ summary: 'Actualizar una acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: AccionMejoraDto })
-  @ApiResponse({ status: 200, description: 'Acción de mejora actualizada exitosamente.', type: AccionMejoraDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Acción de mejora actualizada exitosamente.',
+    type: AccionMejoraDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Acción de mejora no encontrada.' })
   async put(
@@ -141,7 +157,10 @@ export class AccionMejoraController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Eliminar una acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Acción de mejora eliminada exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Acción de mejora eliminada exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Acción de mejora no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {

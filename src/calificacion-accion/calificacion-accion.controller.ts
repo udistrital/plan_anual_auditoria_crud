@@ -30,7 +30,11 @@ export class CalificacionAccionController {
   @Post()
   @ApiOperation({ summary: 'Crear una nueva calificación de acción de mejora' })
   @ApiBody({ type: CalificacionAccionDto })
-  @ApiResponse({ status: 201, description: 'Calificación creada exitosamente.', type: CalificacionAccionDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Calificación creada exitosamente.',
+    type: CalificacionAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -57,11 +61,18 @@ export class CalificacionAccionController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todas las calificaciones de acción de mejora' })
-  @ApiResponse({ status: 200, description: 'Devuelve todas las calificaciones.', type: [CalificacionAccionDto] })
+  @ApiOperation({
+    summary: 'Obtener todas las calificaciones de acción de mejora',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todas las calificaciones.',
+    type: [CalificacionAccionDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const calificaciones = await this.calificacionAccionService.getAll(filterDto);
+      const calificaciones =
+        await this.calificacionAccionService.getAll(filterDto);
       const counts = await this.calificacionAccionService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -84,7 +95,11 @@ export class CalificacionAccionController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener una calificación por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve la calificación.', type: CalificacionAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve la calificación.',
+    type: CalificacionAccionDto,
+  })
   @ApiResponse({ status: 404, description: 'Calificación no encontrada.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -110,7 +125,11 @@ export class CalificacionAccionController {
   @ApiOperation({ summary: 'Actualizar una calificación de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: CalificacionAccionDto })
-  @ApiResponse({ status: 200, description: 'Calificación actualizada exitosamente.', type: CalificacionAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Calificación actualizada exitosamente.',
+    type: CalificacionAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Calificación no encontrada.' })
   async put(
@@ -141,7 +160,10 @@ export class CalificacionAccionController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Eliminar una calificación de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Calificación eliminada exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Calificación eliminada exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Calificación no encontrada.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {

@@ -32,7 +32,11 @@ export class PlanMejoramientoAuditorController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo auditor de plan de mejoramiento' })
   @ApiBody({ type: PlanMejoramientoAuditorDto })
-  @ApiResponse({ status: 201, description: 'Auditor creado exitosamente.', type: PlanMejoramientoAuditorDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Auditor creado exitosamente.',
+    type: PlanMejoramientoAuditorDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -59,14 +63,19 @@ export class PlanMejoramientoAuditorController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los auditores de plan de mejoramiento' })
-  @ApiResponse({ status: 200, description: 'Devuelve todos los auditores.', type: [PlanMejoramientoAuditorDto] })
+  @ApiOperation({
+    summary: 'Obtener todos los auditores de plan de mejoramiento',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los auditores.',
+    type: [PlanMejoramientoAuditorDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const auditores =
         await this.planMejoramientoAuditorService.getAll(filterDto);
-      const counts =
-        await this.planMejoramientoAuditorService.count(filterDto);
+      const counts = await this.planMejoramientoAuditorService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -86,9 +95,15 @@ export class PlanMejoramientoAuditorController {
   }
 
   @Get('/:id')
-  @ApiOperation({ summary: 'Obtener un auditor de plan de mejoramiento por Id' })
+  @ApiOperation({
+    summary: 'Obtener un auditor de plan de mejoramiento por Id',
+  })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve el auditor.', type: PlanMejoramientoAuditorDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el auditor.',
+    type: PlanMejoramientoAuditorDto,
+  })
   @ApiResponse({ status: 404, description: 'Auditor no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -114,7 +129,11 @@ export class PlanMejoramientoAuditorController {
   @ApiOperation({ summary: 'Actualizar un auditor de plan de mejoramiento' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: PlanMejoramientoAuditorDto })
-  @ApiResponse({ status: 200, description: 'Auditor actualizado exitosamente.', type: PlanMejoramientoAuditorDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Auditor actualizado exitosamente.',
+    type: PlanMejoramientoAuditorDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Auditor no encontrado.' })
   async put(

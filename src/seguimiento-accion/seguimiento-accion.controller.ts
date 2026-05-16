@@ -30,7 +30,11 @@ export class SeguimientoAccionController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo seguimiento de acción de mejora' })
   @ApiBody({ type: SeguimientoAccionDto })
-  @ApiResponse({ status: 201, description: 'Seguimiento creado exitosamente.', type: SeguimientoAccionDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Seguimiento creado exitosamente.',
+    type: SeguimientoAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -57,11 +61,18 @@ export class SeguimientoAccionController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los seguimientos de acción de mejora' })
-  @ApiResponse({ status: 200, description: 'Devuelve todos los seguimientos.', type: [SeguimientoAccionDto] })
+  @ApiOperation({
+    summary: 'Obtener todos los seguimientos de acción de mejora',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los seguimientos.',
+    type: [SeguimientoAccionDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const seguimientos = await this.seguimientoAccionService.getAll(filterDto);
+      const seguimientos =
+        await this.seguimientoAccionService.getAll(filterDto);
       const counts = await this.seguimientoAccionService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -84,7 +95,11 @@ export class SeguimientoAccionController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener un seguimiento por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve el seguimiento.', type: SeguimientoAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el seguimiento.',
+    type: SeguimientoAccionDto,
+  })
   @ApiResponse({ status: 404, description: 'Seguimiento no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -110,7 +125,11 @@ export class SeguimientoAccionController {
   @ApiOperation({ summary: 'Actualizar un seguimiento de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: SeguimientoAccionDto })
-  @ApiResponse({ status: 200, description: 'Seguimiento actualizado exitosamente.', type: SeguimientoAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Seguimiento actualizado exitosamente.',
+    type: SeguimientoAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Seguimiento no encontrado.' })
   async put(
@@ -141,7 +160,10 @@ export class SeguimientoAccionController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Eliminar un seguimiento de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Seguimiento eliminado exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Seguimiento eliminado exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Seguimiento no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {

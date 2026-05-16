@@ -68,7 +68,9 @@ describe('PlanMejoramientoService', () => {
         .spyOn(planMejoramientoModel, 'create')
         .mockResolvedValue(mockPlanMejoramiento as any);
 
-      const result = await planMejoramientoService.post(mockPlanMejoramientoDto);
+      const result = await planMejoramientoService.post(
+        mockPlanMejoramientoDto,
+      );
 
       expect(createSpy).toHaveBeenCalledWith(
         expect.objectContaining({
