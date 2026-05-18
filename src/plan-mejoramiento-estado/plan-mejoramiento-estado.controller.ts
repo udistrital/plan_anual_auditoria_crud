@@ -32,7 +32,11 @@ export class PlanMejoramientoEstadoController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de plan de mejoramiento' })
   @ApiBody({ type: PlanMejoramientoEstadoDto })
-  @ApiResponse({ status: 201, description: 'Estado creado exitosamente.', type: PlanMejoramientoEstadoDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Estado creado exitosamente.',
+    type: PlanMejoramientoEstadoDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -59,14 +63,19 @@ export class PlanMejoramientoEstadoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los estados de plan de mejoramiento' })
-  @ApiResponse({ status: 200, description: 'Devuelve todos los estados.', type: [PlanMejoramientoEstadoDto] })
+  @ApiOperation({
+    summary: 'Obtener todos los estados de plan de mejoramiento',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los estados.',
+    type: [PlanMejoramientoEstadoDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const estados =
         await this.planMejoramientoEstadoService.getAll(filterDto);
-      const counts =
-        await this.planMejoramientoEstadoService.count(filterDto);
+      const counts = await this.planMejoramientoEstadoService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -88,7 +97,11 @@ export class PlanMejoramientoEstadoController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener un estado de plan de mejoramiento por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve el estado.', type: PlanMejoramientoEstadoDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el estado.',
+    type: PlanMejoramientoEstadoDto,
+  })
   @ApiResponse({ status: 404, description: 'Estado no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -114,7 +127,11 @@ export class PlanMejoramientoEstadoController {
   @ApiOperation({ summary: 'Actualizar un estado de plan de mejoramiento' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: PlanMejoramientoEstadoDto })
-  @ApiResponse({ status: 200, description: 'Estado actualizado exitosamente.', type: PlanMejoramientoEstadoDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Estado actualizado exitosamente.',
+    type: PlanMejoramientoEstadoDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Estado no encontrado.' })
   async put(

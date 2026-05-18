@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AccionMejora, AccionMejoraSchema } from './schema/accion-mejora.schema';
+import {
+  AccionMejora,
+  AccionMejoraSchema,
+} from './schema/accion-mejora.schema';
 import {
   PlanMejoramiento,
   PlanMejoramientoSchema,

@@ -96,7 +96,9 @@ describe('ResponsableAccionService', () => {
       jest.spyOn(accionModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
-      jest.spyOn(responsableModel, 'create').mockRejectedValue(new Error('DB error'));
+      jest
+        .spyOn(responsableModel, 'create')
+        .mockRejectedValue(new Error('DB error'));
 
       await expect(service.post(mockDto)).rejects.toThrow('DB error');
     });
@@ -224,9 +226,11 @@ describe('ResponsableAccionService', () => {
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
       const updated = { ...mockResponsable, ...updateDto };
-      const updateSpy = jest.spyOn(responsableModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updated),
-      } as any);
+      const updateSpy = jest
+        .spyOn(responsableModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(updated),
+        } as any);
 
       const result = await service.put(mockResponsable._id, updateDto);
 
@@ -242,9 +246,11 @@ describe('ResponsableAccionService', () => {
       jest.spyOn(accionModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
-      const updateSpy = jest.spyOn(responsableModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockResponsable),
-      } as any);
+      const updateSpy = jest
+        .spyOn(responsableModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockResponsable),
+        } as any);
 
       await service.put(mockResponsable._id, {
         ...updateDto,
@@ -293,9 +299,11 @@ describe('ResponsableAccionService', () => {
   describe('delete', () => {
     it('Debería marcar un responsable como inactivo (soft delete)', async () => {
       const deleted = { ...mockResponsable, activo: false };
-      const deleteSpy = jest.spyOn(responsableModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(deleted),
-      } as any);
+      const deleteSpy = jest
+        .spyOn(responsableModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(deleted),
+        } as any);
 
       const result = await service.delete(mockResponsable._id);
 
@@ -322,7 +330,9 @@ describe('ResponsableAccionService', () => {
         exec: jest.fn().mockRejectedValue(new Error('DB error')),
       } as any);
 
-      await expect(service.delete(mockResponsable._id)).rejects.toThrow('DB error');
+      await expect(service.delete(mockResponsable._id)).rejects.toThrow(
+        'DB error',
+      );
     });
   });
 

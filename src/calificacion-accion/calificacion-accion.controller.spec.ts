@@ -117,7 +117,10 @@ describe('CalificacionAccionController', () => {
     };
 
     it('Debería retornar OK (200) con todas las calificaciones y metadata', async () => {
-      const mockList = [{ ...mockCalificacion, _id: '1' }, { ...mockCalificacion, _id: '2' }];
+      const mockList = [
+        { ...mockCalificacion, _id: '1' },
+        { ...mockCalificacion, _id: '2' },
+      ];
       jest.spyOn(service, 'getAll').mockResolvedValue(mockList as any);
       jest.spyOn(service, 'count').mockResolvedValue(2);
       const res = mockResponse();
@@ -144,7 +147,9 @@ describe('CalificacionAccionController', () => {
     });
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
-      jest.spyOn(service, 'getAll').mockRejectedValue(new Error('Filter error'));
+      jest
+        .spyOn(service, 'getAll')
+        .mockRejectedValue(new Error('Filter error'));
       const res = mockResponse();
       await controller.getAll(res, mockFilterDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
@@ -206,7 +211,9 @@ describe('CalificacionAccionController', () => {
     });
 
     it('Debería retornar BAD_REQUEST (400) cuando los datos son inválidos', async () => {
-      jest.spyOn(service, 'put').mockRejectedValue(new Error('Validation failed'));
+      jest
+        .spyOn(service, 'put')
+        .mockRejectedValue(new Error('Validation failed'));
       const res = mockResponse();
       await controller.put(res, mockCalificacion._id, updateDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
