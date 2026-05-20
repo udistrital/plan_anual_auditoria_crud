@@ -24,6 +24,7 @@ export class Informe extends Document {
 
   @Prop({ default: 3 }) dias_revision: number;
   @Prop() fecha_fin_revision: Date;
+  @Prop() ampliacion_revision_auditor_id: number;
 
   @Prop({ default: true }) activo: boolean;
 }

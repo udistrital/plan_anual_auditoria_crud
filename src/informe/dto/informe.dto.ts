@@ -42,6 +42,9 @@ export class InformeDTO {
   readonly fecha_fin_revision?: Date;
 
   @ApiProperty()
+  readonly ampliacion_revision_auditor_id?: number;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()
