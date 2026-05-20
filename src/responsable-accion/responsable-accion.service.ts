@@ -71,10 +71,7 @@ export class ResponsableAccionService {
     return responsable;
   }
 
-  async put(
-    id: string,
-    dto: ResponsableAccionDto,
-  ): Promise<ResponsableAccion> {
+  async put(id: string, dto: ResponsableAccionDto): Promise<ResponsableAccion> {
     dto.fecha_modificacion = new Date();
     if (dto.fecha_creacion) {
       delete dto.fecha_creacion;

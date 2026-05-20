@@ -33,7 +33,9 @@ export class PlanMejoramientoAuditorService {
     }
   }
 
-  async post(dto: PlanMejoramientoAuditorDto): Promise<PlanMejoramientoAuditor> {
+  async post(
+    dto: PlanMejoramientoAuditorDto,
+  ): Promise<PlanMejoramientoAuditor> {
     const fecha = new Date();
     const data: PlanMejoramientoAuditorDto = {
       ...dto,

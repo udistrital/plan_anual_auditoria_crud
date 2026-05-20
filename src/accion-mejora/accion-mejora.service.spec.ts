@@ -31,7 +31,10 @@ const mockDto: AccionMejoraDto = {
 
 const mockAccion = { ...mockDto, _id: '672d36737e962bcac5ce9beb' };
 const mockPlan = { _id: '672d3050f7814a9a0c5261d4', vigencia_id: 2024 };
-const mockHallazgo = { _id: '672d3050f7814a9a0c5261d5', titulo: 'Hallazgo de prueba' };
+const mockHallazgo = {
+  _id: '672d3050f7814a9a0c5261d5',
+  titulo: 'Hallazgo de prueba',
+};
 
 describe('AccionMejoraService', () => {
   let service: AccionMejoraService;
@@ -136,7 +139,9 @@ describe('AccionMejoraService', () => {
       jest.spyOn(hallazgoModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockHallazgo),
       } as any);
-      jest.spyOn(accionModel, 'create').mockRejectedValue(new Error('DB error'));
+      jest
+        .spyOn(accionModel, 'create')
+        .mockRejectedValue(new Error('DB error'));
 
       await expect(service.post(mockDto)).rejects.toThrow('DB error');
     });
@@ -265,9 +270,11 @@ describe('AccionMejoraService', () => {
         exec: jest.fn().mockResolvedValue(mockHallazgo),
       } as any);
       const updated = { ...mockAccion, ...updateDto };
-      const updateSpy = jest.spyOn(accionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updated),
-      } as any);
+      const updateSpy = jest
+        .spyOn(accionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(updated),
+        } as any);
 
       const result = await service.put(mockAccion._id, updateDto);
 
@@ -286,9 +293,11 @@ describe('AccionMejoraService', () => {
       jest.spyOn(hallazgoModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockHallazgo),
       } as any);
-      const updateSpy = jest.spyOn(accionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockAccion),
-      } as any);
+      const updateSpy = jest
+        .spyOn(accionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockAccion),
+        } as any);
 
       await service.put(mockAccion._id, {
         ...updateDto,
@@ -360,9 +369,11 @@ describe('AccionMejoraService', () => {
   describe('delete', () => {
     it('Debería marcar una acción como inactiva (soft delete)', async () => {
       const deleted = { ...mockAccion, activo: false };
-      const deleteSpy = jest.spyOn(accionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(deleted),
-      } as any);
+      const deleteSpy = jest
+        .spyOn(accionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(deleted),
+        } as any);
 
       const result = await service.delete(mockAccion._id);
 

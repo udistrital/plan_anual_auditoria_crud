@@ -30,7 +30,11 @@ export class PlanMejoramientoController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo plan de mejoramiento' })
   @ApiBody({ type: PlanMejoramientoDto })
-  @ApiResponse({ status: 201, description: 'Plan de mejoramiento creado exitosamente.', type: PlanMejoramientoDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Plan de mejoramiento creado exitosamente.',
+    type: PlanMejoramientoDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -58,7 +62,11 @@ export class PlanMejoramientoController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los planes de mejoramiento' })
-  @ApiResponse({ status: 200, description: 'Devuelve todos los planes de mejoramiento.', type: [PlanMejoramientoDto] })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los planes de mejoramiento.',
+    type: [PlanMejoramientoDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
       const planes = await this.planMejoramientoService.getAll(filterDto);
@@ -84,8 +92,15 @@ export class PlanMejoramientoController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener un plan de mejoramiento por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve el plan de mejoramiento.', type: PlanMejoramientoDto })
-  @ApiResponse({ status: 404, description: 'Plan de mejoramiento no encontrado.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el plan de mejoramiento.',
+    type: PlanMejoramientoDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de mejoramiento no encontrado.',
+  })
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const plan = await this.planMejoramientoService.getById(id);
@@ -110,9 +125,16 @@ export class PlanMejoramientoController {
   @ApiOperation({ summary: 'Actualizar un plan de mejoramiento' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: PlanMejoramientoDto })
-  @ApiResponse({ status: 200, description: 'Plan de mejoramiento actualizado exitosamente.', type: PlanMejoramientoDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Plan de mejoramiento actualizado exitosamente.',
+    type: PlanMejoramientoDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
-  @ApiResponse({ status: 404, description: 'Plan de mejoramiento no encontrado.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de mejoramiento no encontrado.',
+  })
   async put(
     @Res() res,
     @Param('id') id: string,
@@ -144,8 +166,14 @@ export class PlanMejoramientoController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Eliminar un plan de mejoramiento' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Plan de mejoramiento eliminado exitosamente.' })
-  @ApiResponse({ status: 404, description: 'Plan de mejoramiento no encontrado.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Plan de mejoramiento eliminado exitosamente.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Plan de mejoramiento no encontrado.',
+  })
   async delete(@Res() res, @Param('id') id: string) {
     try {
       await this.planMejoramientoService.delete(id);

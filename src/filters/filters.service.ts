@@ -142,23 +142,25 @@ function castValue(value: string): any {
     return null;
   }
 
-  const datatype = /<[^>]+>/.exec(value);
+  const start = value.indexOf('<');
+  const end = value.indexOf('>');
 
-  if (!datatype) {
+  if (start === -1 || end === -1 || end <= start + 1) {
     return value;
   }
 
-  const val = value.slice(0, value.length - 3);
+  const datatype = value.slice(start + 1, end);
+  const val = value.slice(0, start);
 
-  switch (datatype[0][1]) {
+  switch (datatype[0]) {
     case 'n':
       return Number(val);
 
-    case 'd':
-      return new Date(val);
-
     case 'b':
-      return value.toLowerCase() === 'true';
+      return val === 'true';
+
+    case 's':
+      return String(val);
 
     default:
       return value;

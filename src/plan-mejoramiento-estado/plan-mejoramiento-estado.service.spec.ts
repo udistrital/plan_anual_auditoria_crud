@@ -284,11 +284,9 @@ describe('PlanMejoramientoEstadoService', () => {
 
   describe('getById', () => {
     it('Debería retornar un estado por su ID cuando existe', async () => {
-      const findByIdSpy = jest
-        .spyOn(estadoModel, 'findById')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockEstado),
-        } as any);
+      const findByIdSpy = jest.spyOn(estadoModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockEstado),
+      } as any);
 
       const result = await service.getById(mockEstado._id);
 
@@ -331,11 +329,9 @@ describe('PlanMejoramientoEstadoService', () => {
     it('Debería actualizar un estado existente', async () => {
       const updatedEstado = { ...mockEstado, ...updateDto };
 
-      const planFindSpy = jest
-        .spyOn(planModel, 'findById')
-        .mockReturnValue({
-          exec: jest.fn().mockResolvedValue(mockPlanMejoramiento),
-        } as any);
+      const planFindSpy = jest.spyOn(planModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlanMejoramiento),
+      } as any);
 
       const updateSpy = jest
         .spyOn(estadoModel, 'findByIdAndUpdate')
@@ -373,9 +369,7 @@ describe('PlanMejoramientoEstadoService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(
-        service.put(mockEstado._id, updateDto),
-      ).rejects.toThrow(
+      await expect(service.put(mockEstado._id, updateDto)).rejects.toThrow(
         `Plan de mejoramiento relacionado con id ${updateDto.plan_mejoramiento_id} no existe`,
       );
 

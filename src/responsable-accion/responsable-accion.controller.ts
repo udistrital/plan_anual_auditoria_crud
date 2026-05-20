@@ -30,7 +30,11 @@ export class ResponsableAccionController {
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo responsable de acción de mejora' })
   @ApiBody({ type: ResponsableAccionDto })
-  @ApiResponse({ status: 201, description: 'Responsable creado exitosamente.', type: ResponsableAccionDto })
+  @ApiResponse({
+    status: 201,
+    description: 'Responsable creado exitosamente.',
+    type: ResponsableAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
@@ -57,11 +61,18 @@ export class ResponsableAccionController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtener todos los responsables de acción de mejora' })
-  @ApiResponse({ status: 200, description: 'Devuelve todos los responsables.', type: [ResponsableAccionDto] })
+  @ApiOperation({
+    summary: 'Obtener todos los responsables de acción de mejora',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve todos los responsables.',
+    type: [ResponsableAccionDto],
+  })
   async getAll(@Res() res, @Query() filterDto: FilterDto) {
     try {
-      const responsables = await this.responsableAccionService.getAll(filterDto);
+      const responsables =
+        await this.responsableAccionService.getAll(filterDto);
       const counts = await this.responsableAccionService.count(filterDto);
       res.status(HttpStatus.OK).json({
         Success: true,
@@ -84,7 +95,11 @@ export class ResponsableAccionController {
   @Get('/:id')
   @ApiOperation({ summary: 'Obtener un responsable por Id' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Devuelve el responsable.', type: ResponsableAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Devuelve el responsable.',
+    type: ResponsableAccionDto,
+  })
   @ApiResponse({ status: 404, description: 'Responsable no encontrado.' })
   async getById(@Res() res, @Param('id') id: string) {
     try {
@@ -110,7 +125,11 @@ export class ResponsableAccionController {
   @ApiOperation({ summary: 'Actualizar un responsable de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiBody({ type: ResponsableAccionDto })
-  @ApiResponse({ status: 200, description: 'Responsable actualizado exitosamente.', type: ResponsableAccionDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Responsable actualizado exitosamente.',
+    type: ResponsableAccionDto,
+  })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   @ApiResponse({ status: 404, description: 'Responsable no encontrado.' })
   async put(
@@ -141,7 +160,10 @@ export class ResponsableAccionController {
   @Delete('/:id')
   @ApiOperation({ summary: 'Eliminar un responsable de acción de mejora' })
   @ApiParam({ name: 'id', type: 'string' })
-  @ApiResponse({ status: 200, description: 'Responsable eliminado exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Responsable eliminado exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Responsable no encontrado.' })
   async delete(@Res() res, @Param('id') id: string) {
     try {

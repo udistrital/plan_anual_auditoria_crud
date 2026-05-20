@@ -99,7 +99,9 @@ describe('CalificacionAccionService', () => {
       jest.spyOn(accionModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
-      jest.spyOn(calificacionModel, 'create').mockRejectedValue(new Error('DB error'));
+      jest
+        .spyOn(calificacionModel, 'create')
+        .mockRejectedValue(new Error('DB error'));
 
       await expect(service.post(mockDto)).rejects.toThrow('DB error');
     });
@@ -228,9 +230,11 @@ describe('CalificacionAccionService', () => {
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
       const updated = { ...mockCalificacion, ...updateDto };
-      const updateSpy = jest.spyOn(calificacionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updated),
-      } as any);
+      const updateSpy = jest
+        .spyOn(calificacionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(updated),
+        } as any);
 
       const result = await service.put(mockCalificacion._id, updateDto);
 
@@ -246,9 +250,11 @@ describe('CalificacionAccionService', () => {
       jest.spyOn(accionModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(mockAccion),
       } as any);
-      const updateSpy = jest.spyOn(calificacionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockCalificacion),
-      } as any);
+      const updateSpy = jest
+        .spyOn(calificacionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(mockCalificacion),
+        } as any);
 
       await service.put(mockCalificacion._id, {
         ...updateDto,
@@ -277,7 +283,9 @@ describe('CalificacionAccionService', () => {
         exec: jest.fn().mockResolvedValue(null),
       } as any);
 
-      await expect(service.put(mockCalificacion._id, updateDto)).rejects.toThrow(
+      await expect(
+        service.put(mockCalificacion._id, updateDto),
+      ).rejects.toThrow(
         `Acción de mejora relacionada con id ${updateDto.accion_mejora_id} no existe`,
       );
       expect(calificacionModel.findByIdAndUpdate).not.toHaveBeenCalled();
@@ -297,9 +305,11 @@ describe('CalificacionAccionService', () => {
   describe('delete', () => {
     it('Debería marcar una calificación como inactiva (soft delete)', async () => {
       const deleted = { ...mockCalificacion, activo: false };
-      const deleteSpy = jest.spyOn(calificacionModel, 'findByIdAndUpdate').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(deleted),
-      } as any);
+      const deleteSpy = jest
+        .spyOn(calificacionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue(deleted),
+        } as any);
 
       const result = await service.delete(mockCalificacion._id);
 
@@ -326,7 +336,9 @@ describe('CalificacionAccionService', () => {
         exec: jest.fn().mockRejectedValue(new Error('DB error')),
       } as any);
 
-      await expect(service.delete(mockCalificacion._id)).rejects.toThrow('DB error');
+      await expect(service.delete(mockCalificacion._id)).rejects.toThrow(
+        'DB error',
+      );
     });
   });
 

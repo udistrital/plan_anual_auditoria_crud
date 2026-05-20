@@ -33,9 +33,7 @@ export class PlanMejoramientoEstadoService {
     }
   }
 
-  async post(
-    dto: PlanMejoramientoEstadoDto,
-  ): Promise<PlanMejoramientoEstado> {
+  async post(dto: PlanMejoramientoEstadoDto): Promise<PlanMejoramientoEstado> {
     const fecha = new Date();
     const data: PlanMejoramientoEstadoDto = {
       ...dto,
@@ -56,8 +54,7 @@ export class PlanMejoramientoEstadoService {
       );
     }
 
-    const estadoCreado =
-      await this.planMejoramientoEstadoModel.create(data);
+    const estadoCreado = await this.planMejoramientoEstadoModel.create(data);
 
     await this.planMejoramientoModel
       .findByIdAndUpdate(
@@ -89,8 +86,7 @@ export class PlanMejoramientoEstadoService {
   }
 
   async getById(id: string): Promise<PlanMejoramientoEstado> {
-    const estado =
-      await this.planMejoramientoEstadoModel.findById(id).exec();
+    const estado = await this.planMejoramientoEstadoModel.findById(id).exec();
     if (!estado) {
       throw new Error(`${id} no existe`);
     }
