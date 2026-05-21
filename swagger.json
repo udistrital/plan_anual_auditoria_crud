@@ -5781,6 +5781,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "ampliacion_revision_auditor_id": {
+            "type": "number"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5803,6 +5806,7 @@
           "preliminar_auditado_id",
           "dias_revision",
           "fecha_fin_revision",
+          "ampliacion_revision_auditor_id",
           "activo",
           "fecha_creacion"
         ]
