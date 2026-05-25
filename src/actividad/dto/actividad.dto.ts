@@ -33,6 +33,9 @@ export class ActividadDTO {
   readonly carpeta: string;
 
   @ApiProperty()
+  readonly completada: boolean;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()
