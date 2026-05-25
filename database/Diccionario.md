@@ -272,6 +272,7 @@ Actividades realizadas durante la ejecución de auditoría.
 | folio | Number | No | Número de folio |
 | medio | String | No | Nombre del medio utilizado |
 | carpeta | String | No | Ruta de almacenamiento |
+| completada | Boolean | No | Indicador de actividad completada |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Fecha de creación |
 | fecha_modificacion | Date | No | Fecha de última actualización |
