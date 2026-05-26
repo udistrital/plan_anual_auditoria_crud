@@ -5589,6 +5589,9 @@
           "carpeta": {
             "type": "string"
           },
+          "completada": {
+            "type": "boolean"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5612,6 +5615,7 @@
           "folio",
           "medio",
           "carpeta",
+          "completada",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"

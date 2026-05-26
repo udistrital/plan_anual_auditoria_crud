@@ -22,6 +22,7 @@ const mockActividadDto: ActividadDTO = {
   folio: 123,
   medio: 'Físico',
   carpeta: 'carpeta-prueba',
+  completada: false,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),
@@ -294,6 +295,7 @@ describe('ActividadController', () => {
       ...mockActividadDto,
       titulo: 'Actividad actualizada',
       descripcion: 'Descripción actualizada',
+      completada: true,
     };
 
     it('Debería actualizar y retornar OK (200) con datos válidos', async () => {
