@@ -35,6 +35,9 @@ export class Actividad extends Document {
   carpeta: string;
 
   @Prop({ required: false })
+  completada: boolean;
+
+  @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })
