@@ -5589,6 +5589,9 @@
           "carpeta": {
             "type": "string"
           },
+          "completada": {
+            "type": "boolean"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5612,6 +5615,7 @@
           "folio",
           "medio",
           "carpeta",
+          "completada",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
@@ -5785,6 +5789,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "ampliacion_revision_auditor_id": {
+            "type": "number"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5808,6 +5815,7 @@
           "dias_revision",
           "fecha_fin_revision",
           "fecha_aprobacion_informe",
+          "ampliacion_revision_auditor_id",
           "activo",
           "fecha_creacion"
         ]
