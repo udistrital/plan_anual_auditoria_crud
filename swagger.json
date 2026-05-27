@@ -2058,7 +2058,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Devuelve la auditor.",
+            "description": "Devuelve el auditor.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2100,7 +2100,7 @@
         },
         "responses": {
           "200": {
-            "description": "La auditor ha sido actualizada exitosamente.",
+            "description": "El auditor ha sido actualizada exitosamente.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2135,7 +2135,7 @@
         ],
         "responses": {
           "200": {
-            "description": "La auditor ha sido eliminada exitosamente."
+            "description": "El auditor ha sido eliminada exitosamente."
           },
           "404": {
             "description": "Auditor no encontrada."
@@ -3622,6 +3622,1588 @@
           "observacion"
         ]
       }
+    },
+    "/plan-mejoramiento": {
+      "post": {
+        "operationId": "PlanMejoramientoController_post",
+        "summary": "Crear un nuevo plan de mejoramiento",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plan de mejoramiento creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento"
+        ]
+      },
+      "get": {
+        "operationId": "PlanMejoramientoController_getAll",
+        "summary": "Obtener todos los planes de mejoramiento",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los planes de mejoramiento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanMejoramientoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "plan-mejoramiento"
+        ]
+      }
+    },
+    "/plan-mejoramiento/{id}": {
+      "get": {
+        "operationId": "PlanMejoramientoController_getById",
+        "summary": "Obtener un plan de mejoramiento por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el plan de mejoramiento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Plan de mejoramiento no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento"
+        ]
+      },
+      "put": {
+        "operationId": "PlanMejoramientoController_put",
+        "summary": "Actualizar un plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan de mejoramiento actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Plan de mejoramiento no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento"
+        ]
+      },
+      "delete": {
+        "operationId": "PlanMejoramientoController_delete",
+        "summary": "Eliminar un plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan de mejoramiento eliminado exitosamente."
+          },
+          "404": {
+            "description": "Plan de mejoramiento no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento"
+        ]
+      }
+    },
+    "/plan-mejoramiento-estado": {
+      "post": {
+        "operationId": "PlanMejoramientoEstadoController_post",
+        "summary": "Crear un nuevo estado de plan de mejoramiento",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estado creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-estado"
+        ]
+      },
+      "get": {
+        "operationId": "PlanMejoramientoEstadoController_getAll",
+        "summary": "Obtener todos los estados de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los estados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-estado"
+        ]
+      }
+    },
+    "/plan-mejoramiento-estado/{id}": {
+      "get": {
+        "operationId": "PlanMejoramientoEstadoController_getById",
+        "summary": "Obtener un estado de plan de mejoramiento por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-estado"
+        ]
+      },
+      "put": {
+        "operationId": "PlanMejoramientoEstadoController_put",
+        "summary": "Actualizar un estado de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estado actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-estado"
+        ]
+      },
+      "delete": {
+        "operationId": "PlanMejoramientoEstadoController_delete",
+        "summary": "Eliminar un estado de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado eliminado exitosamente."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-estado"
+        ]
+      }
+    },
+    "/plan-mejoramiento-auditor": {
+      "post": {
+        "operationId": "PlanMejoramientoAuditorController_post",
+        "summary": "Crear un nuevo auditor de plan de mejoramiento",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Auditor creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-auditor"
+        ]
+      },
+      "get": {
+        "operationId": "PlanMejoramientoAuditorController_getAll",
+        "summary": "Obtener todos los auditores de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los auditores.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-auditor"
+        ]
+      }
+    },
+    "/plan-mejoramiento-auditor/{id}": {
+      "get": {
+        "operationId": "PlanMejoramientoAuditorController_getById",
+        "summary": "Obtener un auditor de plan de mejoramiento por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el auditor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Auditor no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-auditor"
+        ]
+      },
+      "put": {
+        "operationId": "PlanMejoramientoAuditorController_put",
+        "summary": "Actualizar un auditor de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Auditor actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanMejoramientoAuditorDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Auditor no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-auditor"
+        ]
+      },
+      "delete": {
+        "operationId": "PlanMejoramientoAuditorController_delete",
+        "summary": "Eliminar un auditor de plan de mejoramiento",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Auditor eliminado exitosamente."
+          },
+          "404": {
+            "description": "Auditor no encontrado."
+          }
+        },
+        "tags": [
+          "plan-mejoramiento-auditor"
+        ]
+      }
+    },
+    "/accion-mejora": {
+      "post": {
+        "operationId": "AccionMejoraController_post",
+        "summary": "Crear una nueva acción de mejora",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccionMejoraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Acción de mejora creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "accion-mejora"
+        ]
+      },
+      "get": {
+        "operationId": "AccionMejoraController_getAll",
+        "summary": "Obtener todas las acciones de mejora",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las acciones de mejora.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccionMejoraDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "accion-mejora"
+        ]
+      }
+    },
+    "/accion-mejora/{id}": {
+      "get": {
+        "operationId": "AccionMejoraController_getById",
+        "summary": "Obtener una acción de mejora por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la acción de mejora.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Acción de mejora no encontrada."
+          }
+        },
+        "tags": [
+          "accion-mejora"
+        ]
+      },
+      "put": {
+        "operationId": "AccionMejoraController_put",
+        "summary": "Actualizar una acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccionMejoraDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acción de mejora actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Acción de mejora no encontrada."
+          }
+        },
+        "tags": [
+          "accion-mejora"
+        ]
+      },
+      "delete": {
+        "operationId": "AccionMejoraController_delete",
+        "summary": "Eliminar una acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Acción de mejora eliminada exitosamente."
+          },
+          "404": {
+            "description": "Acción de mejora no encontrada."
+          }
+        },
+        "tags": [
+          "accion-mejora"
+        ]
+      }
+    },
+    "/seguimiento-accion": {
+      "post": {
+        "operationId": "SeguimientoAccionController_post",
+        "summary": "Crear un nuevo seguimiento de acción de mejora",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeguimientoAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Seguimiento creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeguimientoAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "seguimiento-accion"
+        ]
+      },
+      "get": {
+        "operationId": "SeguimientoAccionController_getAll",
+        "summary": "Obtener todos los seguimientos de acción de mejora",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los seguimientos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SeguimientoAccionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "seguimiento-accion"
+        ]
+      }
+    },
+    "/seguimiento-accion/{id}": {
+      "get": {
+        "operationId": "SeguimientoAccionController_getById",
+        "summary": "Obtener un seguimiento por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el seguimiento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeguimientoAccionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Seguimiento no encontrado."
+          }
+        },
+        "tags": [
+          "seguimiento-accion"
+        ]
+      },
+      "put": {
+        "operationId": "SeguimientoAccionController_put",
+        "summary": "Actualizar un seguimiento de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SeguimientoAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Seguimiento actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SeguimientoAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Seguimiento no encontrado."
+          }
+        },
+        "tags": [
+          "seguimiento-accion"
+        ]
+      },
+      "delete": {
+        "operationId": "SeguimientoAccionController_delete",
+        "summary": "Eliminar un seguimiento de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Seguimiento eliminado exitosamente."
+          },
+          "404": {
+            "description": "Seguimiento no encontrado."
+          }
+        },
+        "tags": [
+          "seguimiento-accion"
+        ]
+      }
+    },
+    "/responsable-accion": {
+      "post": {
+        "operationId": "ResponsableAccionController_post",
+        "summary": "Crear un nuevo responsable de acción de mejora",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsableAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Responsable creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsableAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "responsable-accion"
+        ]
+      },
+      "get": {
+        "operationId": "ResponsableAccionController_getAll",
+        "summary": "Obtener todos los responsables de acción de mejora",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los responsables.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponsableAccionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "responsable-accion"
+        ]
+      }
+    },
+    "/responsable-accion/{id}": {
+      "get": {
+        "operationId": "ResponsableAccionController_getById",
+        "summary": "Obtener un responsable por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el responsable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsableAccionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Responsable no encontrado."
+          }
+        },
+        "tags": [
+          "responsable-accion"
+        ]
+      },
+      "put": {
+        "operationId": "ResponsableAccionController_put",
+        "summary": "Actualizar un responsable de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResponsableAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Responsable actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponsableAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Responsable no encontrado."
+          }
+        },
+        "tags": [
+          "responsable-accion"
+        ]
+      },
+      "delete": {
+        "operationId": "ResponsableAccionController_delete",
+        "summary": "Eliminar un responsable de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Responsable eliminado exitosamente."
+          },
+          "404": {
+            "description": "Responsable no encontrado."
+          }
+        },
+        "tags": [
+          "responsable-accion"
+        ]
+      }
+    },
+    "/calificacion-accion": {
+      "post": {
+        "operationId": "CalificacionAccionController_post",
+        "summary": "Crear una nueva calificación de acción de mejora",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalificacionAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Calificación creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalificacionAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "calificacion-accion"
+        ]
+      },
+      "get": {
+        "operationId": "CalificacionAccionController_getAll",
+        "summary": "Obtener todas las calificaciones de acción de mejora",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las calificaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CalificacionAccionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "calificacion-accion"
+        ]
+      }
+    },
+    "/calificacion-accion/{id}": {
+      "get": {
+        "operationId": "CalificacionAccionController_getById",
+        "summary": "Obtener una calificación por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la calificación.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalificacionAccionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Calificación no encontrada."
+          }
+        },
+        "tags": [
+          "calificacion-accion"
+        ]
+      },
+      "put": {
+        "operationId": "CalificacionAccionController_put",
+        "summary": "Actualizar una calificación de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalificacionAccionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Calificación actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalificacionAccionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Calificación no encontrada."
+          }
+        },
+        "tags": [
+          "calificacion-accion"
+        ]
+      },
+      "delete": {
+        "operationId": "CalificacionAccionController_delete",
+        "summary": "Eliminar una calificación de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calificación eliminada exitosamente."
+          },
+          "404": {
+            "description": "Calificación no encontrada."
+          }
+        },
+        "tags": [
+          "calificacion-accion"
+        ]
+      }
     }
   },
   "info": {
@@ -4007,6 +5589,9 @@
           "carpeta": {
             "type": "string"
           },
+          "completada": {
+            "type": "boolean"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -4030,6 +5615,7 @@
           "folio",
           "medio",
           "carpeta",
+          "completada",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
@@ -4199,6 +5785,9 @@
             "format": "date-time",
             "type": "string"
           },
+          "ampliacion_revision_auditor_id": {
+            "type": "number"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -4221,6 +5810,7 @@
           "preliminar_auditado_id",
           "dias_revision",
           "fecha_fin_revision",
+          "ampliacion_revision_auditor_id",
           "activo",
           "fecha_creacion"
         ]
@@ -4628,6 +6218,342 @@
             "description": "Estado activo de la observación"
           }
         }
+      },
+      "PlanMejoramientoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "vigencia_id": {
+            "type": "number"
+          },
+          "tipo_evaluacion_id": {
+            "type": "number"
+          },
+          "fecha_apertura": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_limite": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fuente": {
+            "type": "number"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "auditoria_id",
+          "vigencia_id",
+          "tipo_evaluacion_id",
+          "fecha_apertura",
+          "fecha_limite",
+          "estado_id",
+          "fuente",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "PlanMejoramientoEstadoDto": {
+        "type": "object",
+        "properties": {
+          "plan_mejoramiento_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "plan_mejoramiento_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fecha_ejecucion_estado",
+          "activo"
+        ]
+      },
+      "PlanMejoramientoAuditorDto": {
+        "type": "object",
+        "properties": {
+          "plan_mejoramiento_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "auditor_id": {
+            "type": "number"
+          },
+          "asignado": {
+            "type": "boolean"
+          },
+          "asignado_por_id": {
+            "type": "number"
+          },
+          "auditor_lider": {
+            "type": "boolean"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_mejoramiento_id",
+          "auditor_id",
+          "asignado",
+          "asignado_por_id",
+          "auditor_lider",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "AccionMejoraDto": {
+        "type": "object",
+        "properties": {
+          "plan_mejoramiento_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "hallazgo_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "no_accion": {
+            "type": "string"
+          },
+          "descripcion": {
+            "type": "string"
+          },
+          "tipo_id": {
+            "type": "number"
+          },
+          "nombre_indicador": {
+            "type": "string"
+          },
+          "formula_indicador": {
+            "type": "string"
+          },
+          "meta": {
+            "type": "string"
+          },
+          "fecha_inicio": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_fin": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "creado_por_id": {
+            "type": "number"
+          },
+          "creado_por_rol": {
+            "type": "string"
+          },
+          "modificado_por_id": {
+            "type": "number"
+          },
+          "modificado_por_rol": {
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_mejoramiento_id",
+          "hallazgo_id",
+          "no_accion",
+          "descripcion",
+          "tipo_id",
+          "nombre_indicador",
+          "formula_indicador",
+          "meta",
+          "fecha_inicio",
+          "fecha_fin",
+          "estado_id",
+          "creado_por_id",
+          "creado_por_rol",
+          "modificado_por_id",
+          "modificado_por_rol",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "SeguimientoAccionDto": {
+        "type": "object",
+        "properties": {
+          "accion_mejora_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "descripcion_avance": {
+            "type": "string"
+          },
+          "fecha_avance": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accion_mejora_id",
+          "usuario_id",
+          "usuario_rol",
+          "descripcion_avance",
+          "fecha_avance",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "ResponsableAccionDto": {
+        "type": "object",
+        "properties": {
+          "accion_mejora_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "dependencia_id": {
+            "type": "number"
+          },
+          "dependencia_lider": {
+            "type": "boolean"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accion_mejora_id",
+          "dependencia_id",
+          "dependencia_lider",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "CalificacionAccionDto": {
+        "type": "object",
+        "properties": {
+          "accion_mejora_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "auditor_id": {
+            "type": "number"
+          },
+          "calificacion": {
+            "type": "number"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "fecha_calificacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accion_mejora_id",
+          "auditor_id",
+          "calificacion",
+          "observacion",
+          "fecha_calificacion",
+          "actual",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
       }
     }
   }

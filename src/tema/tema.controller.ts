@@ -25,7 +25,7 @@ import { ParseObjectIdPipe } from '../pipes/parse-object-id/parse-object-id.pipe
 @ApiTags('tema')
 @Controller('tema')
 export class TemaController {
-  constructor(private temaService: TemaService) {}
+  constructor(private readonly temaService: TemaService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo tema' })
