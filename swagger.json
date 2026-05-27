@@ -5784,6 +5784,12 @@
           "ampliacion_revision_auditor_id": {
             "type": "number"
           },
+          "dependencias_decididas": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5807,6 +5813,7 @@
           "dias_revision",
           "fecha_fin_revision",
           "ampliacion_revision_auditor_id",
+          "dependencias_decididas",
           "activo",
           "fecha_creacion"
         ]
