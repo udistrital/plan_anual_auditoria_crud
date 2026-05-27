@@ -42,6 +42,9 @@ export class InformeDTO {
   readonly fecha_fin_revision?: Date;
 
   @ApiProperty()
+  readonly fecha_aprobacion_informe?: Date;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()

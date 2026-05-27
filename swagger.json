@@ -5781,6 +5781,10 @@
             "format": "date-time",
             "type": "string"
           },
+          "fecha_aprobacion_informe": {
+            "format": "date-time",
+            "type": "string"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -5803,6 +5807,7 @@
           "preliminar_auditado_id",
           "dias_revision",
           "fecha_fin_revision",
+          "fecha_aprobacion_informe",
           "activo",
           "fecha_creacion"
         ]
