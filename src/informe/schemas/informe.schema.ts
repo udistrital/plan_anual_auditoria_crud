@@ -27,6 +27,7 @@ export class Informe extends Document {
   @Prop() ampliacion_revision_auditor_id: number;
 
   @Prop() fecha_aprobacion_informe: Date;
+  @Prop({ type: [Number], default: [] }) dependencias_decididas: number[];
 
   @Prop({ default: true }) activo: boolean;
 }

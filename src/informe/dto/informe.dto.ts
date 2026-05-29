@@ -47,6 +47,9 @@ export class InformeDTO {
   @ApiProperty()
   readonly ampliacion_revision_auditor_id?: number;
 
+  @ApiProperty({ type: [Number] })
+  readonly dependencias_decididas?: number[];
+
   @ApiProperty()
   activo: boolean;
 
