@@ -5837,6 +5837,10 @@
             "type": "string",
             "description": "Título del tema"
           },
+          "descripcion_titulo": {
+            "type": "string",
+            "description": "Descripción del título"
+          },
           "activo": {
             "type": "boolean",
             "default": true

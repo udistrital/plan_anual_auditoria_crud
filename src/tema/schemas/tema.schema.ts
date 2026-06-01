@@ -25,6 +25,9 @@ export class Tema extends Document {
   @Prop({ required: true })
   titulo: string;
 
+  @Prop({ required: false })
+  descripcion_titulo?: string;
+
   @Prop({ default: true })
   activo: boolean;
 
