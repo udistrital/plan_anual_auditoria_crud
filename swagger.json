@@ -5785,8 +5785,18 @@
             "format": "date-time",
             "type": "string"
           },
+          "fecha_aprobacion_informe": {
+            "format": "date-time",
+            "type": "string"
+          },
           "ampliacion_revision_auditor_id": {
             "type": "number"
+          },
+          "dependencias_decididas": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
           },
           "activo": {
             "type": "boolean"
@@ -5810,7 +5820,9 @@
           "preliminar_auditado_id",
           "dias_revision",
           "fecha_fin_revision",
+          "fecha_aprobacion_informe",
           "ampliacion_revision_auditor_id",
+          "dependencias_decididas",
           "activo",
           "fecha_creacion"
         ]
@@ -5829,6 +5841,10 @@
           "titulo": {
             "type": "string",
             "description": "Título del tema"
+          },
+          "descripcion_titulo": {
+            "type": "string",
+            "description": "Descripción del título"
           },
           "activo": {
             "type": "boolean",

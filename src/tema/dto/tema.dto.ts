@@ -8,6 +8,9 @@ export class TemaDTO {
   @ApiProperty({ description: 'Título del tema' })
   readonly titulo: string;
 
+  @ApiProperty({ required: false, description: 'Descripción del título' })
+  descripcion_titulo?: string;
+
   @ApiProperty({ required: false, default: true })
   activo?: boolean;
 
