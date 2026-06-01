@@ -11,6 +11,7 @@ import { FilterDto } from '../filters/filters.dto';
 const mockTemaDto: TemaDTO = {
   informe_id: new Types.ObjectId('507f1f77bcf86cd799439011'),
   titulo: 'Gestión Documental',
+  descripcion_titulo: 'Descripción del tema',
   activo: true,
   subtema: [],
   fecha_creacion: new Date(),
@@ -101,6 +102,7 @@ describe('TemaService', () => {
           _id: '507f1f77bcf86cd799439013',
           informe_id: '507f1f77bcf86cd799439011',
           titulo: 'Tema 2',
+          descripcion_titulo: 'Descripción del tema 2',
           activo: true,
           subtema: [],
           fecha_creacion: new Date(),

@@ -136,6 +136,7 @@ export class TemaService {
               tema: {
                 _id: tema._id,
                 titulo: tema.titulo,
+                descripcion_titulo: tema.descripcion_titulo,
               },
             });
           }
@@ -170,6 +171,7 @@ export class TemaService {
       tema: {
         _id: tema._id,
         titulo: tema.titulo,
+        descripcion_titulo: tema.descripcion_titulo,
       },
     };
   }
