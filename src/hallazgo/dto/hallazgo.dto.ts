@@ -60,6 +60,12 @@ export class UpdateHallazgoDTO {
 
   @ApiProperty({
     required: false,
+    description: 'Número del hallazgo (jerárquico tema.subtema.hallazgo), sellado al aprobar el informe final',
+  })
+  readonly no_hallazgo?: string;
+
+  @ApiProperty({
+    required: false,
     description: 'Indica si el hallazgo fue rechazado',
   })
   readonly rechazado?: boolean;
