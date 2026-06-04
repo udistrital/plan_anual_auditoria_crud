@@ -43,7 +43,7 @@ export class InformeDTO {
 
   @ApiProperty()
   readonly fecha_aprobacion_informe?: Date;
-  
+
   @ApiProperty()
   readonly ampliacion_revision_auditor_id?: number;
 
