@@ -5978,6 +5978,10 @@
             "type": "string",
             "description": "Descripción del hallazgo"
           },
+          "no_hallazgo": {
+            "type": "string",
+            "description": "Número del hallazgo (jerárquico tema.subtema.hallazgo), sellado al aprobar el informe final"
+          },
           "rechazado": {
             "type": "boolean",
             "description": "Indica si el hallazgo fue rechazado"

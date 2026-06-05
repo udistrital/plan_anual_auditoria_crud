@@ -21,6 +21,9 @@ export class Hallazgo extends Document {
   @Prop({ required: true })
   descripcion: string;
 
+  @Prop({ required: false })
+  no_hallazgo: string;
+
   @Prop({ default: false })
   rechazado: boolean;
 
