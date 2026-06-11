@@ -31,5 +31,4 @@ export class CalificacionAccion extends Document {
   fecha_modificacion: Date;
 }
 
-export const CalificacionAccionSchema =
-  SchemaFactory.createForClass(CalificacionAccion);
+export const CalificacionAccionSchema = SchemaFactory.createForClass(CalificacionAccion);

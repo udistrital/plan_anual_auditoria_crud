@@ -32,7 +32,6 @@ export class AuditoriaEstado extends Document {
   activo: boolean;
 }
 
-export const AuditoriaEstadoSchema =
-  SchemaFactory.createForClass(AuditoriaEstado);
+export const AuditoriaEstadoSchema = SchemaFactory.createForClass(AuditoriaEstado);
 
 AuditoriaEstadoSchema.set('versionKey', false);

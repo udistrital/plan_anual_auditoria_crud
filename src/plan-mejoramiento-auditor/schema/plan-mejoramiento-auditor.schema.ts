@@ -29,8 +29,6 @@ export class PlanMejoramientoAuditor extends Document {
   fecha_modificacion: Date;
 }
 
-export const PlanMejoramientoAuditorSchema = SchemaFactory.createForClass(
-  PlanMejoramientoAuditor,
-);
+export const PlanMejoramientoAuditorSchema = SchemaFactory.createForClass(PlanMejoramientoAuditor);
 
 PlanMejoramientoAuditorSchema.set('versionKey', false);

@@ -294,8 +294,8 @@ describe('InformeService', () => {
           rechazado: false,
           activo: true,
           subtema_id: 'sub1',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          fecha_creacion: new Date(),
+          fecha_modificacion: new Date(),
         },
       ];
 

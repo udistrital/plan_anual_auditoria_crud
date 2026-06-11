@@ -134,8 +134,8 @@ export class InformeService {
         subtema_titulo: ctx?.subtema?.titulo ?? null,
         tema_id: ctx?.tema?._id ?? null,
         tema_titulo: ctx?.tema?.titulo ?? null,
-        createdAt: hallazgo.createdAt,
-        updatedAt: hallazgo.updatedAt,
+        fecha_creacion: hallazgo.fecha_creacion,
+        fecha_modificacion: hallazgo.fecha_modificacion,
       };
     });
   }

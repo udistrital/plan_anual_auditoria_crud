@@ -29,8 +29,6 @@ export class PlanMejoramientoEstado extends Document {
   activo: boolean;
 }
 
-export const PlanMejoramientoEstadoSchema = SchemaFactory.createForClass(
-  PlanMejoramientoEstado,
-);
+export const PlanMejoramientoEstadoSchema = SchemaFactory.createForClass(PlanMejoramientoEstado);
 
 PlanMejoramientoEstadoSchema.set('versionKey', false);
