@@ -22,4 +22,5 @@ export class ResponsableAccion extends Document {
   fecha_modificacion: Date;
 }
 
-export const ResponsableAccionSchema = SchemaFactory.createForClass(ResponsableAccion);
+export const ResponsableAccionSchema =
+  SchemaFactory.createForClass(ResponsableAccion);

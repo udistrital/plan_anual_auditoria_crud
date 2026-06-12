@@ -29,6 +29,7 @@ export class SeguimientoAccion extends Document {
   fecha_modificacion: Date;
 }
 
-export const SeguimientoAccionSchema = SchemaFactory.createForClass(SeguimientoAccion);
+export const SeguimientoAccionSchema =
+  SchemaFactory.createForClass(SeguimientoAccion);
 
 SeguimientoAccionSchema.set('versionKey', false);

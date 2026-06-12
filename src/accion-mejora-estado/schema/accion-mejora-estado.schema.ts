@@ -29,7 +29,8 @@ export class AccionMejoraEstado extends Document {
   activo: boolean;
 }
 
-export const AccionMejoraEstadoSchema = SchemaFactory.createForClass(AccionMejoraEstado);
+export const AccionMejoraEstadoSchema =
+  SchemaFactory.createForClass(AccionMejoraEstado);
 
 AccionMejoraEstadoSchema.set('versionKey', false);
 

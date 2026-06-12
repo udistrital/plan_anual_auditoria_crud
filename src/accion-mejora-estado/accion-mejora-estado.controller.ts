@@ -25,9 +25,7 @@ import { AccionMejoraEstadoDto } from './dto/accion-mejora-estado.dto';
 @ApiTags('accion-mejora-estado')
 @Controller('accion-mejora-estado')
 export class AccionMejoraEstadoController {
-  constructor(
-    private accionMejoraEstadoService: AccionMejoraEstadoService,
-  ) {}
+  constructor(private accionMejoraEstadoService: AccionMejoraEstadoService) {}
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo estado de acción de mejora' })
