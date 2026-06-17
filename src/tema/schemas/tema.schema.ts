@@ -5,8 +5,8 @@ export interface ISubtema {
   _id?: Types.ObjectId;
   titulo: string;
   activo: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  fecha_creacion?: Date;
+  fecha_modificacion?: Date;
 }
 
 const SubtemaSchema = new mongoose.Schema<ISubtema>(
@@ -28,14 +28,17 @@ export class Tema extends Document {
   @Prop({ required: false })
   descripcion_titulo?: string;
 
-  @Prop({ default: true })
-  activo: boolean;
-
   @Prop({ type: [SubtemaSchema], default: [] })
   subtema: Types.DocumentArray<ISubtema>;
 
-  createdAt?: Date;
-  updatedAt?: Date;
+  @Prop({ default: true })
+  activo: boolean;
+
+  @Prop({ required: false })
+  fecha_creacion?: Date;
+
+  @Prop({ required: false })
+  fecha_modificacion?: Date;
 }
 
 export const TemaSchema = SchemaFactory.createForClass(Tema);
