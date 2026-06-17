@@ -7,6 +7,7 @@ import { AccionMejora } from './schema/accion-mejora.schema';
 import { AccionMejoraDto } from './dto/accion-mejora.dto';
 import { PlanMejoramiento } from '../plan-mejoramiento/schema/plan-mejoramiento.schema';
 import { Hallazgo } from '../hallazgo/schemas/hallazgo.schema';
+import { AccionMejoraEstado } from '../accion-mejora-estado/schema/accion-mejora-estado.schema';
 
 @Injectable()
 export class AccionMejoraService {
@@ -17,6 +18,8 @@ export class AccionMejoraService {
     private readonly planMejoramientoModel: Model<PlanMejoramiento>,
     @InjectModel(Hallazgo.name)
     private readonly hallazgoModel: Model<Hallazgo>,
+    @InjectModel(AccionMejoraEstado.name)
+    private readonly accionMejoraEstadoModel: Model<AccionMejoraEstado>,
   ) {}
 
   private populateFields(): any[] {
@@ -106,6 +109,10 @@ export class AccionMejoraService {
     if (!deleted) {
       throw new Error(`${id} no existe`);
     }
+    // Cascada lógica: inactiva el historial de estados de la acción eliminada
+    await this.accionMejoraEstadoModel
+      .updateMany({ accion_mejora_id: id }, { $set: { activo: false } })
+      .exec();
     return deleted;
   }
 

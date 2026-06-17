@@ -49,4 +49,5 @@ export class AuditoriaPadre extends Document {
 
 export const AuditoriaPadreSchema =
   SchemaFactory.createForClass(AuditoriaPadre);
+
 AuditoriaPadreSchema.set('versionKey', false);

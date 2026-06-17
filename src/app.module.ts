@@ -22,6 +22,7 @@ import { PlanMejoramientoModule } from './plan-mejoramiento/plan-mejoramiento.mo
 import { PlanMejoramientoEstadoModule } from './plan-mejoramiento-estado/plan-mejoramiento-estado.module';
 import { PlanMejoramientoAuditorModule } from './plan-mejoramiento-auditor/plan-mejoramiento-auditor.module';
 import { AccionMejoraModule } from './accion-mejora/accion-mejora.module';
+import { AccionMejoraEstadoModule } from './accion-mejora-estado/accion-mejora-estado.module';
 import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion.module';
 import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
 import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
@@ -72,6 +73,7 @@ import { CalificacionAccionModule } from './calificacion-accion/calificacion-acc
     PlanMejoramientoEstadoModule,
     PlanMejoramientoAuditorModule,
     AccionMejoraModule,
+    AccionMejoraEstadoModule,
     SeguimientoAccionModule,
     ResponsableAccionModule,
     CalificacionAccionModule,
