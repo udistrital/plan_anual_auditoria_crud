@@ -108,8 +108,7 @@ export class HallazgoRemisionController {
   })
   async getById(@Res() res, @Param('id') id: string) {
     try {
-      const hallazgoRemision =
-        await this.hallazgoRemisionService.getById(id);
+      const hallazgoRemision = await this.hallazgoRemisionService.getById(id);
       res.status(HttpStatus.OK).json({
         Success: true,
         Status: HttpStatus.OK,
@@ -133,8 +132,7 @@ export class HallazgoRemisionController {
   @ApiBody({ type: HallazgoRemisionDTO })
   @ApiResponse({
     status: 200,
-    description:
-      'La remisión de hallazgo ha sido actualizada exitosamente.',
+    description: 'La remisión de hallazgo ha sido actualizada exitosamente.',
     type: HallazgoRemisionDTO,
   })
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })

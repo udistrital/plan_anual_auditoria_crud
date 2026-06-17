@@ -68,8 +68,9 @@ export class HallazgoRemisionService {
   }
 
   async getById(id: string): Promise<HallazgoRemision> {
-    const hallazgoRemision =
-      await this.hallazgoRemisionModel.findById(id).exec();
+    const hallazgoRemision = await this.hallazgoRemisionModel
+      .findById(id)
+      .exec();
     if (!hallazgoRemision) {
       throw new Error(`${id} no existe`);
     }
