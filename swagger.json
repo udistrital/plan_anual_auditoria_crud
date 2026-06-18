@@ -4753,6 +4753,232 @@
         ]
       }
     },
+    "/accion-mejora-estado": {
+      "post": {
+        "operationId": "AccionMejoraEstadoController_post",
+        "summary": "Crear un nuevo estado de acción de mejora",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estado creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "tags": [
+          "accion-mejora-estado"
+        ]
+      },
+      "get": {
+        "operationId": "AccionMejoraEstadoController_getAll",
+        "summary": "Obtener todos los estados de acción de mejora",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todos los estados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "accion-mejora-estado"
+        ]
+      }
+    },
+    "/accion-mejora-estado/{id}": {
+      "get": {
+        "operationId": "AccionMejoraEstadoController_getById",
+        "summary": "Obtener un estado de acción de mejora por Id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "accion-mejora-estado"
+        ]
+      },
+      "put": {
+        "operationId": "AccionMejoraEstadoController_put",
+        "summary": "Actualizar un estado de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estado actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionMejoraEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "accion-mejora-estado"
+        ]
+      },
+      "delete": {
+        "operationId": "AccionMejoraEstadoController_delete",
+        "summary": "Eliminar un estado de acción de mejora",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado eliminado exitosamente."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "tags": [
+          "accion-mejora-estado"
+        ]
+      }
+    },
     "/seguimiento-accion": {
       "post": {
         "operationId": "SeguimientoAccionController_post",
@@ -6730,6 +6956,46 @@
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
+        ]
+      },
+      "AccionMejoraEstadoDto": {
+        "type": "object",
+        "properties": {
+          "accion_mejora_id": {
+            "$ref": "#/components/schemas/ObjectId"
+          },
+          "usuario_id": {
+            "type": "number"
+          },
+          "usuario_rol": {
+            "type": "string"
+          },
+          "observacion": {
+            "type": "string"
+          },
+          "actual": {
+            "type": "boolean"
+          },
+          "estado_id": {
+            "type": "number"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "accion_mejora_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "actual",
+          "estado_id",
+          "fecha_ejecucion_estado",
+          "activo"
         ]
       },
       "SeguimientoAccionDto": {

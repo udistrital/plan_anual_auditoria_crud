@@ -5,6 +5,7 @@ import { AccionMejora } from './schema/accion-mejora.schema';
 import { AccionMejoraDto } from './dto/accion-mejora.dto';
 import { PlanMejoramiento } from '../plan-mejoramiento/schema/plan-mejoramiento.schema';
 import { Hallazgo } from '../hallazgo/schemas/hallazgo.schema';
+import { AccionMejoraEstado } from '../accion-mejora-estado/schema/accion-mejora-estado.schema';
 import { Model, Types } from 'mongoose';
 import { FilterDto } from '../filters/filters.dto';
 
@@ -63,6 +64,14 @@ describe('AccionMejoraService', () => {
         {
           provide: getModelToken(Hallazgo.name),
           useValue: { findById: jest.fn() },
+        },
+        {
+          provide: getModelToken(AccionMejoraEstado.name),
+          useValue: {
+            updateMany: jest.fn().mockReturnValue({
+              exec: jest.fn().mockResolvedValue({ acknowledged: true }),
+            }),
+          },
         },
       ],
     }).compile();

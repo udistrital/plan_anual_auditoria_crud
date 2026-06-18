@@ -10,25 +10,53 @@ export class Informe extends Document {
   })
   auditoria_id: mongoose.Types.ObjectId;
 
-  @Prop() fecha_emision: Date;
-  @Prop() muestra: string;
-  @Prop() aspecto_general: string;
-  @Prop() respuesta_preliminar: string;
-  @Prop() informe_final: string;
-  @Prop() observacion_conclusion: string;
-  @Prop() nota: string;
+  @Prop()
+  fecha_emision: Date;
 
-  @Prop() preliminar_auditor_id: number;
-  @Prop() final_auditor_id: number;
-  @Prop() preliminar_auditado_id: number;
+  @Prop()
+  muestra: string;
 
-  @Prop({ default: 3 }) dias_revision: number;
-  @Prop() fecha_fin_revision: Date;
-  @Prop() ampliacion_revision_auditor_id: number;
+  @Prop()
+  aspecto_general: string;
 
-  @Prop() fecha_aprobacion_informe: Date;
-  @Prop({ type: [Number], default: [] }) dependencias_decididas: number[];
+  @Prop()
+  respuesta_preliminar: string;
 
-  @Prop({ default: true }) activo: boolean;
+  @Prop()
+  informe_final: string;
+
+  @Prop()
+  observacion_conclusion: string;
+
+  @Prop()
+  nota: string;
+
+  @Prop()
+  preliminar_auditor_id: number;
+
+  @Prop()
+  final_auditor_id: number;
+
+  @Prop()
+  preliminar_auditado_id: number;
+
+  @Prop({ default: 3 })
+  dias_revision: number;
+
+  @Prop()
+  fecha_fin_revision: Date;
+
+  @Prop()
+  ampliacion_revision_auditor_id: number;
+
+  @Prop()
+  fecha_aprobacion_informe: Date;
+
+  @Prop({ type: [Number], default: [] })
+  dependencias_decididas: number[];
+
+  @Prop({ default: true })
+  activo: boolean;
 }
+
 export const InformeSchema = SchemaFactory.createForClass(Informe);
