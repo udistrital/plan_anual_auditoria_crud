@@ -48,6 +48,9 @@ export class AccionMejoraDto {
   readonly modificado_por_rol: string;
 
   @ApiProperty()
+  readonly en_revision: boolean;
+
+  @ApiProperty()
   activo: boolean;
 
   @ApiProperty()
