@@ -6925,6 +6925,9 @@
           "modificado_por_rol": {
             "type": "string"
           },
+          "en_revision": {
+            "type": "boolean"
+          },
           "activo": {
             "type": "boolean"
           },
@@ -6953,6 +6956,7 @@
           "creado_por_rol",
           "modificado_por_id",
           "modificado_por_rol",
+          "en_revision",
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
