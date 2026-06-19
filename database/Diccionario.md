@@ -300,8 +300,10 @@ Informe final de auditoría con hallazgos y conclusiones.
 | preliminar_auditor_id | Number | No | ID auditor firma preliminar |
 | final_auditor_id | Number | No | ID auditor firma final |
 | preliminar_auditado_id | Number | No | ID auditado que respondió |
-| dias_revision | Number | No | Días que se podra encontrar en revisión
-| fecha_fin_revision | Date | Si | Fecha final de la revisión
+| fecha_fin_revision | Date | No | Fecha límite para la revisión del auditado |
+| dias_revision | Number | No | Días hábiles acumulados de revisión otorgados |
+| ampliacion_revision_auditor_id | Number | No | ID del auditor que amplió el tiempo de revisión |
+| dependencias_decididas | Array[Number] | No | IDs de dependencias que registraron su decisión (aceptar o terminar observaciones) |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Timestamp de creación |
 | fecha_modificacion | Date | No | Timestamp de actualización |
@@ -341,15 +343,15 @@ Subestructura: hallazgo
 | Campo | Tipo | Requerido | Descripción |
 |-------|------|-----------|-------------|
 | _id | ObjectId | Sí | Identificador único |
-| auditoria_id | ObjectId | Si | Referencia a auditoria |
-| informe_id | ObjectId | Si | Referencia a informe |
+| informe_id | ObjectId | Sí | Referencia a informe (OBLIGATORIO) |
+| auditoria_id | ObjectId | Sí | Referencia a auditoria (OBLIGATORIO) |
 | subtema_id | ObjectId | Sí | Referencia a subtema (OBLIGATORIO) |
 | titulo | String | Sí | Título del hallazgo (OBLIGATORIO) |
 | criterio | String | Sí | Criterio evaluado (OBLIGATORIO) |
 | descripcion | String | Sí | Descripción detallada (OBLIGATORIO) |
-| rechazado | Boolean | No | Estado si se encuentra rechazado o no |
-| rechazado_por | Number/Null | No | Usuario que rechazó |
-| rechazado_por_rol | String/Null | No | Rol del usuario que rechazó |
+| rechazado | Boolean | No | Indica si el auditor rechazó el hallazgo en fase de revisión |
+| rechazado_por | Number | No | ID del usuario que rechazó el hallazgo |
+| rechazado_por_rol | String | No | Rol del usuario que rechazó el hallazgo |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | No | Timestamp de creación |
 | fecha_modificacion | Date | No | Timestamp de actualización |
@@ -385,6 +387,26 @@ Campo paramétrico: tipo_id.
 | fecha_modificacion | Date | No | Timestamp de actualización |
 
 Relaciones: N:1 auditoria, N:1 plan_auditoria (según referencia_tipo)
+
+---
+
+### observacion
+
+Comentario u observación registrada por el auditado o el auditor sobre un hallazgo específico durante la revisión del preinforme.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Sí | Identificador único |
+| hallazgo_id | ObjectId | No | Referencia al hallazgo comentado |
+| observacion | String | No | Texto de la observación |
+| usuario_id | Number | No | ID del usuario que registró la observación |
+| usuario_rol | String | No | Rol del usuario al registrar (auditor / auditado) |
+| dependencia_id | Number | No | Dependencia asociada al usuario auditado |
+| activo | Boolean | No | Indicador de estado activo |
+| fecha_creacion | Date | No | Fecha de creación |
+| fecha_modificacion | Date | No | Fecha de última actualización |
+
+Relaciones: N:1 hallazgo (subestructura de tema → informe → auditoria)
 
 ---
 
@@ -579,7 +601,32 @@ Campo paramétrico: estado_id.
 | fecha_creacion | Date | Si | Fecha de creación |
 | fecha_modificacion | Date | Si | Fecha de última actualización |
 
-Relaciones: 1:N tema, 1:N calificacion_accion, 1:N seguimiento_accion, N:1 plan_mejoramiento, 1:N responsable_accion
+Relaciones: 1:N tema, 1:N calificacion_accion, 1:N seguimiento_accion, N:1 plan_mejoramiento, 1:N responsable_accion, 1:N accion_mejora_estado
+
+---
+
+### accion_mejora_estado
+
+Historial de estados de cada acción de mejora (aprobación/rechazo del auditor con observación).
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Si | Identificador único |
+| accion_mejora_id | ObjectId | No | Referencia a accion_mejora |
+| usuario_id | Number | No | Usuario que realizó el cambio de estado |
+| usuario_rol | String | No | Rol del usuario que realizó el cambio de estado |
+| observacion | String | No | Observación del cambio de estado (obligatoria en aprobación y rechazo) |
+| actual | Boolean | No | Identificador de estado actual |
+| estado_id | Number | No | ID del estado de la acción |
+
+Campo paramétrico: estado_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| fecha_ejecucion_estado | Date | No | Fecha de ejecución del cambio de estado |
+| activo | Boolean | No | Indicador de estado activo |
+
+Relaciones: N:1 accion_mejora
 
 ---
 
@@ -649,6 +696,7 @@ tema (1) → accion_mejora (N)
 tema (1) → observacion (N)
 tema (1) → subtema (N) [anidado]
 subtema (1) → hallazgo (N) [anidado]
+hallazgo (1) → observacion (N)
 
 observacion (N) → tema[hallazgo] (1)
 
@@ -666,6 +714,9 @@ accion_mejora (1) → calificacion_accion (N)
 accion_mejora (1) → seguimiento_accion (N)
 accion_mejora (N) → plan_mejoramiento (1)
 accion_mejora (1) → responsable_accion (N)
+accion_mejora (1) → accion_mejora_estado (N)
+
+accion_mejora_estado (N) → accion_mejora (1)
 
 plan_mejoramiento_estado (N) → plan_mejoramiento (1)
 

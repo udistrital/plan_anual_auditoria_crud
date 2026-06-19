@@ -71,6 +71,7 @@ export class Auditoria extends Document {
   @Prop({ required: false })
   fecha_modificacion: Date;
 }
+
 export const AuditoriaSchema = SchemaFactory.createForClass(Auditoria);
 
 AuditoriaSchema.set('versionKey', false);
