@@ -51,6 +51,9 @@ export class AccionMejora extends Document {
   modificado_por_rol: string;
 
   @Prop({ required: false })
+  en_revision: boolean;
+
+  @Prop({ required: false })
   activo: boolean;
 
   @Prop({ required: false })
