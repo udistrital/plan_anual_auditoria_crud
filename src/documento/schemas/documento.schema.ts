@@ -6,7 +6,10 @@ export class Documento extends Document {
   @Prop({ required: true })
   referencia_id: Types.ObjectId;
 
-  @Prop({ required: true, enum: ['Auditoria', 'Plan Auditoria', 'Plan Mejoramiento', 'Accion Mejora'] })
+  @Prop({
+    required: true,
+    enum: ['Auditoria', 'Plan Auditoria', 'Plan Mejoramiento', 'Accion Mejora'],
+  })
   referencia_tipo: string;
 
   @Prop({ required: true })

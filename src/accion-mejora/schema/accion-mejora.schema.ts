@@ -52,7 +52,7 @@ export class AccionMejora extends Document {
 
   @Prop({ required: false })
   en_revision: boolean;
-  
+
   @Prop({ required: false })
   activo: boolean;
 
