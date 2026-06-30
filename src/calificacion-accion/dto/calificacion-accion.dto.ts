@@ -9,6 +9,9 @@ export class CalificacionAccionDto {
   readonly auditor_id: number;
 
   @ApiProperty()
+  readonly criterio_evaluacion: number;
+
+  @ApiProperty()
   readonly calificacion: number;
 
   @ApiProperty()
