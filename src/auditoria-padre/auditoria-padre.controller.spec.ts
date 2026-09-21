@@ -4,7 +4,6 @@ import { HttpStatus } from '@nestjs/common';
 import { AuditoriaPadreDTO } from './dto/auditoria-padre.dto';
 import { FilterDto } from '../filters/filters.dto';
 // Mock del ParseObjectIdPipe usando ruta relativa
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { AuditoriaPadreController } from './auditoria-padre.controller';

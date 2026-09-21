@@ -4,8 +4,6 @@ import { HttpStatus } from '@nestjs/common';
 import { FilterDto } from '../filters/filters.dto';
 import { CreateHallazgoDTO, UpdateHallazgoDTO } from './dto/hallazgo.dto';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe.ts');
-
 import { HallazgoController } from './hallazgo.controller';
 
 const mockCreateHallazgoDto: CreateHallazgoDTO = {

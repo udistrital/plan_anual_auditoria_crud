@@ -1,2 +1,9 @@
 allowBuilds:
   '@nestjs/core': true
+  '@parcel/watcher': false
+  '@scarf/scarf': false
+  unrs-resolver: true
+overrides:
+  js-yaml: ^4.3.2
+  qs: ^6.16.0
+  ip-address: ^10.3.1

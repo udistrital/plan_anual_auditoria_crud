@@ -4,8 +4,9 @@ El API crud permite gestionar planes anuales de auditoria asi como sus auditoria
 ## Especificaciones Técnicas
 
 ### Tecnologías Implementadas y Versiones
-* [nest 10.0.0]()
-* [typescript 5.6.2]()
+* [nest 12.0.0]()
+* [typescript 6.0.3]()
+* Node.js >= 22.12 (requerido por el uso de `require(esm)` para cargar los paquetes ESM-only de NestJS 12)
 
 ### Variables de Entorno
 

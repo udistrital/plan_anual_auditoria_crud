@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { ResponsableAccionDto } from './dto/responsable-accion.dto';
 import { ResponsableAccionService } from './responsable-accion.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { ResponsableAccionController } from './responsable-accion.controller';
 import { Types } from 'mongoose';
 

@@ -18,7 +18,6 @@
     "/plan-auditoria": {
       "post": {
         "operationId": "PlanAuditoriaController_post",
-        "summary": "Crear un nuevo plan de auditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -45,13 +44,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo plan de auditoria",
         "tags": [
           "plan-auditoria"
         ]
       },
       "get": {
         "operationId": "PlanAuditoriaController_getAll",
-        "summary": "Obtener todos los planes de auditoria",
         "parameters": [
           {
             "name": "query",
@@ -132,6 +131,7 @@
             }
           }
         },
+        "summary": "Obtener todos los planes de auditoria",
         "tags": [
           "plan-auditoria"
         ]
@@ -140,7 +140,6 @@
     "/plan-auditoria/{id}": {
       "get": {
         "operationId": "PlanAuditoriaController_getById",
-        "summary": "Obtener un plan de auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -166,13 +165,13 @@
             "description": "Plan de auditoria no encontrado."
           }
         },
+        "summary": "Obtener un plan de auditoria por Id",
         "tags": [
           "plan-auditoria"
         ]
       },
       "put": {
         "operationId": "PlanAuditoriaController_put",
-        "summary": "Actualizar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -211,13 +210,13 @@
             "description": "Plan de auditoria no encontrado."
           }
         },
+        "summary": "Actualizar un plan de auditoria",
         "tags": [
           "plan-auditoria"
         ]
       },
       "delete": {
         "operationId": "PlanAuditoriaController_delete",
-        "summary": "Eliminar un plan de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -236,6 +235,7 @@
             "description": "Plan de auditoria no encontrado."
           }
         },
+        "summary": "Eliminar un plan de auditoria",
         "tags": [
           "plan-auditoria"
         ]
@@ -244,7 +244,6 @@
     "/auditoria-padre": {
       "post": {
         "operationId": "AuditoriaPadreController_post",
-        "summary": "Crear una nueva auditoria padre",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -271,13 +270,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear una nueva auditoria padre",
         "tags": [
           "auditoria-padre"
         ]
       },
       "get": {
         "operationId": "AuditoriaPadreController_getAll",
-        "summary": "Obtener todas las auditorias padre",
         "parameters": [
           {
             "name": "query",
@@ -358,6 +357,7 @@
             }
           }
         },
+        "summary": "Obtener todas las auditorias padre",
         "tags": [
           "auditoria-padre"
         ]
@@ -366,7 +366,6 @@
     "/auditoria-padre/{id}": {
       "get": {
         "operationId": "AuditoriaPadreController_getById",
-        "summary": "Obtener una auditoria padre por Id",
         "parameters": [
           {
             "name": "id",
@@ -392,13 +391,13 @@
             "description": "Auditoria padre no encontrada."
           }
         },
+        "summary": "Obtener una auditoria padre por Id",
         "tags": [
           "auditoria-padre"
         ]
       },
       "put": {
         "operationId": "AuditoriaPadreController_put",
-        "summary": "Actualizar una auditoria padre",
         "parameters": [
           {
             "name": "id",
@@ -437,13 +436,13 @@
             "description": "Auditoria padre no encontrada."
           }
         },
+        "summary": "Actualizar una auditoria padre",
         "tags": [
           "auditoria-padre"
         ]
       },
       "delete": {
         "operationId": "AuditoriaPadreController_delete",
-        "summary": "Eliminar una auditoria padre",
         "parameters": [
           {
             "name": "id",
@@ -462,6 +461,7 @@
             "description": "Auditoria padre no encontrada."
           }
         },
+        "summary": "Eliminar una auditoria padre",
         "tags": [
           "auditoria-padre"
         ]
@@ -470,7 +470,6 @@
     "/auditoria-padre-estado": {
       "post": {
         "operationId": "EstadoAuditoriaPadreController_post",
-        "summary": "Crear un nuevo estado de auditoria padre",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -497,13 +496,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo estado de auditoria padre",
         "tags": [
           "auditoria-padre-estado"
         ]
       },
       "get": {
         "operationId": "EstadoAuditoriaPadreController_getAll",
-        "summary": "Obtener todos los estados de auditoria padre",
         "parameters": [
           {
             "name": "query",
@@ -584,6 +583,7 @@
             }
           }
         },
+        "summary": "Obtener todos los estados de auditoria padre",
         "tags": [
           "auditoria-padre-estado"
         ]
@@ -592,7 +592,6 @@
     "/auditoria-padre-estado/{id}": {
       "get": {
         "operationId": "EstadoAuditoriaPadreController_getById",
-        "summary": "Obtener un estado de auditoria padre por Id",
         "parameters": [
           {
             "name": "id",
@@ -618,13 +617,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Obtener un estado de auditoria padre por Id",
         "tags": [
           "auditoria-padre-estado"
         ]
       },
       "put": {
         "operationId": "EstadoAuditoriaPadreController_put",
-        "summary": "Actualizar un estado de auditoria padre",
         "parameters": [
           {
             "name": "id",
@@ -663,13 +662,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Actualizar un estado de auditoria padre",
         "tags": [
           "auditoria-padre-estado"
         ]
       },
       "delete": {
         "operationId": "EstadoAuditoriaPadreController_delete",
-        "summary": "Eliminar un estado de auditoria padre",
         "parameters": [
           {
             "name": "id",
@@ -688,6 +687,7 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Eliminar un estado de auditoria padre",
         "tags": [
           "auditoria-padre-estado"
         ]
@@ -696,7 +696,6 @@
     "/auditoria": {
       "post": {
         "operationId": "AuditoriaController_post",
-        "summary": "Crear un nueva aditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -723,13 +722,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nueva aditoria",
         "tags": [
           "auditoria"
         ]
       },
       "get": {
         "operationId": "AuditoriaController_getAll",
-        "summary": "Obtener todas las aditorias",
         "parameters": [
           {
             "name": "query",
@@ -810,6 +809,7 @@
             }
           }
         },
+        "summary": "Obtener todas las aditorias",
         "tags": [
           "auditoria"
         ]
@@ -818,7 +818,6 @@
     "/auditoria/auditor/{personaId}": {
       "get": {
         "operationId": "AuditoriaController_getByAuditor",
-        "summary": "Obtener auditorías por auditor",
         "parameters": [
           {
             "name": "personaId",
@@ -907,6 +906,7 @@
             }
           }
         },
+        "summary": "Obtener auditorías por auditor",
         "tags": [
           "auditoria"
         ]
@@ -915,7 +915,6 @@
     "/auditoria/{id}": {
       "get": {
         "operationId": "AuditoriaController_getById",
-        "summary": "Obtener una auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -941,13 +940,13 @@
             "description": "Auditoria no encontrada."
           }
         },
+        "summary": "Obtener una auditoria por Id",
         "tags": [
           "auditoria"
         ]
       },
       "put": {
         "operationId": "AuditoriaController_put",
-        "summary": "Actualizar una auditoria",
         "parameters": [
           {
             "name": "id",
@@ -986,13 +985,13 @@
             "description": "Contratista no encontrado."
           }
         },
+        "summary": "Actualizar una auditoria",
         "tags": [
           "auditoria"
         ]
       },
       "delete": {
         "operationId": "AuditoriaController_delete",
-        "summary": "Eliminar una auditoria",
         "parameters": [
           {
             "name": "id",
@@ -1011,6 +1010,7 @@
             "description": "Auditoria no encontrada."
           }
         },
+        "summary": "Eliminar una auditoria",
         "tags": [
           "auditoria"
         ]
@@ -1019,7 +1019,6 @@
     "/auditoria-estado": {
       "post": {
         "operationId": "EstadoAuditoriaController_post",
-        "summary": "Crear un nuevo estado de auditoria",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1046,13 +1045,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo estado de auditoria",
         "tags": [
           "auditoria-estado"
         ]
       },
       "get": {
         "operationId": "EstadoAuditoriaController_getAll",
-        "summary": "Obtener todos los estados de auditoria",
         "parameters": [
           {
             "name": "query",
@@ -1133,6 +1132,7 @@
             }
           }
         },
+        "summary": "Obtener todos los estados de auditoria",
         "tags": [
           "auditoria-estado"
         ]
@@ -1141,7 +1141,6 @@
     "/auditoria-estado/{id}": {
       "get": {
         "operationId": "EstadoAuditoriaController_getById",
-        "summary": "Obtener un estado de auditoria por Id",
         "parameters": [
           {
             "name": "id",
@@ -1167,13 +1166,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Obtener un estado de auditoria por Id",
         "tags": [
           "auditoria-estado"
         ]
       },
       "put": {
         "operationId": "EstadoAuditoriaController_put",
-        "summary": "Actualizar un estado de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -1212,13 +1211,13 @@
             "description": "Actividad no encontrado."
           }
         },
+        "summary": "Actualizar un estado de auditoria",
         "tags": [
           "auditoria-estado"
         ]
       },
       "delete": {
         "operationId": "EstadoAuditoriaController_delete",
-        "summary": "Eliminar un estado de auditoria",
         "parameters": [
           {
             "name": "id",
@@ -1237,6 +1236,7 @@
             "description": "Estado no encontrada."
           }
         },
+        "summary": "Eliminar un estado de auditoria",
         "tags": [
           "auditoria-estado"
         ]
@@ -1245,7 +1245,6 @@
     "/actividad": {
       "post": {
         "operationId": "ActividadController_post",
-        "summary": "Crear un nueva actividad",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1272,13 +1271,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nueva actividad",
         "tags": [
           "actividad"
         ]
       },
       "get": {
         "operationId": "ActividadController_getAll",
-        "summary": "Obtener todas las actividades",
         "parameters": [
           {
             "name": "query",
@@ -1359,6 +1358,7 @@
             }
           }
         },
+        "summary": "Obtener todas las actividades",
         "tags": [
           "actividad"
         ]
@@ -1367,7 +1367,6 @@
     "/actividad/{id}": {
       "get": {
         "operationId": "ActividadController_getById",
-        "summary": "Obtener un actividad por Id",
         "parameters": [
           {
             "name": "id",
@@ -1393,13 +1392,13 @@
             "description": "Actividad no encontrada."
           }
         },
+        "summary": "Obtener un actividad por Id",
         "tags": [
           "actividad"
         ]
       },
       "put": {
         "operationId": "ActividadController_put",
-        "summary": "Actualizar una actividad",
         "parameters": [
           {
             "name": "id",
@@ -1438,13 +1437,13 @@
             "description": "Actividad no encontrado."
           }
         },
+        "summary": "Actualizar una actividad",
         "tags": [
           "actividad"
         ]
       },
       "delete": {
         "operationId": "ActividadController_delete",
-        "summary": "Eliminar una actividad",
         "parameters": [
           {
             "name": "id",
@@ -1463,6 +1462,7 @@
             "description": "Actividad no encontrada."
           }
         },
+        "summary": "Eliminar una actividad",
         "tags": [
           "actividad"
         ]
@@ -1471,7 +1471,6 @@
     "/estado": {
       "post": {
         "operationId": "EstadoController_post",
-        "summary": "Crear un nuevo estado de plan",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1498,13 +1497,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo estado de plan",
         "tags": [
           "estado-plan"
         ]
       },
       "get": {
         "operationId": "EstadoController_getAll",
-        "summary": "Obtener todos los estados de plan",
         "parameters": [
           {
             "name": "query",
@@ -1585,6 +1584,7 @@
             }
           }
         },
+        "summary": "Obtener todos los estados de plan",
         "tags": [
           "estado-plan"
         ]
@@ -1593,7 +1593,6 @@
     "/estado/{id}": {
       "get": {
         "operationId": "EstadoController_getById",
-        "summary": "Obtener un estado de plan por Id",
         "parameters": [
           {
             "name": "id",
@@ -1619,13 +1618,13 @@
             "description": "Actividad no encontrada."
           }
         },
+        "summary": "Obtener un estado de plan por Id",
         "tags": [
           "estado-plan"
         ]
       },
       "put": {
         "operationId": "EstadoController_put",
-        "summary": "Actualizar un estado de plan",
         "parameters": [
           {
             "name": "id",
@@ -1664,13 +1663,13 @@
             "description": "Actividad no encontrado."
           }
         },
+        "summary": "Actualizar un estado de plan",
         "tags": [
           "estado-plan"
         ]
       },
       "delete": {
         "operationId": "EstadoController_delete",
-        "summary": "Eliminar un estado de plan",
         "parameters": [
           {
             "name": "id",
@@ -1689,6 +1688,7 @@
             "description": "Actividad no encontrada."
           }
         },
+        "summary": "Eliminar un estado de plan",
         "tags": [
           "estado-plan"
         ]
@@ -1697,7 +1697,6 @@
     "/documento": {
       "post": {
         "operationId": "DocumentoController_post",
-        "summary": "Crear un nueva documento",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1724,13 +1723,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nueva documento",
         "tags": [
           "documento"
         ]
       },
       "get": {
         "operationId": "DocumentoController_getAll",
-        "summary": "Obtener todas las actividades",
         "parameters": [
           {
             "name": "query",
@@ -1811,6 +1810,7 @@
             }
           }
         },
+        "summary": "Obtener todas las actividades",
         "tags": [
           "documento"
         ]
@@ -1819,7 +1819,6 @@
     "/documento/{id}": {
       "get": {
         "operationId": "DocumentoController_getById",
-        "summary": "Obtener un documento por Id",
         "parameters": [
           {
             "name": "id",
@@ -1845,13 +1844,13 @@
             "description": "Documento no encontrada."
           }
         },
+        "summary": "Obtener un documento por Id",
         "tags": [
           "documento"
         ]
       },
       "put": {
         "operationId": "DocumentoController_put",
-        "summary": "Actualizar una documento",
         "parameters": [
           {
             "name": "id",
@@ -1890,13 +1889,13 @@
             "description": "Documento no encontrado."
           }
         },
+        "summary": "Actualizar una documento",
         "tags": [
           "documento"
         ]
       },
       "delete": {
         "operationId": "DocumentoController_delete",
-        "summary": "Eliminar una documento",
         "parameters": [
           {
             "name": "id",
@@ -1915,6 +1914,7 @@
             "description": "Documento no encontrada."
           }
         },
+        "summary": "Eliminar una documento",
         "tags": [
           "documento"
         ]
@@ -1923,7 +1923,6 @@
     "/auditor": {
       "post": {
         "operationId": "AuditorController_post",
-        "summary": "Crear un nueva auditor",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -1950,13 +1949,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nueva auditor",
         "tags": [
           "auditor"
         ]
       },
       "get": {
         "operationId": "AuditorController_getAll",
-        "summary": "Obtener todas las actividades",
         "parameters": [
           {
             "name": "query",
@@ -2037,6 +2036,7 @@
             }
           }
         },
+        "summary": "Obtener todas las actividades",
         "tags": [
           "auditor"
         ]
@@ -2045,7 +2045,6 @@
     "/auditor/{id}": {
       "get": {
         "operationId": "AuditorController_getById",
-        "summary": "Obtener un auditor por Id",
         "parameters": [
           {
             "name": "id",
@@ -2071,13 +2070,13 @@
             "description": "Auditor no encontrada."
           }
         },
+        "summary": "Obtener un auditor por Id",
         "tags": [
           "auditor"
         ]
       },
       "put": {
         "operationId": "AuditorController_put",
-        "summary": "Actualizar un auditor",
         "parameters": [
           {
             "name": "id",
@@ -2116,13 +2115,13 @@
             "description": "Auditor no encontrado."
           }
         },
+        "summary": "Actualizar un auditor",
         "tags": [
           "auditor"
         ]
       },
       "delete": {
         "operationId": "AuditorController_delete",
-        "summary": "Eliminar un auditor",
         "parameters": [
           {
             "name": "id",
@@ -2141,6 +2140,7 @@
             "description": "Auditor no encontrada."
           }
         },
+        "summary": "Eliminar un auditor",
         "tags": [
           "auditor"
         ]
@@ -2149,7 +2149,6 @@
     "/informe": {
       "post": {
         "operationId": "InformeController_post",
-        "summary": "Crear un nuevo informe",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2176,13 +2175,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo informe",
         "tags": [
           "informe"
         ]
       },
       "get": {
         "operationId": "InformeController_getAll",
-        "summary": "Obtener todos los informes",
         "parameters": [
           {
             "name": "query",
@@ -2263,6 +2262,7 @@
             }
           }
         },
+        "summary": "Obtener todos los informes",
         "tags": [
           "informe"
         ]
@@ -2271,7 +2271,6 @@
     "/informe/{id}": {
       "get": {
         "operationId": "InformeController_getById",
-        "summary": "Obtener un informe por Id",
         "parameters": [
           {
             "name": "id",
@@ -2297,13 +2296,13 @@
             "description": "Informe no encontrado."
           }
         },
+        "summary": "Obtener un informe por Id",
         "tags": [
           "informe"
         ]
       },
       "put": {
         "operationId": "InformeController_put",
-        "summary": "Actualizar un informe",
         "parameters": [
           {
             "name": "id",
@@ -2342,13 +2341,13 @@
             "description": "Informe no encontrado."
           }
         },
+        "summary": "Actualizar un informe",
         "tags": [
           "informe"
         ]
       },
       "delete": {
         "operationId": "InformeController_delete",
-        "summary": "Eliminar un informe",
         "parameters": [
           {
             "name": "id",
@@ -2367,6 +2366,7 @@
             "description": "Informe no encontrado."
           }
         },
+        "summary": "Eliminar un informe",
         "tags": [
           "informe"
         ]
@@ -2375,7 +2375,6 @@
     "/informe/{id}/hallazgos": {
       "get": {
         "operationId": "InformeController_getHallazgos",
-        "summary": "Obtener todos los hallazgos de un informe (estructura plana)",
         "parameters": [
           {
             "name": "id",
@@ -2395,6 +2394,7 @@
             "description": "Informe no encontrado o sin hallazgos."
           }
         },
+        "summary": "Obtener todos los hallazgos de un informe (estructura plana)",
         "tags": [
           "informe"
         ]
@@ -2403,7 +2403,6 @@
     "/tema": {
       "post": {
         "operationId": "TemaController_post",
-        "summary": "Crear un nuevo tema",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2430,13 +2429,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo tema",
         "tags": [
           "tema"
         ]
       },
       "get": {
         "operationId": "TemaController_getAll",
-        "summary": "Obtener todos los temas",
         "parameters": [
           {
             "name": "query",
@@ -2517,6 +2516,7 @@
             }
           }
         },
+        "summary": "Obtener todos los temas",
         "tags": [
           "tema"
         ]
@@ -2525,7 +2525,6 @@
     "/tema/{id}": {
       "get": {
         "operationId": "TemaController_getById",
-        "summary": "Obtener un tema por Id",
         "parameters": [
           {
             "name": "id",
@@ -2551,13 +2550,13 @@
             "description": "Tema no encontrado."
           }
         },
+        "summary": "Obtener un tema por Id",
         "tags": [
           "tema"
         ]
       },
       "put": {
         "operationId": "TemaController_put",
-        "summary": "Actualizar un tema",
         "parameters": [
           {
             "name": "id",
@@ -2596,13 +2595,13 @@
             "description": "Tema no encontrado."
           }
         },
+        "summary": "Actualizar un tema",
         "tags": [
           "tema"
         ]
       },
       "delete": {
         "operationId": "TemaController_delete",
-        "summary": "Eliminar un tema",
         "parameters": [
           {
             "name": "id",
@@ -2621,6 +2620,7 @@
             "description": "Tema no encontrado."
           }
         },
+        "summary": "Eliminar un tema",
         "tags": [
           "tema"
         ]
@@ -2629,7 +2629,6 @@
     "/subtema": {
       "post": {
         "operationId": "SubtemaController_create",
-        "summary": "Crear un nuevo subtema",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2649,13 +2648,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo subtema",
         "tags": [
           "subtema"
         ]
       },
       "get": {
         "operationId": "SubtemaController_getAll",
-        "summary": "Obtener todos los subtemas",
         "parameters": [
           {
             "name": "query",
@@ -2727,6 +2726,7 @@
             "description": "Devuelve todos los subtemas filtrados."
           }
         },
+        "summary": "Obtener todos los subtemas",
         "tags": [
           "subtema"
         ]
@@ -2735,7 +2735,6 @@
     "/subtema/{id}": {
       "get": {
         "operationId": "SubtemaController_getById",
-        "summary": "Obtener un subtema por su ID",
         "parameters": [
           {
             "name": "id",
@@ -2755,13 +2754,13 @@
             "description": "Subtema no encontrado."
           }
         },
+        "summary": "Obtener un subtema por su ID",
         "tags": [
           "subtema"
         ]
       },
       "put": {
         "operationId": "SubtemaController_update",
-        "summary": "Actualizar un subtema por su ID",
         "parameters": [
           {
             "name": "id",
@@ -2794,13 +2793,13 @@
             "description": "Subtema no encontrado."
           }
         },
+        "summary": "Actualizar un subtema por su ID",
         "tags": [
           "subtema"
         ]
       },
       "delete": {
         "operationId": "SubtemaController_delete",
-        "summary": "Eliminar un subtema por su ID",
         "parameters": [
           {
             "name": "id",
@@ -2820,6 +2819,7 @@
             "description": "Subtema no encontrado."
           }
         },
+        "summary": "Eliminar un subtema por su ID",
         "tags": [
           "subtema"
         ]
@@ -2828,7 +2828,6 @@
     "/hallazgo": {
       "post": {
         "operationId": "HallazgoController_create",
-        "summary": "Crear un nuevo hallazgo",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2848,13 +2847,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo hallazgo",
         "tags": [
           "hallazgo"
         ]
       },
       "get": {
         "operationId": "HallazgoController_getAll",
-        "summary": "Obtener todos los hallazgos",
         "parameters": [
           {
             "name": "query",
@@ -2926,6 +2925,7 @@
             "description": "Devuelve todos los hallazgos filtrados."
           }
         },
+        "summary": "Obtener todos los hallazgos",
         "tags": [
           "hallazgo"
         ]
@@ -2934,7 +2934,6 @@
     "/hallazgo/{id}": {
       "get": {
         "operationId": "HallazgoController_getById",
-        "summary": "Obtener un hallazgo por su ID",
         "parameters": [
           {
             "name": "id",
@@ -2954,13 +2953,13 @@
             "description": "Hallazgo no encontrado."
           }
         },
+        "summary": "Obtener un hallazgo por su ID",
         "tags": [
           "hallazgo"
         ]
       },
       "put": {
         "operationId": "HallazgoController_update",
-        "summary": "Actualizar un hallazgo por su ID",
         "parameters": [
           {
             "name": "id",
@@ -2993,13 +2992,13 @@
             "description": "Hallazgo no encontrado."
           }
         },
+        "summary": "Actualizar un hallazgo por su ID",
         "tags": [
           "hallazgo"
         ]
       },
       "delete": {
         "operationId": "HallazgoController_delete",
-        "summary": "Eliminar un hallazgo por su ID",
         "parameters": [
           {
             "name": "id",
@@ -3019,6 +3018,7 @@
             "description": "Hallazgo no encontrado."
           }
         },
+        "summary": "Eliminar un hallazgo por su ID",
         "tags": [
           "hallazgo"
         ]
@@ -3027,7 +3027,6 @@
     "/auditoria-gestion": {
       "post": {
         "operationId": "AuditoriaGestionController_post",
-        "summary": "Crear una nueva auditoria padre junto con su estado inicial",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3054,6 +3053,7 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear una nueva auditoria padre junto con su estado inicial",
         "tags": [
           "auditoria-gestion"
         ]
@@ -3062,7 +3062,6 @@
     "/auditoria-gestion/{id}": {
       "put": {
         "operationId": "AuditoriaGestionController_put",
-        "summary": "Actualizar los estados de las auditorias padre existentes en un plan",
         "parameters": [
           {
             "name": "id",
@@ -3102,6 +3101,7 @@
             "description": "Plan de Auditorias no encontrado."
           }
         },
+        "summary": "Actualizar los estados de las auditorias padre existentes en un plan",
         "tags": [
           "auditoria-gestion"
         ]
@@ -3110,7 +3110,6 @@
     "/auditoria-gestion/{plan_id}/auditoria-padre-borrador": {
       "delete": {
         "operationId": "AuditoriaGestionController_deleteMasivo",
-        "summary": "Eliminar lógicamente auditorías padre en estado borrador de un plan",
         "parameters": [
           {
             "name": "plan_id",
@@ -3143,6 +3142,7 @@
             "description": "Plan de Auditorias no encontrado."
           }
         },
+        "summary": "Eliminar lógicamente auditorías padre en estado borrador de un plan",
         "tags": [
           "auditoria-gestion"
         ]
@@ -3151,7 +3151,6 @@
     "/auditoria-gestion/{plan_id}/auditoria/{auditoria_id}": {
       "delete": {
         "operationId": "AuditoriaGestionController_deleteUnica",
-        "summary": "Eliminar lógicamente una auditoría padre específica",
         "parameters": [
           {
             "name": "plan_id",
@@ -3193,6 +3192,7 @@
             "description": "Auditoría no encontrada."
           }
         },
+        "summary": "Eliminar lógicamente una auditoría padre específica",
         "tags": [
           "auditoria-gestion"
         ]
@@ -3201,7 +3201,6 @@
     "/notificacion": {
       "post": {
         "operationId": "NotificacionController_post",
-        "summary": "Crear un nuevo registro de notificación",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3228,13 +3227,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo registro de notificación",
         "tags": [
           "notificacion"
         ]
       },
       "get": {
         "operationId": "NotificacionController_getAll",
-        "summary": "Obtener todos los registros de notificación",
         "parameters": [
           {
             "name": "query",
@@ -3315,6 +3314,7 @@
             }
           }
         },
+        "summary": "Obtener todos los registros de notificación",
         "tags": [
           "notificacion"
         ]
@@ -3323,7 +3323,6 @@
     "/notificacion/{id}": {
       "get": {
         "operationId": "NotificacionController_getById",
-        "summary": "Obtener un registro de notificación por Id",
         "parameters": [
           {
             "name": "id",
@@ -3349,13 +3348,13 @@
             "description": "Registro de notificación no encontrado."
           }
         },
+        "summary": "Obtener un registro de notificación por Id",
         "tags": [
           "notificacion"
         ]
       },
       "put": {
         "operationId": "NotificacionController_put",
-        "summary": "Actualizar un registro de notificación",
         "parameters": [
           {
             "name": "id",
@@ -3394,13 +3393,13 @@
             "description": "Registro de notificación no encontrado."
           }
         },
+        "summary": "Actualizar un registro de notificación",
         "tags": [
           "notificacion"
         ]
       },
       "delete": {
         "operationId": "NotificacionController_delete",
-        "summary": "Eliminar un registro de notificación",
         "parameters": [
           {
             "name": "id",
@@ -3419,6 +3418,7 @@
             "description": "Registro de notificación no encontrado."
           }
         },
+        "summary": "Eliminar un registro de notificación",
         "tags": [
           "notificacion"
         ]
@@ -3427,7 +3427,6 @@
     "/observacion": {
       "post": {
         "operationId": "ObservacionController_create",
-        "summary": "Crear una nueva observación",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3447,13 +3446,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear una nueva observación",
         "tags": [
           "observacion"
         ]
       },
       "get": {
         "operationId": "ObservacionController_getAll",
-        "summary": "Obtener todas las observaciones",
         "parameters": [
           {
             "name": "query",
@@ -3525,6 +3524,7 @@
             "description": "Devuelve todas las observaciones filtradas."
           }
         },
+        "summary": "Obtener todas las observaciones",
         "tags": [
           "observacion"
         ]
@@ -3533,7 +3533,6 @@
     "/observacion/{id}": {
       "get": {
         "operationId": "ObservacionController_getById",
-        "summary": "Obtener una observación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -3553,13 +3552,13 @@
             "description": "Observación no encontrada."
           }
         },
+        "summary": "Obtener una observación por su ID",
         "tags": [
           "observacion"
         ]
       },
       "put": {
         "operationId": "ObservacionController_update",
-        "summary": "Actualizar una observación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -3592,13 +3591,13 @@
             "description": "Observación no encontrada."
           }
         },
+        "summary": "Actualizar una observación por su ID",
         "tags": [
           "observacion"
         ]
       },
       "delete": {
         "operationId": "ObservacionController_delete",
-        "summary": "Eliminar una observación por su ID",
         "parameters": [
           {
             "name": "id",
@@ -3618,6 +3617,7 @@
             "description": "Observación no encontrada."
           }
         },
+        "summary": "Eliminar una observación por su ID",
         "tags": [
           "observacion"
         ]
@@ -3626,7 +3626,6 @@
     "/plan-mejoramiento": {
       "post": {
         "operationId": "PlanMejoramientoController_post",
-        "summary": "Crear un nuevo plan de mejoramiento",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3653,13 +3652,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo plan de mejoramiento",
         "tags": [
           "plan-mejoramiento"
         ]
       },
       "get": {
         "operationId": "PlanMejoramientoController_getAll",
-        "summary": "Obtener todos los planes de mejoramiento",
         "parameters": [
           {
             "name": "query",
@@ -3740,6 +3739,7 @@
             }
           }
         },
+        "summary": "Obtener todos los planes de mejoramiento",
         "tags": [
           "plan-mejoramiento"
         ]
@@ -3748,7 +3748,6 @@
     "/plan-mejoramiento/{id}": {
       "get": {
         "operationId": "PlanMejoramientoController_getById",
-        "summary": "Obtener un plan de mejoramiento por Id",
         "parameters": [
           {
             "name": "id",
@@ -3774,13 +3773,13 @@
             "description": "Plan de mejoramiento no encontrado."
           }
         },
+        "summary": "Obtener un plan de mejoramiento por Id",
         "tags": [
           "plan-mejoramiento"
         ]
       },
       "put": {
         "operationId": "PlanMejoramientoController_put",
-        "summary": "Actualizar un plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -3819,13 +3818,13 @@
             "description": "Plan de mejoramiento no encontrado."
           }
         },
+        "summary": "Actualizar un plan de mejoramiento",
         "tags": [
           "plan-mejoramiento"
         ]
       },
       "delete": {
         "operationId": "PlanMejoramientoController_delete",
-        "summary": "Eliminar un plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -3844,6 +3843,7 @@
             "description": "Plan de mejoramiento no encontrado."
           }
         },
+        "summary": "Eliminar un plan de mejoramiento",
         "tags": [
           "plan-mejoramiento"
         ]
@@ -3852,7 +3852,6 @@
     "/plan-mejoramiento-estado": {
       "post": {
         "operationId": "PlanMejoramientoEstadoController_post",
-        "summary": "Crear un nuevo estado de plan de mejoramiento",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -3879,13 +3878,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo estado de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-estado"
         ]
       },
       "get": {
         "operationId": "PlanMejoramientoEstadoController_getAll",
-        "summary": "Obtener todos los estados de plan de mejoramiento",
         "parameters": [
           {
             "name": "query",
@@ -3966,6 +3965,7 @@
             }
           }
         },
+        "summary": "Obtener todos los estados de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-estado"
         ]
@@ -3974,7 +3974,6 @@
     "/plan-mejoramiento-estado/{id}": {
       "get": {
         "operationId": "PlanMejoramientoEstadoController_getById",
-        "summary": "Obtener un estado de plan de mejoramiento por Id",
         "parameters": [
           {
             "name": "id",
@@ -4000,13 +3999,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Obtener un estado de plan de mejoramiento por Id",
         "tags": [
           "plan-mejoramiento-estado"
         ]
       },
       "put": {
         "operationId": "PlanMejoramientoEstadoController_put",
-        "summary": "Actualizar un estado de plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -4045,13 +4044,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Actualizar un estado de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-estado"
         ]
       },
       "delete": {
         "operationId": "PlanMejoramientoEstadoController_delete",
-        "summary": "Eliminar un estado de plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -4070,6 +4069,7 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Eliminar un estado de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-estado"
         ]
@@ -4078,7 +4078,6 @@
     "/plan-mejoramiento-auditor": {
       "post": {
         "operationId": "PlanMejoramientoAuditorController_post",
-        "summary": "Crear un nuevo auditor de plan de mejoramiento",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4105,13 +4104,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo auditor de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-auditor"
         ]
       },
       "get": {
         "operationId": "PlanMejoramientoAuditorController_getAll",
-        "summary": "Obtener todos los auditores de plan de mejoramiento",
         "parameters": [
           {
             "name": "query",
@@ -4192,6 +4191,7 @@
             }
           }
         },
+        "summary": "Obtener todos los auditores de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-auditor"
         ]
@@ -4200,7 +4200,6 @@
     "/plan-mejoramiento-auditor/{id}": {
       "get": {
         "operationId": "PlanMejoramientoAuditorController_getById",
-        "summary": "Obtener un auditor de plan de mejoramiento por Id",
         "parameters": [
           {
             "name": "id",
@@ -4226,13 +4225,13 @@
             "description": "Auditor no encontrado."
           }
         },
+        "summary": "Obtener un auditor de plan de mejoramiento por Id",
         "tags": [
           "plan-mejoramiento-auditor"
         ]
       },
       "put": {
         "operationId": "PlanMejoramientoAuditorController_put",
-        "summary": "Actualizar un auditor de plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -4271,13 +4270,13 @@
             "description": "Auditor no encontrado."
           }
         },
+        "summary": "Actualizar un auditor de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-auditor"
         ]
       },
       "delete": {
         "operationId": "PlanMejoramientoAuditorController_delete",
-        "summary": "Eliminar un auditor de plan de mejoramiento",
         "parameters": [
           {
             "name": "id",
@@ -4296,6 +4295,7 @@
             "description": "Auditor no encontrado."
           }
         },
+        "summary": "Eliminar un auditor de plan de mejoramiento",
         "tags": [
           "plan-mejoramiento-auditor"
         ]
@@ -4304,7 +4304,6 @@
     "/accion-mejora": {
       "post": {
         "operationId": "AccionMejoraController_post",
-        "summary": "Crear una nueva acción de mejora",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4331,13 +4330,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear una nueva acción de mejora",
         "tags": [
           "accion-mejora"
         ]
       },
       "get": {
         "operationId": "AccionMejoraController_getAll",
-        "summary": "Obtener todas las acciones de mejora",
         "parameters": [
           {
             "name": "query",
@@ -4418,6 +4417,7 @@
             }
           }
         },
+        "summary": "Obtener todas las acciones de mejora",
         "tags": [
           "accion-mejora"
         ]
@@ -4426,7 +4426,6 @@
     "/accion-mejora/{id}": {
       "get": {
         "operationId": "AccionMejoraController_getById",
-        "summary": "Obtener una acción de mejora por Id",
         "parameters": [
           {
             "name": "id",
@@ -4452,13 +4451,13 @@
             "description": "Acción de mejora no encontrada."
           }
         },
+        "summary": "Obtener una acción de mejora por Id",
         "tags": [
           "accion-mejora"
         ]
       },
       "put": {
         "operationId": "AccionMejoraController_put",
-        "summary": "Actualizar una acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4497,13 +4496,13 @@
             "description": "Acción de mejora no encontrada."
           }
         },
+        "summary": "Actualizar una acción de mejora",
         "tags": [
           "accion-mejora"
         ]
       },
       "delete": {
         "operationId": "AccionMejoraController_delete",
-        "summary": "Eliminar una acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4522,6 +4521,7 @@
             "description": "Acción de mejora no encontrada."
           }
         },
+        "summary": "Eliminar una acción de mejora",
         "tags": [
           "accion-mejora"
         ]
@@ -4530,7 +4530,6 @@
     "/accion-mejora-estado": {
       "post": {
         "operationId": "AccionMejoraEstadoController_post",
-        "summary": "Crear un nuevo estado de acción de mejora",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4557,13 +4556,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo estado de acción de mejora",
         "tags": [
           "accion-mejora-estado"
         ]
       },
       "get": {
         "operationId": "AccionMejoraEstadoController_getAll",
-        "summary": "Obtener todos los estados de acción de mejora",
         "parameters": [
           {
             "name": "query",
@@ -4644,6 +4643,7 @@
             }
           }
         },
+        "summary": "Obtener todos los estados de acción de mejora",
         "tags": [
           "accion-mejora-estado"
         ]
@@ -4652,7 +4652,6 @@
     "/accion-mejora-estado/{id}": {
       "get": {
         "operationId": "AccionMejoraEstadoController_getById",
-        "summary": "Obtener un estado de acción de mejora por Id",
         "parameters": [
           {
             "name": "id",
@@ -4678,13 +4677,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Obtener un estado de acción de mejora por Id",
         "tags": [
           "accion-mejora-estado"
         ]
       },
       "put": {
         "operationId": "AccionMejoraEstadoController_put",
-        "summary": "Actualizar un estado de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4723,13 +4722,13 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Actualizar un estado de acción de mejora",
         "tags": [
           "accion-mejora-estado"
         ]
       },
       "delete": {
         "operationId": "AccionMejoraEstadoController_delete",
-        "summary": "Eliminar un estado de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4748,6 +4747,7 @@
             "description": "Estado no encontrado."
           }
         },
+        "summary": "Eliminar un estado de acción de mejora",
         "tags": [
           "accion-mejora-estado"
         ]
@@ -4756,7 +4756,6 @@
     "/seguimiento-accion": {
       "post": {
         "operationId": "SeguimientoAccionController_post",
-        "summary": "Crear un nuevo seguimiento de acción de mejora",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -4783,13 +4782,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo seguimiento de acción de mejora",
         "tags": [
           "seguimiento-accion"
         ]
       },
       "get": {
         "operationId": "SeguimientoAccionController_getAll",
-        "summary": "Obtener todos los seguimientos de acción de mejora",
         "parameters": [
           {
             "name": "query",
@@ -4870,6 +4869,7 @@
             }
           }
         },
+        "summary": "Obtener todos los seguimientos de acción de mejora",
         "tags": [
           "seguimiento-accion"
         ]
@@ -4878,7 +4878,6 @@
     "/seguimiento-accion/{id}": {
       "get": {
         "operationId": "SeguimientoAccionController_getById",
-        "summary": "Obtener un seguimiento por Id",
         "parameters": [
           {
             "name": "id",
@@ -4904,13 +4903,13 @@
             "description": "Seguimiento no encontrado."
           }
         },
+        "summary": "Obtener un seguimiento por Id",
         "tags": [
           "seguimiento-accion"
         ]
       },
       "put": {
         "operationId": "SeguimientoAccionController_put",
-        "summary": "Actualizar un seguimiento de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4949,13 +4948,13 @@
             "description": "Seguimiento no encontrado."
           }
         },
+        "summary": "Actualizar un seguimiento de acción de mejora",
         "tags": [
           "seguimiento-accion"
         ]
       },
       "delete": {
         "operationId": "SeguimientoAccionController_delete",
-        "summary": "Eliminar un seguimiento de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -4974,6 +4973,7 @@
             "description": "Seguimiento no encontrado."
           }
         },
+        "summary": "Eliminar un seguimiento de acción de mejora",
         "tags": [
           "seguimiento-accion"
         ]
@@ -4982,7 +4982,6 @@
     "/responsable-accion": {
       "post": {
         "operationId": "ResponsableAccionController_post",
-        "summary": "Crear un nuevo responsable de acción de mejora",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -5009,13 +5008,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear un nuevo responsable de acción de mejora",
         "tags": [
           "responsable-accion"
         ]
       },
       "get": {
         "operationId": "ResponsableAccionController_getAll",
-        "summary": "Obtener todos los responsables de acción de mejora",
         "parameters": [
           {
             "name": "query",
@@ -5096,6 +5095,7 @@
             }
           }
         },
+        "summary": "Obtener todos los responsables de acción de mejora",
         "tags": [
           "responsable-accion"
         ]
@@ -5104,7 +5104,6 @@
     "/responsable-accion/{id}": {
       "get": {
         "operationId": "ResponsableAccionController_getById",
-        "summary": "Obtener un responsable por Id",
         "parameters": [
           {
             "name": "id",
@@ -5130,13 +5129,13 @@
             "description": "Responsable no encontrado."
           }
         },
+        "summary": "Obtener un responsable por Id",
         "tags": [
           "responsable-accion"
         ]
       },
       "put": {
         "operationId": "ResponsableAccionController_put",
-        "summary": "Actualizar un responsable de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -5175,13 +5174,13 @@
             "description": "Responsable no encontrado."
           }
         },
+        "summary": "Actualizar un responsable de acción de mejora",
         "tags": [
           "responsable-accion"
         ]
       },
       "delete": {
         "operationId": "ResponsableAccionController_delete",
-        "summary": "Eliminar un responsable de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -5200,6 +5199,7 @@
             "description": "Responsable no encontrado."
           }
         },
+        "summary": "Eliminar un responsable de acción de mejora",
         "tags": [
           "responsable-accion"
         ]
@@ -5208,7 +5208,6 @@
     "/calificacion-accion": {
       "post": {
         "operationId": "CalificacionAccionController_post",
-        "summary": "Crear una nueva calificación de acción de mejora",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -5235,13 +5234,13 @@
             "description": "Solicitud incorrecta."
           }
         },
+        "summary": "Crear una nueva calificación de acción de mejora",
         "tags": [
           "calificacion-accion"
         ]
       },
       "get": {
         "operationId": "CalificacionAccionController_getAll",
-        "summary": "Obtener todas las calificaciones de acción de mejora",
         "parameters": [
           {
             "name": "query",
@@ -5322,6 +5321,7 @@
             }
           }
         },
+        "summary": "Obtener todas las calificaciones de acción de mejora",
         "tags": [
           "calificacion-accion"
         ]
@@ -5330,7 +5330,6 @@
     "/calificacion-accion/{id}": {
       "get": {
         "operationId": "CalificacionAccionController_getById",
-        "summary": "Obtener una calificación por Id",
         "parameters": [
           {
             "name": "id",
@@ -5356,13 +5355,13 @@
             "description": "Calificación no encontrada."
           }
         },
+        "summary": "Obtener una calificación por Id",
         "tags": [
           "calificacion-accion"
         ]
       },
       "put": {
         "operationId": "CalificacionAccionController_put",
-        "summary": "Actualizar una calificación de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -5401,13 +5400,13 @@
             "description": "Calificación no encontrada."
           }
         },
+        "summary": "Actualizar una calificación de acción de mejora",
         "tags": [
           "calificacion-accion"
         ]
       },
       "delete": {
         "operationId": "CalificacionAccionController_delete",
-        "summary": "Eliminar una calificación de acción de mejora",
         "parameters": [
           {
             "name": "id",
@@ -5426,6 +5425,7 @@
             "description": "Calificación no encontrada."
           }
         },
+        "summary": "Eliminar una calificación de acción de mejora",
         "tags": [
           "calificacion-accion"
         ]
