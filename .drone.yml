@@ -65,6 +65,40 @@ steps:
         - push
 
 
+  - name: diag_runner
+    image: node:24-alpine
+    commands:
+      - uname -a; node -v; id
+      - grep -E '^(Seccomp|NoNewPrivs|CapEff)' /proc/self/status
+      - env | grep -E '^DRONE_(RUNNER|SYSTEM_HOST|STAGE_ARCH|STAGE_OS)' || true
+      - mount | grep -E ' /drone/src | / ' || true
+      - |
+        node -e '
+        const fs = require("fs");
+        for (const dir of ["/drone/src", "/tmp", "/dev/shm"]) {
+          const p = dir + "/diag.tmp";
+          const fd = fs.openSync(p, "w");
+          const tests = {
+            write:      () => fs.writeSync(fd, "a"),
+            pwrite_str: () => fs.writeSync(fd, "a", 0, "utf8"),
+            pwrite_buf: () => fs.writeSync(fd, Buffer.from("a"), 0, 1, 0),
+            fsync:      () => fs.fsyncSync(fd),
+          };
+          for (const [name, fn] of Object.entries(tests)) {
+            try { fn(); console.log(dir, name, "OK"); } catch (e) { console.log(dir, name, e.code); }
+          }
+          fs.closeSync(fd);
+          fs.open(p, "w", (err, afd) => {
+            if (err) return console.log(dir, "async_open", err.code);
+            fs.write(afd, "a", 0, "utf8", e => console.log(dir, "async_pwrite", e ? e.code : "OK"));
+          });
+        }'
+    when:
+      branch:
+        - feature/*
+      event:
+        - push
+
   - name: unit_tests
     image: node:24-alpine
     commands:
