@@ -1,0 +1,10 @@
+node_modules
+coverage
+.git
+.github
+src
+test
+database
+mongo_data
+*.tsbuildinfo
+.env*
