@@ -91,6 +91,7 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
+    "cacheDirectory": "../.jest-cache",
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
