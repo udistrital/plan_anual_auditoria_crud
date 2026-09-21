@@ -15,3 +15,5 @@ overrides:
   baseline-browser-mapping: ^2.11.0
   form-data: ^4.0.6
   '@babel/core': ^7.29.1
+patchedDependencies:
+  write-file-atomic@5.0.1: patches/write-file-atomic@5.0.1.patch
