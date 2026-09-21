@@ -10,6 +10,7 @@ import { FilterDto } from '../filters/filters.dto';
 const mockDto: CalificacionAccionDto = {
   accion_mejora_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   auditor_id: 55,
+  criterio_evaluacion: 1,
   calificacion: 4,
   observacion: 'Buen avance en la implementación',
   fecha_calificacion: new Date('2024-03-15'),

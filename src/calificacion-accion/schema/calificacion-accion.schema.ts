@@ -10,6 +10,9 @@ export class CalificacionAccion extends Document {
   auditor_id: number;
 
   @Prop({ required: false })
+  criterio_evaluacion: number;
+
+  @Prop({ required: false })
   calificacion: number;
 
   @Prop({ required: false })

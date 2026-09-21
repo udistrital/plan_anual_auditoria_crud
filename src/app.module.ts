@@ -13,6 +13,7 @@ import { EstadoAuditoriaModule } from './auditoria-estado/auditoria-estado.modul
 import { InformeModule } from './informe/informe.module';
 import { TemaModule } from './tema/tema.module';
 import { HallazgoModule } from './hallazgo/hallazgo.module';
+import { HallazgoRemisionModule } from './hallazgo-remision/hallazgo-remision.module';
 import { AuditoriaGestionModule } from './auditoria-gestion/auditoria-gestion.module';
 import { NotificacionModule } from './notificacion/notificacion.module';
 import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
@@ -64,6 +65,7 @@ import { CalificacionAccionModule } from './calificacion-accion/calificacion-acc
     InformeModule,
     TemaModule,
     HallazgoModule,
+    HallazgoRemisionModule,
     AuditoriaGestionModule,
     NotificacionModule,
     AuditoriaPadreModule,
