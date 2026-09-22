@@ -1,11 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
-
-// Mock de módulos con rutas absolutas antes de importar el controlador
-jest.mock('../auditoria-estado/dto/auditoria-estado.dto', () => ({
-  AuditoriaEstadoDto: class MockAuditoriaEstadoDto {},
-}));
-
 import { AuditoriaGestionController } from './auditoria-gestion.controller';
 import { AuditoriaGestionService } from './auditoria-gestion.service';
 import { CreateAuditoriaGestionDto } from './dto/create-auditoria-gestion.dto';

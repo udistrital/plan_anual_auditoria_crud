@@ -4,50 +4,92 @@ El API crud permite gestionar planes anuales de auditoria asi como sus auditoria
 ## Especificaciones Técnicas
 
 ### Tecnologías Implementadas y Versiones
-* [nest 10.0.0]()
-* [typescript 5.6.2]()
+* [NestJS 12](https://nestjs.com/)
+* [TypeScript 6.0](https://www.typescriptlang.org/)
+* [Mongoose 7](https://mongoosejs.com/) sobre [MongoDB](https://www.mongodb.com/)
+* [pnpm 11](https://pnpm.io/) como gestor de paquetes
+* Node.js >= 22.12 (requerido: los paquetes de NestJS 12 son ESM-only y se cargan vía `require(esm)`)
 
 ### Variables de Entorno
 
-VARIABLE=[descripcion]
+| Variable | Descripción |
+| -- | -- |
+| `PLAN_ANUAL_AUDITORIA_HOST` | Host de MongoDB |
+| `PLAN_ANUAL_AUDITORIA_PORT` | Puerto de MongoDB |
+| `PLAN_ANUAL_AUDITORIA_DB` | Nombre de la base de datos |
+| `PLAN_ANUAL_AUDITORIA_AUTH_DB` | Base de datos de autenticación (`authSource`) |
+| `PLAN_ANUAL_AUDITORIA_USER` | Usuario de MongoDB |
+| `PLAN_ANUAL_AUDITORIA_PASS` | Contraseña de MongoDB |
+| `PARAMETER_STORE` | Opcional. Prefijo en AWS SSM Parameter Store; si está definido, `USER` y `PASS` se leen de `/<PARAMETER_STORE>/plan_anual_auditoria_crud/db/{username,password}` en lugar del entorno |
+
+El API expone el puerto `8080` y la documentación Swagger en `/swagger`.
 
 ### Ejecución del Proyecto
-```shel
-
-# 1. Obtener el repositorio con Go
-go get github.com/udistrital/plan_anual_auditoria_crud.git
-
-# 2. Moverse a la carpeta del repositorio
-cd $GOPATH/src/github.com/udistrital/plan_anual_auditoria_crud
-
-# 3. Moverse a la rama **develop**
-git pull origin develop && git checkout develop
-
-# 4. alimentar todas las variables de entorno que utiliza el proyecto.
-
-# 5. ejecutar el proyecto
-npm run start 
-```
-### Ejecución Pruebas
-
-Pruebas unitarias
 ```shell
-# Test
-npm run test
+# 1. Clonar el repositorio y moverse a la rama develop
+git clone https://github.com/udistrital/plan_anual_auditoria_crud.git
+cd plan_anual_auditoria_crud
+git checkout develop
 
-# Se ejecutará jest, validando los casos de prueba en los archivos .spec.ts
+# 2. Instalar dependencias
+pnpm install
 
-npm run test:cov
-# Validar la cobertura de las pruebas
+# 3. Definir las variables de entorno (ver tabla anterior)
+
+# 4. Ejecutar el proyecto
+pnpm run start        # producción local
+pnpm run start:dev    # con recarga automática
 ```
+
+### Ejecución Pruebas
+```shell
+pnpm run typecheck    # verificación de tipos
+pnpm run lint         # análisis estático
+pnpm test             # pruebas unitarias (jest, archivos .spec.ts)
+pnpm run test:cov     # pruebas con cobertura
+pnpm audit            # vulnerabilidades en dependencias
+```
+
+### Base de Datos
+
+Base de datos MongoDB gestionada con Mongoose. Para levantar una instancia local:
+
+```shell
+# Requiere PLAN_ANUAL_AUDITORIA_USER, _PASS y _DB definidas en el entorno
+docker compose up -d mongo
+```
+
+Se crean 22 colecciones, organizadas en dos dominios:
+
+* **Auditorías**: `plan_auditoria`, `plan_estado`, `auditoria_padre`, `auditoria_padre_estado`, `auditoria`, `auditoria_estado`, `auditoria_auditor`, `actividad`, `informe`, `tema`, `documento`, `observacion`, `notificacion`.
+* **Planes de mejoramiento**: `plan_mejoramiento`, `plan_mejoramiento_estado`, `plan_mejoramiento_auditor`, `responsable_accion`, `accion_mejora`, `accion_mejora_estado`, `seguimiento_accion`, `calificacion_accion`.
+
+El detalle de campos, tipos y relaciones de cada colección está en el [Diccionario de Datos](database/Diccionario.md).
+
+### Docker
+
+La imagen se construye a partir del artefacto compilado (`dist/`) e instala únicamente las dependencias de producción, de modo que las herramientas de desarrollo no forman parte del contenedor:
+
+```shell
+pnpm install && pnpm run build
+docker build -t plan_anual_auditoria_crud .
+docker run -p 8080:8080 \
+  -e PLAN_ANUAL_AUDITORIA_HOST=... -e PLAN_ANUAL_AUDITORIA_PORT=27017 \
+  -e PLAN_ANUAL_AUDITORIA_DB=... -e PLAN_ANUAL_AUDITORIA_AUTH_DB=admin \
+  -e PLAN_ANUAL_AUDITORIA_USER=... -e PLAN_ANUAL_AUDITORIA_PASS=... \
+  plan_anual_auditoria_crud
+```
+
 ## Estado CI
 
-| Develop | Relese 0.0.1 | Master |
+| Develop | Release 0.0.1 | Master |
 | -- | -- | -- |
 | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg?ref=refs/heads/develop)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg?ref=refs/heads/release/0.0.1)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) | [![Build Status](https://hubci.portaloas.udistrital.edu.co/api/badges/udistrital/plan_anual_auditoria_crud/status.svg)](https://hubci.portaloas.udistrital.edu.co/udistrital/plan_anual_auditoria_crud/) |
 
 ## Modelo de Datos
-![Modelo de datos Plan Anual Auditoria](/database/plan_anual_de_auditoría_V5.png)
+![Modelo de datos Plan Anual Auditoria](database/ModeloDatosSisifov2.png)
+
+Fuente editable: [ModeloDatosSisifov2.drawio](database/ModeloDatosSisifov2.drawio) · Versión vectorial: [ModeloDatosSisifov2.svg](database/ModeloDatosSisifov2.svg)
 
 ## Licencia
 

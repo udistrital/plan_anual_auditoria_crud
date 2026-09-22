@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { PlanMejoramientoEstadoDto } from './dto/plan-mejoramiento-estado.dto';
 import { PlanMejoramientoEstadoService } from './plan-mejoramiento-estado.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { PlanMejoramientoEstadoController } from './plan-mejoramiento-estado.controller';
 import { Types } from 'mongoose';
 

@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { CalificacionAccionDto } from './dto/calificacion-accion.dto';
 import { CalificacionAccionService } from './calificacion-accion.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { CalificacionAccionController } from './calificacion-accion.controller';
 import { Types } from 'mongoose';
 

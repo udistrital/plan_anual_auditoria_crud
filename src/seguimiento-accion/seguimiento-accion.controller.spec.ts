@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { SeguimientoAccionDto } from './dto/seguimiento-accion.dto';
 import { SeguimientoAccionService } from './seguimiento-accion.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { SeguimientoAccionController } from './seguimiento-accion.controller';
 import { Types } from 'mongoose';
 

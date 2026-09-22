@@ -1,0 +1,11 @@
+node_modules
+coverage
+.jest-cache
+.git
+.github
+src
+test
+database
+mongo_data
+*.tsbuildinfo
+.env*

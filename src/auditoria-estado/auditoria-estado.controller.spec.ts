@@ -5,7 +5,6 @@ import { AuditoriaEstadoDto } from './dto/auditoria-estado.dto';
 import { EstadoAuditoriaService } from './auditoria-estado.service';
 
 // Mock del ParseObjectIdPipe usando ruta relativa
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { EstadoAuditoriaController } from './auditoria-estado.controller';

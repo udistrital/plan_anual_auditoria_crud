@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { AccionMejoraDto } from './dto/accion-mejora.dto';
 import { AccionMejoraService } from './accion-mejora.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { AccionMejoraController } from './accion-mejora.controller';
 import { Types } from 'mongoose';
 
