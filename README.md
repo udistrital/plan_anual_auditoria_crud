@@ -68,10 +68,11 @@ El detalle de campos, tipos y relaciones de cada colección está en el [Diccion
 
 ### Docker
 
-La imagen se construye a partir del artefacto compilado (`dist/`) e instala únicamente las dependencias de producción, de modo que las herramientas de desarrollo no forman parte del contenedor:
+La imagen se construye a partir del artefacto compilado (`dist/`) y las dependencias ya instaladas en `node_modules`, que deben quedar acotadas a producción antes de construir la imagen:
 
 ```shell
 pnpm install && pnpm run build
+pnpm install --prod --frozen-lockfile
 docker build -t plan_anual_auditoria_crud .
 docker run -p 8080:8080 \
   -e PLAN_ANUAL_AUDITORIA_HOST=... -e PLAN_ANUAL_AUDITORIA_PORT=27017 \
