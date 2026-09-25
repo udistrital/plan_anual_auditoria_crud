@@ -75,6 +75,18 @@ steps:
       event:
       - push
 
+  - name: prune_dependencies
+    image: node:24-alpine
+    commands:
+      - npm install -g pnpm
+      - pnpm install --prod --frozen-lockfile
+    when:
+      branch:
+        - release/*
+        - master
+      event:
+        - push
+
   - name: publish_to_ecr_release
     image: plugins/ecr
     settings:
