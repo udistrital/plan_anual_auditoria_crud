@@ -1,35 +1,35 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { HallazgoRemisionService } from './hallazgo-remision.service';
 import { HttpStatus } from '@nestjs/common';
+import { HallazgoRemisionDTO } from './dto/hallazgo-remision.dto';
 import { FilterDto } from '../filters/filters.dto';
-import { AuditoriaEstadoDto } from './dto/auditoria-estado.dto';
-import { EstadoAuditoriaService } from './auditoria-estado.service';
-
-// Mock del ParseObjectIdPipe usando ruta relativa
-
-// Importar el controlador después del mock
-import { EstadoAuditoriaController } from './auditoria-estado.controller';
 import { Types } from 'mongoose';
 
-const mockAuditoriaEstadoDto: AuditoriaEstadoDto = {
-  auditoria_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
-  usuario_id: 76767,
-  usuario_rol: 'AUDITOR',
-  observacion: 'Estado inicial de la auditoría',
-  actual: true,
-  estado_id: 2552,
-  fase_id: 'PROGRAMACION',
-  fecha_ejecucion_estado: new Date('2024-01-15'),
+jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
+
+import { HallazgoRemisionController } from './hallazgo-remision.controller';
+
+const mockHallazgoRemisionDTO: HallazgoRemisionDTO = {
+  hallazgo_id: new Types.ObjectId('67197dda3416d2a85e5d6d8f'),
+  dependencia_origen_id: 123,
+  dependencia_destino_id: [456],
+  usuario_id: 789,
+  usuario_rol: 'Auditor',
+  observacion: 'Se remite por competencia',
+  estado: 'pendiente',
   activo: true,
+  fecha_creacion: new Date('2024-01-01'),
+  fecha_modificacion: new Date('2024-01-01'),
 };
 
-const mockEstadoAuditoria = {
-  ...mockAuditoriaEstadoDto,
-  _id: '672d36737e962bcac5ce9beb',
+const mockHallazgoRemision = {
+  ...mockHallazgoRemisionDTO,
+  _id: '671aaa8a064222e6583d56e7',
 };
 
-describe('EstadoAuditoriaController', () => {
-  let controller: EstadoAuditoriaController;
-  let service: EstadoAuditoriaService;
+describe('HallazgoRemisionController', () => {
+  let controller: HallazgoRemisionController;
+  let service: HallazgoRemisionService;
 
   const mockResponse = () => {
     const res: any = {};
@@ -40,10 +40,10 @@ describe('EstadoAuditoriaController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [EstadoAuditoriaController],
+      controllers: [HallazgoRemisionController],
       providers: [
         {
-          provide: EstadoAuditoriaService,
+          provide: HallazgoRemisionService,
           useValue: {
             post: jest.fn(),
             getAll: jest.fn(),
@@ -56,53 +56,51 @@ describe('EstadoAuditoriaController', () => {
       ],
     }).compile();
 
-    controller = module.get<EstadoAuditoriaController>(
-      EstadoAuditoriaController,
+    controller = module.get<HallazgoRemisionController>(
+      HallazgoRemisionController,
     );
-    service = module.get<EstadoAuditoriaService>(EstadoAuditoriaService);
+    service = module.get<HallazgoRemisionService>(HallazgoRemisionService);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it('Debería estar definido', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
   });
 
   describe('post', () => {
-    it('Debería crear un estado de auditoría y retornar CREATED (201) con datos válidos', async () => {
+    it('Debería crear una remisión de hallazgo y retornar CREATED (201) con datos válidos', async () => {
       const serviceSpy = jest
         .spyOn(service, 'post')
-        .mockResolvedValue(mockEstadoAuditoria as any);
+        .mockResolvedValue(mockHallazgoRemision as any);
       const res = mockResponse();
 
-      await controller.post(res, mockAuditoriaEstadoDto);
+      await controller.post(res, mockHallazgoRemisionDTO);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockHallazgoRemisionDTO);
       expect(serviceSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.CREATED,
         Message: 'Registro Exitoso',
-        Data: mockEstadoAuditoria,
+        Data: mockHallazgoRemision,
       });
     });
 
     it('Debería retornar BAD_REQUEST (400) cuando el servicio lanza un error de validación', async () => {
-      const mockError = new Error(
-        'AuditoriaEstado validation failed: estado_id is required',
-      );
+      const mockError = new Error('Validation failed');
       const serviceSpy = jest
         .spyOn(service, 'post')
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.post(res, mockAuditoriaEstadoDto);
+      await controller.post(res, mockHallazgoRemisionDTO);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockHallazgoRemisionDTO);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -113,18 +111,18 @@ describe('EstadoAuditoriaController', () => {
       });
     });
 
-    it('Debería manejar errores de relación con auditoría', async () => {
+    it('Debería manejar errores de relación con hallazgo', async () => {
       const mockError = new Error(
-        'Plan auditoria relacionada con id 672d3050f7814a9a0c5261d4 no existe',
+        'Hallazgo relacionado con id 67197dda3416d2a85e5d6d8f no existe',
       );
       const serviceSpy = jest
         .spyOn(service, 'post')
         .mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.post(res, mockAuditoriaEstadoDto);
+      await controller.post(res, mockHallazgoRemisionDTO);
 
-      expect(serviceSpy).toHaveBeenCalledWith(mockAuditoriaEstadoDto);
+      expect(serviceSpy).toHaveBeenCalledWith(mockHallazgoRemisionDTO);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -138,32 +136,30 @@ describe('EstadoAuditoriaController', () => {
 
   describe('getAll', () => {
     const mockFilterDto: FilterDto = {
-      query: 'actual: true',
-      fields: 'estado_id,fase_id,observacion',
-      sortby: 'fecha_ejecucion_estado',
+      query: 'hallazgo_id:67197dda3416d2a85e5d6d8f',
+      fields: 'observacion,estado',
+      sortby: 'fecha_creacion',
       order: 'desc',
       limit: '10',
       offset: '0',
       populate: 'true',
     };
 
-    const mockEstados = [
+    const mockHallazgosRemision = [
       {
-        ...mockEstadoAuditoria,
-        _id: '1',
-        estado_id: 2552,
+        ...mockHallazgoRemision,
+        _id: '671aa963064222e6583d56e4',
       },
       {
-        ...mockEstadoAuditoria,
-        _id: '2',
-        estado_id: 2553,
+        ...mockHallazgoRemision,
+        _id: '671aaa8a064222e6583d56e7',
       },
     ];
 
-    it('Debería retornar OK (200) con todos los estados de auditoría y metadata', async () => {
+    it('Debería retornar OK (200) con todas las remisiones y metadata', async () => {
       const getAllSpy = jest
         .spyOn(service, 'getAll')
-        .mockResolvedValue(mockEstados as any);
+        .mockResolvedValue(mockHallazgosRemision as any);
       const countSpy = jest.spyOn(service, 'count').mockResolvedValue(2);
       const res = mockResponse();
 
@@ -178,7 +174,7 @@ describe('EstadoAuditoriaController', () => {
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: mockEstados,
+        Data: mockHallazgosRemision,
         MetaData: { Count: 2 },
       });
     });
@@ -203,7 +199,7 @@ describe('EstadoAuditoriaController', () => {
     });
 
     it('Debería retornar NOT_FOUND (404) cuando el servicio lanza un error', async () => {
-      const mockError = new Error('Error en el filtro de búsqueda');
+      const mockError = new Error('No records found');
       const getAllSpy = jest
         .spyOn(service, 'getAll')
         .mockRejectedValue(mockError);
@@ -224,22 +220,22 @@ describe('EstadoAuditoriaController', () => {
   });
 
   describe('getById', () => {
-    it('Debería retornar OK (200) con el estado cuando el ID es válido', async () => {
+    it('Debería retornar OK (200) con la remisión cuando el ID es válido', async () => {
       const getByIdSpy = jest
         .spyOn(service, 'getById')
-        .mockResolvedValue(mockEstadoAuditoria as any);
+        .mockResolvedValue(mockHallazgoRemision as any);
       const res = mockResponse();
 
-      await controller.getById(res, mockEstadoAuditoria._id);
+      await controller.getById(res, mockHallazgoRemision._id);
 
-      expect(getByIdSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id);
+      expect(getByIdSpy).toHaveBeenCalledWith(mockHallazgoRemision._id);
       expect(getByIdSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Peticion Exitosa',
-        Data: mockEstadoAuditoria,
+        Data: mockHallazgoRemision,
       });
     });
 
@@ -263,54 +259,32 @@ describe('EstadoAuditoriaController', () => {
         Data: mockError.message,
       });
     });
-
-    it('Debería manejar errores de formato de ID inválido', async () => {
-      const invalidId = 'invalid-id-format';
-      const mockError = new Error('Cast to ObjectId failed');
-      const getByIdSpy = jest
-        .spyOn(service, 'getById')
-        .mockRejectedValue(mockError);
-      const res = mockResponse();
-
-      await controller.getById(res, invalidId);
-
-      expect(getByIdSpy).toHaveBeenCalledWith(invalidId);
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-      expect(res.json).toHaveBeenCalledWith({
-        Success: false,
-        Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en servicio GetOne: la peticion contiene un parametro incorrecto o no existe un registro',
-        Data: mockError.message,
-      });
-    });
   });
 
   describe('put', () => {
-    const updateDto: AuditoriaEstadoDto = {
-      ...mockAuditoriaEstadoDto,
+    const updateDto: HallazgoRemisionDTO = {
+      ...mockHallazgoRemisionDTO,
       observacion: 'Observación actualizada',
-      estado_id: 2553,
-      actual: false,
+      estado: 'aceptada',
     };
 
     it('Debería actualizar y retornar OK (200) con datos válidos', async () => {
-      const updatedEstado = { ...mockEstadoAuditoria, ...updateDto };
+      const updatedRemision = { ...mockHallazgoRemision, ...updateDto };
       const putSpy = jest
         .spyOn(service, 'put')
-        .mockResolvedValue(updatedEstado as any);
+        .mockResolvedValue(updatedRemision as any);
       const res = mockResponse();
 
-      await controller.put(res, mockEstadoAuditoria._id, updateDto);
+      await controller.put(res, mockHallazgoRemision._id, updateDto);
 
-      expect(putSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id, updateDto);
+      expect(putSpy).toHaveBeenCalledWith(mockHallazgoRemision._id, updateDto);
       expect(putSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
         Success: true,
         Status: HttpStatus.OK,
         Message: 'Actualizacion Exitosa',
-        Data: updatedEstado,
+        Data: updatedRemision,
       });
     });
 
@@ -319,28 +293,9 @@ describe('EstadoAuditoriaController', () => {
       const putSpy = jest.spyOn(service, 'put').mockRejectedValue(mockError);
       const res = mockResponse();
 
-      await controller.put(res, mockEstadoAuditoria._id, updateDto);
+      await controller.put(res, mockHallazgoRemision._id, updateDto);
 
-      expect(putSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id, updateDto);
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
-      expect(res.json).toHaveBeenCalledWith({
-        Success: false,
-        Status: HttpStatus.BAD_REQUEST,
-        Message:
-          'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
-        Data: mockError.message,
-      });
-    });
-
-    it('Debería retornar BAD_REQUEST (400) cuando el ID no existe', async () => {
-      const nonExistentId = '671aaf35d779a09e092cb999';
-      const mockError = new Error(`${nonExistentId} no existe`);
-      const putSpy = jest.spyOn(service, 'put').mockRejectedValue(mockError);
-      const res = mockResponse();
-
-      await controller.put(res, nonExistentId, updateDto);
-
-      expect(putSpy).toHaveBeenCalledWith(nonExistentId, updateDto);
+      expect(putSpy).toHaveBeenCalledWith(mockHallazgoRemision._id, updateDto);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,
@@ -359,9 +314,9 @@ describe('EstadoAuditoriaController', () => {
         .mockResolvedValue(undefined);
       const res = mockResponse();
 
-      await controller.delete(res, mockEstadoAuditoria._id);
+      await controller.delete(res, mockHallazgoRemision._id);
 
-      expect(deleteSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id);
+      expect(deleteSpy).toHaveBeenCalledWith(mockHallazgoRemision._id);
       expect(deleteSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.OK);
       expect(res.json).toHaveBeenCalledWith({
@@ -369,7 +324,7 @@ describe('EstadoAuditoriaController', () => {
         Status: HttpStatus.OK,
         Message: 'Eliminacion Exitosa',
         Data: {
-          _id: mockEstadoAuditoria._id,
+          _id: mockHallazgoRemision._id,
         },
       });
     });
@@ -385,26 +340,6 @@ describe('EstadoAuditoriaController', () => {
       await controller.delete(res, nonExistentId);
 
       expect(deleteSpy).toHaveBeenCalledWith(nonExistentId);
-      expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-      expect(res.json).toHaveBeenCalledWith({
-        Success: false,
-        Status: HttpStatus.NOT_FOUND,
-        Message:
-          'Error en el servicio Delete: la peticion contiene parametros incorrectos',
-        Data: mockError.message,
-      });
-    });
-
-    it('Debería manejar errores generales del servicio', async () => {
-      const mockError = new Error('Database connection error');
-      const deleteSpy = jest
-        .spyOn(service, 'delete')
-        .mockRejectedValue(mockError);
-      const res = mockResponse();
-
-      await controller.delete(res, mockEstadoAuditoria._id);
-
-      expect(deleteSpy).toHaveBeenCalledWith(mockEstadoAuditoria._id);
       expect(res.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
       expect(res.json).toHaveBeenCalledWith({
         Success: false,

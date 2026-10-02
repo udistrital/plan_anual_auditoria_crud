@@ -4,8 +4,6 @@ import { FilterDto } from '../filters/filters.dto';
 import { AccionMejoraDto } from './dto/accion-mejora.dto';
 import { AccionMejoraService } from './accion-mejora.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { AccionMejoraController } from './accion-mejora.controller';
 import { Types } from 'mongoose';
 
@@ -25,6 +23,7 @@ const mockDto: AccionMejoraDto = {
   creado_por_rol: 'AUDITOR',
   modificado_por_id: 101,
   modificado_por_rol: 'AUDITOR',
+  en_revision: true,
   activo: true,
   fecha_creacion: new Date('2024-01-01'),
   fecha_modificacion: new Date('2024-01-01'),

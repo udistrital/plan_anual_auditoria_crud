@@ -5,7 +5,6 @@ import { DocumentoDTO } from './dto/documento.dto';
 import { DocumentoService } from './documento.service';
 
 // Mock del ParseObjectIdPipe usando ruta relativa
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { DocumentoController } from './documento.controller';

@@ -1,27 +1,27 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
-export class CalificacionAccionDto {
+export class HallazgoRemisionDTO {
   @ApiProperty()
-  readonly accion_mejora_id: Types.ObjectId;
+  readonly hallazgo_id: Types.ObjectId;
 
   @ApiProperty()
-  readonly auditor_id: number;
+  readonly dependencia_origen_id: number;
 
   @ApiProperty()
-  readonly criterio_evaluacion: number;
+  readonly dependencia_destino_id: number[];
 
   @ApiProperty()
-  readonly calificacion: number;
+  readonly usuario_id: number;
+
+  @ApiProperty()
+  readonly usuario_rol?: string;
 
   @ApiProperty()
   readonly observacion: string;
 
   @ApiProperty()
-  readonly fecha_calificacion: Date;
-
-  @ApiProperty()
-  readonly actual: boolean;
+  readonly estado: string;
 
   @ApiProperty()
   activo: boolean;

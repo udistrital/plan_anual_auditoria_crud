@@ -7,8 +7,6 @@ import {
   UpdateObservacionDTO,
 } from './dto/observacion.dto';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe.ts');
-
 import { ObservacionController } from './observacion.controller';
 
 const mockCreateObservacionDto: CreateObservacionDTO = {

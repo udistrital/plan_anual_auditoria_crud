@@ -1,0 +1,20 @@
+diff --git a/lib/index.js b/lib/index.js
+index 6013894cd1f4fc0d87d4b1979d8d60c15adf3a98..357b48caa287dd69753199d696a144b1a4ae33d8 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -218,9 +218,13 @@ function writeFileSync (filename, data, options) {
+       options.tmpfileCreated(tmpfile)
+     }
+     if (ArrayBuffer.isView(data)) {
+-      fs.writeSync(fd, data, 0, data.length, 0)
++      // Position omitted (not `0`): some hosts block the pwrite64 syscall
++      // that Node issues for positional writes, even at position 0, while
++      // plain write() succeeds. The fd was just opened with 'w' (truncated,
++      // offset 0), so writing at the current position is equivalent.
++      fs.writeSync(fd, data, 0, data.length)
+     } else if (data != null) {
+-      fs.writeSync(fd, String(data), 0, String(options.encoding || 'utf8'))
++      fs.writeSync(fd, String(data), null, String(options.encoding || 'utf8'))
+     }
+     if (options.fsync !== false) {
+       fs.fsyncSync(fd)

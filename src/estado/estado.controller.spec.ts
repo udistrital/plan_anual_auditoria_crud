@@ -5,7 +5,6 @@ import { PlanEstadoDto } from './dto/estado.dto';
 import { EstadoService } from './estado.service';
 
 // Mock del ParseObjectIdPipe
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
 
 // Importar el controlador después del mock
 import { EstadoController } from './estado.controller';

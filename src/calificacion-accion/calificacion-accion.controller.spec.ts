@@ -4,14 +4,13 @@ import { FilterDto } from '../filters/filters.dto';
 import { CalificacionAccionDto } from './dto/calificacion-accion.dto';
 import { CalificacionAccionService } from './calificacion-accion.service';
 
-jest.mock('../pipes/parse-object-id/parse-object-id.pipe');
-
 import { CalificacionAccionController } from './calificacion-accion.controller';
 import { Types } from 'mongoose';
 
 const mockDto: CalificacionAccionDto = {
   accion_mejora_id: new Types.ObjectId('672d3050f7814a9a0c5261d4'),
   auditor_id: 55,
+  criterio_evaluacion: 1,
   calificacion: 4,
   observacion: 'Buen avance en la implementación',
   fecha_calificacion: new Date('2024-03-15'),

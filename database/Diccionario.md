@@ -597,6 +597,7 @@ Campo paramétrico: estado_id.
 | creado_por_rol | String | Si | Rol del usuario que creó la acción |
 | modificado_por_id | Number | No | Usuario que modificó la acción |
 | modificado_por_rol | String | No | Rol del usuario que modificó la acción |
+| en_revision | Boolean | No | Indicador de revisión de documentos en registro de avances |
 | activo | Boolean | No | Indicador de estado activo |
 | fecha_creacion | Date | Si | Fecha de creación |
 | fecha_modificacion | Date | Si | Fecha de última actualización |
@@ -659,6 +660,7 @@ Calificación de la acción de mejora.
 | _id | ObjectId | Si | Identificador único |
 | accion_mejora_id | ObjectId | Si | Identificador de la accion de mejora |
 | auditor_id | Number | Si | Auditor que registró la calificación |
+| criterio_evaluacion | Number | Si | Criterio de evaluación de la acción de mejora |
 | calificacion | Number | No | Calificación de la acción de mejora |
 | observacion | String | No | Observación de la acción de mejora respecto a la calificación |
 | fecha_calificacion | Date | Si | Fecha en que se realizó el registro de la calificación |
