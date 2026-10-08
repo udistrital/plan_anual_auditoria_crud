@@ -20,6 +20,7 @@ import { AuditoriaPadreModule } from './auditoria-padre/auditoria-padre.module';
 import { EstadoAuditoriaPadreModule } from './auditoria-padre-estado/auditoria-padre-estado.module';
 import { ObservacionModule } from './observacion/observacion.module';
 import { PlanMejoramientoModule } from './plan-mejoramiento/plan-mejoramiento.module';
+import { ResumenPlanMejoramientoModule } from './resumen-plan-mejoramiento/resumen-plan-mejoramiento.module';
 import { PlanMejoramientoEstadoModule } from './plan-mejoramiento-estado/plan-mejoramiento-estado.module';
 import { PlanMejoramientoAuditorModule } from './plan-mejoramiento-auditor/plan-mejoramiento-auditor.module';
 import { AccionMejoraModule } from './accion-mejora/accion-mejora.module';
@@ -72,6 +73,7 @@ import { CalificacionAccionModule } from './calificacion-accion/calificacion-acc
     EstadoAuditoriaPadreModule,
     ObservacionModule,
     PlanMejoramientoModule,
+    ResumenPlanMejoramientoModule,
     PlanMejoramientoEstadoModule,
     PlanMejoramientoAuditorModule,
     AccionMejoraModule,
