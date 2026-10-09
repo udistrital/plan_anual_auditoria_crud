@@ -14,11 +14,18 @@ export class ResumenPlanMejoramientoQueryDto {
   readonly tipo_evaluacion_id: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description:
-      'Dependencias de la auditoría padre separadas por |. e.g. 32|45',
+      'Solo auditorías de estas dependencias, separadas por |. e.g. 32|45. Vacío no devuelve nada.',
   })
-  readonly dependencia_ids: string;
+  readonly dependencia_ids?: string;
+
+  @ApiProperty({
+    required: false,
+    description:
+      'Solo auditorías donde la persona es auditor de la auditoría o de su plan.',
+  })
+  readonly auditor_id?: string;
 
   @ApiProperty({
     required: true,

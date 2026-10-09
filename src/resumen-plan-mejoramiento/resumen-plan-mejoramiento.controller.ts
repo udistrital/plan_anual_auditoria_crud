@@ -13,7 +13,7 @@ export class ResumenPlanMejoramientoController {
   @Get()
   @ApiOperation({
     summary:
-      'Cuenta las auditorías de las dependencias indicadas agrupadas por el estado de su plan de mejoramiento',
+      'Cuenta las auditorías agrupadas por el estado de su plan de mejoramiento, filtrando opcionalmente por dependencias o por auditor',
   })
   @ApiResponse({
     status: 200,
@@ -28,11 +28,16 @@ export class ResumenPlanMejoramientoController {
       const resumen = await this.resumenPlanMejoramientoService.getResumen({
         vigencia_id: Number(query.vigencia_id),
         tipo_evaluacion_id: Number(query.tipo_evaluacion_id),
-        dependencia_ids: String(query.dependencia_ids ?? '')
-          .split('|')
-          .filter(Boolean)
-          .map(Number),
         estado_auditoria_id: Number(query.estado_auditoria_id),
+        // Ausente: sin filtro de dependencias; presente y vacío: ninguna auditoría
+        dependencia_ids:
+          query.dependencia_ids === undefined
+            ? undefined
+            : String(query.dependencia_ids)
+                .split('|')
+                .filter(Boolean)
+                .map(Number),
+        auditor_id: query.auditor_id ? Number(query.auditor_id) : undefined,
       });
       res.status(HttpStatus.OK).json({
         Success: true,

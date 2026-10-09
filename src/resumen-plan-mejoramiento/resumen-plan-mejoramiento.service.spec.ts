@@ -79,7 +79,7 @@ describe('ResumenPlanMejoramientoService', () => {
     expect(lookupPlan.$lookup.pipeline[0].$match.activo).toBe(true);
   });
 
-  it('no consulta la base de datos sin dependencias', async () => {
+  it('no consulta la base de datos con una lista de dependencias vacía', async () => {
     const resumen = await service.getResumen({
       ...filtros,
       dependencia_ids: [],
@@ -87,5 +87,75 @@ describe('ResumenPlanMejoramientoService', () => {
 
     expect(resumen).toEqual({ total_auditorias: 0, por_estado: [] });
     expect(aggregate).not.toHaveBeenCalled();
+  });
+
+  describe('vista del auditor', () => {
+    const sinDependencias: FiltrosResumenPlan = {
+      ...filtros,
+      dependencia_ids: undefined,
+    };
+    const etapaDe = (pipeline: any[], from: string) =>
+      pipeline.find((etapa) => etapa.$lookup?.from === from);
+
+    it('sin dependencias ni auditor cuenta toda la institución', () => {
+      const pipeline = service.construirPipeline(sinDependencias) as any[];
+
+      expect(pipeline[0].$match).toEqual({
+        activo: true,
+        vigencia_id: 7087,
+        tipo_evaluacion_id: 6770,
+      });
+      expect(etapaDe(pipeline, 'auditoria_auditor')).toBeUndefined();
+      expect(etapaDe(pipeline, 'plan_mejoramiento_auditor')).toBeUndefined();
+    });
+
+    it('con auditor solo deja las auditorías donde es auditor de la auditoría o del plan', () => {
+      const pipeline = service.construirPipeline({
+        ...sinDependencias,
+        auditor_id: 10,
+      }) as any[];
+
+      expect(
+        etapaDe(pipeline, 'auditoria_auditor').$lookup.pipeline[0].$match,
+      ).toMatchObject({ activo: true, asignado: true, auditor_id: 10 });
+      expect(
+        etapaDe(pipeline, 'plan_mejoramiento_auditor').$lookup.pipeline[0]
+          .$match,
+      ).toMatchObject({ activo: true, auditor_id: 10 });
+      expect(pipeline).toContainEqual({
+        $match: {
+          $or: [
+            { 'asignacion_auditoria.0': { $exists: true } },
+            { 'asignacion_plan.0': { $exists: true } },
+          ],
+        },
+      });
+    });
+
+    it('filtra por asignación antes de agrupar por estado', () => {
+      const pipeline = service.construirPipeline({
+        ...sinDependencias,
+        auditor_id: 10,
+      }) as any[];
+      const indiceFiltro = pipeline.findIndex((e) => e.$match?.$or);
+      const indiceGrupo = pipeline.findIndex((e) => e.$group);
+
+      expect(indiceFiltro).toBeGreaterThan(-1);
+      expect(indiceFiltro).toBeLessThan(indiceGrupo);
+    });
+
+    it('consulta la base de datos sin lista de dependencias', async () => {
+      aggregate.mockReturnValue({
+        exec: jest.fn().mockResolvedValue([{ estado_id: null, cantidad: 4 }]),
+      });
+
+      const resumen = await service.getResumen({
+        ...sinDependencias,
+        auditor_id: 10,
+      });
+
+      expect(resumen.total_auditorias).toBe(4);
+      expect(aggregate).toHaveBeenCalledTimes(1);
+    });
   });
 });
