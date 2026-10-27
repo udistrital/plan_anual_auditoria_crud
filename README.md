@@ -8,7 +8,7 @@ El API crud permite gestionar planes anuales de auditoria asi como sus auditoria
 * [TypeScript 6.0](https://www.typescriptlang.org/)
 * [Mongoose 7](https://mongoosejs.com/) sobre [MongoDB](https://www.mongodb.com/)
 * [pnpm 11](https://pnpm.io/) como gestor de paquetes
-* Node.js >= 22.12 (requerido: los paquetes de NestJS 12 son ESM-only y se cargan vía `require(esm)`)
+* Node.js 24.22 (imagen `node:24.22-alpine`). Requerido: los paquetes de NestJS 12 son ESM-only y se cargan vía `require(esm)`
 
 ### Variables de Entorno
 
@@ -68,7 +68,7 @@ El detalle de campos, tipos y relaciones de cada colección está en el [Diccion
 
 ### Docker
 
-La imagen se construye a partir del artefacto compilado (`dist/`) y las dependencias ya instaladas en `node_modules`, que deben quedar acotadas a producción antes de construir la imagen:
+La imagen se construye a partir del artefacto compilado (`dist/`) y las dependencias ya instaladas en `node_modules`, que deben quedar acotadas a producción antes de construir la imagen. La imagen base está fijada a `node:24.22-alpine` (versión parcheada, ver [aviso de seguridad de Node.js del 21/10/2026](https://github.com/nodejs/nodejs.org/blob/main/apps/site/pages/en/blog/vulnerability/october-2026-security-releases.md)):
 
 ```shell
 pnpm install && pnpm run build
