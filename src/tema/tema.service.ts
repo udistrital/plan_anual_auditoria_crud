@@ -104,6 +104,7 @@ export class TemaService {
 
     tema.subtema.push({
       titulo: createSubtemaDTO.titulo,
+      descripcion: createSubtemaDTO.descripcion ?? '',
       activo: createSubtemaDTO.activo ?? true,
     });
     return await tema.save();
@@ -195,6 +196,10 @@ export class TemaService {
 
     if (updateSubtemaDTO.titulo !== undefined) {
       subtema.titulo = updateSubtemaDTO.titulo;
+    }
+
+    if (updateSubtemaDTO.descripcion !== undefined) {
+      subtema.descripcion = updateSubtemaDTO.descripcion;
     }
 
     return await tema.save();
