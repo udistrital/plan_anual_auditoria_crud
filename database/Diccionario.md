@@ -333,6 +333,7 @@ Subestructura: subtema
 | _id | ObjectId | Sí | Identificador único |
 | tema_id | ObjectId | Sí | Referencia a tema (OBLIGATORIO) |
 | titulo | String | Sí | Título del subtema (OBLIGATORIO) |
+| descripcion | String | No | Descripción del subtema en HTML (opcional) |
 | activo | Boolean | No | Indicador de estado activo |
 | hallazgo | Array[Object] | No | Array de hallazgos anidados |
 | fecha_creacion | Date | No | Timestamp de creación |
