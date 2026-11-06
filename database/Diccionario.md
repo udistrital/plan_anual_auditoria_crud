@@ -577,6 +577,7 @@ Acciones de mejora para la fase de plan de mejoramiento
 | hallazgo_id | ObjectId | Si | Identificador del hallazgo |
 | no_accion | String | No | Número de la acción |
 | descripcion | String | No | Descripción de la acción |
+| causa | String | No | Causa del hallazgo que atiende la acción, escrita por la dependencia auditada (no se obtiene de fase 3) |
 | tipo_id | Number | Si | ID del tipo de acción |
 
 Campo paramétrico: tipo_id.
