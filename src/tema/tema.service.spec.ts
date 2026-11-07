@@ -26,11 +26,13 @@ const mockTema = {
 const mockCreateSubtemaDto: CreateSubtemaDTO = {
   tema_id: '507f1f77bcf86cd799439011',
   titulo: 'Archivo General',
+  descripcion: '<p>Descripción del subtema</p>',
   activo: true,
 };
 
 const mockUpdateSubtemaDto: UpdateSubtemaDTO = {
   titulo: 'Archivo General Actualizado',
+  descripcion: '<p>Descripción actualizada</p>',
 };
 
 describe('TemaService', () => {
@@ -266,6 +268,24 @@ describe('TemaService', () => {
       expect(temaConSubtema.save).toHaveBeenCalled();
     });
 
+    it('Debería guardar la descripción del subtema', async () => {
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: [] as any[],
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.agregarSubtema(mockTema._id, mockCreateSubtemaDto);
+
+      expect(temaConSubtema.subtema[0].descripcion).toBe(
+        mockCreateSubtemaDto.descripcion,
+      );
+    });
+
     it('Debería lanzar error si el tema no existe', async () => {
       jest.spyOn(temaModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
@@ -301,6 +321,33 @@ describe('TemaService', () => {
       await temaService.updateSubtema('sub1', mockUpdateSubtemaDto);
 
       expect(temaConSubtema.save).toHaveBeenCalled();
+    });
+
+    it('Debería actualizar la descripción del subtema', async () => {
+      const mockSubtemaConId: any = {
+        _id: 'sub1',
+        titulo: 'Archivo General',
+        descripcion: '',
+        activo: true,
+      };
+
+      const temaConSubtema = {
+        ...mockTema,
+        subtema: {
+          id: jest.fn().mockReturnValue(mockSubtemaConId),
+        },
+        save: jest.fn().mockResolvedValue(mockTema),
+      };
+
+      jest.spyOn(temaModel, 'findOne').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(temaConSubtema),
+      } as any);
+
+      await temaService.updateSubtema('sub1', mockUpdateSubtemaDto);
+
+      expect(mockSubtemaConId.descripcion).toBe(
+        mockUpdateSubtemaDto.descripcion,
+      );
     });
 
     it('Debería lanzar error si el subtema no existe', async () => {

@@ -4,6 +4,7 @@ import mongoose, { Document, Types } from 'mongoose';
 export interface ISubtema {
   _id?: Types.ObjectId;
   titulo: string;
+  descripcion?: string;
   activo: boolean;
   fecha_creacion?: Date;
   fecha_modificacion?: Date;
@@ -12,6 +13,7 @@ export interface ISubtema {
 const SubtemaSchema = new mongoose.Schema<ISubtema>(
   {
     titulo: { type: String, required: true },
+    descripcion: { type: String, required: false },
     activo: { type: Boolean, default: true },
   },
   { _id: true, timestamps: true },
