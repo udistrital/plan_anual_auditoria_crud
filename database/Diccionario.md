@@ -349,7 +349,7 @@ Subestructura: hallazgo
 | subtema_id | ObjectId | Sí | Referencia a subtema (OBLIGATORIO) |
 | titulo | String | Sí | Título del hallazgo (OBLIGATORIO) |
 | criterio | String | Sí | Criterio evaluado (OBLIGATORIO) |
-| descripcion | String | Sí | Descripción detallada (OBLIGATORIO) |
+| descripcion | String | Sí | Descripción detallada (OBLIGATORIO). Puede ser texto plano (registros anteriores), HTML de texto enriquecido o `NuxeoEnlace:<uuid>` cuando tiene imágenes |
 | rechazado | Boolean | No | Indica si el auditor rechazó el hallazgo en fase de revisión |
 | rechazado_por | Number | No | ID del usuario que rechazó el hallazgo |
 | rechazado_por_rol | String | No | Rol del usuario que rechazó el hallazgo |

@@ -16,7 +16,10 @@ export class CreateHallazgoDTO {
   @ApiProperty({ description: 'Criterio del hallazgo' })
   readonly criterio: string;
 
-  @ApiProperty({ description: 'Descripción del hallazgo' })
+  @ApiProperty({
+    description:
+      'Descripción del hallazgo: texto plano (registros anteriores), HTML de texto enriquecido o NuxeoEnlace:<uuid> si tiene imágenes',
+  })
   readonly descripcion: string;
 
   @ApiProperty({
@@ -55,7 +58,11 @@ export class UpdateHallazgoDTO {
   @ApiProperty({ required: false, description: 'Criterio del hallazgo' })
   readonly criterio?: string;
 
-  @ApiProperty({ required: false, description: 'Descripción del hallazgo' })
+  @ApiProperty({
+    required: false,
+    description:
+      'Descripción del hallazgo: texto plano (registros anteriores), HTML de texto enriquecido o NuxeoEnlace:<uuid> si tiene imágenes',
+  })
   readonly descripcion?: string;
 
   @ApiProperty({

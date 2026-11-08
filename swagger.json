@@ -6455,7 +6455,7 @@
           },
           "descripcion": {
             "type": "string",
-            "description": "Descripción del hallazgo"
+            "description": "Descripción del hallazgo: texto plano (registros anteriores), HTML de texto enriquecido o NuxeoEnlace:<uuid> si tiene imágenes"
           },
           "rechazado": {
             "type": "boolean",
@@ -6500,7 +6500,7 @@
           },
           "descripcion": {
             "type": "string",
-            "description": "Descripción del hallazgo"
+            "description": "Descripción del hallazgo: texto plano (registros anteriores), HTML de texto enriquecido o NuxeoEnlace:<uuid> si tiene imágenes"
           },
           "no_hallazgo": {
             "type": "string",
