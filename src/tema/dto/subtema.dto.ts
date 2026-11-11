@@ -10,6 +10,12 @@ export class CreateSubtemaDTO {
 
   @ApiProperty({
     required: false,
+    description: 'Descripción del subtema en HTML',
+  })
+  readonly descripcion?: string;
+
+  @ApiProperty({
+    required: false,
     default: true,
     description: 'Estado activo del subtema',
   })
@@ -23,11 +29,20 @@ export class UpdateSubtemaDTO {
     description: 'Título del subtema',
   })
   readonly titulo?: string;
+
+  @ApiProperty({
+    required: false,
+    description: 'Descripción del subtema en HTML',
+  })
+  readonly descripcion?: string;
 }
 
 export class SubtemaDTO {
   @ApiProperty()
   readonly titulo: string;
+
+  @ApiProperty({ required: false })
+  readonly descripcion?: string;
 
   @ApiProperty()
   activo: boolean;
