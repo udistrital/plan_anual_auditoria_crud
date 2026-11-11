@@ -28,6 +28,7 @@ import { AccionMejoraEstadoModule } from './accion-mejora-estado/accion-mejora-e
 import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion.module';
 import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
 import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
+import { ComentarioAccionModule } from './comentario-accion/comentario-accion.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { CalificacionAccionModule } from './calificacion-accion/calificacion-acc
     SeguimientoAccionModule,
     ResponsableAccionModule,
     CalificacionAccionModule,
+    ComentarioAccionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

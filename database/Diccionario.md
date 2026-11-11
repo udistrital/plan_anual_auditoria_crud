@@ -603,7 +603,7 @@ Campo paramétrico: estado_id.
 | fecha_creacion | Date | Si | Fecha de creación |
 | fecha_modificacion | Date | Si | Fecha de última actualización |
 
-Relaciones: 1:N tema, 1:N calificacion_accion, 1:N seguimiento_accion, N:1 plan_mejoramiento, 1:N responsable_accion, 1:N accion_mejora_estado
+Relaciones: 1:N tema, 1:N calificacion_accion, 1:N seguimiento_accion, N:1 plan_mejoramiento, 1:N responsable_accion, 1:N accion_mejora_estado, 1:N comentario_accion
 
 ---
 
@@ -672,6 +672,33 @@ Calificación de la acción de mejora.
 
 ---
 
+### comentario_accion
+
+Mensajes del foro de discusión de una acción de mejora (Registro de avances). Lista plana cronológica: los mensajes no se editan ni se borran desde la interfaz.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Si | Identificador único |
+| accion_mejora_id | ObjectId | Si | Identificador de la acción de mejora del foro |
+| mensaje | String | Si | Texto plano del comentario (máximo 1000 caracteres, validado en el MID) |
+| usuario_id | Number | Si | Usuario (tercero) que escribió el comentario |
+| usuario_rol | String | Si | Rol con que se escribió el comentario (código del rol) |
+| dependencia_id | Number | No | Dependencia responsable que representa el autor (solo roles de dependencia) |
+
+Campo paramétrico: dependencia_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| activo | Boolean | Si | Indicador de estado activo (borrado lógico) |
+| fecha_creacion | Date | Si | Fecha del comentario |
+| fecha_modificacion | Date | Si | Fecha de última actualización |
+
+Índice: `{ accion_mejora_id: 1, activo: 1, fecha_creacion: -1 }` (consulta del foro por acción, del más reciente al más antiguo).
+
+Relaciones: N:1 accion_mejora
+
+---
+
 ## Relaciones
 
 plan_auditoria (1) → plan_estado (N)
@@ -718,6 +745,7 @@ accion_mejora (1) → seguimiento_accion (N)
 accion_mejora (N) → plan_mejoramiento (1)
 accion_mejora (1) → responsable_accion (N)
 accion_mejora (1) → accion_mejora_estado (N)
+accion_mejora (1) → comentario_accion (N)
 
 accion_mejora_estado (N) → accion_mejora (1)
 
@@ -726,5 +754,7 @@ plan_mejoramiento_estado (N) → plan_mejoramiento (1)
 seguimiento_accion (N) → accion_mejora (1)
 
 calificacion_accion (N) → accion_mejora (1)
+
+comentario_accion (N) → accion_mejora (1)
 
 ---
