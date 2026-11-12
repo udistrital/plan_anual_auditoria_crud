@@ -28,6 +28,8 @@ import { AccionMejoraEstadoModule } from './accion-mejora-estado/accion-mejora-e
 import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion.module';
 import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
 import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
+import { EjecutorDependenciaModule } from './ejecutor-dependencia/ejecutor-dependencia.module';
+import { EjecutorPlanModule } from './ejecutor-plan/ejecutor-plan.module';
 
 @Module({
   imports: [
@@ -81,6 +83,8 @@ import { CalificacionAccionModule } from './calificacion-accion/calificacion-acc
     SeguimientoAccionModule,
     ResponsableAccionModule,
     CalificacionAccionModule,
+    EjecutorDependenciaModule,
+    EjecutorPlanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
