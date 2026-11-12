@@ -14,6 +14,13 @@ export class AccionMejoraDto {
   @ApiProperty()
   readonly descripcion: string;
 
+  @ApiProperty({
+    required: false,
+    description:
+      'Causa del hallazgo que atiende la acción, escrita por la dependencia auditada',
+  })
+  readonly causa?: string;
+
   @ApiProperty()
   readonly tipo_id: number;
 
