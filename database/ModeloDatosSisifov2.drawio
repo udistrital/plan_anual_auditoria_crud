@@ -5526,7 +5526,213 @@
                 <mxCell id="_n9Y1k06cSdo49_nJHmj-164" parent="1" style="shape=note;whiteSpace=wrap;html=1;fillColor=light-dark(#C39A9A,#873635);strokeColor=light-dark(#731514,#A36565);align=left;verticalAlign=top;spacing=6;fontColor=#000000;" value="&lt;b&gt;ejecutor_plan&lt;/b&gt;&lt;div&gt;Tabla puente ejecutor &amp;harr; plan (N:N).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Un ejecutor de una dependencia se asigna a planes concretos de esa dependencia. La integridad (que el plan sea de la dependencia del ejecutor) se valida en el alta.&lt;/div&gt;" vertex="1">
                     <mxGeometry height="130" width="250" x="2345" y="1842" as="geometry"/>
                 </mxCell>
-            </root>
+            <mxCell id="tbl_comentario_accion" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fillColor=light-dark(#731514,#731514);strokeColor=light-dark(#731514,#A36565);fontColor=light-dark(#FFFFFF,#FFFFFF);" value="comentario_accion" vertex="1">
+                    <mxGeometry height="264" width="310" x="3523" y="1953" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f0" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="30" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f0_0" parent="cca_f0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="PK" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f0_1" parent="cca_f0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="_id" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f0_2" parent="cca_f0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="ObjectId" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f1" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="56" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f1_0" parent="cca_f1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="FK" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f1_1" parent="cca_f1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="accion_mejora_id" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f1_2" parent="cca_f1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="ObjectId" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f2" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="82" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f2_0" parent="cca_f2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f2_1" parent="cca_f2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="usuario_id" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f2_2" parent="cca_f2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="number" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f3" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="108" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f3_0" parent="cca_f3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f3_1" parent="cca_f3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="usuario_rol" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f3_2" parent="cca_f3" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="string" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f4" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="134" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f4_0" parent="cca_f4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f4_1" parent="cca_f4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="mensaje" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f4_2" parent="cca_f4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="string" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f5" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="160" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f5_0" parent="cca_f5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f5_1" parent="cca_f5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="dependencia_id" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f5_2" parent="cca_f5" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="number" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f6" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="186" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f6_0" parent="cca_f6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f6_1" parent="cca_f6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="activo" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f6_2" parent="cca_f6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="boolean" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f7" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="212" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f7_0" parent="cca_f7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f7_1" parent="cca_f7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="fecha_creacion" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f7_2" parent="cca_f7" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="Date" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f8" parent="tbl_comentario_accion" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=light-dark(#731514,#A36565);top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+                    <mxGeometry height="26" width="310" y="238" as="geometry" />
+                </mxCell>
+                
+<mxCell id="cca_f8_0" parent="cca_f8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=center;fontStyle=1;fontSize=10;" value="" vertex="1">
+                    <mxGeometry height="26" width="50" as="geometry">
+                        <mxRectangle height="26" width="50" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f8_1" parent="cca_f8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;fontStyle=0;" value="fecha_modificacion" vertex="1">
+                    <mxGeometry height="26" width="165" x="50" as="geometry">
+                        <mxRectangle height="26" width="165" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_f8_2" parent="cca_f8" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=light-dark(#731514,#A36565);overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;align=left;spacingLeft=6;" value="Date" vertex="1">
+                    <mxGeometry height="26" width="95" x="215" as="geometry">
+                        <mxRectangle height="26" width="95" as="alternateBounds" />
+                    </mxGeometry>
+                </mxCell>
+                
+<mxCell id="cca_rel" edge="1" parent="1" source="c911" style="edgeStyle=orthogonalEdgeStyle;fontSize=10;html=1;endArrow=ERzeroToMany;startArrow=ERzeroToOne;rounded=0;exitX=1;exitY=0.5;entryX=0.5;entryY=0;strokeColor=light-dark(#731514,#A36565);elbow=vertical;entryDx=0;entryDy=0;exitDx=0;exitDy=0;startFill=0;endFill=0;" target="tbl_comentario_accion" value="">
+                    <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="3300" y="1688" /><mxPoint x="3300" y="1900" /><mxPoint x="3678" y="1900" /></Array></mxGeometry>
+                </mxCell>
+                
+</root>
         </mxGraphModel>
     </diagram>
 </mxfile>
