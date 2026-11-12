@@ -117,6 +117,29 @@ describe('AccionMejoraService', () => {
       expect(result).toEqual(mockAccion);
     });
 
+    it('Debería guardar la causa de la acción cuando se envía', async () => {
+      jest.spyOn(planModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlan),
+      } as any);
+      jest.spyOn(hallazgoModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockHallazgo),
+      } as any);
+      const conCausa: AccionMejoraDto = {
+        ...mockDto,
+        causa: 'Falta de seguimiento a los registros contables',
+      };
+      const createSpy = jest
+        .spyOn(accionModel, 'create')
+        .mockResolvedValue({ ...mockAccion, causa: conCausa.causa } as any);
+
+      const result = await service.post(conCausa);
+
+      expect(createSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ causa: conCausa.causa }),
+      );
+      expect(result.causa).toBe(conCausa.causa);
+    });
+
     it('Debería lanzar error si el plan de mejoramiento no existe', async () => {
       jest.spyOn(planModel, 'findById').mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
@@ -294,6 +317,30 @@ describe('AccionMejoraService', () => {
         { new: true },
       );
       expect(result).toEqual(updated);
+    });
+
+    it('Debería actualizar la causa de la acción', async () => {
+      jest.spyOn(planModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockPlan),
+      } as any);
+      jest.spyOn(hallazgoModel, 'findById').mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockHallazgo),
+      } as any);
+      const dtoCausa: AccionMejoraDto = { ...mockDto, causa: 'Causa ajustada' };
+      const updateSpy = jest
+        .spyOn(accionModel, 'findByIdAndUpdate')
+        .mockReturnValue({
+          exec: jest.fn().mockResolvedValue({ ...mockAccion, ...dtoCausa }),
+        } as any);
+
+      const result = await service.put(mockAccion._id, dtoCausa);
+
+      expect(updateSpy).toHaveBeenCalledWith(
+        mockAccion._id,
+        expect.objectContaining({ causa: 'Causa ajustada' }),
+        { new: true },
+      );
+      expect(result.causa).toBe('Causa ajustada');
     });
 
     it('Debería no sobreescribir fecha_creacion si viene en el DTO', async () => {
