@@ -577,6 +577,7 @@ Acciones de mejora para la fase de plan de mejoramiento
 | hallazgo_id | ObjectId | Si | Identificador del hallazgo |
 | no_accion | String | No | Número de la acción |
 | descripcion | String | No | Descripción de la acción |
+| causa | String | No | Causa del hallazgo que atiende la acción, escrita por la dependencia auditada (no se obtiene de fase 3) |
 | tipo_id | Number | Si | ID del tipo de acción |
 
 Campo paramétrico: tipo_id.
@@ -699,6 +700,58 @@ Relaciones: N:1 accion_mejora
 
 ---
 
+### ejecutor_dependencia
+
+Asignación del rol Ejecutor a un usuario por dependencia (issue SÍSIFO v2). Una dependencia puede tener uno o varios ejecutores vigentes.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Sí | Identificador único |
+| dependencia_id | Number | Sí | ID externo de la dependencia (TERCEROS) |
+
+Campo paramétrico: dependencia_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| usuario_id | Number | Sí | ID externo del usuario asignado como ejecutor (USUARIO_ROL) |
+| usuario_rol | String | No | Rol descriptivo del usuario (Default: 'ejecutor') |
+| asignado_por_id | Number | No | ID del usuario que realizó la asignación |
+| vigencia_id | Number | No | Año fiscal |
+
+Campo paramétrico: vigencia_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| actual | Boolean | No | Indicador de asignación vigente |
+| activo | Boolean | No | Indicador de estado activo (eliminación lógica) |
+| fecha_asignacion | Date | No | Fecha en que se realizó la asignación |
+| fecha_creacion | Date | No | Fecha de creación |
+| fecha_modificacion | Date | No | Fecha de última actualización |
+
+Relaciones: 1:N ejecutor_plan. Los planes de mejoramiento de la dependencia se obtienen por valor de dependencia_id (sin FK directa), igual que responsable_accion / observacion.
+
+---
+
+### ejecutor_plan
+
+Tabla puente (relación N:N) entre un ejecutor de la dependencia y los planes de mejoramiento concretos que se le asignan.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Sí | Identificador único |
+| ejecutor_dependencia_id | ObjectId | Sí | Referencia a ejecutor_dependencia (quién es el ejecutor y de qué dependencia) |
+| plan_mejoramiento_id | ObjectId | Sí | Referencia a plan_mejoramiento (plan concreto asignado) |
+| asignado_por_id | Number | No | ID del usuario que realizó la asignación del plan |
+| actual | Boolean | No | Indicador de asignación vigente |
+| activo | Boolean | No | Indicador de estado activo (eliminación lógica) |
+| fecha_asignacion | Date | No | Fecha en que se asignó el plan |
+| fecha_creacion | Date | No | Fecha de creación |
+| fecha_modificacion | Date | No | Fecha de última actualización |
+
+Relaciones: N:1 ejecutor_dependencia, N:1 plan_mejoramiento
+
+---
+
 ## Relaciones
 
 plan_auditoria (1) → plan_estado (N)
@@ -756,5 +809,10 @@ seguimiento_accion (N) → accion_mejora (1)
 calificacion_accion (N) → accion_mejora (1)
 
 comentario_accion (N) → accion_mejora (1)
+
+ejecutor_dependencia (1) → ejecutor_plan (N)
+
+ejecutor_plan (N) → ejecutor_dependencia (1)
+ejecutor_plan (N) → plan_mejoramiento (1)
 
 ---

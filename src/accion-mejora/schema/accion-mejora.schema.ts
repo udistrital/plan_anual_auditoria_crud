@@ -17,6 +17,10 @@ export class AccionMejora extends Document {
   @Prop({ required: false })
   descripcion: string;
 
+  // Causa del hallazgo que atiende la acción, escrita por la dependencia auditada (no sale de fase 3)
+  @Prop({ required: false })
+  causa: string;
+
   @Prop({ required: false })
   tipo_id: number;
 

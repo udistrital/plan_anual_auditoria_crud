@@ -29,6 +29,8 @@ import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion
 import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
 import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
 import { ComentarioAccionModule } from './comentario-accion/comentario-accion.module';
+import { EjecutorDependenciaModule } from './ejecutor-dependencia/ejecutor-dependencia.module';
+import { EjecutorPlanModule } from './ejecutor-plan/ejecutor-plan.module';
 
 @Module({
   imports: [
@@ -83,6 +85,8 @@ import { ComentarioAccionModule } from './comentario-accion/comentario-accion.mo
     ResponsableAccionModule,
     CalificacionAccionModule,
     ComentarioAccionModule,
+    EjecutorDependenciaModule,
+    EjecutorPlanModule,
   ],
   controllers: [AppController],
   providers: [AppService],

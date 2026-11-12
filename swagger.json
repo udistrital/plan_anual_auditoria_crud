@@ -5943,6 +5943,458 @@
           "comentario-accion"
         ]
       }
+    },
+    "/ejecutor-dependencia": {
+      "post": {
+        "operationId": "EjecutorDependenciaController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EjecutorDependenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ejecutor asignado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorDependenciaDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Asignar un ejecutor a una dependencia",
+        "tags": [
+          "ejecutor-dependencia"
+        ]
+      },
+      "get": {
+        "operationId": "EjecutorDependenciaController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las asignaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EjecutorDependenciaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener todas las asignaciones de ejecutor",
+        "tags": [
+          "ejecutor-dependencia"
+        ]
+      }
+    },
+    "/ejecutor-dependencia/{id}": {
+      "get": {
+        "operationId": "EjecutorDependenciaController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la asignación.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorDependenciaDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Obtener una asignación de ejecutor por Id",
+        "tags": [
+          "ejecutor-dependencia"
+        ]
+      },
+      "put": {
+        "operationId": "EjecutorDependenciaController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EjecutorDependenciaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asignación actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorDependenciaDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Actualizar una asignación de ejecutor",
+        "tags": [
+          "ejecutor-dependencia"
+        ]
+      },
+      "delete": {
+        "operationId": "EjecutorDependenciaController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asignación eliminada exitosamente."
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Eliminar (lógico) una asignación de ejecutor",
+        "tags": [
+          "ejecutor-dependencia"
+        ]
+      }
+    },
+    "/ejecutor-plan": {
+      "post": {
+        "operationId": "EjecutorPlanController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EjecutorPlanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Plan asignado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorPlanDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Asignar un plan de mejoramiento a un ejecutor de la dependencia",
+        "tags": [
+          "ejecutor-plan"
+        ]
+      },
+      "get": {
+        "operationId": "EjecutorPlanController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve todas las asignaciones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EjecutorPlanDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener todas las asignaciones ejecutor-plan",
+        "tags": [
+          "ejecutor-plan"
+        ]
+      }
+    },
+    "/ejecutor-plan/{id}": {
+      "get": {
+        "operationId": "EjecutorPlanController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la asignación.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorPlanDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Obtener una asignación ejecutor-plan por Id",
+        "tags": [
+          "ejecutor-plan"
+        ]
+      },
+      "put": {
+        "operationId": "EjecutorPlanController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EjecutorPlanDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Asignación actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EjecutorPlanDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Actualizar una asignación ejecutor-plan",
+        "tags": [
+          "ejecutor-plan"
+        ]
+      },
+      "delete": {
+        "operationId": "EjecutorPlanController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asignación eliminada exitosamente."
+          },
+          "404": {
+            "description": "Asignación no encontrada."
+          }
+        },
+        "summary": "Eliminar (lógico) una asignación ejecutor-plan",
+        "tags": [
+          "ejecutor-plan"
+        ]
+      }
     }
   },
   "info": {
@@ -7185,6 +7637,10 @@
           "descripcion": {
             "type": "string"
           },
+          "causa": {
+            "type": "string",
+            "description": "Causa del hallazgo que atiende la acción, escrita por la dependencia auditada"
+          },
           "tipo_id": {
             "type": "number"
           },
@@ -7472,6 +7928,101 @@
           "activo",
           "fecha_creacion",
           "fecha_modificacion"
+        ]
+      },
+      "EjecutorDependenciaDto": {
+        "type": "object",
+        "properties": {
+          "dependencia_id": {
+            "type": "number",
+            "description": "ID externo de la dependencia (TERCEROS)"
+          },
+          "usuario_id": {
+            "type": "number",
+            "description": "ID externo del usuario ejecutor (USUARIO_ROL)"
+          },
+          "usuario_rol": {
+            "type": "string",
+            "default": "ejecutor"
+          },
+          "asignado_por_id": {
+            "type": "number",
+            "description": "Usuario que realiza la asignación"
+          },
+          "vigencia_id": {
+            "type": "number"
+          },
+          "actual": {
+            "type": "boolean",
+            "description": "Marca la asignación vigente"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_asignacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dependencia_id",
+          "usuario_id"
+        ]
+      },
+      "EjecutorPlanDto": {
+        "type": "object",
+        "properties": {
+          "ejecutor_dependencia_id": {
+            "description": "Referencia a ejecutor_dependencia._id",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "plan_mejoramiento_id": {
+            "description": "Referencia a plan_mejoramiento._id",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "asignado_por_id": {
+            "type": "number",
+            "description": "Usuario que asigna el plan"
+          },
+          "actual": {
+            "type": "boolean",
+            "description": "Marca la asignación vigente"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_asignacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ejecutor_dependencia_id",
+          "plan_mejoramiento_id"
         ]
       }
     }
