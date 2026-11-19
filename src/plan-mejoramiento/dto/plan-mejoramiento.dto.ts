@@ -1,9 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 
 export class PlanMejoramientoDto {
   @ApiProperty()
   readonly auditoria_id: Types.ObjectId;
+
+  @ApiPropertyOptional({
+    description:
+      'Id de la auditoría externa de origen (solo planes de auditorías externas)',
+  })
+  readonly auditoria_externa_id?: Types.ObjectId;
 
   @ApiProperty()
   readonly vigencia_id: number;

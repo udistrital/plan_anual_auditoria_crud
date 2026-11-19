@@ -38,7 +38,7 @@ export class PlanMejoramientoController {
   @ApiResponse({ status: 400, description: 'Solicitud incorrecta.' })
   async post(
     @Res() res,
-    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    @Body(new ParseObjectIdPipe(['auditoria_id', 'auditoria_externa_id']))
     planMejoramientoDto: PlanMejoramientoDto,
   ) {
     try {
@@ -138,7 +138,7 @@ export class PlanMejoramientoController {
   async put(
     @Res() res,
     @Param('id') id: string,
-    @Body(new ParseObjectIdPipe(['auditoria_id']))
+    @Body(new ParseObjectIdPipe(['auditoria_id', 'auditoria_externa_id']))
     planMejoramientoDto: PlanMejoramientoDto,
   ) {
     try {
