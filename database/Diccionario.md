@@ -736,7 +736,7 @@ Campo paramétrico: estado_id.
 | fecha_creacion | Date | Si | Fecha de creación |
 | fecha_modificacion | Date | Si | Fecha de última actualización |
 
-El documento PDF del informe final es un `documento` con `referencia_tipo: 'auditoria_externa'` y `referencia_id` = `_id` de esta colección.
+El documento PDF del informe final es un `documento` con `referencia_tipo: 'Auditoria Externa'` y `referencia_id` = `_id` de esta colección.
 
 Índices: `{ vigencia_id: 1, activo: 1, fecha_creacion: -1 }` (listado por vigencia) y `{ codigo_entidad: 1, nombre_auditoria: 1, fecha_informe_final: 1 }` (duplicados al registrar).
 

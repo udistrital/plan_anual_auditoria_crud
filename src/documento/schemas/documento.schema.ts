@@ -8,7 +8,13 @@ export class Documento extends Document {
 
   @Prop({
     required: true,
-    enum: ['Auditoria', 'Plan Auditoria', 'Plan Mejoramiento', 'Accion Mejora'],
+    enum: [
+      'Auditoria',
+      'Plan Auditoria',
+      'Plan Mejoramiento',
+      'Accion Mejora',
+      'Auditoria Externa',
+    ],
   })
   referencia_tipo: string;
 
