@@ -469,6 +469,7 @@ Plan de mejoramiento de la auditoria
 |-------|------|-----------|-------------|
 | _id | ObjectId | Si | Identificador único |
 | auditoria_id | ObjectId | Si | Identificador de la auditoria |
+| auditoria_externa_id | ObjectId | No | Identificador de la auditoría externa de origen (#953). Solo en planes de auditorías externas, que no tienen auditoria_id; su presencia marca el origen externo |
 | vigencia_id | Number | Si | Año fiscal (OBLIGATORIO) |
 
 Campo paramétrico: vigencia_id.
@@ -494,7 +495,9 @@ Campo paramétrico: estado_id.
 | fecha_creacion | Date | Si | Fecha de creación |
 | fecha_modificacion | Date | Si | Fecha de última actualización |
 
-Relaciones: 1:N plan_mejoramiento_auditor, N:N auditoria, 1:N accion_mejora, 1:N plan_mejoramiento_estado
+Índice: `{ auditoria_externa_id: 1 }` (sparse).
+
+Relaciones: 1:N plan_mejoramiento_auditor, N:N auditoria, N:1 auditoria_externa (opcional), 1:N accion_mejora, 1:N plan_mejoramiento_estado
 
 ---
 
@@ -700,6 +703,107 @@ Relaciones: N:1 accion_mejora
 
 ---
 
+### auditoria_externa
+
+Auditoría de un ente de control ya terminada, registrada por el auditor (#953). Es independiente de `auditoria`: no tiene padre, informe ni tema. Al registrarla se crea su plan de mejoramiento (`plan_mejoramiento.auditoria_externa_id`).
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Si | Identificador único |
+| vigencia_id | Number | Si | Vigencia de la auditoría |
+
+Campo paramétrico: vigencia_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| codigo_entidad | String | Si | Código del ente de control |
+| nombre_entidad | String | Si | Nombre del ente de control |
+| nombre_auditoria | String | Si | Nombre de la auditoría |
+| fecha_informe_final | Date | Si | Fecha de emisión del informe final |
+| dependencia_id | Array[Number] | No | Unión de las dependencias de los hallazgos |
+
+Campo paramétrico: dependencia_id (Oikos).
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| estado_id | Number | Si | Estado vigente (copia del registro actual de auditoria_externa_estado) |
+
+Campo paramétrico: estado_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| activo | Boolean | Si | Indicador de estado activo (borrado lógico) |
+| fecha_creacion | Date | Si | Fecha de creación |
+| fecha_modificacion | Date | Si | Fecha de última actualización |
+
+El documento PDF del informe final es un `documento` con `referencia_tipo: 'Auditoria Externa'` y `referencia_id` = `_id` de esta colección.
+
+Índices: `{ vigencia_id: 1, activo: 1, fecha_creacion: -1 }` (listado por vigencia) y `{ codigo_entidad: 1, nombre_auditoria: 1, fecha_informe_final: 1 }` (duplicados al registrar).
+
+Relaciones: 1:N auditoria_externa_estado, 1:N auditoria_externa_hallazgo, 1:N plan_mejoramiento
+
+---
+
+### auditoria_externa_estado
+
+Historial de estados de una auditoría externa (#953). El registro con `actual: true` es el vigente.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Si | Identificador único |
+| auditoria_externa_id | ObjectId | Si | Identificador de la auditoría externa |
+| usuario_id | Number | Si | Usuario (tercero) que ejecutó el estado |
+| usuario_rol | String | Si | Rol con que se ejecutó el estado |
+| observacion | String | No | Observación del cambio de estado |
+| estado_id | Number | Si | Estado (Parámetros) |
+
+Campo paramétrico: estado_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| actual | Boolean | Si | Verdadero si es el estado vigente |
+| fecha_ejecucion_estado | Date | Si | Fecha en que se ejecutó el estado |
+| activo | Boolean | Si | Indicador de estado activo |
+
+Índice: `{ auditoria_externa_id: 1, actual: 1 }`.
+
+Relaciones: N:1 auditoria_externa
+
+---
+
+### auditoria_externa_hallazgo
+
+Hallazgo del informe de una auditoría externa (#953). No lleva informe, subtema ni criterio.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| _id | ObjectId | Si | Identificador único |
+| auditoria_externa_id | ObjectId | Si | Identificador de la auditoría externa |
+| vigencia_id | Number | Si | Vigencia del hallazgo |
+
+Campo paramétrico: vigencia_id.
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| codigo_auditoria | String | Si | Código de auditoría del ente de control |
+| numeral | String | Si | Número de hallazgo en el informe |
+| descripcion | String | Si | Descripción del hallazgo |
+| dependencia_id | Array[Number] | Si | Dependencias candidatas a responsables (al menos una) |
+
+Campo paramétrico: dependencia_id (Oikos).
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| activo | Boolean | Si | Indicador de estado activo (borrado lógico) |
+| fecha_creacion | Date | Si | Fecha de creación |
+| fecha_modificacion | Date | Si | Fecha de última actualización |
+
+Índices: `{ auditoria_externa_id: 1, activo: 1 }` y único parcial `{ auditoria_externa_id: 1, codigo_auditoria: 1, numeral: 1 }` sobre los activos (un número de hallazgo no se repite dentro del mismo código de auditoría; un hallazgo eliminado no bloquea registrarlo de nuevo).
+
+Relaciones: N:1 auditoria_externa
+
+---
+
 ### ejecutor_dependencia
 
 Asignación del rol Ejecutor a un usuario por dependencia (issue SÍSIFO v2). Una dependencia puede tener uno o varios ejecutores vigentes.
@@ -809,6 +913,14 @@ seguimiento_accion (N) → accion_mejora (1)
 calificacion_accion (N) → accion_mejora (1)
 
 comentario_accion (N) → accion_mejora (1)
+
+auditoria_externa (1) → auditoria_externa_estado (N)
+auditoria_externa (1) → auditoria_externa_hallazgo (N)
+auditoria_externa (1) → plan_mejoramiento (N)
+
+auditoria_externa_estado (N) → auditoria_externa (1)
+
+auditoria_externa_hallazgo (N) → auditoria_externa (1)
 
 ejecutor_dependencia (1) → ejecutor_plan (N)
 
