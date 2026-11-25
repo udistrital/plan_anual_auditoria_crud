@@ -29,6 +29,9 @@ import { SeguimientoAccionModule } from './seguimiento-accion/seguimiento-accion
 import { ResponsableAccionModule } from './responsable-accion/responsable-accion.module';
 import { CalificacionAccionModule } from './calificacion-accion/calificacion-accion.module';
 import { ComentarioAccionModule } from './comentario-accion/comentario-accion.module';
+import { AuditoriaExternaModule } from './auditoria-externa/auditoria-externa.module';
+import { AuditoriaExternaEstadoModule } from './auditoria-externa-estado/auditoria-externa-estado.module';
+import { AuditoriaExternaHallazgoModule } from './auditoria-externa-hallazgo/auditoria-externa-hallazgo.module';
 import { EjecutorDependenciaModule } from './ejecutor-dependencia/ejecutor-dependencia.module';
 import { EjecutorPlanModule } from './ejecutor-plan/ejecutor-plan.module';
 
@@ -85,6 +88,9 @@ import { EjecutorPlanModule } from './ejecutor-plan/ejecutor-plan.module';
     ResponsableAccionModule,
     CalificacionAccionModule,
     ComentarioAccionModule,
+    AuditoriaExternaModule,
+    AuditoriaExternaEstadoModule,
+    AuditoriaExternaHallazgoModule,
     EjecutorDependenciaModule,
     EjecutorPlanModule,
   ],

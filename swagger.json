@@ -6395,6 +6395,714 @@
           "ejecutor-plan"
         ]
       }
+    },
+    "/auditoria-externa": {
+      "post": {
+        "operationId": "AuditoriaExternaController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Auditoría externa creada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Crear una auditoría externa",
+        "tags": [
+          "auditoria-externa"
+        ]
+      },
+      "get": {
+        "operationId": "AuditoriaExternaController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve las auditorías externas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaExternaDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener las auditorías externas",
+        "tags": [
+          "auditoria-externa"
+        ]
+      }
+    },
+    "/auditoria-externa/{id}": {
+      "get": {
+        "operationId": "AuditoriaExternaController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve la auditoría externa.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Auditoría externa no encontrada."
+          }
+        },
+        "summary": "Obtener una auditoría externa por Id",
+        "tags": [
+          "auditoria-externa"
+        ]
+      },
+      "put": {
+        "operationId": "AuditoriaExternaController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Auditoría externa actualizada exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Actualizar una auditoría externa",
+        "tags": [
+          "auditoria-externa"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditoriaExternaController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Auditoría externa eliminada exitosamente."
+          },
+          "404": {
+            "description": "Auditoría externa no encontrada."
+          }
+        },
+        "summary": "Eliminar (borrado lógico) una auditoría externa",
+        "tags": [
+          "auditoria-externa"
+        ]
+      }
+    },
+    "/auditoria-externa-estado": {
+      "post": {
+        "operationId": "AuditoriaExternaEstadoController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Estado registrado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Registrar un estado de una auditoría externa (queda como vigente)",
+        "tags": [
+          "auditoria-externa-estado"
+        ]
+      },
+      "get": {
+        "operationId": "AuditoriaExternaEstadoController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve los estados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener los estados de auditorías externas",
+        "tags": [
+          "auditoria-externa-estado"
+        ]
+      }
+    },
+    "/auditoria-externa-estado/{id}": {
+      "get": {
+        "operationId": "AuditoriaExternaEstadoController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el estado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "summary": "Obtener un estado de auditoría externa por Id",
+        "tags": [
+          "auditoria-externa-estado"
+        ]
+      },
+      "put": {
+        "operationId": "AuditoriaExternaEstadoController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Estado actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaEstadoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Actualizar un estado de auditoría externa",
+        "tags": [
+          "auditoria-externa-estado"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditoriaExternaEstadoController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado eliminado exitosamente."
+          },
+          "404": {
+            "description": "Estado no encontrado."
+          }
+        },
+        "summary": "Eliminar (borrado lógico) un estado de auditoría externa",
+        "tags": [
+          "auditoria-externa-estado"
+        ]
+      }
+    },
+    "/auditoria-externa-hallazgo": {
+      "post": {
+        "operationId": "AuditoriaExternaHallazgoController_post",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Hallazgo creado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Crear un hallazgo de una auditoría externa",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      },
+      "get": {
+        "operationId": "AuditoriaExternaHallazgoController_getAll",
+        "parameters": [
+          {
+            "name": "query",
+            "required": false,
+            "in": "query",
+            "description": " query-Filter.e.g.col1:v1,col2:v2… ",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fields",
+            "required": false,
+            "in": "query",
+            "description": "fields - Fields returned. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortby",
+            "required": false,
+            "in": "query",
+            "description": "sortby - Sorted-by fields. e.g. col1,col2 …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order",
+            "required": false,
+            "in": "query",
+            "description": "order - Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc …",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "limit - Limit the size of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "description": "offset - Start position of result set. Must be an integer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "required": false,
+            "in": "query",
+            "description": "populate - show subqueries. Must be a boolean",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve los hallazgos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Obtener los hallazgos de auditorías externas",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      }
+    },
+    "/auditoria-externa-hallazgo/lote": {
+      "post": {
+        "description": "Si uno falla (por ejemplo, un número de hallazgo repetido) responde 400 y pueden quedar creados los anteriores: quien invoca compensa con borrado lógico.",
+        "operationId": "AuditoriaExternaHallazgoController_postLote",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaHallazgoLoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Hallazgos creados exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Crear varios hallazgos de una misma auditoría externa en una sola llamada (máximo 500)",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      }
+    },
+    "/auditoria-externa-hallazgo/{id}": {
+      "get": {
+        "operationId": "AuditoriaExternaHallazgoController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve el hallazgo.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hallazgo no encontrado."
+          }
+        },
+        "summary": "Obtener un hallazgo de auditoría externa por Id",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      },
+      "put": {
+        "operationId": "AuditoriaExternaHallazgoController_put",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hallazgo actualizado exitosamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditoriaExternaHallazgoDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta."
+          }
+        },
+        "summary": "Actualizar un hallazgo de auditoría externa",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      },
+      "delete": {
+        "operationId": "AuditoriaExternaHallazgoController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Hallazgo eliminado exitosamente."
+          },
+          "404": {
+            "description": "Hallazgo no encontrado."
+          }
+        },
+        "summary": "Eliminar (borrado lógico) un hallazgo de auditoría externa",
+        "tags": [
+          "auditoria-externa-hallazgo"
+        ]
+      }
     }
   },
   "info": {
@@ -7496,6 +8204,14 @@
           "auditoria_id": {
             "$ref": "#/components/schemas/ObjectId"
           },
+          "auditoria_externa_id": {
+            "description": "Id de la auditoría externa de origen (solo planes de auditorías externas)",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
           "vigencia_id": {
             "type": "number"
           },
@@ -8023,6 +8739,233 @@
         "required": [
           "ejecutor_dependencia_id",
           "plan_mejoramiento_id"
+        ]
+      },
+      "AuditoriaExternaDto": {
+        "type": "object",
+        "properties": {
+          "vigencia_id": {
+            "type": "number",
+            "description": "Id de la vigencia (Parámetros, tipo 121)"
+          },
+          "codigo_entidad": {
+            "type": "string",
+            "description": "Código del ente de control"
+          },
+          "nombre_entidad": {
+            "type": "string",
+            "description": "Nombre del ente de control"
+          },
+          "nombre_auditoria": {
+            "type": "string",
+            "description": "Nombre de la auditoría"
+          },
+          "fecha_informe_final": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Fecha de emisión del informe final"
+          },
+          "dependencia_id": {
+            "description": "Ids de las dependencias (Oikos) de los hallazgos",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "estado_id": {
+            "type": "number",
+            "description": "Estado vigente (Parámetros)"
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vigencia_id",
+          "codigo_entidad",
+          "nombre_entidad",
+          "nombre_auditoria",
+          "fecha_informe_final",
+          "dependencia_id",
+          "estado_id",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "AuditoriaExternaEstadoDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_externa_id": {
+            "description": "Id de la auditoría externa",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "usuario_id": {
+            "type": "number",
+            "description": "Id del usuario que ejecuta el estado (Terceros)"
+          },
+          "usuario_rol": {
+            "type": "string",
+            "description": "Rol del usuario que ejecuta el estado"
+          },
+          "observacion": {
+            "type": "string",
+            "description": "Observación del cambio de estado"
+          },
+          "estado_id": {
+            "type": "number",
+            "description": "Estado (Parámetros)"
+          },
+          "actual": {
+            "type": "boolean",
+            "description": "Verdadero si es el estado vigente"
+          },
+          "fecha_ejecucion_estado": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "auditoria_externa_id",
+          "usuario_id",
+          "usuario_rol",
+          "observacion",
+          "estado_id",
+          "actual",
+          "fecha_ejecucion_estado",
+          "activo"
+        ]
+      },
+      "AuditoriaExternaHallazgoDto": {
+        "type": "object",
+        "properties": {
+          "vigencia_id": {
+            "type": "number",
+            "description": "Id de la vigencia (Parámetros, tipo 121)"
+          },
+          "codigo_auditoria": {
+            "type": "string",
+            "description": "Código de auditoría del ente de control"
+          },
+          "numeral": {
+            "type": "string",
+            "description": "Número de hallazgo en el informe"
+          },
+          "descripcion": {
+            "type": "string",
+            "description": "Descripción del hallazgo"
+          },
+          "dependencia_id": {
+            "description": "Ids de las dependencias (Oikos) responsables",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "auditoria_externa_id": {
+            "description": "Id de la auditoría externa",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "activo": {
+            "type": "boolean"
+          },
+          "fecha_creacion": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "fecha_modificacion": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "vigencia_id",
+          "codigo_auditoria",
+          "numeral",
+          "descripcion",
+          "dependencia_id",
+          "auditoria_externa_id",
+          "activo",
+          "fecha_creacion",
+          "fecha_modificacion"
+        ]
+      },
+      "AuditoriaExternaHallazgoDatosDto": {
+        "type": "object",
+        "properties": {
+          "vigencia_id": {
+            "type": "number",
+            "description": "Id de la vigencia (Parámetros, tipo 121)"
+          },
+          "codigo_auditoria": {
+            "type": "string",
+            "description": "Código de auditoría del ente de control"
+          },
+          "numeral": {
+            "type": "string",
+            "description": "Número de hallazgo en el informe"
+          },
+          "descripcion": {
+            "type": "string",
+            "description": "Descripción del hallazgo"
+          },
+          "dependencia_id": {
+            "description": "Ids de las dependencias (Oikos) responsables",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "vigencia_id",
+          "codigo_auditoria",
+          "numeral",
+          "descripcion",
+          "dependencia_id"
+        ]
+      },
+      "AuditoriaExternaHallazgoLoteDto": {
+        "type": "object",
+        "properties": {
+          "auditoria_externa_id": {
+            "description": "Id de la auditoría externa de los hallazgos",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ObjectId"
+              }
+            ]
+          },
+          "hallazgos": {
+            "description": "Hallazgos a crear (máximo 500)",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditoriaExternaHallazgoDatosDto"
+            }
+          }
+        },
+        "required": [
+          "auditoria_externa_id",
+          "hallazgos"
         ]
       }
     }

@@ -82,6 +82,38 @@ describe('PlanMejoramientoService', () => {
       expect(result).toEqual(mockPlanMejoramiento);
     });
 
+    it('Debería guardar el plan de una auditoría externa con auditoria_externa_id y sin auditoria_id', async () => {
+      const externaId = new Types.ObjectId('672d4a11f7814a9a0c5261e1');
+      const baseExterna = {
+        ...mockPlanMejoramientoDto,
+        auditoria_id: undefined,
+      };
+      const createSpy = jest
+        .spyOn(planMejoramientoModel, 'create')
+        .mockResolvedValue({ ...baseExterna } as any);
+
+      await planMejoramientoService.post({
+        ...baseExterna,
+        auditoria_externa_id: externaId,
+      } as PlanMejoramientoDto);
+
+      const callArg = createSpy.mock.calls[0][0] as PlanMejoramientoDto;
+      expect(callArg.auditoria_externa_id).toBe(externaId);
+      expect(callArg.auditoria_id).toBeUndefined();
+    });
+
+    it('Debería seguir creando planes internos sin auditoria_externa_id', async () => {
+      const createSpy = jest
+        .spyOn(planMejoramientoModel, 'create')
+        .mockResolvedValue(mockPlanMejoramiento as any);
+
+      await planMejoramientoService.post(mockPlanMejoramientoDto);
+
+      const callArg = createSpy.mock.calls[0][0] as PlanMejoramientoDto;
+      expect(callArg.auditoria_id).toBeDefined();
+      expect(callArg.auditoria_externa_id).toBeUndefined();
+    });
+
     it('Debería establecer la misma fecha para fecha_creacion y fecha_modificacion', async () => {
       const createSpy = jest
         .spyOn(planMejoramientoModel, 'create')
