@@ -8,6 +8,7 @@ import {
   CreateObservacionDTO,
   UpdateObservacionDTO,
 } from './dto/observacion.dto';
+import { sanitizarHtmlObservacion } from './sanitizar-html.util';
 
 @Injectable()
 export class ObservacionService {
@@ -21,6 +22,8 @@ export class ObservacionService {
   ): Promise<Observacion> {
     return await this.ObservacionModel.create({
       ...createObservacionDTO,
+      // Texto enriquecido admitido, sin contenido ejecutable (issue #958)
+      observacion: sanitizarHtmlObservacion(createObservacionDTO.observacion),
       activo: createObservacionDTO.activo ?? true,
     });
   }
@@ -57,9 +60,16 @@ export class ObservacionService {
     observacionId: string,
     updateObservacionDTO: UpdateObservacionDTO,
   ): Promise<Observacion> {
+    const datos: UpdateObservacionDTO = {
+      ...updateObservacionDTO,
+      // Texto enriquecido admitido, sin contenido ejecutable 
+      ...(updateObservacionDTO.observacion !== undefined && {
+        observacion: sanitizarHtmlObservacion(updateObservacionDTO.observacion),
+      }),
+    };
     const updated = await this.ObservacionModel.findByIdAndUpdate(
       observacionId,
-      updateObservacionDTO,
+      datos,
       { new: true },
     ).exec();
     if (!updated) {

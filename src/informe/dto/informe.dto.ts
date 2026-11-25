@@ -8,6 +8,12 @@ export class InformeDTO {
   @ApiProperty()
   readonly fecha_emision?: Date;
 
+  @ApiProperty({
+    description:
+      'Fecha de emisión del informe final, independiente de fecha_emision (preliminar). Issue #958.',
+  })
+  readonly fecha_emision_final?: Date;
+
   @ApiProperty()
   readonly muestra?: string;
 

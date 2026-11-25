@@ -13,6 +13,10 @@ export class Informe extends Document {
   @Prop()
   fecha_emision: Date;
 
+  // Fecha de emisión del informe final, independiente de fecha_emision (preliminar). Issue #958.
+  @Prop()
+  fecha_emision_final: Date;
+
   @Prop()
   muestra: string;
 
