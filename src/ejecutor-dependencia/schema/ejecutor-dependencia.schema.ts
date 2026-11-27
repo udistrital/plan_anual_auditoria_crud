@@ -26,6 +26,11 @@ export class EjecutorDependencia extends Document {
 
   @Prop({ required: false })
   fecha_asignacion: Date;
+  @Prop({ required: false })
+  fecha_inicio: Date;
+
+  @Prop({ required: false })
+  fecha_fin: Date;
 
   @Prop({ required: false })
   fecha_creacion: Date;

@@ -28,6 +28,20 @@ export class EjecutorDependenciaDto {
   @ApiProperty({ required: false })
   fecha_asignacion?: Date;
 
+  @ApiProperty({
+    required: false,
+    description:
+      'Inicio de la habilitación como ejecutor (vigencia contractual)',
+  })
+  fecha_inicio?: Date;
+
+  @ApiProperty({
+    required: false,
+    description:
+      'Fin de la habilitación como ejecutor. Al vencer, el job la desactiva.',
+  })
+  fecha_fin?: Date;
+
   @ApiProperty({ required: false })
   fecha_creacion?: Date;
 

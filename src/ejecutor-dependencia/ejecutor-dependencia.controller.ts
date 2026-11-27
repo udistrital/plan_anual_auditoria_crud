@@ -1,10 +1,12 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Put,
   Query,
@@ -45,12 +47,17 @@ export class EjecutorDependenciaController {
         Data: ejecutor,
       });
     } catch (error: any) {
+      // Los errores de negocio (cupo, exclusividad, duplicado) ya traen un
+      // mensaje apto para el usuario; se devuelve tal cual. El resto se trata
+      // como error técnico con el mensaje genérico.
+      const mensajeNegocio = this.mensajeNegocio(error);
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
+          mensajeNegocio ??
           'Error servicio Post: la solicitud contiene un tipo de dato incorrecto o un parametro invalido',
-        Data: error.message,
+        Data: mensajeNegocio ?? error.message,
       });
     }
   }
@@ -80,6 +87,35 @@ export class EjecutorDependenciaController {
         Status: HttpStatus.NOT_FOUND,
         Message:
           'Error en servicio GetAll: la peticion contiene un parametro incorrecto o no existe un registro',
+        Data: error.message,
+      });
+    }
+  }
+
+  @Patch('/desactivar-vencidos')
+  @ApiOperation({
+    summary:
+      'Job de vigencia: desactiva las asignaciones de ejecutor cuya habilitación venció (fecha_fin <= ahora). Idempotente.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Cantidad de asignaciones desactivadas.',
+  })
+  async desactivarVencidos(@Res() res) {
+    try {
+      const resultado =
+        await this.ejecutorDependenciaService.desactivarVencidos();
+      res.status(HttpStatus.OK).json({
+        Success: true,
+        Status: HttpStatus.OK,
+        Message: 'Desactivacion de vencidos Exitosa',
+        Data: resultado,
+      });
+    } catch (error: any) {
+      res.status(HttpStatus.BAD_REQUEST).json({
+        Success: false,
+        Status: HttpStatus.BAD_REQUEST,
+        Message: 'Error en servicio desactivarVencidos',
         Data: error.message,
       });
     }
@@ -139,14 +175,30 @@ export class EjecutorDependenciaController {
         Data: ejecutor,
       });
     } catch (error: any) {
+      const mensajeNegocio = this.mensajeNegocio(error);
       res.status(HttpStatus.BAD_REQUEST).json({
         Success: false,
         Status: HttpStatus.BAD_REQUEST,
         Message:
+          mensajeNegocio ??
           'Error en servicio Put: la peticion contiene un tipo de dato incorrecto o un parametro invalido',
-        Data: error.message,
+        Data: mensajeNegocio ?? error.message,
       });
     }
+  }
+
+  /**
+   * Devuelve el mensaje de una regla de negocio (BadRequestException lanzada por
+   * el service) apto para mostrar al usuario, o null si el error es técnico.
+   */
+  private mensajeNegocio(error: any): string | null {
+    if (error instanceof BadRequestException) {
+      const respuesta: any = error.getResponse();
+      return typeof respuesta === 'string'
+        ? respuesta
+        : (respuesta?.message ?? error.message);
+    }
+    return null;
   }
 
   @Delete('/:id')
