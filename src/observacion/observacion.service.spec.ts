@@ -72,6 +72,22 @@ describe('ObservacionService', () => {
       expect(result).toEqual(mockObservacion);
     });
 
+    it('Debería eliminar dependencias repetidas antes de crear la observación', async () => {
+      const createDto = {
+        ...mockCreateObservacionDto,
+        dependencia_id: [121, 121, 121],
+      };
+      jest
+        .spyOn(observacionModel, 'create')
+        .mockImplementationOnce(() => Promise.resolve(mockObservacion as any));
+
+      await observacionService.agregarObservacion(createDto);
+
+      expect(observacionModel.create).toHaveBeenCalledWith(
+        expect.objectContaining({ dependencia_id: [121] }),
+      );
+    });
+
     it('Debería lanzar un error si falla la creación', async () => {
       jest.spyOn(observacionModel, 'create').mockImplementationOnce(() => {
         throw new Error('Error al crear observacion');

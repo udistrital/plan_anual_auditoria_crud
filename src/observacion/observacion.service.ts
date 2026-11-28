@@ -22,6 +22,7 @@ export class ObservacionService {
   ): Promise<Observacion> {
     return await this.ObservacionModel.create({
       ...createObservacionDTO,
+      dependencia_id: [...new Set(createObservacionDTO.dependencia_id ?? [])],
       // Texto enriquecido admitido, sin contenido ejecutable (issue #958)
       observacion: sanitizarHtmlObservacion(createObservacionDTO.observacion),
       activo: createObservacionDTO.activo ?? true,
